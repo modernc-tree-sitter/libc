@@ -182,7 +182,9 @@ var (
 	//--
 	procAccessCheck                = modadvapi.NewProc("AccessCheck")
 	procAddAccessDeniedAce         = modadvapi.NewProc("AddAccessDeniedAce")
+	procAddAce                     = modadvapi.NewProc("AddAce")
 	procEqualSid                   = modadvapi.NewProc("EqualSid")
+	procGetAce                     = modadvapi.NewProc("GetAce")
 	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")
 	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")
 	procGetFileSecurityW           = modadvapi.NewProc("GetFileSecurityW")
@@ -6444,7 +6446,11 @@ func XAddAce(t *TLS, pAcl uintptr, dwAceRevision, dwStartingAceIndex uint32, pAc
 	if __ccgo_strace {
 		trc("t=%v pAcl=%v dwStartingAceIndex=%v pAceList=%v nAceListLength=%v, (%v:)", t, pAcl, dwStartingAceIndex, pAceList, nAceListLength, origin(2))
 	}
-	panic(todo(""))
+	r0, _, err := syscall.SyscallN(procAddAce.Addr(), pAcl, uintptr(dwAceRevision), uintptr(dwStartingAceIndex), pAceList, uintptr(nAceListLength))
+	if err != 0 {
+		t.setErrno(err)
+	}
+	return Bool32(r0 != 0)
 }
 
 // BOOL GetAce(
@@ -6458,7 +6464,11 @@ func XGetAce(t *TLS, pAcl uintptr, dwAceIndex uint32, pAce uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v pAcl=%v dwAceIndex=%v pAce=%v, (%v:)", t, pAcl, dwAceIndex, pAce, origin(2))
 	}
-	panic(todo(""))
+	r0, _, err := syscall.SyscallN(procGetAce.Addr(), pAcl, uintptr(dwAceIndex), pAce)
+	if err != 0 {
+		t.setErrno(err)
+	}
+	return Bool32(r0 != 0)
 }
 
 // BOOL GetAclInformation(
