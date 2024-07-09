@@ -217,6 +217,7 @@ var (
 
 	modcrt        = syscall.NewLazyDLL("msvcrt.dll")
 	procAccess    = modcrt.NewProc("_access")
+	procChmod     = modcrt.NewProc("chmod")
 	procGmtime    = modcrt.NewProc("gmtime")
 	procGmtime64  = modcrt.NewProc("_gmtime64")
 	procStat64i32 = modcrt.NewProc("_stat64i32")
@@ -7175,7 +7176,11 @@ func Xchmod(t *TLS, pathname uintptr, mode int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v pathname=%v mode=%v, (%v:)", t, pathname, mode, origin(2))
 	}
-	panic(todo("%q %#o", GoString(pathname), mode))
+	r0, _, err := syscall.SyscallN(procChmod.Addr(), pathname, uintptr(mode))
+	if err != 0 {
+		t.setErrno(err)
+	}
+	return int32(r0)
 }
 
 // typedef enum _COMPUTER_NAME_FORMAT {
