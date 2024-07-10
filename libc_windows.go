@@ -1824,7 +1824,7 @@ func Xfread(t *TLS, ptr uintptr, size, nmemb types.Size_t, stream uintptr) types
 	}
 
 	var sz = size * nmemb
-	var obuf = ((*RawMem)(unsafe.Pointer(ptr)))[:sz]
+	var obuf = unsafe.Slice((*byte)(unsafe.Pointer(ptr)), sz)
 	n, err := syscall.Read(f.Handle, obuf)
 	if err != nil {
 		f.setErr()
