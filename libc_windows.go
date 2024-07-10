@@ -233,6 +233,7 @@ var (
 	procChmod     = modcrt.NewProc("_chmod")
 	procGmtime    = modcrt.NewProc("gmtime")
 	procGmtime64  = modcrt.NewProc("_gmtime64")
+	procLseeki64  = modcrt.NewProc("lseeki64")
 	procStat64i32 = modcrt.NewProc("_stat64i32")
 	procStrftime  = modcrt.NewProc("strftime")
 	procStrtod    = modcrt.NewProc("strtod")
@@ -564,6 +565,15 @@ func Xlseek(t *TLS, fd int32, offset types.Off_t, whence int32) types.Off_t {
 		trc("t=%v fd=%v offset=%v whence=%v, (%v:)", t, fd, offset, whence, origin(2))
 	}
 	return types.Off_t(Xlseek64(t, fd, offset, whence))
+}
+
+// off64_t lseek64(int fd, off64_t offset, int whence);
+func Xlseek64(t *TLS, fd int32, offset types.Off_t, whence int32) types.Off_t {
+	r0, _, err := syscall.SyscallN(procLseeki64.Addr(), uintptr(fd), uintptr(offset), uintptr(whence))
+	if err != 0 {
+		t.setErrno(err)
+	}
+	return types.Off_t(r0)
 }
 
 func whenceStr(whence int32) string {
