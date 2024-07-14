@@ -204,6 +204,7 @@ var (
 
 	moduser32 = syscall.NewLazyDLL("user32.dll")
 	//--
+	procCharLowerW                  = moduser32.NewProc("CharLowerW")
 	procCreateWindowExW             = moduser32.NewProc("CreateWindowExW")
 	procMsgWaitForMultipleObjectsEx = moduser32.NewProc("MsgWaitForMultipleObjectsEx")
 	procPeekMessageW                = moduser32.NewProc("PeekMessageW")
@@ -3084,16 +3085,20 @@ func XGetFullPathNameW(t *TLS, lpFileName uintptr, nBufferLength uint32, lpBuffe
 	return n
 }
 
-// LPWSTR CharLowerW(
-//
-//	LPWSTR lpsz
-//
-// );
-func XCharLowerW(t *TLS, lpsz uintptr) uintptr {
+// __attribute__((dllimport)) LPWSTR CharLowerW(LPWSTR lpsz);
+func XCharLowerW(tls *TLS, _lpsz uintptr) (r uintptr) {
 	if __ccgo_strace {
-		trc("t=%v lpsz=%v, (%v:)", t, lpsz, origin(2))
+		trc("lpsz=%+v", _lpsz)
+		defer func() { trc(`XCharLowerW->%+v`, r) }()
 	}
-	panic(todo(""))
+	r0, r1, err := syscall.SyscallN(procCharLowerW.Addr(), _lpsz)
+	if err != 0 {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err))
+	}
+	return r0
 }
 
 // BOOL CreateDirectoryW(
