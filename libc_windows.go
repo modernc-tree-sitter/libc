@@ -181,6 +181,7 @@ var (
 	//--
 	procAccessCheck                = modadvapi.NewProc("AccessCheck")
 	procEqualSid                   = modadvapi.NewProc("EqualSid")
+	procGetAce                     = modadvapi.NewProc("GetAce")
 	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")
 	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")
 	procGetFileSecurityW           = modadvapi.NewProc("GetFileSecurityW")
@@ -6443,18 +6444,20 @@ func XAddAce(t *TLS, pAcl uintptr, dwAceRevision, dwStartingAceIndex uint32, pAc
 	panic(todo(""))
 }
 
-// BOOL GetAce(
-//
-//	PACL   pAcl,
-//	DWORD  dwAceIndex,
-//	LPVOID *pAce
-//
-// );
-func XGetAce(t *TLS, pAcl uintptr, dwAceIndex uint32, pAce uintptr) int32 {
+// __attribute__((dllimport)) WINBOOL GetAce (PACL pAcl, DWORD dwAceIndex, LPVOID *pAce);
+func XGetAce(tls *TLS, _pAcl uintptr, _dwAceIndex uint32, _pAce uintptr) (r int32) {
 	if __ccgo_strace {
-		trc("t=%v pAcl=%v dwAceIndex=%v pAce=%v, (%v:)", t, pAcl, dwAceIndex, pAce, origin(2))
+		trc("pAcl=%+v dwAceIndex=%+v pAce=%+v", _pAcl, _dwAceIndex, _pAce)
+		defer func() { trc(`XGetAce->%+v`, r) }()
 	}
-	panic(todo(""))
+	r0, r1, err := syscall.SyscallN(procGetAce.Addr(), _pAcl, uintptr(_dwAceIndex), _pAce)
+	if err != 0 {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err))
+	}
+	return int32(r0)
 }
 
 // BOOL GetAclInformation(
