@@ -184,6 +184,7 @@ var (
 	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")
 	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")
 	procGetFileSecurityW           = modadvapi.NewProc("GetFileSecurityW")
+	procGetLengthSid               = modadvapi.NewProc("GetLengthSid")
 	procGetNamedSecurityInfoW      = modadvapi.NewProc("GetNamedSecurityInfoW")
 	procGetSecurityDescriptorDacl  = modadvapi.NewProc("GetSecurityDescriptorDacl")
 	procGetSecurityDescriptorOwner = modadvapi.NewProc("GetSecurityDescriptorOwner")
@@ -6508,16 +6509,20 @@ func XGetFileSecurityA(t *TLS, lpFileName uintptr, RequestedInformation uint32, 
 	return int32(r0)
 }
 
-// DWORD GetLengthSid(
-//
-//	PSID pSid
-//
-// );
-func XGetLengthSid(t *TLS, pSid uintptr) uint32 {
+// __attribute__((dllimport)) DWORD GetLengthSid (PSID pSid);
+func XGetLengthSid(tls *TLS, _pSid uintptr) (r uint32) {
 	if __ccgo_strace {
-		trc("t=%v pSid=%v, (%v:)", t, pSid, origin(2))
+		trc("pSid=%+v", _pSid)
+		defer func() { trc(`XGetLengthSid->%+v`, r) }()
 	}
-	panic(todo(""))
+	r0, r1, err := syscall.SyscallN(procGetLengthSid.Addr(), _pSid)
+	if err != 0 {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err))
+	}
+	return uint32(r0)
 }
 
 // BOOL GetSecurityDescriptorDacl(
