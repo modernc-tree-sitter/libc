@@ -189,6 +189,7 @@ var (
 	procGetSidIdentifierAuthority  = modadvapi.NewProc("GetSidIdentifierAuthority")
 	procGetSidLengthRequired       = modadvapi.NewProc("GetSidLengthRequired")
 	procGetSidSubAuthority         = modadvapi.NewProc("GetSidSubAuthority")
+	procGetTokenInformation        = modadvapi.NewProc("GetTokenInformation")
 	procImpersonateSelf            = modadvapi.NewProc("ImpersonateSelf")
 	procInitializeSid              = modadvapi.NewProc("InitializeSid")
 	procOpenThreadToken            = modadvapi.NewProc("OpenThreadToken")
@@ -5111,20 +5112,20 @@ func XOpenProcessToken(tls *TLS, _ProcessHandle uintptr, _DesiredAccess uint32, 
 	return int32(r0)
 }
 
-// BOOL GetTokenInformation(
-//
-//	HANDLE                  TokenHandle,
-//	TOKEN_INFORMATION_CLASS TokenInformationClass,
-//	LPVOID                  TokenInformation,
-//	DWORD                   TokenInformationLength,
-//	PDWORD                  ReturnLength
-//
-// );
-func XGetTokenInformation(t *TLS, TokenHandle uintptr, TokenInformationClass uint32, TokenInformation uintptr, TokenInformationLength uint32, ReturnLength uintptr) int32 {
+// __attribute__((dllimport)) WINBOOL GetTokenInformation (HANDLE TokenHandle, TOKEN_INFORMATION_CLASS TokenInformationClass, LPVOID TokenInformation, DWORD TokenInformationLength, PDWORD ReturnLength);
+func XGetTokenInformation(tls *TLS, _TokenHandle uintptr, _TokenInformationClass int32, _TokenInformation uintptr, _TokenInformationLength uint32, _ReturnLength uintptr) (r int32) {
 	if __ccgo_strace {
-		trc("t=%v TokenHandle=%v TokenInformationClass=%v TokenInformation=%v TokenInformationLength=%v ReturnLength=%v, (%v:)", t, TokenHandle, TokenInformationClass, TokenInformation, TokenInformationLength, ReturnLength, origin(2))
+		trc("TokenHandle=%+v TokenInformationClass=%+v TokenInformation=%+v TokenInformationLength=%+v ReturnLength=%+v", _TokenHandle, _TokenInformationClass, _TokenInformation, _TokenInformationLength, _ReturnLength)
+		defer func() { trc(`XGetTokenInformation->%+v`, r) }()
 	}
-	panic(todo(""))
+	r0, r1, err := syscall.SyscallN(procGetTokenInformation.Addr(), _TokenHandle, uintptr(_TokenInformationClass), _TokenInformation, uintptr(_TokenInformationLength), _ReturnLength)
+	if err != 0 {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err))
+	}
+	return int32(r0)
 }
 
 // BOOL EqualSid(
