@@ -182,6 +182,7 @@ var (
 	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")
 	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")
 	procGetFileSecurityW           = modadvapi.NewProc("GetFileSecurityW")
+	procGetNamedSecurityInfoW      = modadvapi.NewProc("GetNamedSecurityInfoW")
 	procGetSecurityDescriptorDacl  = modadvapi.NewProc("GetSecurityDescriptorDacl")
 	procGetSecurityDescriptorOwner = modadvapi.NewProc("GetSecurityDescriptorOwner")
 	procGetSidIdentifierAuthority  = modadvapi.NewProc("GetSidIdentifierAuthority")
@@ -5077,23 +5078,20 @@ func XSetFileTime(t *TLS, _hFile uintptr, _lpCreationTime, _lpLastAccessTime, _l
 	return int32(r0)
 }
 
-// DWORD GetNamedSecurityInfoW(
-//
-//	LPCWSTR              pObjectName,
-//	SE_OBJECT_TYPE       ObjectType,
-//	SECURITY_INFORMATION SecurityInfo,
-//	PSID                 *ppsidOwner,
-//	PSID                 *ppsidGroup,
-//	PACL                 *ppDacl,
-//	PACL                 *ppSacl,
-//	PSECURITY_DESCRIPTOR *ppSecurityDescriptor
-//
-// );
-func XGetNamedSecurityInfoW(t *TLS, pObjectName uintptr, ObjectType, SecurityInfo uint32, ppsidOwner, ppsidGroup, ppDacl, ppSacl, ppSecurityDescriptor uintptr) uint32 {
+// __attribute__((dllimport)) DWORD GetNamedSecurityInfoW (LPCWSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID *ppsidOwner, PSID *ppsidGroup, PACL *ppDacl, PACL *ppSacl, PSECURITY_DESCRIPTOR *ppSecurityDescriptor);
+func XGetNamedSecurityInfoW(tls *TLS, _pObjectName uintptr, _ObjectType int32, _SecurityInfo uint32, _ppsidOwner uintptr, _ppsidGroup uintptr, _ppDacl uintptr, _ppSacl uintptr, _ppSecurityDescriptor uintptr) (r uint32) {
 	if __ccgo_strace {
-		trc("t=%v pObjectName=%v SecurityInfo=%v ppSecurityDescriptor=%v, (%v:)", t, pObjectName, SecurityInfo, ppSecurityDescriptor, origin(2))
+		trc("pObjectName=%+v ObjectType=%+v SecurityInfo=%+v ppsidOwner=%+v ppsidGroup=%+v ppDacl=%+v ppSacl=%+v ppSecurityDescriptor=%+v", _pObjectName, _ObjectType, _SecurityInfo, _ppsidOwner, _ppsidGroup, _ppDacl, _ppSacl, _ppSecurityDescriptor)
+		defer func() { trc(`XGetNamedSecurityInfoW->%+v`, r) }()
 	}
-	panic(todo(""))
+	r0, r1, err := syscall.SyscallN(procGetNamedSecurityInfoW.Addr(), _pObjectName, uintptr(_ObjectType), uintptr(_SecurityInfo), _ppsidOwner, _ppsidGroup, _ppDacl, _ppSacl, _ppSecurityDescriptor)
+	if err != 0 {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err))
+	}
+	return uint32(r0)
 }
 
 // BOOL OpenProcessToken(
