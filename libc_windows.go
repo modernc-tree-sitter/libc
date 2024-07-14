@@ -146,6 +146,7 @@ var (
 	procMoveFileW                  = modkernel32.NewProc("MoveFileW")
 	procMultiByteToWideChar        = modkernel32.NewProc("MultiByteToWideChar")
 	procOpenEventA                 = modkernel32.NewProc("OpenEventA")
+	procOpenProcessToken           = modkernel32.NewProc("OpenProcessToken")
 	procPeekConsoleInputW          = modkernel32.NewProc("PeekConsoleInputW")
 	procPeekNamedPipe              = modkernel32.NewProc("PeekNamedPipe")
 	procQueryPerformanceCounter    = modkernel32.NewProc("QueryPerformanceCounter")
@@ -5094,18 +5095,20 @@ func XGetNamedSecurityInfoW(tls *TLS, _pObjectName uintptr, _ObjectType int32, _
 	return uint32(r0)
 }
 
-// BOOL OpenProcessToken(
-//
-//	HANDLE  ProcessHandle,
-//	DWORD   DesiredAccess,
-//	PHANDLE TokenHandle
-//
-// );
-func XOpenProcessToken(t *TLS, ProcessHandle uintptr, DesiredAccess uint32, TokenHandle uintptr) int32 {
+// __attribute__((dllimport)) WINBOOL OpenProcessToken (HANDLE ProcessHandle, DWORD DesiredAccess, PHANDLE TokenHandle);
+func XOpenProcessToken(tls *TLS, _ProcessHandle uintptr, _DesiredAccess uint32, _TokenHandle uintptr) (r int32) {
 	if __ccgo_strace {
-		trc("t=%v ProcessHandle=%v DesiredAccess=%v TokenHandle=%v, (%v:)", t, ProcessHandle, DesiredAccess, TokenHandle, origin(2))
+		trc("ProcessHandle=%+v DesiredAccess=%+v TokenHandle=%+v", _ProcessHandle, _DesiredAccess, _TokenHandle)
+		defer func() { trc(`XOpenProcessToken->%+v`, r) }()
 	}
-	panic(todo(""))
+	r0, r1, err := syscall.SyscallN(procOpenProcessToken.Addr(), _ProcessHandle, uintptr(_DesiredAccess), _TokenHandle)
+	if err != 0 {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err))
+	}
+	return int32(r0)
 }
 
 // BOOL GetTokenInformation(
