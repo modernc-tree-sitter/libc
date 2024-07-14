@@ -39,7 +39,6 @@ var X_imp___environ = EnvironP()
 var X_imp___wenviron = uintptr(unsafe.Pointer(&wenviron))
 var X_iob [stdio.X_IOB_ENTRIES]stdio.FILE
 var Xin6addr_any [16]byte
-
 var Xtimezone long // extern long timezone;
 
 var (
@@ -160,14 +159,12 @@ var (
 	procSetConsoleTextAttribute    = modkernel32.NewProc("SetConsoleTextAttribute")
 	procSetEvent                   = modkernel32.NewProc("SetEvent")
 	procSetFilePointer             = modkernel32.NewProc("SetFilePointer")
-	procSetFileTime                = modkernel32.NewProc("SetFileTime")
 	procSleepEx                    = modkernel32.NewProc("SleepEx")
 	procSystemTimeToFileTime       = modkernel32.NewProc("SystemTimeToFileTime")
 	procTerminateThread            = modkernel32.NewProc("TerminateThread")
 	procTryEnterCriticalSection    = modkernel32.NewProc("TryEnterCriticalSection")
 	procUnlockFile                 = modkernel32.NewProc("UnlockFile")
 	procUnlockFileEx               = modkernel32.NewProc("UnlockFileEx")
-	procWaitForSingleObject        = modkernel32.NewProc("WaitForSingleObject")
 	procWaitForSingleObjectEx      = modkernel32.NewProc("WaitForSingleObjectEx")
 	procWideCharToMultiByte        = modkernel32.NewProc("WideCharToMultiByte")
 	procWriteConsoleA              = modkernel32.NewProc("WriteConsoleA")
@@ -181,28 +178,18 @@ var (
 	modadvapi = syscall.NewLazyDLL("advapi32.dll")
 	//--
 	procAccessCheck                = modadvapi.NewProc("AccessCheck")
-	procAddAccessDeniedAce         = modadvapi.NewProc("AddAccessDeniedAce")
-	procAddAce                     = modadvapi.NewProc("AddAce")
-	procEqualSid                   = modadvapi.NewProc("EqualSid")
-	procGetAce                     = modadvapi.NewProc("GetAce")
 	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")
 	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")
 	procGetFileSecurityW           = modadvapi.NewProc("GetFileSecurityW")
-	procGetLengthSid               = modadvapi.NewProc("GetLengthSid")
-	procGetNamedSecurityInfoW      = modadvapi.NewProc("GetNamedSecurityInfoW")
 	procGetSecurityDescriptorDacl  = modadvapi.NewProc("GetSecurityDescriptorDacl")
 	procGetSecurityDescriptorOwner = modadvapi.NewProc("GetSecurityDescriptorOwner")
 	procGetSidIdentifierAuthority  = modadvapi.NewProc("GetSidIdentifierAuthority")
 	procGetSidLengthRequired       = modadvapi.NewProc("GetSidLengthRequired")
 	procGetSidSubAuthority         = modadvapi.NewProc("GetSidSubAuthority")
-	procGetTokenInformation        = modadvapi.NewProc("GetTokenInformation")
 	procImpersonateSelf            = modadvapi.NewProc("ImpersonateSelf")
-	procInitializeAcl              = modadvapi.NewProc("InitializeAcl")
 	procInitializeSid              = modadvapi.NewProc("InitializeSid")
-	procOpenProcessToken           = modadvapi.NewProc("OpenProcessToken")
 	procOpenThreadToken            = modadvapi.NewProc("OpenThreadToken")
 	procRevertToSelf               = modadvapi.NewProc("RevertToSelf")
-	procSetNamedSecurityInfoA      = modadvapi.NewProc("SetNamedSecurityInfoA")
 	//--
 
 	modws2_32 = syscall.NewLazyDLL("ws2_32.dll")
@@ -212,7 +199,6 @@ var (
 
 	moduser32 = syscall.NewLazyDLL("user32.dll")
 	//--
-	procCharLowerW                  = moduser32.NewProc("CharLowerW")
 	procCreateWindowExW             = moduser32.NewProc("CreateWindowExW")
 	procMsgWaitForMultipleObjectsEx = moduser32.NewProc("MsgWaitForMultipleObjectsEx")
 	procPeekMessageW                = moduser32.NewProc("PeekMessageW")
@@ -230,10 +216,8 @@ var (
 
 	modcrt        = syscall.NewLazyDLL("msvcrt.dll")
 	procAccess    = modcrt.NewProc("_access")
-	procChmod     = modcrt.NewProc("_chmod")
 	procGmtime    = modcrt.NewProc("gmtime")
 	procGmtime64  = modcrt.NewProc("_gmtime64")
-	procLseeki64  = modcrt.NewProc("_lseeki64")
 	procStat64i32 = modcrt.NewProc("_stat64i32")
 	procStrftime  = modcrt.NewProc("strftime")
 	procStrtod    = modcrt.NewProc("strtod")
@@ -565,15 +549,6 @@ func Xlseek(t *TLS, fd int32, offset types.Off_t, whence int32) types.Off_t {
 		trc("t=%v fd=%v offset=%v whence=%v, (%v:)", t, fd, offset, whence, origin(2))
 	}
 	return types.Off_t(Xlseek64(t, fd, offset, whence))
-}
-
-// off64_t lseek64(int fd, off64_t offset, int whence);
-func Xlseek64(t *TLS, fd int32, offset types.Off_t, whence int32) types.Off_t {
-	r0, _, err := syscall.SyscallN(procLseeki64.Addr(), uintptr(fd), uintptr(offset), uintptr(whence))
-	if err != 0 {
-		t.setErrno(err)
-	}
-	return types.Off_t(r0)
 }
 
 func whenceStr(whence int32) string {
@@ -1824,7 +1799,7 @@ func Xfread(t *TLS, ptr uintptr, size, nmemb types.Size_t, stream uintptr) types
 	}
 
 	var sz = size * nmemb
-	var obuf = unsafe.Slice((*byte)(unsafe.Pointer(ptr)), sz)
+	var obuf = ((*RawMem)(unsafe.Pointer(ptr)))[:sz]
 	n, err := syscall.Read(f.Handle, obuf)
 	if err != nil {
 		f.setErr()
@@ -2759,28 +2734,11 @@ func XWaitForSingleObject(t *TLS, hHandle uintptr, dwMilliseconds uint32) uint32
 	if __ccgo_strace {
 		trc("t=%v hHandle=%v dwMilliseconds=%v, (%v:)", t, hHandle, dwMilliseconds, origin(2))
 	}
-	// rv, err := syscall.WaitForSingleObject(syscall.Handle(hHandle), dwMilliseconds)
-	// if err != nil {
-	// 	t.setErrno(err)
-	// }
-	// return rv
-	rv, _, _ := syscall.SyscallN(procWaitForSingleObject.Addr(), hHandle, uintptr(dwMilliseconds))
-	return uint32(rv)
-}
-
-// DWORD WaitForSingleObjectEx(
-//
-//	HANDLE hHandle,
-//	DWORD  dwMilliseconds,
-//	BOOL   bAlertable
-//
-// );
-func XWaitForSingleObjectEx(t *TLS, hHandle uintptr, dwMilliseconds uint32, bAlertable int32) uint32 {
-	if __ccgo_strace {
-		trc("t=%v hHandle=%v dwMilliseconds=%v bAlertable=%v, (%v:)", t, hHandle, dwMilliseconds, bAlertable, origin(2))
+	rv, err := syscall.WaitForSingleObject(syscall.Handle(hHandle), dwMilliseconds)
+	if err != nil {
+		t.setErrno(err)
 	}
-	rv, _, _ := syscall.Syscall(procWaitForSingleObjectEx.Addr(), 3, hHandle, uintptr(dwMilliseconds), uintptr(bAlertable))
-	return uint32(rv)
+	return rv
 }
 
 // BOOL ResetEvent(
@@ -3113,11 +3071,7 @@ func XCharLowerW(t *TLS, lpsz uintptr) uintptr {
 	if __ccgo_strace {
 		trc("t=%v lpsz=%v, (%v:)", t, lpsz, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procCharLowerW.Addr(), lpsz)
-	if r0 == 0 {
-		t.setErrno(err)
-	}
-	return r0
+	panic(todo(""))
 }
 
 // BOOL CreateDirectoryW(
@@ -4642,6 +4596,21 @@ func XGetExitCodeThread(t *TLS, hThread, lpExitCode uintptr) int32 {
 	return int32(r0)
 }
 
+// DWORD WaitForSingleObjectEx(
+//
+//	HANDLE hHandle,
+//	DWORD  dwMilliseconds,
+//	BOOL   bAlertable
+//
+// );
+func XWaitForSingleObjectEx(t *TLS, hHandle uintptr, dwMilliseconds uint32, bAlertable int32) uint32 {
+	if __ccgo_strace {
+		trc("t=%v hHandle=%v dwMilliseconds=%v bAlertable=%v, (%v:)", t, hHandle, dwMilliseconds, bAlertable, origin(2))
+	}
+	rv, _, _ := syscall.Syscall(procWaitForSingleObjectEx.Addr(), 3, hHandle, uintptr(dwMilliseconds), uintptr(bAlertable))
+	return uint32(rv)
+}
+
 // DWORD MsgWaitForMultipleObjectsEx(
 //
 //	DWORD        nCount,
@@ -5079,11 +5048,7 @@ func XSetFileTime(t *TLS, hFile uintptr, lpCreationTime, lpLastAccessTime, lpLas
 	if __ccgo_strace {
 		trc("t=%v hFile=%v lpLastWriteTime=%v, (%v:)", t, hFile, lpLastWriteTime, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procSetFileTime.Addr(), hFile, lpCreationTime, lpLastAccessTime, lpLastWriteTime)
-	if r0 == 0 {
-		t.setErrno(err)
-	}
-	return int32(r0)
+	panic(todo(""))
 }
 
 // DWORD GetNamedSecurityInfoW(
@@ -5102,11 +5067,7 @@ func XGetNamedSecurityInfoW(t *TLS, pObjectName uintptr, ObjectType, SecurityInf
 	if __ccgo_strace {
 		trc("t=%v pObjectName=%v SecurityInfo=%v ppSecurityDescriptor=%v, (%v:)", t, pObjectName, SecurityInfo, ppSecurityDescriptor, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procGetNamedSecurityInfoW.Addr(), pObjectName, uintptr(ObjectType), uintptr(SecurityInfo), ppsidOwner, ppsidGroup, ppDacl, ppSacl, ppSecurityDescriptor)
-	if r0 == 0 {
-		t.setErrno(err)
-	}
-	return uint32(r0)
+	panic(todo(""))
 }
 
 // BOOL OpenProcessToken(
@@ -5120,11 +5081,7 @@ func XOpenProcessToken(t *TLS, ProcessHandle uintptr, DesiredAccess uint32, Toke
 	if __ccgo_strace {
 		trc("t=%v ProcessHandle=%v DesiredAccess=%v TokenHandle=%v, (%v:)", t, ProcessHandle, DesiredAccess, TokenHandle, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procOpenProcessToken.Addr(), ProcessHandle, uintptr(DesiredAccess), TokenHandle)
-	if r0 == 0 {
-		t.setErrno(err)
-	}
-	return Bool32(r0 != 0)
+	panic(todo(""))
 }
 
 // BOOL GetTokenInformation(
@@ -5140,11 +5097,7 @@ func XGetTokenInformation(t *TLS, TokenHandle uintptr, TokenInformationClass uin
 	if __ccgo_strace {
 		trc("t=%v TokenHandle=%v TokenInformationClass=%v TokenInformation=%v TokenInformationLength=%v ReturnLength=%v, (%v:)", t, TokenHandle, TokenInformationClass, TokenInformation, TokenInformationLength, ReturnLength, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procGetTokenInformation.Addr(), TokenHandle, uintptr(TokenInformationClass), TokenInformation, uintptr(TokenInformationLength), ReturnLength)
-	if r0 == 0 {
-		t.setErrno(err)
-	}
-	return Bool32(r0 != 0)
+	panic(todo(""))
 }
 
 // BOOL EqualSid(
@@ -5157,11 +5110,7 @@ func XEqualSid(t *TLS, pSid1, pSid2 uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v pSid2=%v, (%v:)", t, pSid2, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procEqualSid.Addr(), pSid1, pSid2)
-	if r0 == 0 {
-		t.setErrno(err)
-	}
-	return Bool32(r0 != 0)
+	panic(todo(""))
 }
 
 // int WSAStartup(
@@ -6436,11 +6385,7 @@ func XAddAccessDeniedAce(t *TLS, pAcl uintptr, dwAceRevision, AccessMask uint32,
 	if __ccgo_strace {
 		trc("t=%v pAcl=%v AccessMask=%v pSid=%v, (%v:)", t, pAcl, AccessMask, pSid, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procAddAccessDeniedAce.Addr(), pAcl, uintptr(dwAceRevision), uintptr(AccessMask), pSid)
-	if err != 0 {
-		t.setErrno(err)
-	}
-	return Bool32(r0 != 0)
+	panic(todo(""))
 }
 
 // BOOL AddAce(
@@ -6456,11 +6401,7 @@ func XAddAce(t *TLS, pAcl uintptr, dwAceRevision, dwStartingAceIndex uint32, pAc
 	if __ccgo_strace {
 		trc("t=%v pAcl=%v dwStartingAceIndex=%v pAceList=%v nAceListLength=%v, (%v:)", t, pAcl, dwStartingAceIndex, pAceList, nAceListLength, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procAddAce.Addr(), pAcl, uintptr(dwAceRevision), uintptr(dwStartingAceIndex), pAceList, uintptr(nAceListLength))
-	if err != 0 {
-		t.setErrno(err)
-	}
-	return Bool32(r0 != 0)
+	panic(todo(""))
 }
 
 // BOOL GetAce(
@@ -6474,11 +6415,7 @@ func XGetAce(t *TLS, pAcl uintptr, dwAceIndex uint32, pAce uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v pAcl=%v dwAceIndex=%v pAce=%v, (%v:)", t, pAcl, dwAceIndex, pAce, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procGetAce.Addr(), pAcl, uintptr(dwAceIndex), pAce)
-	if err != 0 {
-		t.setErrno(err)
-	}
-	return Bool32(r0 != 0)
+	panic(todo(""))
 }
 
 // BOOL GetAclInformation(
@@ -6543,11 +6480,7 @@ func XGetLengthSid(t *TLS, pSid uintptr) uint32 {
 	if __ccgo_strace {
 		trc("t=%v pSid=%v, (%v:)", t, pSid, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procGetLengthSid.Addr(), pSid)
-	if err != 0 {
-		t.setErrno(err)
-	}
-	return uint32(r0)
+	panic(todo(""))
 }
 
 // BOOL GetSecurityDescriptorDacl(
@@ -6620,11 +6553,7 @@ func XInitializeAcl(t *TLS, pAcl uintptr, nAclLength, dwAclRevision uint32) int3
 	if __ccgo_strace {
 		trc("t=%v pAcl=%v dwAclRevision=%v, (%v:)", t, pAcl, dwAclRevision, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procInitializeAcl.Addr(), pAcl, uintptr(nAclLength), uintptr(dwAclRevision))
-	if err != 0 {
-		t.setErrno(err)
-	}
-	return Bool32(r0 != 0)
+	panic(todo(""))
 }
 
 // BOOL InitializeSid(
@@ -6687,11 +6616,7 @@ func XSetNamedSecurityInfoA(t *TLS, pObjectName uintptr, ObjectType, SecurityInf
 	if __ccgo_strace {
 		trc("t=%v pObjectName=%v SecurityInfo=%v pSacl=%v, (%v:)", t, pObjectName, SecurityInfo, pSacl, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procSetNamedSecurityInfoA.Addr(), pObjectName, uintptr(ObjectType), uintptr(SecurityInfo), psidOwner, psidGroup, pDacl, pSacl)
-	if err != 0 {
-		t.setErrno(err)
-	}
-	return uint32(r0)
+	panic(todo(""))
 }
 
 // BOOL CreateProcessA(
@@ -7249,11 +7174,7 @@ func Xchmod(t *TLS, pathname uintptr, mode int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v pathname=%v mode=%v, (%v:)", t, pathname, mode, origin(2))
 	}
-	r0, _, err := syscall.SyscallN(procChmod.Addr(), pathname, uintptr(mode))
-	if err != 0 {
-		t.setErrno(err)
-	}
-	return int32(r0)
+	panic(todo("%q %#o", GoString(pathname), mode))
 }
 
 // typedef enum _COMPUTER_NAME_FORMAT {
