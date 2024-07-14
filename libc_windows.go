@@ -290,6 +290,22 @@ func (f *file) setErr() {
 	f.hadErr = true
 }
 
+func (tls *TLS) SetLastError(_dwErrCode uint32) {
+	if tls != nil {
+		tls.lastError = _dwErrCode
+	}
+}
+
+// https://github.com/golang/go/issues/41220
+
+func (tls *TLS) GetLastError() (r uint32) {
+	if tls == nil {
+		return 0
+	}
+
+	return tls.lastError
+}
+
 // -----------------------------------
 // On windows we have to fetch these
 //
