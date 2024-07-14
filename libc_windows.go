@@ -180,6 +180,7 @@ var (
 	modadvapi = syscall.NewLazyDLL("advapi32.dll")
 	//--
 	procAccessCheck                = modadvapi.NewProc("AccessCheck")
+	procAddAce                     = modadvapi.NewProc("AddAce")
 	procEqualSid                   = modadvapi.NewProc("EqualSid")
 	procGetAce                     = modadvapi.NewProc("GetAce")
 	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")
@@ -6428,20 +6429,20 @@ func XAddAccessDeniedAce(t *TLS, pAcl uintptr, dwAceRevision, AccessMask uint32,
 	panic(todo(""))
 }
 
-// BOOL AddAce(
-//
-//	PACL   pAcl,
-//	DWORD  dwAceRevision,
-//	DWORD  dwStartingAceIndex,
-//	LPVOID pAceList,
-//	DWORD  nAceListLength
-//
-// );
-func XAddAce(t *TLS, pAcl uintptr, dwAceRevision, dwStartingAceIndex uint32, pAceList uintptr, nAceListLength uint32) int32 {
+// __attribute__((dllimport)) WINBOOL AddAce (PACL pAcl, DWORD dwAceRevision, DWORD dwStartingAceIndex, LPVOID pAceList, DWORD nAceListLength);
+func XAddAce(tls *TLS, _pAcl uintptr, _dwAceRevision uint32, _dwStartingAceIndex uint32, _pAceList uintptr, _nAceListLength uint32) (r uint32) {
 	if __ccgo_strace {
-		trc("t=%v pAcl=%v dwStartingAceIndex=%v pAceList=%v nAceListLength=%v, (%v:)", t, pAcl, dwStartingAceIndex, pAceList, nAceListLength, origin(2))
+		trc("pAcl=%+v dwAceRevision=%+v dwStartingAceIndex=%+v pAceList=%+v nAceListLength=%+v", _pAcl, _dwAceRevision, _dwStartingAceIndex, _pAceList, _nAceListLength)
+		defer func() { trc(`XAddAce->%+v`, r) }()
 	}
-	panic(todo(""))
+	r0, r1, err := syscall.SyscallN(procAddAce.Addr(), _pAcl, uintptr(_dwAceRevision), uintptr(_dwStartingAceIndex), _pAceList, uintptr(_nAceListLength))
+	if err != 0 {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err))
+	}
+	return uint32(r0)
 }
 
 // __attribute__((dllimport)) WINBOOL GetAce (PACL pAcl, DWORD dwAceIndex, LPVOID *pAce);
