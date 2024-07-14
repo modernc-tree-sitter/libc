@@ -180,6 +180,7 @@ var (
 	modadvapi = syscall.NewLazyDLL("advapi32.dll")
 	//--
 	procAccessCheck                = modadvapi.NewProc("AccessCheck")
+	procEqualSid                   = modadvapi.NewProc("EqualSid")
 	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")
 	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")
 	procGetFileSecurityW           = modadvapi.NewProc("GetFileSecurityW")
@@ -5128,17 +5129,20 @@ func XGetTokenInformation(tls *TLS, _TokenHandle uintptr, _TokenInformationClass
 	return int32(r0)
 }
 
-// BOOL EqualSid(
-//
-//	PSID pSid1,
-//	PSID pSid2
-//
-// );
-func XEqualSid(t *TLS, pSid1, pSid2 uintptr) int32 {
+// __attribute__((dllimport)) WINBOOL EqualSid (PSID pSid1, PSID pSid2);
+func XEqualSid(tls *TLS, _pSid1 uintptr, _pSid2 uintptr) (r int32) {
 	if __ccgo_strace {
-		trc("t=%v pSid2=%v, (%v:)", t, pSid2, origin(2))
+		trc("pSid1=%+v pSid2=%+v", _pSid1, _pSid2)
+		defer func() { trc(`XEqualSid->%+v`, r) }()
 	}
-	panic(todo(""))
+	r0, r1, err := syscall.SyscallN(procEqualSid.Addr(), _pSid1, _pSid2)
+	if err != 0 {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err))
+	}
+	return int32(r0)
 }
 
 // int WSAStartup(
