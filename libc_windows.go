@@ -193,6 +193,7 @@ var (
 	procGetSidSubAuthority         = modadvapi.NewProc("GetSidSubAuthority")
 	procGetTokenInformation        = modadvapi.NewProc("GetTokenInformation")
 	procImpersonateSelf            = modadvapi.NewProc("ImpersonateSelf")
+	procInitializeAcl              = modadvapi.NewProc("InitializeAcl")
 	procInitializeSid              = modadvapi.NewProc("InitializeSid")
 	procOpenThreadToken            = modadvapi.NewProc("OpenThreadToken")
 	procRevertToSelf               = modadvapi.NewProc("RevertToSelf")
@@ -6584,18 +6585,20 @@ func XGetSidSubAuthority(t *TLS, pSid uintptr, nSubAuthority uint32) uintptr {
 	return r0
 }
 
-// BOOL InitializeAcl(
-//
-//	PACL  pAcl,
-//	DWORD nAclLength,
-//	DWORD dwAclRevision
-//
-// );
-func XInitializeAcl(t *TLS, pAcl uintptr, nAclLength, dwAclRevision uint32) int32 {
+// __attribute__((dllimport)) WINBOOL InitializeAcl (PACL pAcl, DWORD nAclLength, DWORD dwAclRevision);
+func XInitializeAcl(tls *TLS, _pAcl uintptr, _nAclLength uint32, _dwAclRevision uint32) (r int32) {
 	if __ccgo_strace {
-		trc("t=%v pAcl=%v dwAclRevision=%v, (%v:)", t, pAcl, dwAclRevision, origin(2))
+		trc("pAcl=%+v nAclLength=%+v dwAclRevision=%+v", _pAcl, _nAclLength, _dwAclRevision)
+		defer func() { trc(`XInitializeAcl->%+v`, r) }()
 	}
-	panic(todo(""))
+	r0, r1, err := syscall.SyscallN(procInitializeAcl.Addr(), _pAcl, uintptr(_nAclLength), uintptr(_dwAclRevision))
+	if err != 0 {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err))
+	}
+	return int32(r0)
 }
 
 // BOOL InitializeSid(
