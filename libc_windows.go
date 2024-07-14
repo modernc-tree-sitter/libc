@@ -159,6 +159,7 @@ var (
 	procSetConsoleTextAttribute    = modkernel32.NewProc("SetConsoleTextAttribute")
 	procSetEvent                   = modkernel32.NewProc("SetEvent")
 	procSetFilePointer             = modkernel32.NewProc("SetFilePointer")
+	procSetFileTime                = modkernel32.NewProc("SetFileTime")
 	procSleepEx                    = modkernel32.NewProc("SleepEx")
 	procSystemTimeToFileTime       = modkernel32.NewProc("SystemTimeToFileTime")
 	procTerminateThread            = modkernel32.NewProc("TerminateThread")
@@ -5061,11 +5062,19 @@ func Xwcschr(t *TLS, str uintptr, c wchar_t) uintptr {
 //	const FILETIME *lpLastWriteTime
 //
 // );
-func XSetFileTime(t *TLS, hFile uintptr, lpCreationTime, lpLastAccessTime, lpLastWriteTime uintptr) int32 {
+func XSetFileTime(t *TLS, _hFile uintptr, _lpCreationTime, _lpLastAccessTime, _lpLastWriteTime uintptr) (r int32) {
 	if __ccgo_strace {
-		trc("t=%v hFile=%v lpLastWriteTime=%v, (%v:)", t, hFile, lpLastWriteTime, origin(2))
+		trc("hFile=%+v lpCreationTime=%+v lpLastAccessTime=%+v lpLastWriteTime=%+v", _hFile, _lpCreationTime, _lpLastAccessTime, _lpLastWriteTime)
+		defer func() { trc(`XSetFileTime->%+v`, r) }()
 	}
-	panic(todo(""))
+	r0, r1, err := syscall.SyscallN(procSetFileTime.Addr(), _hFile, _lpCreationTime, _lpLastAccessTime, _lpLastWriteTime)
+	if err != 0 {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		t.SetLastError(uint32(err))
+	}
+	return int32(r0)
 }
 
 // DWORD GetNamedSecurityInfoW(
