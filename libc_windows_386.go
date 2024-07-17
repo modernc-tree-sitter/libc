@@ -8,11 +8,13 @@ import (
 	"os"
 	"strings"
 	"syscall"
+	gotime "time"
 	"unsafe"
 
 	"modernc.org/libc/errno"
 	"modernc.org/libc/sys/stat"
 	"modernc.org/libc/sys/types"
+	"modernc.org/libc/time"
 )
 
 // int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
@@ -590,11 +592,20 @@ func Xaccept(t *TLS, sockfd uint32, addr uintptr, addrlen uintptr) uint32 {
 }
 
 // struct tm *_localtime32( const __time32_t *sourceTime );
-func X_localtime32(t *TLS, sourceTime uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v sourceTime=%v, (%v:)", t, sourceTime, origin(2))
-	}
-	panic(todo(""))
+func X_localtime32(_ *TLS, sourceTime uintptr) uintptr {
+	loc := getLocalLocation()
+	ut := *(*time.Time_t)(unsafe.Pointer(sourceTime))
+	t := gotime.Unix(int64(ut), 0).In(loc)
+	localtime.Ftm_sec = int32(t.Second())
+	localtime.Ftm_min = int32(t.Minute())
+	localtime.Ftm_hour = int32(t.Hour())
+	localtime.Ftm_mday = int32(t.Day())
+	localtime.Ftm_mon = int32(t.Month() - 1)
+	localtime.Ftm_year = int32(t.Year() - 1900)
+	localtime.Ftm_wday = int32(t.Weekday())
+	localtime.Ftm_yday = int32(t.YearDay())
+	localtime.Ftm_isdst = Bool32(isTimeDST(t))
+	return uintptr(unsafe.Pointer(&localtime))
 }
 
 // struct tm *_gmtime32( const __time32_t *sourceTime );
