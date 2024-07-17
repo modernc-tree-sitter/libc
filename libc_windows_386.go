@@ -615,10 +615,11 @@ func X_localtime32(_ *TLS, sourceTime uintptr) uintptr {
 
 // struct tm *_gmtime32( const __time32_t *sourceTime );
 func X_gmtime32(t *TLS, sourceTime uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v sourceTime=%v, (%v:)", t, sourceTime, origin(2))
+	r0, _, err := syscall.SyscallN(procGmtime32.Addr(), uintptr(sourceTime))
+	if err != 0 {
+		t.setErrno(err)
 	}
-	panic(todo(""))
+	return uintptr(r0)
 }
 
 // LONG SetWindowLongW(

@@ -228,6 +228,7 @@ var (
 	procAccess    = modcrt.NewProc("_access")
 	procChmod     = modcrt.NewProc("_chmod")
 	procGmtime    = modcrt.NewProc("gmtime")
+	procGmtime32  = modcrt.NewProc("_gmtime32")
 	procGmtime64  = modcrt.NewProc("_gmtime64")
 	procStat64i32 = modcrt.NewProc("_stat64i32")
 	procStrftime  = modcrt.NewProc("strftime")
