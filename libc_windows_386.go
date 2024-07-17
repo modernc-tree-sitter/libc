@@ -228,21 +228,26 @@ func Xlseek64(t *TLS, fd int32, offset types.Off_t, whence int32) types.Off_t {
 	if __ccgo_strace {
 		trc("t=%v fd=%v offset=%v whence=%v, (%v:)", t, fd, offset, whence, origin(2))
 	}
-	panic(todo(""))
-	// 	bp := t.Alloc(int(unsafe.Sizeof(types.X__loff_t(0))))
-	// 	defer t.Free(int(unsafe.Sizeof(types.X__loff_t(0))))
-	// 	if _, _, err := unix.Syscall6(unix.SYS__LLSEEK, uintptr(fd), uintptr(offset>>32), uintptr(offset), bp, uintptr(whence), 0); err != 0 {
-	// 		if dmesgs {
-	// 			dmesg("%v: fd %v, off %#x, whence %v: %v", origin(1), fd, offset, whenceStr(whence), err)
-	// 		}
-	// 		t.setErrno(err)
-	// 		return -1
-	// 	}
-	//
-	// 	if dmesgs {
-	// 		dmesg("%v: fd %v, off %#x, whence %v: %#x", origin(1), fd, offset, whenceStr(whence), *(*types.Off_t)(unsafe.Pointer(bp)))
-	// 	}
-	// 	return *(*types.Off_t)(unsafe.Pointer(bp))
+
+	f, ok := fdToFile(fd)
+	if !ok {
+		t.setErrno(errno.EBADF)
+		return -1
+	}
+
+	n, err := syscall.Seek(f.Handle, offset, int(whence))
+	if err != nil {
+		if dmesgs {
+			dmesg("%v: fd %v, off %#x, whence %v: %v", origin(1), f._fd, offset, whenceStr(whence), n)
+		}
+		t.setErrno(err)
+		return -1
+	}
+
+	if dmesgs {
+		dmesg("%v: fd %v, off %#x, whence %v: ok", origin(1), f._fd, offset, whenceStr(whence))
+	}
+	return n
 }
 
 // int utime(const char *filename, const struct utimbuf *times);
