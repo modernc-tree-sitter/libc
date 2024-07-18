@@ -224,16 +224,18 @@ var (
 	userenvapi                = syscall.NewLazyDLL("userenv.dll")
 	procGetProfilesDirectoryW = userenvapi.NewProc("GetProfilesDirectoryW")
 
-	modcrt        = syscall.NewLazyDLL("msvcrt.dll")
-	procAccess    = modcrt.NewProc("_access")
-	procChmod     = modcrt.NewProc("_chmod")
-	procGmtime    = modcrt.NewProc("gmtime")
-	procGmtime32  = modcrt.NewProc("_gmtime32")
-	procGmtime64  = modcrt.NewProc("_gmtime64")
-	procStat64i32 = modcrt.NewProc("_stat64i32")
-	procStati64   = modcrt.NewProc("_stati64")
-	procStrftime  = modcrt.NewProc("strftime")
-	procStrtod    = modcrt.NewProc("strtod")
+	modcrt          = syscall.NewLazyDLL("msvcrt.dll")
+	procAccess      = modcrt.NewProc("_access")
+	procChmod       = modcrt.NewProc("_chmod")
+	procFindfirst32 = modcrt.NewProc("_findfirst32")
+	procFindnext32  = modcrt.NewProc("_findnext32")
+	procGmtime      = modcrt.NewProc("gmtime")
+	procGmtime32    = modcrt.NewProc("_gmtime32")
+	procGmtime64    = modcrt.NewProc("_gmtime64")
+	procStat64i32   = modcrt.NewProc("_stat64i32")
+	procStati64     = modcrt.NewProc("_stati64")
+	procStrftime    = modcrt.NewProc("strftime")
+	procStrtod      = modcrt.NewProc("strtod")
 )
 
 var (
@@ -6806,7 +6808,11 @@ func X_findnext32(t *TLS, handle types.Intptr_t, buffer uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v handle=%v buffer=%v, (%v:)", t, handle, buffer, origin(2))
 	}
-	panic(todo(""))
+	r0, _, err := syscall.SyscallN(procFindnext32.Addr(), uintptr(handle), buffer)
+	if err != 0 {
+		t.setErrno(err)
+	}
+	return int32(r0)
 }
 
 // intptr_t _findfirst32(
@@ -6819,7 +6825,11 @@ func X_findfirst32(t *TLS, filespec, fileinfo uintptr) types.Intptr_t {
 	if __ccgo_strace {
 		trc("t=%v fileinfo=%v, (%v:)", t, fileinfo, origin(2))
 	}
-	panic(todo(""))
+	r0, _, err := syscall.SyscallN(procFindfirst32.Addr(), filespec, fileinfo)
+	if err != 0 {
+		t.setErrno(err)
+	}
+	return types.Intptr_t(r0)
 }
 
 /*-
