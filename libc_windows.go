@@ -6787,17 +6787,10 @@ func X_stati64(t *TLS, path, buffer uintptr) int32 {
 	return int32(r0)
 }
 
-// int _fstati64(
-//
-//	int fd,
-//	struct _stati64 *buffer
-//
-// );
+
+// int _fstati64(int fd, struct _stati64 *buffer);
 func X_fstati64(t *TLS, fd int32, buffer uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v buffer=%v, (%v:)", t, fd, buffer, origin(2))
-	}
-	panic(todo(""))
+	return X_fstat64(t, fd, buffer)
 }
 
 // int _findnext32(
