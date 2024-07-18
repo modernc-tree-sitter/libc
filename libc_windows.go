@@ -227,8 +227,6 @@ var (
 	modcrt          = syscall.NewLazyDLL("msvcrt.dll")
 	procAccess      = modcrt.NewProc("_access")
 	procChmod       = modcrt.NewProc("_chmod")
-	procFindfirst32 = modcrt.NewProc("_findfirst32")
-	procFindnext32  = modcrt.NewProc("_findnext32")
 	procGmtime      = modcrt.NewProc("gmtime")
 	procGmtime32    = modcrt.NewProc("_gmtime32")
 	procGmtime64    = modcrt.NewProc("_gmtime64")
@@ -236,6 +234,10 @@ var (
 	procStati64     = modcrt.NewProc("_stati64")
 	procStrftime    = modcrt.NewProc("strftime")
 	procStrtod      = modcrt.NewProc("strtod")
+
+	moducrt = syscall.NewLazyDLL("ucrtbase.dll")
+	procFindfirst32 = moducrt.NewProc("_findfirst32")
+	procFindnext32  = moducrt.NewProc("_findnext32")
 )
 
 var (
