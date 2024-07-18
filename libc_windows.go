@@ -231,6 +231,7 @@ var (
 	procGmtime32  = modcrt.NewProc("_gmtime32")
 	procGmtime64  = modcrt.NewProc("_gmtime64")
 	procStat64i32 = modcrt.NewProc("_stat64i32")
+	procStati64   = modcrt.NewProc("_stati64")
 	procStrftime  = modcrt.NewProc("strftime")
 	procStrtod    = modcrt.NewProc("strtod")
 )
@@ -6773,9 +6774,13 @@ func X_commit(t *TLS, fd int32) int32 {
 // );
 func X_stati64(t *TLS, path, buffer uintptr) int32 {
 	if __ccgo_strace {
-		trc("t=%v buffer=%v, (%v:)", t, buffer, origin(2))
+		trc("t=%v path=%v buffer=%v, (%v:)", t, path, buffer, origin(2))
 	}
-	panic(todo(""))
+	r0, _, err := syscall.SyscallN(procStati64.Addr(), uintptr(path), uintptr(buffer))
+	if err != 0 {
+		t.setErrno(err)
+	}
+	return int32(r0)
 }
 
 // int _fstati64(
