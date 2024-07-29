@@ -224,18 +224,18 @@ var (
 	userenvapi                = syscall.NewLazyDLL("userenv.dll")
 	procGetProfilesDirectoryW = userenvapi.NewProc("GetProfilesDirectoryW")
 
-	modcrt          = syscall.NewLazyDLL("msvcrt.dll")
-	procAccess      = modcrt.NewProc("_access")
-	procChmod       = modcrt.NewProc("_chmod")
-	procGmtime      = modcrt.NewProc("gmtime")
-	procGmtime32    = modcrt.NewProc("_gmtime32")
-	procGmtime64    = modcrt.NewProc("_gmtime64")
-	procStat64i32   = modcrt.NewProc("_stat64i32")
-	procStati64     = modcrt.NewProc("_stati64")
-	procStrftime    = modcrt.NewProc("strftime")
-	procStrtod      = modcrt.NewProc("strtod")
+	modcrt        = syscall.NewLazyDLL("msvcrt.dll")
+	procAccess    = modcrt.NewProc("_access")
+	procChmod     = modcrt.NewProc("_chmod")
+	procGmtime    = modcrt.NewProc("gmtime")
+	procGmtime32  = modcrt.NewProc("_gmtime32")
+	procGmtime64  = modcrt.NewProc("_gmtime64")
+	procStat64i32 = modcrt.NewProc("_stat64i32")
+	procStati64   = modcrt.NewProc("_stati64")
+	procStrftime  = modcrt.NewProc("strftime")
+	procStrtod    = modcrt.NewProc("strtod")
 
-	moducrt = syscall.NewLazyDLL("ucrtbase.dll")
+	moducrt         = syscall.NewLazyDLL("ucrtbase.dll")
 	procFindfirst32 = moducrt.NewProc("_findfirst32")
 	procFindnext32  = moducrt.NewProc("_findnext32")
 )
@@ -3715,7 +3715,7 @@ func XGetFileAttributesA(t *TLS, lpFileName uintptr) uint32 {
 //	LPVOID                 lpFileInformation
 //
 // );
-func XGetFileAttributesExW(t *TLS, lpFileName uintptr, fInfoLevelId uint32, lpFileInformation uintptr) int32 {
+func XGetFileAttributesExW(t *TLS, lpFileName uintptr, fInfoLevelId int32, lpFileInformation uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v lpFileName=%v fInfoLevelId=%v lpFileInformation=%v, (%v:)", t, lpFileName, fInfoLevelId, lpFileInformation, origin(2))
 	}
@@ -6475,7 +6475,7 @@ func XGetAce(tls *TLS, _pAcl uintptr, _dwAceIndex uint32, _pAce uintptr) (r int3
 //	ACL_INFORMATION_CLASS dwAclInformationClass
 //
 // );
-func XGetAclInformation(t *TLS, pAcl, pAclInformation uintptr, nAclInformationLength, dwAclInformationClass uint32) int32 {
+func XGetAclInformation(t *TLS, pAcl, pAclInformation uintptr, nAclInformationLength uint32, dwAclInformationClass int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v pAclInformation=%v dwAclInformationClass=%v, (%v:)", t, pAclInformation, dwAclInformationClass, origin(2))
 	}
@@ -6667,7 +6667,7 @@ func XSetErrorMode(t *TLS, uMode uint32) int32 {
 //	PACL                 pSacl
 //
 // );
-func XSetNamedSecurityInfoA(t *TLS, pObjectName uintptr, ObjectType, SecurityInfo uint32, psidOwner, psidGroup, pDacl, pSacl uintptr) uint32 {
+func XSetNamedSecurityInfoA(t *TLS, pObjectName uintptr, ObjectType int32, SecurityInfo uint32, psidOwner, psidGroup, pDacl, pSacl uintptr) uint32 {
 	if __ccgo_strace {
 		trc("t=%v pObjectName=%v SecurityInfo=%v pSacl=%v, (%v:)", t, pObjectName, SecurityInfo, pSacl, origin(2))
 	}
@@ -6786,7 +6786,6 @@ func X_stati64(t *TLS, path, buffer uintptr) int32 {
 	}
 	return int32(r0)
 }
-
 
 // int _fstati64(int fd, struct _stati64 *buffer);
 func X_fstati64(t *TLS, fd int32, buffer uintptr) int32 {
@@ -7551,4 +7550,12 @@ func Xstrtod(t *TLS, s uintptr, p uintptr) float64 {
 		t.setErrno(err)
 	}
 	return math.Float64frombits(uint64(r0))
+}
+
+// int vsnprintf(char *str, size_t size, const char *format, va_list ap);
+func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int32 {
+	if __ccgo_strace {
+		trc("t=%v str=%v size=%v ap=%v, (%v:)", t, str, size, ap, origin(2))
+	}
+	return Xvsnprintf(t, str, size, format, ap)
 }
