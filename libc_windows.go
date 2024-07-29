@@ -7582,7 +7582,7 @@ func Xwcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
 }
 
 // wchar_t *wcsrchr(const wchar_t *str, wchar_t c);
-func Xwcsrchr(t *TLS, strDest, str uintptr, c types.Wchar_t) uintptr {
+func Xwcsrchr(t *TLS, str uintptr, c types.Wchar_t) uintptr {
 	r0, _, err := syscall.SyscallN(procWcsrchr.Addr(), str, uintptr(c))
 	if err != 0 {
 		t.setErrno(err)
