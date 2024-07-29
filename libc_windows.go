@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"os/user"
 	"path/filepath"
+	"runtime/debug"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -7558,4 +7559,13 @@ func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int
 		trc("t=%v str=%v size=%v ap=%v, (%v:)", t, str, size, ap, origin(2))
 	}
 	return Xvsnprintf(t, str, size, format, ap)
+}
+
+func X__ccgo_SyscallFP() {
+	s := fmt.Sprintf("%s\nTODO syscall: function pointer", debug.Stack())
+	panic(s)
+}
+
+func CreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t, lpStartAddress, lpParameter uintptr, dwCreationFlags uint32, lpThreadId uintptr) uintptr {
+	return XCreateThread(t, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
 }
