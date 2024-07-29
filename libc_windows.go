@@ -235,6 +235,7 @@ var (
 	procStat64i32 = modcrt.NewProc("_stat64i32")
 	procStati64   = modcrt.NewProc("_stati64")
 	procStrftime  = modcrt.NewProc("strftime")
+	procStrnicmp  = modcrt.NewProc("strnicmp")
 	procStrtod    = modcrt.NewProc("strtod")
 	procTime64    = modcrt.NewProc("time64")
 	procWcsncpy   = modcrt.NewProc("wcsncpy")
@@ -3044,10 +3045,6 @@ func XBuildCommDCBW(t *TLS, _ ...interface{}) int32 {
 }
 
 func XSetCommState(t *TLS, _ ...interface{}) int32 {
-	panic(todo(""))
-}
-
-func X_strnicmp(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
@@ -7616,4 +7613,18 @@ func X_time64(tls *TLS, __Time uintptr) (r int64) {
 		tls.setErrno(int32(err))
 	}
 	return int64(r0)
+}
+
+
+// __attribute__ ((__dllimport__)) int __attribute__((__cdecl__)) _strnicmp(const char *_Str1,const char *_Str2,size_t _MaxCount);
+func X_strnicmp(tls *TLS, __Str1 uintptr, __Str2 uintptr, __MaxCount types.Size_t) (r int32) {
+	if __ccgo_strace {
+		trc("_Str1=%+v _Str2=%+v _MaxCount=%+v", __Str1, __Str2, __MaxCount)
+		defer func() { trc(`X_strnicmp->%+v`, r) }()
+	}
+	r0, _, err := syscall.SyscallN(procStrnicmp.Addr(), __Str1, __Str2, uintptr(__MaxCount))
+	if err != 0 {
+		tls.setErrno(int32(err))
+	}
+	return int32(r0)
 }
