@@ -235,6 +235,7 @@ var (
 	procStati64   = modcrt.NewProc("_stati64")
 	procStrftime  = modcrt.NewProc("strftime")
 	procStrtod    = modcrt.NewProc("strtod")
+	procWcsncpy   = modcrt.NewProc("wcsncpy")
 
 	moducrt         = syscall.NewLazyDLL("ucrtbase.dll")
 	procFindfirst32 = moducrt.NewProc("_findfirst32")
@@ -7568,4 +7569,13 @@ func X__ccgo_SyscallFP() {
 
 func CreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t, lpStartAddress, lpParameter uintptr, dwCreationFlags uint32, lpThreadId uintptr) uintptr {
 	return XCreateThread(t, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
+}
+
+// wchar_t *wcsncpy(wchar_t *strDest, const wchar_t *strSource, size_t count);
+func wcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
+	r0, _, err := syscall.SyscallN(procWcsncpy.Addr(), strDest, strSource, uintptr(count))
+	if err != 0 {
+		t.setErrno(err)
+	}
+	return r0
 }
