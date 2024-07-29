@@ -228,6 +228,7 @@ var (
 	modcrt        = syscall.NewLazyDLL("msvcrt.dll")
 	procAccess    = modcrt.NewProc("_access")
 	procChmod     = modcrt.NewProc("_chmod")
+	procCtime64   = modcrt.NewProc("ctime64")
 	procGmtime    = modcrt.NewProc("gmtime")
 	procGmtime32  = modcrt.NewProc("_gmtime32")
 	procGmtime64  = modcrt.NewProc("_gmtime64")
@@ -235,6 +236,7 @@ var (
 	procStati64   = modcrt.NewProc("_stati64")
 	procStrftime  = modcrt.NewProc("strftime")
 	procStrtod    = modcrt.NewProc("strtod")
+	procTime64    = modcrt.NewProc("time64")
 	procWcsncpy   = modcrt.NewProc("wcsncpy")
 	procWcsrchr   = modcrt.NewProc("wcsrchr")
 
@@ -7588,4 +7590,30 @@ func Xwcsrchr(t *TLS, str uintptr, c types.Wchar_t) uintptr {
 		t.setErrno(err)
 	}
 	return r0
+}
+
+// __attribute__ ((__dllimport__)) char * __attribute__((__cdecl__)) _ctime64(const __time64_t *_Time);
+func X_ctime64(tls *TLS, __Time uintptr) (r uintptr) {
+	if __ccgo_strace {
+		trc("_Time=%+v", __Time)
+		defer func() { trc(`X_ctime64->%+v`, r) }()
+	}
+	r0, _, err := syscall.SyscallN(procCtime64.Addr(), __Time)
+	if err != 0 {
+		tls.setErrno(int32(err))
+	}
+	return uintptr(r0)
+}
+
+// __attribute__ ((__dllimport__)) __time64_t __attribute__((__cdecl__)) _time64(__time64_t *_Time);
+func X_time64(tls *TLS, __Time uintptr) (r int64) {
+	if __ccgo_strace {
+		trc("_Time=%+v", __Time)
+		defer func() { trc(`X_time64->%+v`, r) }()
+	}
+	r0, _, err := syscall.SyscallN(procTime64.Addr(), __Time)
+	if err != 0 {
+		tls.setErrno(int32(err))
+	}
+	return int64(r0)
 }
