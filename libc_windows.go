@@ -236,6 +236,7 @@ var (
 	procStrftime  = modcrt.NewProc("strftime")
 	procStrtod    = modcrt.NewProc("strtod")
 	procWcsncpy   = modcrt.NewProc("wcsncpy")
+	procWcsrchr   = modcrt.NewProc("wcsrchr")
 
 	moducrt         = syscall.NewLazyDLL("ucrtbase.dll")
 	procFindfirst32 = moducrt.NewProc("_findfirst32")
@@ -7572,8 +7573,17 @@ func CreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t, 
 }
 
 // wchar_t *wcsncpy(wchar_t *strDest, const wchar_t *strSource, size_t count);
-func wcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
+func Xwcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
 	r0, _, err := syscall.SyscallN(procWcsncpy.Addr(), strDest, strSource, uintptr(count))
+	if err != 0 {
+		t.setErrno(err)
+	}
+	return r0
+}
+
+// wchar_t *wcsrchr(const wchar_t *str, wchar_t c);
+func Xwcsrchr(t *TLS, strDest, str uintptr, c types.Wchar_t) uintptr {
+	r0, _, err := syscall.SyscallN(procWcsrchr.Addr(), str, uintptr(c))
 	if err != 0 {
 		t.setErrno(err)
 	}
