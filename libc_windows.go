@@ -235,7 +235,7 @@ var (
 	procStat64i32 = modcrt.NewProc("_stat64i32")
 	procStati64   = modcrt.NewProc("_stati64")
 	procStrftime  = modcrt.NewProc("strftime")
-	procStrnicmp  = modcrt.NewProc("strnicmp")
+	procStrnicmp  = modcrt.NewProc("_strnicmp")
 	procStrtod    = modcrt.NewProc("strtod")
 	procTime64    = modcrt.NewProc("time64")
 	procWcsncpy   = modcrt.NewProc("wcsncpy")
@@ -2343,7 +2343,7 @@ func XIsDebuggerPresent(t *TLS) int32 {
 	if __ccgo_strace {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
-	panic(todo(""))
+	return 0
 }
 
 func XExitProcess(t *TLS, _ ...interface{}) int32 {
