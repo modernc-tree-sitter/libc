@@ -191,6 +191,9 @@ func main() {
 		cflags := []string{
 			"-DNDEBUG",
 		}
+		if s := cc.LongDouble64Flag(goos, goarch); s != "" {
+			cflags = append(cflags, s)
+		}
 		util.MustShell(true, nil, "sh", "-c", fmt.Sprintf("CFLAGS='%s' ./configure "+
 			"--disable-static "+
 			"--disable-optimize "+
