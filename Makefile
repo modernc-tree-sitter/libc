@@ -7,7 +7,7 @@
 SHELL=/bin/bash -o pipefail	
 
 DIR = /tmp/libc
-TAR = musl-dd1e63c3638d5f9afb857fccf6ce1415ca5f1b8b.tar.gz
+TAR = musl-7ada6dde6f9dc6a2836c3d92c2f762d35fd229e0.tar.gz
 URL = https://git.musl-libc.org/cgit/musl/snapshot/$(TAR)
 
 all: editor
