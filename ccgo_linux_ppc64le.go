@@ -6075,8 +6075,8 @@ const SI_SIGIO = -5
 const SI_TIMER = -2
 const SI_TKILL = -6
 const SI_USER = 0
-const SO_RCVTIMEO_OLD = 18
-const SO_SNDTIMEO_OLD = 19
+const SO_RCVTIMEO_OLD = 20
+const SO_SNDTIMEO_OLD = 21
 const SO_TIMESTAMPING_OLD = 37
 const SO_TIMESTAMPNS_OLD = 35
 const SO_TIMESTAMP_OLD = 29
@@ -7592,14 +7592,14 @@ func Xsysconf(tls *TLS, name int32) (r int64) {
 	}
 	bp := tls.Alloc(512)
 	defer tls.Free(512)
-	var cnt, i, v4 int32
-	var mem, v1, v7 uint64
-	var r0, r3, r4, r5, val int64
-	var p6 uintptr
+	var cnt, i, v3 int32
+	var mem, v1, v6 uint64
+	var val int64
+	var p5 uintptr
 	var _ /* lim at bp+0 */ Trlimit
 	var _ /* set at bp+16 */ [128]uint8
 	var _ /* si at bp+144 */ Tsysinfo
-	_, _, _, _, _, _, _, _, _, _, _, _ = cnt, i, mem, r0, r3, r4, r5, val, v1, v4, v7, p6
+	_, _, _, _, _, _, _, _ = cnt, i, mem, val, v1, v3, v6, p5
 	if uint64(name) >= Uint64FromInt64(502)/Uint64FromInt64(2) || !(_values1[name] != 0) {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 		return int64(-int32(1))
@@ -7640,22 +7640,10 @@ func Xsysconf(tls *TLS, name int32) (r int64) {
 		*(*[128]uint8)(unsafe.Pointer(bp + 16)) = [128]uint8{
 			0: uint8(1),
 		}
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_sched_getaffinity)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppUint64FromInt64(128)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64(cgbp+16)));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+68)
-		_ = r3
-		goto _2
-	_2:
-		;
-		v4 = Int32FromInt32(0)
-		cnt = v4
-		i = v4
+		X__syscall3(tls, int64(SYS_sched_getaffinity), int64(Int32FromInt32(0)), int64(Uint64FromInt64(128)), int64(bp+16))
+		v3 = Int32FromInt32(0)
+		cnt = v3
+		i = v3
 		for {
 			if !(uint64(i) < uint64(128)) {
 				break
@@ -7664,15 +7652,15 @@ func Xsysconf(tls *TLS, name int32) (r int64) {
 				if !((*(*[128]uint8)(unsafe.Pointer(bp + 16)))[i] != 0) {
 					break
 				}
-				goto _5
-			_5:
+				goto _4
+			_4:
 				;
-				p6 = bp + 16 + uintptr(i)
-				*(*uint8)(unsafe.Pointer(p6)) = uint8(int32(*(*uint8)(unsafe.Pointer(p6))) & (int32((*(*[128]uint8)(unsafe.Pointer(bp + 16)))[i]) - Int32FromInt32(1)))
+				p5 = bp + 16 + uintptr(i)
+				*(*uint8)(unsafe.Pointer(p5)) = uint8(int32(*(*uint8)(unsafe.Pointer(p5))) & (int32((*(*[128]uint8)(unsafe.Pointer(bp + 16)))[i]) - Int32FromInt32(1)))
 				cnt++
 			}
-			goto _3
-		_3:
+			goto _2
+		_2:
 			;
 			i++
 		}
@@ -7692,11 +7680,11 @@ func Xsysconf(tls *TLS, name int32) (r int64) {
 		mem *= uint64((*(*Tsysinfo)(unsafe.Pointer(bp + 144))).Fmem_unit)
 		mem /= X__libc.Fpage_size
 		if mem > uint64(0x7fffffffffffffff) {
-			v7 = uint64(0x7fffffffffffffff)
+			v6 = uint64(0x7fffffffffffffff)
 		} else {
-			v7 = mem
+			v6 = mem
 		}
-		return int64(v7)
+		return int64(v6)
 	case (-Int32FromInt32(256) | Int32FromInt32(12)) & Int32FromInt32(255):
 		fallthrough
 	case (-Int32FromInt32(256) | Int32FromInt32(13)) & Int32FromInt32(255):
@@ -9582,8 +9570,8 @@ func X__crypt_blowfish(tls *TLS, key uintptr, setting uintptr, output uintptr) (
 	var _ /* ye at bp+240 */ TBF_key
 	var _ /* yi at bp+312 */ TBF_key
 	_, _, _, _, _, _, _, _ = flags, k, ok, p, retval, test_hash, test_key, test_setting
-	test_key = __ccgo_ts + 76
-	test_setting = __ccgo_ts + 86
+	test_key = __ccgo_ts + 18
+	test_setting = __ccgo_ts + 28
 	test_hash = uintptr(unsafe.Pointer(&_test_hashes))
 	/* Hash the supplied password */
 	retval = _BF_crypt(tls, key, setting, output, uint32(16))
@@ -9604,7 +9592,7 @@ func X__crypt_blowfish(tls *TLS, key uintptr, setting uintptr, output uintptr) (
 	*(*uint8)(unsafe.Pointer(bp + 30 + uintptr(Uint64FromInt64(63)-Uint64FromInt32(1)))) = uint8(0)
 	p = _BF_crypt(tls, test_key, bp, bp+30, uint32(1))
 	ok = BoolInt32(p == bp+30 && !(Xmemcmp(tls, p, bp, uint64(Int32FromInt32(7)+Int32FromInt32(22))) != 0) && !(Xmemcmp(tls, p+uintptr(Int32FromInt32(7)+Int32FromInt32(22)), test_hash, uint64(Int32FromInt32(31)+Int32FromInt32(1)+Int32FromInt32(1)+Int32FromInt32(1))) != 0))
-	k = __ccgo_ts + 116
+	k = __ccgo_ts + 58
 	_BF_set_key(tls, k, bp+96, bp+168, uint8(2))              /* $2a$ */
 	_BF_set_key(tls, k, bp+240, bp+312, uint8(4))             /* $2y$ */
 	*(*TBF_word)(unsafe.Pointer(bp + 168)) ^= uint32(0x10000) /* undo the safety (for comparison) */
@@ -9612,7 +9600,7 @@ func X__crypt_blowfish(tls *TLS, key uintptr, setting uintptr, output uintptr) (
 	if ok != 0 && retval != 0 {
 		return retval
 	}
-	return __ccgo_ts + 128
+	return __ccgo_ts + 70
 }
 
 var _test_hashes = [2][34]uint8{
@@ -11815,12 +11803,12 @@ func X__crypt_des(tls *TLS, key uintptr, setting uintptr, output uintptr) (r uin
 	var p, retval, test_hash, test_key, test_setting, v1 uintptr
 	var _ /* test_buf at bp+0 */ [21]uint8
 	_, _, _, _, _, _ = p, retval, test_hash, test_key, test_setting, v1
-	test_key = __ccgo_ts + 130
-	test_setting = __ccgo_ts + 151
-	test_hash = __ccgo_ts + 161
+	test_key = __ccgo_ts + 72
+	test_setting = __ccgo_ts + 93
+	test_hash = __ccgo_ts + 103
 	if int32(*(*uint8)(unsafe.Pointer(setting))) != int32('_') {
-		test_setting = __ccgo_ts + 182
-		test_hash = __ccgo_ts + 185
+		test_setting = __ccgo_ts + 124
+		test_hash = __ccgo_ts + 127
 	}
 	/*
 	 * Hash the supplied password.
@@ -11838,9 +11826,9 @@ func X__crypt_des(tls *TLS, key uintptr, setting uintptr, output uintptr) (r uin
 		return retval
 	}
 	if int32(*(*uint8)(unsafe.Pointer(setting))) == int32('*') {
-		v1 = __ccgo_ts + 199
+		v1 = __ccgo_ts + 141
 	} else {
-		v1 = __ccgo_ts + 128
+		v1 = __ccgo_ts + 70
 	}
 	return v1
 }
@@ -12160,7 +12148,7 @@ func _md5crypt(tls *TLS, key uintptr, setting uintptr, output uintptr) (r uintpt
 		return uintptr(0)
 	}
 	/* setting: $1$salt$ (closing $ is optional) */
-	if Xstrncmp(tls, setting, __ccgo_ts+201, uint64(3)) != 0 {
+	if Xstrncmp(tls, setting, __ccgo_ts+143, uint64(3)) != 0 {
 		return uintptr(0)
 	}
 	salt = setting + uintptr(3)
@@ -12306,7 +12294,7 @@ func X__crypt_md5(tls *TLS, key uintptr, setting uintptr, output uintptr) (r uin
 	/* self test and stack cleanup */
 	q = _md5crypt(tls, uintptr(unsafe.Pointer(&_testkey)), uintptr(unsafe.Pointer(&_testsetting)), bp)
 	if !(p != 0) || q != bp || Xmemcmp(tls, bp, uintptr(unsafe.Pointer(&_testhash)), uint64(35)) != 0 {
-		return __ccgo_ts + 128
+		return __ccgo_ts + 70
 	}
 	return p
 }
@@ -12660,12 +12648,12 @@ func _sha256crypt(tls *TLS, key uintptr, setting uintptr, output uintptr) (r1 ui
 		return uintptr(0)
 	}
 	/* setting: $5$rounds=n$salt$ (rounds=n$ and closing $ are optional) */
-	if Xstrncmp(tls, setting, __ccgo_ts+205, uint64(3)) != 0 {
+	if Xstrncmp(tls, setting, __ccgo_ts+147, uint64(3)) != 0 {
 		return uintptr(0)
 	}
 	salt = setting + uintptr(3)
 	r = uint32(ROUNDS_DEFAULT)
-	if Xstrncmp(tls, salt, __ccgo_ts+209, Uint64FromInt64(8)-Uint64FromInt32(1)) == 0 {
+	if Xstrncmp(tls, salt, __ccgo_ts+151, Uint64FromInt64(8)-Uint64FromInt32(1)) == 0 {
 		/*
 		 * this is a deviation from the reference:
 		 * bad rounds setting is rejected if it is
@@ -12697,7 +12685,7 @@ func _sha256crypt(tls *TLS, key uintptr, setting uintptr, output uintptr) (r1 ui
 			}
 		}
 		/* needed when rounds is zero prefixed or out of bounds */
-		Xsprintf(tls, bp+200, __ccgo_ts+217, VaList(bp+240, r))
+		Xsprintf(tls, bp+200, __ccgo_ts+159, VaList(bp+240, r))
 	}
 	i = uint32(0)
 	for {
@@ -12800,7 +12788,7 @@ func _sha256crypt(tls *TLS, key uintptr, setting uintptr, output uintptr) (r1 ui
 	}
 	/* output is $5$rounds=n$salt$hash */
 	p = output
-	p += uintptr(Xsprintf(tls, p, __ccgo_ts+228, VaList(bp+240, bp+200, slen, salt)))
+	p += uintptr(Xsprintf(tls, p, __ccgo_ts+170, VaList(bp+240, bp+200, slen, salt)))
 	i = uint32(0)
 	for {
 		if !(i < uint32(10)) {
@@ -12883,7 +12871,7 @@ func X__crypt_sha256(tls *TLS, key uintptr, setting uintptr, output uintptr) (r 
 	/* self test and stack cleanup */
 	q = _sha256crypt(tls, uintptr(unsafe.Pointer(&_testkey1)), uintptr(unsafe.Pointer(&_testsetting1)), bp)
 	if !(p != 0) || q != bp || Xmemcmp(tls, bp, uintptr(unsafe.Pointer(&_testhash1)), uint64(73)) != 0 {
-		return __ccgo_ts + 128
+		return __ccgo_ts + 70
 	}
 	return p
 }
@@ -13229,12 +13217,12 @@ func _sha512crypt(tls *TLS, key uintptr, setting uintptr, output uintptr) (r1 ui
 	}
 	klen = i
 	/* setting: $6$rounds=n$salt$ (rounds=n$ and closing $ are optional) */
-	if Xstrncmp(tls, setting, __ccgo_ts+239, uint64(3)) != 0 {
+	if Xstrncmp(tls, setting, __ccgo_ts+181, uint64(3)) != 0 {
 		return uintptr(0)
 	}
 	salt = setting + uintptr(3)
 	r = uint32(ROUNDS_DEFAULT)
-	if Xstrncmp(tls, salt, __ccgo_ts+209, Uint64FromInt64(8)-Uint64FromInt32(1)) == 0 {
+	if Xstrncmp(tls, salt, __ccgo_ts+151, Uint64FromInt64(8)-Uint64FromInt32(1)) == 0 {
 		/*
 		 * this is a deviation from the reference:
 		 * bad rounds setting is rejected if it is
@@ -13266,7 +13254,7 @@ func _sha512crypt(tls *TLS, key uintptr, setting uintptr, output uintptr) (r1 ui
 			}
 		}
 		/* needed when rounds is zero prefixed or out of bounds */
-		Xsprintf(tls, bp+392, __ccgo_ts+217, VaList(bp+432, r))
+		Xsprintf(tls, bp+392, __ccgo_ts+159, VaList(bp+432, r))
 	}
 	i = uint32(0)
 	for {
@@ -13369,7 +13357,7 @@ func _sha512crypt(tls *TLS, key uintptr, setting uintptr, output uintptr) (r1 ui
 	}
 	/* output is $6$rounds=n$salt$hash */
 	p = output
-	p += uintptr(Xsprintf(tls, p, __ccgo_ts+243, VaList(bp+432, bp+392, slen, salt)))
+	p += uintptr(Xsprintf(tls, p, __ccgo_ts+185, VaList(bp+432, bp+392, slen, salt)))
 	i = uint32(0)
 	for {
 		if !(i < uint32(21)) {
@@ -13507,7 +13495,7 @@ func X__crypt_sha512(tls *TLS, key uintptr, setting uintptr, output uintptr) (r 
 	/* self test and stack cleanup */
 	q = _sha512crypt(tls, uintptr(unsafe.Pointer(&_testkey2)), uintptr(unsafe.Pointer(&_testsetting2)), bp)
 	if !(p != 0) || q != bp || Xmemcmp(tls, bp, uintptr(unsafe.Pointer(&_testhash2)), uint64(116)) != 0 {
-		return __ccgo_ts + 128
+		return __ccgo_ts + 70
 	}
 	return p
 }
@@ -14093,17 +14081,9 @@ func X__ctype_get_mb_cur_max(tls *TLS) (r Tsize_t) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v2 Tuintptr_t
 	var v1 int32
-	_, _, _ = tp, v1, v2
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+269)
-	v2 = tp
-	goto _3
-_3:
-	if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(uintptr(v2))).Flocale)) != 0) {
+	_ = v1
+	if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)) != 0) {
 		v1 = int32(4)
 	} else {
 		v1 = int32(1)
@@ -22537,10 +22517,10 @@ func Xwctrans(tls *TLS, class uintptr) (r Twctrans_t) {
 		trc("tls=%v class=%v, (%v:)", tls, class, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	if !(Xstrcmp(tls, class, __ccgo_ts+292) != 0) {
+	if !(Xstrcmp(tls, class, __ccgo_ts+196) != 0) {
 		return UintptrFromInt32(1)
 	}
-	if !(Xstrcmp(tls, class, __ccgo_ts+300) != 0) {
+	if !(Xstrcmp(tls, class, __ccgo_ts+204) != 0) {
 		return UintptrFromInt32(2)
 	}
 	return uintptr(0)
@@ -24986,8 +24966,7 @@ func Xopendir(tls *TLS, name uintptr) (r uintptr) {
 	}
 	var dir, v2 uintptr
 	var fd, v1 int32
-	var r0, r3 int64
-	_, _, _, _, _, _ = dir, fd, r0, r3, v1, v2
+	_, _, _, _ = dir, fd, v1, v2
 	v1 = Xopen(tls, name, Int32FromInt32(O_RDONLY)|Int32FromInt32(O_DIRECTORY)|Int32FromInt32(O_CLOEXEC), 0)
 	fd = v1
 	if v1 < 0 {
@@ -24996,17 +24975,7 @@ func Xopendir(tls *TLS, name uintptr) (r uintptr) {
 	v2 = Xcalloc(tls, uint64(1), uint64(2072))
 	dir = v2
 	if !(v2 != 0) {
-		//TODO "r0" // syscall_arch.h:16:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3)
-		// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+308)
-		_ = r3
-		goto _3
-	_3:
-		;
+		X__syscall1(tls, int64(SYS_close), int64(fd))
 		return uintptr(0)
 	}
 	(*TDIR)(unsafe.Pointer(dir)).Ffd = fd
@@ -25024,21 +24993,9 @@ func Xreaddir(tls *TLS, dir uintptr) (r uintptr) {
 	}
 	var de uintptr
 	var len1 int32
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _, _, _ = de, len1, r0, r3, r4, r5, v1
-	if (*TDIR)(unsafe.Pointer(dir)).Fbuf_pos >= (*TDIR)(unsafe.Pointer(dir)).Fbuf_end { //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getdents64)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64(((*tnDIR)(iqunsafe.ppPointer((aadir))).fdfd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((((aadir))+24))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppUint64FromInt64(2048)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+316)
-		v1 = r3
-		goto _2
-	_2:
-		len1 = int32(v1)
+	_, _ = de, len1
+	if (*TDIR)(unsafe.Pointer(dir)).Fbuf_pos >= (*TDIR)(unsafe.Pointer(dir)).Fbuf_end {
+		len1 = int32(X__syscall3(tls, int64(SYS_getdents64), int64((*TDIR)(unsafe.Pointer(dir)).Ffd), int64(dir+24), int64(Uint64FromInt64(2048))))
 		if len1 <= 0 {
 			if len1 < 0 && len1 != -int32(ENOENT) {
 				*(*int32)(unsafe.Pointer(X__errno_location(tls))) = -len1
@@ -25204,15 +25161,8 @@ func X__reset_tls(tls *TLS) {
 	var i, n Tsize_t
 	var mem, p uintptr
 	var self Tpthread_t
-	var tp, v1 Tuintptr_t
-	_, _, _, _, _, _, _ = i, mem, n, p, self, tp, v1 //TODO "tp" // pthread_arch.h:3:21:
-	panic(0)                                         // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+324)
-	v1 = tp
-	goto _2
-_2:
-	self = uintptr(v1)
+	_, _, _, _, _ = i, mem, n, p, self
+	self = ___get_tp(tls)
 	n = *(*Tuintptr_t)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(self)).Fdtv))
 	if n != 0 {
 		p = X__libc.Ftls_head
@@ -25224,8 +25174,8 @@ _2:
 			mem = uintptr(*(*Tuintptr_t)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(self)).Fdtv + uintptr(i)*8)) - Uint64FromInt32(DTP_OFFSET))
 			Xmemcpy(tls, mem, (*Ttls_module)(unsafe.Pointer(p)).Fimage, (*Ttls_module)(unsafe.Pointer(p)).Flen1)
 			Xmemset(tls, mem+uintptr((*Ttls_module)(unsafe.Pointer(p)).Flen1), 0, (*Ttls_module)(unsafe.Pointer(p)).Fsize-(*Ttls_module)(unsafe.Pointer(p)).Flen1)
-			goto _3
-		_3:
+			goto _1
+		_1:
 			;
 			i++
 			p = (*Ttls_module)(unsafe.Pointer(p)).Fnext
@@ -25237,8 +25187,6 @@ func X__init_ssp(tls *TLS, entropy uintptr) {
 	if __ccgo_strace {
 		trc("tls=%v entropy=%v, (%v:)", tls, entropy, origin(2))
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
 	if entropy != 0 {
 		Xmemcpy(tls, uintptr(unsafe.Pointer(&X__stack_chk_guard)), entropy, uint64(8))
 	} else {
@@ -25250,14 +25198,7 @@ func X__init_ssp(tls *TLS, entropy uintptr) {
 	 * still be detected. Endianness is taken care of
 	 * automatically. */
 	*(*uint8)(unsafe.Pointer(uintptr(unsafe.Pointer(&X__stack_chk_guard)) + 1)) = uint8(0)
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+336)
-	v1 = tp
-	goto _2
-_2:
-	(*t__pthread)(unsafe.Pointer(uintptr(v1))).Fcanary = X__stack_chk_guard
+	(*t__pthread)(unsafe.Pointer(___get_tp(tls))).Fcanary = X__stack_chk_guard
 }
 
 func X__stack_chk_fail(tls *TLS) {
@@ -25265,7 +25206,7 @@ func X__stack_chk_fail(tls *TLS) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 	}
 	// __asm__ __volatile__ (".long 0");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 54, __ccgo_ts+361)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 54, __ccgo_ts+261)
 }
 
 func X__stack_chk_fail_local(tls *TLS) {
@@ -25867,16 +25808,7 @@ func Xstrerror(tls *TLS, e int32) (r uintptr) {
 		trc("tls=%v e=%v, (%v:)", tls, e, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+378)
-	v1 = tp
-	goto _2
-_2:
-	return X__strerror_l(tls, e, (*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale)
+	return X__strerror_l(tls, e, (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)
 }
 
 func Xstrerror_l(tls *TLS, e int32, loc Tlocale_t) (r uintptr) {
@@ -25891,32 +25823,11 @@ func X_Exit(tls *TLS, ec int32) {
 	if __ccgo_strace {
 		trc("tls=%v ec=%v, (%v:)", tls, ec, origin(2))
 	}
-	var r0, r3 int64
-	_, _ = r0, r3
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_exit_group)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaec))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+387)
-	_ = r3
-	goto _1
-_1:
-	;
-	for { //TODO "r0" // syscall_arch.h:16:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_exit)));//TODO "r3" // syscall_arch.h:17:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aaec))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3)
-		// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+387)
-		_ = r3
-		goto _3
-	_3:
-		;
-		goto _2
-	_2:
+	X__syscall1(tls, int64(SYS_exit_group), int64(ec))
+	for {
+		X__syscall1(tls, int64(SYS_exit), int64(ec))
+		goto _1
+	_1:
 	}
 }
 
@@ -25926,7 +25837,7 @@ func X__assert_fail(tls *TLS, expr uintptr, file uintptr, line int32, func1 uint
 	}
 	bp := tls.Alloc(48)
 	defer tls.Free(48)
-	Xfprintf(tls, uintptr(unsafe.Pointer(&X__stderr_FILE)), __ccgo_ts+393, VaList(bp+8, expr, file, func1, line))
+	Xfprintf(tls, uintptr(unsafe.Pointer(&X__stderr_FILE)), __ccgo_ts+278, VaList(bp+8, expr, file, func1, line))
 	Xabort(tls)
 }
 
@@ -26004,10 +25915,9 @@ func Xfcntl(tls *TLS, fd int32, cmd int32, va uintptr) (r int32) {
 	defer tls.Free(16)
 	var ap Tva_list
 	var arg uint64
-	var r0, r01, r3, r31, r4, r5, v1, v12, v15, v17, v3, v6, v9 int64
-	var ret, ret1, v5 int32
+	var ret, ret1, v1 int32
 	var _ /* ex at bp+0 */ Tf_owner_ex
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = ap, arg, r0, r01, r3, r31, r4, r5, ret, ret1, v1, v12, v15, v17, v3, v5, v6, v9
+	_, _, _, _, _ = ap, arg, ret, ret1, v1
 	ap = va
 	arg = VaUint64(&ap)
 	_ = ap
@@ -26017,125 +25927,39 @@ func Xfcntl(tls *TLS, fd int32, cmd int32, va uintptr) (r int32) {
 	if cmd == int32(F_SETLKW) {
 		return int32(X__syscall_ret(tls, uint64(___syscall_cp(tls, int64(SYS_fcntl), int64(fd), int64(cmd), int64(uintptr(arg)), 0, 0, 0))))
 	}
-	if cmd == int32(F_GETOWN) { //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_GETOWN_EX)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64(cgbp)));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+428)
-		v1 = r31
-		goto _2
-	_2:
-		ret = int32(v1)
-		if ret == -int32(EINVAL) { //TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((aacmd))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppuintptr((aaarg))))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+428)
-			v3 = r31
-			goto _4
-		_4:
-			return int32(v3)
+	if cmd == int32(F_GETOWN) {
+		ret = int32(X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_GETOWN_EX)), int64(bp)))
+		if ret == -int32(EINVAL) {
+			return int32(X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(cmd), int64(uintptr(arg))))
 		}
 		if ret != 0 {
 			return int32(X__syscall_ret(tls, uint64(ret)))
 		}
 		if (*(*Tf_owner_ex)(unsafe.Pointer(bp))).Ftype1 == int32(F_OWNER_PGRP) {
-			v5 = -(*(*Tf_owner_ex)(unsafe.Pointer(bp))).Fpid
+			v1 = -(*(*Tf_owner_ex)(unsafe.Pointer(bp))).Fpid
 		} else {
-			v5 = (*(*Tf_owner_ex)(unsafe.Pointer(bp))).Fpid
+			v1 = (*(*Tf_owner_ex)(unsafe.Pointer(bp))).Fpid
 		}
-		return v5
+		return v1
 	}
-	if cmd == int32(F_DUPFD_CLOEXEC) { //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_DUPFD_CLOEXEC)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((aaarg))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+428)
-		v6 = r31
-		goto _7
-	_7:
-		ret1 = int32(v6)
+	if cmd == int32(F_DUPFD_CLOEXEC) {
+		ret1 = int32(X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_DUPFD_CLOEXEC)), int64(arg)))
 		if ret1 != -int32(EINVAL) {
 			if ret1 >= 0 {
-				//TODO "r0" // syscall_arch.h:37:16:
-				panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-				panic(0) // assembler statements not supported  aar31 = ((ppint64((aaret1))));//TODO "r4" // syscall_arch.h:39:16:
-				panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-				panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-				// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-				// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-				// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+428)
-				_ = r31
-				goto _8
-			_8:
+				X__syscall3(tls, int64(SYS_fcntl), int64(ret1), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 			}
 			return int32(X__syscall_ret(tls, uint64(ret1)))
 		}
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_DUPFD_CLOEXEC)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(0)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+428)
-		v9 = r31
-		goto _10
-	_10:
-		ret1 = int32(v9)
+		ret1 = int32(X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_DUPFD_CLOEXEC)), int64(Int32FromInt32(0))))
 		if ret1 != -int32(EINVAL) {
-			if ret1 >= 0 { //TODO "r0" // syscall_arch.h:16:16:
-				panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-				panic(0) // assembler statements not supported  aar3 = ((ppint64((aaret1))));
-				// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-				// : "+r"(r0), "+r"(r3)
-				// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+428)
-				_ = r3
-				goto _11
-			_11:
+			if ret1 >= 0 {
+				X__syscall1(tls, int64(SYS_close), int64(ret1))
 			}
 			return int32(X__syscall_ret(tls, uint64(-Int32FromInt32(EINVAL))))
 		}
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_DUPFD)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((aaarg))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+428)
-		v12 = r31
-		goto _13
-	_13:
-		ret1 = int32(v12)
-		if ret1 >= 0 { //TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((aaret1))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+428)
-			_ = r31
-			goto _14
-		_14:
+		ret1 = int32(X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_DUPFD)), int64(arg)))
+		if ret1 >= 0 {
+			X__syscall3(tls, int64(SYS_fcntl), int64(ret1), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 		}
 		return int32(X__syscall_ret(tls, uint64(ret1)))
 	}
@@ -26147,33 +25971,9 @@ func Xfcntl(tls *TLS, fd int32, cmd int32, va uintptr) (r int32) {
 	case int32(F_GETOWN_EX):
 		fallthrough
 	case int32(F_SETOWN_EX):
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((aacmd))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppuintptr((aaarg))))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+428)
-		v15 = r31
-		goto _16
-	_16:
-		return int32(X__syscall_ret(tls, uint64(v15)))
+		return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(cmd), int64(uintptr(arg))))))
 	default:
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((aacmd))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((aaarg))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+428)
-		v17 = r31
-		goto _18
-	_18:
-		return int32(X__syscall_ret(tls, uint64(v17)))
+		return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(cmd), int64(arg)))))
 	}
 	return r
 }
@@ -26186,8 +25986,7 @@ func Xopen(tls *TLS, filename uintptr, flags int32, va uintptr) (r int32) {
 	var ap Tva_list
 	var fd int32
 	var mode Tmode_t
-	var r0, r3, r4, r5 int64
-	_, _, _, _, _, _, _ = ap, fd, mode, r0, r3, r4, r5
+	_, _, _ = ap, fd, mode
 	mode = uint32(0)
 	if flags&int32(O_CREAT) != 0 || flags&int32(O_TMPFILE) == int32(O_TMPFILE) {
 		ap = va
@@ -26196,18 +25995,7 @@ func Xopen(tls *TLS, filename uintptr, flags int32, va uintptr) (r int32) {
 	}
 	fd = int32(___syscall_cp(tls, int64(SYS_open), int64(filename), int64(flags|Int32FromInt32(O_LARGEFILE)), int64(mode), 0, 0, 0))
 	if fd >= 0 && flags&int32(O_CLOEXEC) != 0 {
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+434)
-		_ = r3
-		goto _1
-	_1:
+		X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 	}
 	return int32(X__syscall_ret(tls, uint64(fd)))
 }
@@ -26234,22 +26022,7 @@ func Xposix_fadvise(tls *TLS, fd int32, base Toff_t, len1 Toff_t, advice int32) 
 		trc("tls=%v fd=%v base=%v len1=%v advice=%v, (%v:)", tls, fd, base, len1, advice, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fadvise64)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((aabase));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((aalen));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaadvice))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+439)
-	v1 = r3
-	goto _2
-_2:
-	return int32(-v1)
+	return int32(-X__syscall4(tls, int64(SYS_fadvise64), int64(fd), base, len1, int64(advice)))
 }
 
 func Xposix_fallocate(tls *TLS, fd int32, base Toff_t, len1 Toff_t) (r int32) {
@@ -26257,22 +26030,7 @@ func Xposix_fallocate(tls *TLS, fd int32, base Toff_t, len1 Toff_t) (r int32) {
 		trc("tls=%v fd=%v base=%v len1=%v, (%v:)", tls, fd, base, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fallocate)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((aabase));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((aalen));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+453)
-	v1 = r3
-	goto _2
-_2:
-	return int32(-v1)
+	return int32(-X__syscall4(tls, int64(SYS_fallocate), int64(fd), int64(Int32FromInt32(0)), base, len1))
 }
 
 const FE_ALL_EXCEPT = 1040187392
@@ -26304,7 +26062,7 @@ func _get_fpscr_f(tls *TLS) (r float64) {
 	var d float64
 	_ = d
 	// __asm__ __volatile__("mffs %0" : "=d"(d));
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+469, 8, __ccgo_ts+476)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+313, 8, __ccgo_ts+320)
 	return d
 }
 
@@ -26317,7 +26075,7 @@ func _get_fpscr(tls *TLS) (r int64) {
 
 func _set_fpscr_f(tls *TLS, fpscr float64) {
 	// __asm__ __volatile__("mtfsf 255, %0" : : "d"(fpscr));
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+469, 19, __ccgo_ts+488)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+313, 19, __ccgo_ts+332)
 }
 
 func _set_fpscr(tls *TLS, fpscr int64) {
@@ -27264,7 +27022,7 @@ func X__floatscan(tls *TLS, f uintptr, prec int32, pok int32) (r float64) {
 	}
 	i = uint64(0)
 	for {
-		if !(i < uint64(8) && c|int32(32) == int32(*(*uint8)(unsafe.Pointer(__ccgo_ts + 500 + uintptr(i))))) {
+		if !(i < uint64(8) && c|int32(32) == int32(*(*uint8)(unsafe.Pointer(__ccgo_ts + 344 + uintptr(i))))) {
 			break
 		}
 		if i < uint64(7) {
@@ -27308,7 +27066,7 @@ func X__floatscan(tls *TLS, f uintptr, prec int32, pok int32) (r float64) {
 	if !(i != 0) {
 		i = uint64(0)
 		for {
-			if !(i < uint64(3) && c|int32(32) == int32(*(*uint8)(unsafe.Pointer(__ccgo_ts + 509 + uintptr(i))))) {
+			if !(i < uint64(3) && c|int32(32) == int32(*(*uint8)(unsafe.Pointer(__ccgo_ts + 353 + uintptr(i))))) {
 				break
 			}
 			if i < uint64(2) {
@@ -27820,7 +27578,7 @@ func X__intscan(tls *TLS, f uintptr, base uint32, pok int32, lim uint64) (r uint
 		}
 	} else {
 		if !(base&(base-Uint32FromInt32(1)) != 0) {
-			bs = int32(*(*uint8)(unsafe.Pointer(__ccgo_ts + 513 + uintptr(uint32(0x17)*base>>int32(5)&uint32(7)))))
+			bs = int32(*(*uint8)(unsafe.Pointer(__ccgo_ts + 357 + uintptr(uint32(0x17)*base>>int32(5)&uint32(7)))))
 			x = uint32(0)
 			for {
 				if !(uint32(*(*uint8)(unsafe.Pointer(val + uintptr(c)))) < base && x <= Uint32FromUint32(0xffffffff)/Uint32FromInt32(32)) {
@@ -27953,7 +27711,7 @@ func X__procfdname(tls *TLS, buf uintptr, fd uint32) {
 	_, _, _, _ = i, j, v2, v5
 	i = uint32(0)
 	for {
-		v2 = *(*uint8)(unsafe.Pointer(__ccgo_ts + 522 + uintptr(i)))
+		v2 = *(*uint8)(unsafe.Pointer(__ccgo_ts + 366 + uintptr(i)))
 		*(*uint8)(unsafe.Pointer(buf + uintptr(i))) = v2
 		if !(v2 != 0) {
 			break
@@ -28186,23 +27944,8 @@ func Xmsgctl(tls *TLS, q int32, cmd int32, buf uintptr) (r1 int32) {
 		defer func() { trc("-> %v", r1) }()
 	}
 	var r int32
-	var r0, r3, r4, r5, r6, r7, r8, v1 int64
-	_, _, _, _, _, _, _, _, _ = r, r0, r3, r4, r5, r6, r7, r8, v1 //TODO "r0" // syscall_arch.h:76:16:
-	panic(0)                                                      // assembler statements not supported  aar0 = ((ppint64(mvSYS_ipc)));//TODO "r3" // syscall_arch.h:77:16:
-	panic(0)                                                      // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvIPCOP_msgctl)))));//TODO "r4" // syscall_arch.h:78:16:
-	panic(0)                                                      // assembler statements not supported  aar4 = ((ppint64((aaq))));//TODO "r5" // syscall_arch.h:79:16:
-	panic(0)                                                      // assembler statements not supported  aar5 = ((ppint64((((aacmd) & (^(((ppInt32FromInt32(mvIPC_STAT)) & (ppInt32FromInt32(0x100)))))) | (ppInt32FromInt32(mvIPC_64))))));//TODO "r6" // syscall_arch.h:80:16:
-	panic(0)                                                      // assembler statements not supported  aar6 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r7" // syscall_arch.h:81:16:
-	panic(0)                                                      // assembler statements not supported  aar7 = ((ppint64((aabuf))));//TODO "r8" // syscall_arch.h:82:16:
-	panic(0)                                                      // assembler statements not supported  aar8 = ((ppint64((ppInt32FromInt32(0)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-	// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+537)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
+	_ = r
+	r = int32(X__syscall6(tls, int64(SYS_ipc), int64(Int32FromInt32(IPCOP_msgctl)), int64(q), int64(cmd & ^(Int32FromInt32(IPC_STAT)&Int32FromInt32(0x100)) | Int32FromInt32(IPC_64)), int64(Int32FromInt32(0)), int64(buf), int64(Int32FromInt32(0))))
 	return int32(X__syscall_ret(tls, uint64(r)))
 }
 
@@ -28211,21 +27954,7 @@ func Xmsgget(tls *TLS, k Tkey_t, flag int32) (r int32) {
 		trc("tls=%v k=%v flag=%v, (%v:)", tls, k, flag, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ipc)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvIPCOP_msgget)))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aak))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaflag))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+544)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_ipc), int64(Int32FromInt32(IPCOP_msgget)), int64(k), int64(flag)))))
 }
 
 func Xmsgrcv(tls *TLS, q int32, m uintptr, len1 Tsize_t, type1 int64, flag int32) (r Tssize_t) {
@@ -28308,9 +28037,8 @@ func Xsemctl(tls *TLS, id int32, num int32, cmd int32, va uintptr) (r1 int32) {
 	defer tls.Free(16)
 	var ap Tva_list
 	var r int32
-	var r0, r3, r4, r5, r6, r7, v1 int64
 	var _ /* arg at bp+0 */ Tsemun
-	_, _, _, _, _, _, _, _, _ = ap, r, r0, r3, r4, r5, r6, r7, v1
+	_, _ = ap, r
 	*(*Tsemun)(unsafe.Pointer(bp)) = Tsemun{}
 	*(*int32)(unsafe.Pointer(bp)) = 0
 	switch cmd & ^(Int32FromInt32(IPC_STAT) & Int32FromInt32(0x100)) {
@@ -28334,76 +28062,32 @@ func Xsemctl(tls *TLS, id int32, num int32, cmd int32, va uintptr) (r1 int32) {
 		ap = va
 		*(*Tsemun)(unsafe.Pointer(bp)) = *(*Tsemun)(unsafe.Pointer(VaOther(&ap, 8)))
 		_ = ap
-	} //TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ipc)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvIPCOP_semctl)))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaid))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aanum))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((((aacmd) & (^(((ppInt32FromInt32(mvIPC_STAT)) & (ppInt32FromInt32(0x100)))))) | (ppInt32FromInt32(mvIPC_64))))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64(((cgbp)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+551)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
+	}
+	r = int32(X__syscall5(tls, int64(SYS_ipc), int64(Int32FromInt32(IPCOP_semctl)), int64(id), int64(num), int64(cmd & ^(Int32FromInt32(IPC_STAT)&Int32FromInt32(0x100)) | Int32FromInt32(IPC_64)), int64(bp)))
 	return int32(X__syscall_ret(tls, uint64(r)))
 }
 
-func Xsemget(tls *TLS, key Tkey_t, n1 int32, fl int32) (r int32) {
+func Xsemget(tls *TLS, key Tkey_t, n int32, fl int32) (r int32) {
 	if __ccgo_strace {
-		trc("tls=%v key=%v n1=%v fl=%v, (%v:)", tls, key, n1, fl, origin(2))
+		trc("tls=%v key=%v n=%v fl=%v, (%v:)", tls, key, n, fl, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
 	/* The kernel uses the wrong type for the sem_nsems member
 	 * of struct semid_ds, and thus might not check that the
 	 * n fits in the correct (per POSIX) userspace type, so
 	 * we have to check here. */
-	if n1 > int32(USHRT_MAX) {
+	if n > int32(USHRT_MAX) {
 		return int32(X__syscall_ret(tls, uint64(-Int32FromInt32(EINVAL))))
 	}
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ipc)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvIPCOP_semget)))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aakey))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aan1))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aafl))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+558)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_ipc), int64(Int32FromInt32(IPCOP_semget)), int64(key), int64(n), int64(fl)))))
 }
 
-func Xsemop(tls *TLS, id int32, buf uintptr, n1 Tsize_t) (r int32) {
+func Xsemop(tls *TLS, id int32, buf uintptr, n Tsize_t) (r int32) {
 	if __ccgo_strace {
-		trc("tls=%v id=%v buf=%v n1=%v, (%v:)", tls, id, buf, n1, origin(2))
+		trc("tls=%v id=%v buf=%v n=%v, (%v:)", tls, id, buf, n, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ipc)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvIPCOP_semop)))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaid))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aan1))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aabuf))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+565)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_ipc), int64(Int32FromInt32(IPCOP_semop)), int64(id), int64(n), int64(Int32FromInt32(0)), int64(buf)))))
 }
 
 const NO_TIME32 = 0
@@ -28433,29 +28117,12 @@ type Tsemid_ds1 = struct {
 	F__unused4       int64
 }
 
-func Xsemtimedop(tls *TLS, id int32, buf uintptr, n1 Tsize_t, ts uintptr) (r int32) {
+func Xsemtimedop(tls *TLS, id int32, buf uintptr, n Tsize_t, ts uintptr) (r int32) {
 	if __ccgo_strace {
-		trc("tls=%v id=%v buf=%v n1=%v ts=%v, (%v:)", tls, id, buf, n1, ts, origin(2))
+		trc("tls=%v id=%v buf=%v n=%v ts=%v, (%v:)", tls, id, buf, n, ts, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, r8, v1 int64
-	_, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, r8, v1
-	//TODO "r0" // syscall_arch.h:76:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ipc)));//TODO "r3" // syscall_arch.h:77:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvIPCOP_semtimedop)))));//TODO "r4" // syscall_arch.h:78:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaid))));//TODO "r5" // syscall_arch.h:79:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aan1))));//TODO "r6" // syscall_arch.h:80:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r7" // syscall_arch.h:81:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aabuf))));//TODO "r8" // syscall_arch.h:82:16:
-	panic(0) // assembler statements not supported  aar8 = ((ppint64((aats))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-	// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+571)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall6(tls, int64(SYS_ipc), int64(Int32FromInt32(IPCOP_semtimedop)), int64(id), int64(n), int64(Int32FromInt32(0)), int64(buf), int64(ts)))))
 }
 
 const SHMLBA = 4096
@@ -28529,31 +28196,16 @@ func Xshmat(tls *TLS, id int32, _addr uintptr, flag int32) (r uintptr) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
 	*(*uintptr)(unsafe.Pointer(bp)) = _addr
-	var r0, r3, r4, r5, r6, r7, v1 int64
 	var ret uint64
-	var v3 uintptr
-	_, _, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, ret, v1, v3
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ipc)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvIPCOP_shmat)))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaid))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaflag))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64(cgbp)));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((*(*ppuintptr)(iqunsafe.ppPointer(cgbp))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+582)
-	v1 = r3
-	goto _2
-_2:
-	ret = uint64(X__syscall_ret(tls, uint64(v1)))
+	var v1 uintptr
+	_, _ = ret, v1
+	ret = uint64(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_ipc), int64(Int32FromInt32(IPCOP_shmat)), int64(id), int64(flag), int64(bp), int64(*(*uintptr)(unsafe.Pointer(bp)))))))
 	if ret > -Uint64FromInt32(SHMLBA) {
-		v3 = uintptr(ret)
+		v1 = uintptr(ret)
 	} else {
-		v3 = *(*uintptr)(unsafe.Pointer(bp))
+		v1 = *(*uintptr)(unsafe.Pointer(bp))
 	}
-	return v3
+	return v1
 }
 
 func Xshmctl(tls *TLS, id int32, cmd int32, buf uintptr) (r1 int32) {
@@ -28562,23 +28214,8 @@ func Xshmctl(tls *TLS, id int32, cmd int32, buf uintptr) (r1 int32) {
 		defer func() { trc("-> %v", r1) }()
 	}
 	var r int32
-	var r0, r3, r4, r5, r6, r7, r8, v1 int64
-	_, _, _, _, _, _, _, _, _ = r, r0, r3, r4, r5, r6, r7, r8, v1 //TODO "r0" // syscall_arch.h:76:16:
-	panic(0)                                                      // assembler statements not supported  aar0 = ((ppint64(mvSYS_ipc)));//TODO "r3" // syscall_arch.h:77:16:
-	panic(0)                                                      // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvIPCOP_shmctl)))));//TODO "r4" // syscall_arch.h:78:16:
-	panic(0)                                                      // assembler statements not supported  aar4 = ((ppint64((aaid))));//TODO "r5" // syscall_arch.h:79:16:
-	panic(0)                                                      // assembler statements not supported  aar5 = ((ppint64((((aacmd) & (^(((ppInt32FromInt32(mvIPC_STAT)) & (ppInt32FromInt32(0x100)))))) | (ppInt32FromInt32(mvIPC_64))))));//TODO "r6" // syscall_arch.h:80:16:
-	panic(0)                                                      // assembler statements not supported  aar6 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r7" // syscall_arch.h:81:16:
-	panic(0)                                                      // assembler statements not supported  aar7 = ((ppint64((aabuf))));//TODO "r8" // syscall_arch.h:82:16:
-	panic(0)                                                      // assembler statements not supported  aar8 = ((ppint64((ppInt32FromInt32(0)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-	// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+588)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
+	_ = r
+	r = int32(X__syscall6(tls, int64(SYS_ipc), int64(Int32FromInt32(IPCOP_shmctl)), int64(id), int64(cmd & ^(Int32FromInt32(IPC_STAT)&Int32FromInt32(0x100)) | Int32FromInt32(IPC_64)), int64(Int32FromInt32(0)), int64(buf), int64(Int32FromInt32(0))))
 	return int32(X__syscall_ret(tls, uint64(r)))
 }
 
@@ -28587,23 +28224,7 @@ func Xshmdt(tls *TLS, addr uintptr) (r int32) {
 		trc("tls=%v addr=%v, (%v:)", tls, addr, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ipc)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvIPCOP_shmdt)))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aaaddr))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+595)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_ipc), int64(Int32FromInt32(IPCOP_shmdt)), int64(Int32FromInt32(0)), int64(Int32FromInt32(0)), int64(Int32FromInt32(0)), int64(addr)))))
 }
 
 func Xshmget(tls *TLS, key Tkey_t, size Tsize_t, flag int32) (r int32) {
@@ -28611,25 +28232,10 @@ func Xshmget(tls *TLS, key Tkey_t, size Tsize_t, flag int32) (r int32) {
 		trc("tls=%v key=%v size=%v flag=%v, (%v:)", tls, key, size, flag, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
 	if size > uint64(Int64FromInt64(INT64_MAX)) {
 		size = Uint64FromUint64(0xffffffffffffffff)
 	}
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ipc)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvIPCOP_shmget)))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aakey))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aasize))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflag))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+601)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_ipc), int64(Int32FromInt32(IPCOP_shmget)), int64(key), int64(size), int64(flag)))))
 }
 
 type Tpasswd = struct {
@@ -28680,10 +28286,10 @@ func Xvwarn(tls *TLS, fmt uintptr, ap Tva_list) {
 	}
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
-	Xfprintf(tls, uintptr(unsafe.Pointer(&X__stderr_FILE)), __ccgo_ts+608, VaList(bp+8, Xprogram_invocation_short_name))
+	Xfprintf(tls, uintptr(unsafe.Pointer(&X__stderr_FILE)), __ccgo_ts+381, VaList(bp+8, Xprogram_invocation_short_name))
 	if fmt != 0 {
 		Xvfprintf(tls, uintptr(unsafe.Pointer(&X__stderr_FILE)), fmt, ap)
-		Xfputs(tls, __ccgo_ts+613, uintptr(unsafe.Pointer(&X__stderr_FILE)))
+		Xfputs(tls, __ccgo_ts+386, uintptr(unsafe.Pointer(&X__stderr_FILE)))
 	}
 	Xperror(tls, uintptr(0))
 }
@@ -28694,7 +28300,7 @@ func Xvwarnx(tls *TLS, fmt uintptr, ap Tva_list) {
 	}
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
-	Xfprintf(tls, uintptr(unsafe.Pointer(&X__stderr_FILE)), __ccgo_ts+608, VaList(bp+8, Xprogram_invocation_short_name))
+	Xfprintf(tls, uintptr(unsafe.Pointer(&X__stderr_FILE)), __ccgo_ts+381, VaList(bp+8, Xprogram_invocation_short_name))
 	if fmt != 0 {
 		Xvfprintf(tls, uintptr(unsafe.Pointer(&X__stderr_FILE)), fmt, ap)
 	}
@@ -29120,7 +28726,7 @@ func Xgetpass(tls *TLS, prompt uintptr) (r uintptr) {
 	var _ /* s at bp+0 */ Ttermios
 	var _ /* t at bp+44 */ Ttermios
 	_, _, _, _ = fd, l, v1, v2
-	v1 = Xopen(tls, __ccgo_ts+616, Int32FromInt32(O_RDWR)|Int32FromInt32(O_NOCTTY)|Int32FromInt32(O_CLOEXEC), 0)
+	v1 = Xopen(tls, __ccgo_ts+389, Int32FromInt32(O_RDWR)|Int32FromInt32(O_NOCTTY)|Int32FromInt32(O_CLOEXEC), 0)
 	fd = v1
 	if v1 < 0 {
 		return uintptr(0)
@@ -29142,7 +28748,7 @@ func Xgetpass(tls *TLS, prompt uintptr) (r uintptr) {
 		_password[l] = uint8(0)
 	}
 	Xtcsetattr(tls, fd, int32(TCSAFLUSH), bp)
-	Xdprintf(tls, fd, __ccgo_ts+625, 0)
+	Xdprintf(tls, fd, __ccgo_ts+398, 0)
 	Xclose(tls, fd)
 	if l < 0 {
 		v2 = uintptr(0)
@@ -29175,10 +28781,10 @@ func Xsetusershell(tls *TLS) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 	}
 	if !(_f != 0) {
-		_f = Xfopen(tls, __ccgo_ts+627, __ccgo_ts+639)
+		_f = Xfopen(tls, __ccgo_ts+400, __ccgo_ts+412)
 	}
 	if !(_f != 0) {
-		_f = Xfmemopen(tls, uintptr(unsafe.Pointer(&_defshells)), Uint64FromInt64(18)-Uint64FromInt32(1), __ccgo_ts+643)
+		_f = Xfmemopen(tls, uintptr(unsafe.Pointer(&_defshells)), Uint64FromInt64(18)-Uint64FromInt32(1), __ccgo_ts+416)
 	}
 }
 
@@ -29653,46 +29259,20 @@ func Xbrk(tls *TLS, end uintptr) (r int32) {
 	return int32(X__syscall_ret(tls, uint64(-Int32FromInt32(ENOMEM))))
 }
 
-func Xcapset(tls *TLS, a1 uintptr, b1 uintptr) (r int32) {
+func Xcapset(tls *TLS, a uintptr, b uintptr) (r int32) {
 	if __ccgo_strace {
-		trc("tls=%v a1=%v b1=%v, (%v:)", tls, a1, b1, origin(2))
+		trc("tls=%v a=%v b=%v, (%v:)", tls, a, b, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_capset)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaa1))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aab1))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+646)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_capset), int64(a), int64(b)))))
 }
 
-func Xcapget(tls *TLS, a1 uintptr, b1 uintptr) (r int32) {
+func Xcapget(tls *TLS, a uintptr, b uintptr) (r int32) {
 	if __ccgo_strace {
-		trc("tls=%v a1=%v b1=%v, (%v:)", tls, a1, b1, origin(2))
+		trc("tls=%v a=%v b=%v, (%v:)", tls, a, b, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_capget)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaa1))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aab1))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+653)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_capget), int64(a), int64(b)))))
 }
 
 func Xchroot(tls *TLS, path uintptr) (r int32) {
@@ -29700,19 +29280,7 @@ func Xchroot(tls *TLS, path uintptr) (r int32) {
 		trc("tls=%v path=%v, (%v:)", tls, path, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_chroot)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+660)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_chroot), int64(path)))))
 }
 
 type Tktimex64 = struct {
@@ -29776,9 +29344,8 @@ func Xclock_adjtime(tls *TLS, clock_id Tclockid_t, utx uintptr) (r1 int32) {
 	bp := tls.Alloc(208)
 	defer tls.Free(208)
 	var r int32
-	var r0, r01, r3, r31, r4, v1, v3, v5, v7 int64
 	var _ /* ktx at bp+0 */ Tktimex
-	_, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, v1, v3, v5, v7
+	_ = r
 	r = -int32(ENOSYS)
 	if uint64(8) > uint64(8) {
 		*(*Tktimex)(unsafe.Pointer(bp)) = Tktimex{
@@ -29804,30 +29371,10 @@ func Xclock_adjtime(tls *TLS, clock_id Tclockid_t, utx uintptr) (r1 int32) {
 			Fstbcnt:    (*Ttimex)(unsafe.Pointer(utx)).Fstbcnt,
 			Ftai:       (*Ttimex)(unsafe.Pointer(utx)).Ftai,
 		}
-		if clock_id == CLOCK_REALTIME { //TODO "r0" // syscall_arch.h:16:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_adjtimex)));//TODO "r3" // syscall_arch.h:17:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64(cgbp)));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3)
-			// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+667)
-			v1 = r3
-			goto _2
-		_2:
-			r = int32(v1)
+		if clock_id == CLOCK_REALTIME {
+			r = int32(X__syscall1(tls, int64(SYS_adjtimex), int64(bp)))
 		} else {
-			//TODO "r0" // syscall_arch.h:26:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_clock_adjtime)));//TODO "r3" // syscall_arch.h:27:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((aaclock_id))));//TODO "r4" // syscall_arch.h:28:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64(cgbp)));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4)
-			// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+667)
-			v3 = r31
-			goto _4
-		_4:
-			r = int32(v3)
+			r = int32(X__syscall2(tls, int64(SYS_clock_adjtime), int64(clock_id), int64(bp)))
 		}
 		if r >= 0 {
 			(*Ttimex)(unsafe.Pointer(utx)).Fmodes = (*(*Tktimex)(unsafe.Pointer(bp))).Fmodes
@@ -29854,30 +29401,10 @@ func Xclock_adjtime(tls *TLS, clock_id Tclockid_t, utx uintptr) (r1 int32) {
 		}
 		return int32(X__syscall_ret(tls, uint64(r)))
 	}
-	if clock_id == CLOCK_REALTIME { //TODO "r0" // syscall_arch.h:16:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_adjtimex)));//TODO "r3" // syscall_arch.h:17:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aautx))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3)
-		// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+667)
-		v5 = r3
-		goto _6
-	_6:
-		return int32(X__syscall_ret(tls, uint64(v5)))
+	if clock_id == CLOCK_REALTIME {
+		return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_adjtimex), int64(utx)))))
 	}
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_clock_adjtime)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar31 = ((ppint64((aaclock_id))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aautx))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+667)
-	v7 = r31
-	goto _8
-_8:
-	return int32(X__syscall_ret(tls, uint64(v7)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_clock_adjtime), int64(clock_id), int64(utx)))))
 }
 
 func Xcopy_file_range(tls *TLS, fd_in int32, off_in uintptr, fd_out int32, off_out uintptr, len1 Tsize_t, flags uint32) (r Tssize_t) {
@@ -29885,24 +29412,7 @@ func Xcopy_file_range(tls *TLS, fd_in int32, off_in uintptr, fd_out int32, off_o
 		trc("tls=%v fd_in=%v off_in=%v fd_out=%v off_out=%v len1=%v flags=%v, (%v:)", tls, fd_in, off_in, fd_out, off_out, len1, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, r8, v1 int64
-	_, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, r8, v1
-	//TODO "r0" // syscall_arch.h:76:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_copy_file_range)));//TODO "r3" // syscall_arch.h:77:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd_in))));//TODO "r4" // syscall_arch.h:78:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaoff_in))));//TODO "r5" // syscall_arch.h:79:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aafd_out))));//TODO "r6" // syscall_arch.h:80:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaoff_out))));//TODO "r7" // syscall_arch.h:81:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aalen))));//TODO "r8" // syscall_arch.h:82:16:
-	panic(0) // assembler statements not supported  aar8 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-	// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+681)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall6(tls, int64(SYS_copy_file_range), int64(fd_in), int64(off_in), int64(fd_out), int64(off_out), int64(len1), int64(flags))))
 }
 
 const EPOLLERR = 8
@@ -29966,29 +29476,10 @@ func Xepoll_create1(tls *TLS, flags int32) (r1 int32) {
 		defer func() { trc("-> %v", r1) }()
 	}
 	var r int32
-	var r0, r3, v1, v3 int64
-	_, _, _, _, _ = r, r0, r3, v1, v3 //TODO "r0" // syscall_arch.h:16:16:
-	panic(0)                          // assembler statements not supported  aar0 = ((ppint64(mvSYS_epoll_create1)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0)                          // assembler statements not supported  aar3 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+697)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
-	if r == -int32(ENOSYS) && !(flags != 0) { //TODO "r0" // syscall_arch.h:16:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_epoll_create)));//TODO "r3" // syscall_arch.h:17:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(1)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3)
-		// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+697)
-		v3 = r3
-		goto _4
-	_4:
-		r = int32(v3)
+	_ = r
+	r = int32(X__syscall1(tls, int64(SYS_epoll_create1), int64(flags)))
+	if r == -int32(ENOSYS) && !(flags != 0) {
+		r = int32(X__syscall1(tls, int64(SYS_epoll_create), int64(Int32FromInt32(1))))
 	}
 	return int32(X__syscall_ret(tls, uint64(r)))
 }
@@ -29998,22 +29489,7 @@ func Xepoll_ctl(tls *TLS, fd int32, op int32, fd2 int32, ev uintptr) (r int32) {
 		trc("tls=%v fd=%v op=%v fd2=%v ev=%v, (%v:)", tls, fd, op, fd2, ev, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_epoll_ctl)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaop))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aafd2))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaev))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+711)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_epoll_ctl), int64(fd), int64(op), int64(fd2), int64(ev)))))
 }
 
 func Xepoll_pwait(tls *TLS, fd int32, ev uintptr, cnt int32, to int32, sigs uintptr) (r1 int32) {
@@ -30050,30 +29526,10 @@ func Xeventfd(tls *TLS, count uint32, flags int32) (r1 int32) {
 		defer func() { trc("-> %v", r1) }()
 	}
 	var r int32
-	var r0, r01, r3, r31, r4, v1, v3 int64
-	_, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, v1, v3 //TODO "r0" // syscall_arch.h:26:16:
-	panic(0)                                                 // assembler statements not supported  aar01 = ((ppint64(mvSYS_eventfd2)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0)                                                 // assembler statements not supported  aar31 = ((ppint64((aacount))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0)                                                 // assembler statements not supported  aar4 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+721)
-	v1 = r31
-	goto _2
-_2:
-	r = int32(v1)
-	if r == -int32(ENOSYS) && !(flags != 0) { //TODO "r0" // syscall_arch.h:16:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_eventfd)));//TODO "r3" // syscall_arch.h:17:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aacount))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3)
-		// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+721)
-		v3 = r3
-		goto _4
-	_4:
-		r = int32(v3)
+	_ = r
+	r = int32(X__syscall2(tls, int64(SYS_eventfd2), int64(count), int64(flags)))
+	if r == -int32(ENOSYS) && !(flags != 0) {
+		r = int32(X__syscall1(tls, int64(SYS_eventfd), int64(count)))
 	}
 	return int32(X__syscall_ret(tls, uint64(r)))
 }
@@ -30116,22 +29572,7 @@ func Xfallocate(tls *TLS, fd int32, mode int32, base Toff_t, len1 Toff_t) (r int
 		trc("tls=%v fd=%v mode=%v base=%v len1=%v, (%v:)", tls, fd, mode, base, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fallocate)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aamode))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((aabase));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((aalen));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+729)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_fallocate), int64(fd), int64(mode), base, len1))))
 }
 
 const FANOTIFY_METADATA_VERSION = 3
@@ -30276,20 +29717,7 @@ func Xfanotify_init(tls *TLS, flags uint32, event_f_flags uint32) (r int32) {
 		trc("tls=%v flags=%v event_f_flags=%v, (%v:)", tls, flags, event_f_flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fanotify_init)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaflags))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaevent_f_flags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+739)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_fanotify_init), int64(flags), int64(event_f_flags)))))
 }
 
 func Xfanotify_mark(tls *TLS, fanotify_fd int32, flags uint32, mask uint64, dfd int32, pathname uintptr) (r int32) {
@@ -30297,23 +29725,7 @@ func Xfanotify_mark(tls *TLS, fanotify_fd int32, flags uint32, mask uint64, dfd 
 		trc("tls=%v fanotify_fd=%v flags=%v mask=%v dfd=%v pathname=%v, (%v:)", tls, fanotify_fd, flags, mask, dfd, pathname, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fanotify_mark)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafanotify_fd))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaflags))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aamask))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aadfd))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aapathname))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+753)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_fanotify_mark), int64(fanotify_fd), int64(flags), int64(mask), int64(dfd), int64(pathname)))))
 }
 
 const LOCK_EX = 2
@@ -30326,20 +29738,7 @@ func Xflock(tls *TLS, fd int32, op int32) (r int32) {
 		trc("tls=%v fd=%v op=%v, (%v:)", tls, fd, op, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_flock)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaop))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+767)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_flock), int64(fd), int64(op)))))
 }
 
 func Xgetdents(tls *TLS, fd int32, buf uintptr, len1 Tsize_t) (r int32) {
@@ -30347,24 +29746,10 @@ func Xgetdents(tls *TLS, fd int32, buf uintptr, len1 Tsize_t) (r int32) {
 		trc("tls=%v fd=%v buf=%v len1=%v, (%v:)", tls, fd, buf, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
 	if len1 > uint64(INT_MAX) {
 		len1 = uint64(INT_MAX)
 	}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getdents64)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aabuf))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aalen))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+773)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_getdents64), int64(fd), int64(buf), int64(len1)))))
 }
 
 const GRND_INSECURE = 4
@@ -30428,29 +29813,10 @@ func Xinotify_init1(tls *TLS, flags int32) (r1 int32) {
 		defer func() { trc("-> %v", r1) }()
 	}
 	var r int32
-	var r0, r01, r3, r31, v1, v3 int64
-	_, _, _, _, _, _, _ = r, r0, r01, r3, r31, v1, v3 //TODO "r0" // syscall_arch.h:16:16:
-	panic(0)                                          // assembler statements not supported  aar01 = ((ppint64(mvSYS_inotify_init1)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0)                                          // assembler statements not supported  aar31 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+782)
-	v1 = r31
-	goto _2
-_2:
-	r = int32(v1)
-	if r == -int32(ENOSYS) && !(flags != 0) { //TODO "r0" // syscall_arch.h:6:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_inotify_init)));//TODO "r3" // syscall_arch.h:7:16:
-		panic(0) // assembler statements not supported
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "=r"(r3)
-		// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+782)
-		v3 = r3
-		goto _4
-	_4:
-		r = int32(v3)
+	_ = r
+	r = int32(X__syscall1(tls, int64(SYS_inotify_init1), int64(flags)))
+	if r == -int32(ENOSYS) && !(flags != 0) {
+		r = int32(X__syscall0(tls, int64(SYS_inotify_init)))
 	}
 	return int32(X__syscall_ret(tls, uint64(r)))
 }
@@ -30460,21 +29826,7 @@ func Xinotify_add_watch(tls *TLS, fd int32, pathname uintptr, mask Tuint32_t) (r
 		trc("tls=%v fd=%v pathname=%v mask=%v, (%v:)", tls, fd, pathname, mask, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_inotify_add_watch)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aapathname))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aamask))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+796)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_inotify_add_watch), int64(fd), int64(pathname), int64(mask)))))
 }
 
 func Xinotify_rm_watch(tls *TLS, fd int32, wd int32) (r int32) {
@@ -30482,20 +29834,7 @@ func Xinotify_rm_watch(tls *TLS, fd int32, wd int32) (r int32) {
 		trc("tls=%v fd=%v wd=%v, (%v:)", tls, fd, wd, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_inotify_rm_watch)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aawd))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+814)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_inotify_rm_watch), int64(fd), int64(wd)))))
 }
 
 func Xioperm(tls *TLS, from uint64, num uint64, turn_on int32) (r int32) {
@@ -30503,21 +29842,7 @@ func Xioperm(tls *TLS, from uint64, num uint64, turn_on int32) (r int32) {
 		trc("tls=%v from=%v num=%v turn_on=%v, (%v:)", tls, from, num, turn_on, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ioperm)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafrom))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aanum))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaturn_on))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+831)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_ioperm), int64(from), int64(num), int64(turn_on)))))
 }
 
 func Xiopl(tls *TLS, level int32) (r int32) {
@@ -30525,19 +29850,7 @@ func Xiopl(tls *TLS, level int32) (r int32) {
 		trc("tls=%v level=%v, (%v:)", tls, level, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_iopl)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aalevel))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+838)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_iopl), int64(level)))))
 }
 
 func Xklogctl(tls *TLS, type1 int32, buf uintptr, len1 int32) (r int32) {
@@ -30545,21 +29858,7 @@ func Xklogctl(tls *TLS, type1 int32, buf uintptr, len1 int32) (r int32) {
 		trc("tls=%v type1=%v buf=%v len1=%v, (%v:)", tls, type1, buf, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_syslog)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aatype))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aabuf))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aalen))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+843)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_syslog), int64(type1), int64(buf), int64(len1)))))
 }
 
 const MADV_COLD = 20
@@ -30597,20 +29896,7 @@ func Xmemfd_create(tls *TLS, name uintptr, flags uint32) (r int32) {
 		trc("tls=%v name=%v flags=%v, (%v:)", tls, name, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_memfd_create)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaname))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+851)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_memfd_create), int64(name), int64(flags)))))
 }
 
 func Xmlock2(tls *TLS, addr uintptr, len1 Tsize_t, flags uint32) (r int32) {
@@ -30618,67 +29904,26 @@ func Xmlock2(tls *TLS, addr uintptr, len1 Tsize_t, flags uint32) (r int32) {
 		trc("tls=%v addr=%v len1=%v flags=%v, (%v:)", tls, addr, len1, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
 	if flags == uint32(0) {
 		return Xmlock(tls, addr, len1)
 	}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mlock2)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaaddr))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalen))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+864)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_mlock2), int64(addr), int64(len1), int64(flags)))))
 }
 
-func Xinit_module(tls *TLS, a1 uintptr, b1 uint64, c1 uintptr) (r int32) {
+func Xinit_module(tls *TLS, a uintptr, b uint64, c uintptr) (r int32) {
 	if __ccgo_strace {
-		trc("tls=%v a1=%v b1=%v c1=%v, (%v:)", tls, a1, b1, c1, origin(2))
+		trc("tls=%v a=%v b=%v c=%v, (%v:)", tls, a, b, c, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_init_module)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaa1))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aab1))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aac1))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+871)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_init_module), int64(a), int64(b), int64(c)))))
 }
 
-func Xdelete_module(tls *TLS, a1 uintptr, b1 uint32) (r int32) {
+func Xdelete_module(tls *TLS, a uintptr, b uint32) (r int32) {
 	if __ccgo_strace {
-		trc("tls=%v a1=%v b1=%v, (%v:)", tls, a1, b1, origin(2))
+		trc("tls=%v a=%v b=%v, (%v:)", tls, a, b, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_delete_module)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaa1))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aab1))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+883)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_delete_module), int64(a), int64(b)))))
 }
 
 const BLKBSZGET = 1073746544
@@ -30929,23 +30174,7 @@ func Xmount(tls *TLS, special uintptr, dir uintptr, fstype uintptr, flags uint64
 		trc("tls=%v special=%v dir=%v fstype=%v flags=%v data=%v, (%v:)", tls, special, dir, fstype, flags, data, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mount)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaspecial))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aadir))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aafstype))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflags))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aadata))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+897)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_mount), int64(special), int64(dir), int64(fstype), int64(flags), int64(data)))))
 }
 
 func Xumount(tls *TLS, special uintptr) (r int32) {
@@ -30953,20 +30182,7 @@ func Xumount(tls *TLS, special uintptr) (r int32) {
 		trc("tls=%v special=%v, (%v:)", tls, special, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_umount2)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaspecial))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(0)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+903)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_umount2), int64(special), int64(Int32FromInt32(0))))))
 }
 
 func Xumount2(tls *TLS, special uintptr, flags int32) (r int32) {
@@ -30974,20 +30190,7 @@ func Xumount2(tls *TLS, special uintptr, flags int32) (r int32) {
 		trc("tls=%v special=%v flags=%v, (%v:)", tls, special, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_umount2)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaspecial))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+910)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_umount2), int64(special), int64(flags)))))
 }
 
 func Xname_to_handle_at(tls *TLS, dirfd int32, pathname uintptr, handle uintptr, mount_id uintptr, flags int32) (r int32) {
@@ -30995,23 +30198,7 @@ func Xname_to_handle_at(tls *TLS, dirfd int32, pathname uintptr, handle uintptr,
 		trc("tls=%v dirfd=%v pathname=%v handle=%v mount_id=%v flags=%v, (%v:)", tls, dirfd, pathname, handle, mount_id, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_name_to_handle_at)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aadirfd))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aapathname))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aahandle))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aamount_id))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+918)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_name_to_handle_at), int64(dirfd), int64(pathname), int64(handle), int64(mount_id), int64(flags)))))
 }
 
 func Xopen_by_handle_at(tls *TLS, mount_fd int32, handle uintptr, flags int32) (r int32) {
@@ -31019,21 +30206,7 @@ func Xopen_by_handle_at(tls *TLS, mount_fd int32, handle uintptr, flags int32) (
 		trc("tls=%v mount_fd=%v handle=%v flags=%v, (%v:)", tls, mount_fd, handle, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_open_by_handle_at)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aamount_fd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aahandle))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+936)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_open_by_handle_at), int64(mount_fd), int64(handle), int64(flags)))))
 }
 
 const ADDR_COMPAT_LAYOUT = 2097152
@@ -31076,19 +30249,7 @@ func Xpersonality(tls *TLS, persona uint64) (r int32) {
 		trc("tls=%v persona=%v, (%v:)", tls, persona, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_personality)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapersona))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+954)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_personality), int64(persona)))))
 }
 
 func Xpivot_root(tls *TLS, new1 uintptr, old uintptr) (r int32) {
@@ -31096,20 +30257,7 @@ func Xpivot_root(tls *TLS, new1 uintptr, old uintptr) (r int32) {
 		trc("tls=%v new1=%v old=%v, (%v:)", tls, new1, old, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_pivot_root)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aanew))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaold))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+966)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_pivot_root), int64(new1), int64(old)))))
 }
 
 const PR_CAPBSET_DROP = 24
@@ -31271,9 +30419,8 @@ func Xprctl(tls *TLS, op int32, va uintptr) (r int32) {
 	}
 	var ap Tva_list
 	var i int32
-	var r0, r3, r4, r5, r6, r7, v2 int64
 	var x [4]uint64
-	_, _, _, _, _, _, _, _, _, _ = ap, i, r0, r3, r4, r5, r6, r7, x, v2
+	_, _, _ = ap, i, x
 	ap = va
 	i = 0
 	for {
@@ -31287,21 +30434,7 @@ func Xprctl(tls *TLS, op int32, va uintptr) (r int32) {
 		i++
 	}
 	_ = ap
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_prctl)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaop))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(aax[(0)])));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64(aax[(ppint32(1))])));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64(aax[(ppint32(2))])));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64(aax[(ppint32(3))])));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+977)
-	v2 = r3
-	goto _3
-_3:
-	return int32(X__syscall_ret(tls, uint64(v2)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_prctl), int64(op), int64(x[0]), int64(x[int32(1)]), int64(x[int32(2)]), int64(x[int32(3)])))))
 }
 
 const RWF_APPEND = 16
@@ -31333,9 +30466,8 @@ func Xprlimit(tls *TLS, pid Tpid_t, resource int32, new_limit uintptr, old_limit
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
 	var r int32
-	var r0, r3, r4, r5, r6, v1 int64
 	var _ /* tmp at bp+0 */ Trlimit
-	_, _, _, _, _, _, _ = r, r0, r3, r4, r5, r6, v1
+	_ = r
 	if new_limit != 0 && Bool(^Uint64FromUint64(0) != ^Uint64FromUint64(0)) {
 		*(*Trlimit)(unsafe.Pointer(bp)) = *(*Trlimit)(unsafe.Pointer(new_limit))
 		if (*(*Trlimit)(unsafe.Pointer(bp))).Frlim_cur >= ^Uint64FromUint64(0) {
@@ -31346,20 +30478,7 @@ func Xprlimit(tls *TLS, pid Tpid_t, resource int32, new_limit uintptr, old_limit
 		}
 		new_limit = bp
 	}
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_prlimit64)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapid))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaresource))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aanew_limit))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaold_limit))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+983)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(X__syscall_ret(tls, uint64(v1)))
+	r = int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_prlimit64), int64(pid), int64(resource), int64(new_limit), int64(old_limit)))))
 	if !(r != 0) && old_limit != 0 && Bool(^Uint64FromUint64(0) != ^Uint64FromUint64(0)) {
 		if (*Trlimit)(unsafe.Pointer(old_limit)).Frlim_cur >= ^Uint64FromUint64(0) {
 			(*Trlimit)(unsafe.Pointer(old_limit)).Frlim_cur = ^Uint64FromUint64(0)
@@ -31376,24 +30495,7 @@ func Xprocess_vm_writev(tls *TLS, pid Tpid_t, lvec uintptr, liovcnt uint64, rvec
 		trc("tls=%v pid=%v lvec=%v liovcnt=%v rvec=%v riovcnt=%v flags=%v, (%v:)", tls, pid, lvec, liovcnt, rvec, riovcnt, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, r8, v1 int64
-	_, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, r8, v1
-	//TODO "r0" // syscall_arch.h:76:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_process_vm_writev)));//TODO "r3" // syscall_arch.h:77:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapid))));//TODO "r4" // syscall_arch.h:78:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalvec))));//TODO "r5" // syscall_arch.h:79:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaliovcnt))));//TODO "r6" // syscall_arch.h:80:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aarvec))));//TODO "r7" // syscall_arch.h:81:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aariovcnt))));//TODO "r8" // syscall_arch.h:82:16:
-	panic(0) // assembler statements not supported  aar8 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-	// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+991)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall6(tls, int64(SYS_process_vm_writev), int64(pid), int64(lvec), int64(liovcnt), int64(rvec), int64(riovcnt), int64(flags))))
 }
 
 func Xprocess_vm_readv(tls *TLS, pid Tpid_t, lvec uintptr, liovcnt uint64, rvec uintptr, riovcnt uint64, flags uint64) (r Tssize_t) {
@@ -31401,24 +30503,7 @@ func Xprocess_vm_readv(tls *TLS, pid Tpid_t, lvec uintptr, liovcnt uint64, rvec 
 		trc("tls=%v pid=%v lvec=%v liovcnt=%v rvec=%v riovcnt=%v flags=%v, (%v:)", tls, pid, lvec, liovcnt, rvec, riovcnt, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, r8, v1 int64
-	_, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, r8, v1
-	//TODO "r0" // syscall_arch.h:76:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_process_vm_readv)));//TODO "r3" // syscall_arch.h:77:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapid))));//TODO "r4" // syscall_arch.h:78:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalvec))));//TODO "r5" // syscall_arch.h:79:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaliovcnt))));//TODO "r6" // syscall_arch.h:80:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aarvec))));//TODO "r7" // syscall_arch.h:81:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aariovcnt))));//TODO "r8" // syscall_arch.h:82:16:
-	panic(0) // assembler statements not supported  aar8 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-	// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+1009)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall6(tls, int64(SYS_process_vm_readv), int64(pid), int64(lvec), int64(liovcnt), int64(rvec), int64(riovcnt), int64(flags))))
 }
 
 const PTRACE_ATTACH = 16
@@ -31581,9 +30666,9 @@ func Xptrace(tls *TLS, req int32, va uintptr) (r int64) {
 	var addr, addr2, data uintptr
 	var ap Tva_list
 	var pid Tpid_t
-	var r0, r3, r4, r5, r6, r7, ret, v1 int64
+	var ret int64
 	var _ /* result at bp+0 */ int64
-	_, _, _, _, _, _, _, _, _, _, _, _, _ = addr, addr2, ap, data, pid, r0, r3, r4, r5, r6, r7, ret, v1
+	_, _, _, _, _, _ = addr, addr2, ap, data, pid, ret
 	addr2 = uintptr(0)
 	ap = va
 	pid = VaInt32(&ap)
@@ -31594,21 +30679,7 @@ func Xptrace(tls *TLS, req int32, va uintptr) (r int64) {
 	if uint32(req)-uint32(1) < uint32(3) {
 		data = bp
 	}
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ptrace)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aareq))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aapid))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaaddr))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aadata))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aaaddr2))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+1026)
-	v1 = r3
-	goto _2
-_2:
-	ret = X__syscall_ret(tls, uint64(v1))
+	ret = X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_ptrace), int64(req), int64(pid), int64(addr), int64(data), int64(addr2))))
 	if ret < 0 || uint32(req)-uint32(1) >= uint32(3) {
 		return ret
 	}
@@ -31692,22 +30763,7 @@ func Xquotactl(tls *TLS, cmd int32, special uintptr, id int32, addr uintptr) (r 
 		trc("tls=%v cmd=%v special=%v id=%v addr=%v, (%v:)", tls, cmd, special, id, addr, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_quotactl)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aacmd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaspecial))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaid))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaaddr))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1033)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_quotactl), int64(cmd), int64(special), int64(id), int64(addr)))))
 }
 
 func Xreadahead(tls *TLS, fd int32, pos Toff_t, len1 Tsize_t) (r Tssize_t) {
@@ -31715,21 +30771,7 @@ func Xreadahead(tls *TLS, fd int32, pos Toff_t, len1 Tsize_t) (r Tssize_t) {
 		trc("tls=%v fd=%v pos=%v len1=%v, (%v:)", tls, fd, pos, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_readahead)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((aapos));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aalen))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1042)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_readahead), int64(fd), pos, int64(len1))))
 }
 
 const RB_AUTOBOOT = 19088743
@@ -31745,21 +30787,7 @@ func Xreboot(tls *TLS, type1 int32) (r int32) {
 		trc("tls=%v type1=%v, (%v:)", tls, type1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_reboot)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppUint32FromUint32(0xfee1dead)))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(672274793)))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aatype))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1052)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_reboot), int64(Uint32FromUint32(0xfee1dead)), int64(Int32FromInt32(672274793)), int64(type1)))))
 }
 
 func Xremap_file_pages(tls *TLS, addr uintptr, size Tsize_t, prot int32, pgoff Tsize_t, flags int32) (r int32) {
@@ -31767,23 +30795,7 @@ func Xremap_file_pages(tls *TLS, addr uintptr, size Tsize_t, prot int32, pgoff T
 		trc("tls=%v addr=%v size=%v prot=%v pgoff=%v flags=%v, (%v:)", tls, addr, size, prot, pgoff, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_remap_file_pages)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaaddr))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aasize))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaprot))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aapgoff))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+1059)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_remap_file_pages), int64(addr), int64(size), int64(prot), int64(pgoff), int64(flags)))))
 }
 
 func Xsbrk(tls *TLS, inc Tintptr_t) (r uintptr) {
@@ -31791,22 +30803,10 @@ func Xsbrk(tls *TLS, inc Tintptr_t) (r uintptr) {
 		trc("tls=%v inc=%v, (%v:)", tls, inc, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
 	if inc != 0 {
 		return uintptr(X__syscall_ret(tls, uint64(-Int32FromInt32(ENOMEM))))
 	}
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_brk)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(0)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+1076)
-	v1 = r3
-	goto _2
-_2:
-	return uintptr(v1)
+	return uintptr(X__syscall1(tls, int64(SYS_brk), int64(Int32FromInt32(0))))
 }
 
 func Xsendfile(tls *TLS, out_fd int32, in_fd int32, ofs uintptr, count Tsize_t) (r Tssize_t) {
@@ -31814,22 +30814,7 @@ func Xsendfile(tls *TLS, out_fd int32, in_fd int32, ofs uintptr, count Tsize_t) 
 		trc("tls=%v out_fd=%v in_fd=%v ofs=%v count=%v, (%v:)", tls, out_fd, in_fd, ofs, count, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_sendfile)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaout_fd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aain_fd))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaofs))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aacount))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1081)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_sendfile), int64(out_fd), int64(in_fd), int64(ofs), int64(count))))
 }
 
 func Xsetfsgid(tls *TLS, gid Tgid_t) (r int32) {
@@ -31837,19 +30822,7 @@ func Xsetfsgid(tls *TLS, gid Tgid_t) (r int32) {
 		trc("tls=%v gid=%v, (%v:)", tls, gid, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setfsgid)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aagid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+1090)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_setfsgid), int64(gid)))))
 }
 
 func Xsetfsuid(tls *TLS, uid Tuid_t) (r int32) {
@@ -31857,19 +30830,7 @@ func Xsetfsuid(tls *TLS, uid Tuid_t) (r int32) {
 		trc("tls=%v uid=%v, (%v:)", tls, uid, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setfsuid)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aauid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+1099)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_setfsuid), int64(uid)))))
 }
 
 func Xsethostname(tls *TLS, name uintptr, len1 Tsize_t) (r int32) {
@@ -31877,20 +30838,7 @@ func Xsethostname(tls *TLS, name uintptr, len1 Tsize_t) (r int32) {
 		trc("tls=%v name=%v len1=%v, (%v:)", tls, name, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_sethostname)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaname))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalen))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1108)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_sethostname), int64(name), int64(len1)))))
 }
 
 const CLONE_CHILD_CLEARTID = 2097152
@@ -31930,20 +30878,7 @@ func Xsetns(tls *TLS, fd int32, nstype int32) (r int32) {
 		trc("tls=%v fd=%v nstype=%v, (%v:)", tls, fd, nstype, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setns)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aanstype))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1120)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_setns), int64(fd), int64(nstype)))))
 }
 
 const __tm_gmtoff = 0
@@ -32016,66 +30951,19 @@ func Xsignalfd(tls *TLS, fd int32, sigs uintptr, flags int32) (r int32) {
 		trc("tls=%v fd=%v sigs=%v flags=%v, (%v:)", tls, fd, sigs, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r01, r3, r31, r4, r41, r5, r51, r6, v1, v3 int64
 	var ret int32
-	_, _, _, _, _, _, _, _, _, _, _, _ = r0, r01, r3, r31, r4, r41, r5, r51, r6, ret, v1, v3 //TODO "r0" // syscall_arch.h:49:16:
-	panic(0)                                                                                 // assembler statements not supported  aar01 = ((ppint64(mvSYS_signalfd4)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0)                                                                                 // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0)                                                                                 // assembler statements not supported  aar41 = ((ppint64((aasigs))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0)                                                                                 // assembler statements not supported  aar51 = ((ppint64(((ppInt32FromInt32(mv_NSIG)) / (ppInt32FromInt32(8))))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0)                                                                                 // assembler statements not supported  aar6 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1126)
-	v1 = r31
-	goto _2
-_2:
-	ret = int32(v1)
+	_ = ret
+	ret = int32(X__syscall4(tls, int64(SYS_signalfd4), int64(fd), int64(sigs), int64(Int32FromInt32(_NSIG)/Int32FromInt32(8)), int64(flags)))
 	if ret != -int32(ENOSYS) {
 		return int32(X__syscall_ret(tls, uint64(ret)))
 	}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_signalfd)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aasigs))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64(((ppInt32FromInt32(mv_NSIG)) / (ppInt32FromInt32(8))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1126)
-	v3 = r3
-	goto _4
-_4:
-	ret = int32(v3)
+	ret = int32(X__syscall3(tls, int64(SYS_signalfd), int64(fd), int64(sigs), int64(Int32FromInt32(_NSIG)/Int32FromInt32(8))))
 	if ret >= 0 {
 		if flags&int32(O_CLOEXEC) != 0 {
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((aaret))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1126)
-			_ = r3
-			goto _5
-		_5:
+			X__syscall3(tls, int64(SYS_fcntl), int64(ret), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 		}
 		if flags&int32(O_NONBLOCK) != 0 {
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((aaret))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_SETFL)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvO_NONBLOCK)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1126)
-			_ = r3
-			goto _6
-		_6:
+			X__syscall3(tls, int64(SYS_fcntl), int64(ret), int64(Int32FromInt32(F_SETFL)), int64(Int32FromInt32(O_NONBLOCK)))
 		}
 	}
 	return int32(X__syscall_ret(tls, uint64(ret)))
@@ -32086,24 +30974,7 @@ func Xsplice(tls *TLS, fd_in int32, off_in uintptr, fd_out int32, off_out uintpt
 		trc("tls=%v fd_in=%v off_in=%v fd_out=%v off_out=%v len1=%v flags=%v, (%v:)", tls, fd_in, off_in, fd_out, off_out, len1, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, r8, v1 int64
-	_, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, r8, v1
-	//TODO "r0" // syscall_arch.h:76:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_splice)));//TODO "r3" // syscall_arch.h:77:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd_in))));//TODO "r4" // syscall_arch.h:78:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaoff_in))));//TODO "r5" // syscall_arch.h:79:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aafd_out))));//TODO "r6" // syscall_arch.h:80:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaoff_out))));//TODO "r7" // syscall_arch.h:81:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aalen))));//TODO "r8" // syscall_arch.h:82:16:
-	panic(0) // assembler statements not supported  aar8 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-	// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+1135)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall6(tls, int64(SYS_splice), int64(fd_in), int64(off_in), int64(fd_out), int64(off_out), int64(len1), int64(flags))))
 }
 
 func Xstatx(tls *TLS, dirfd int32, path uintptr, flags int32, mask uint32, stx uintptr) (r int32) {
@@ -32113,24 +30984,10 @@ func Xstatx(tls *TLS, dirfd int32, path uintptr, flags int32, mask uint32, stx u
 	}
 	bp := tls.Alloc(144)
 	defer tls.Free(144)
-	var r0, r3, r4, r5, r6, r7, v1 int64
 	var ret int32
 	var _ /* st at bp+0 */ Tstat
-	_, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, ret, v1 //TODO "r0" // syscall_arch.h:62:16:
-	panic(0)                                                 // assembler statements not supported  aar0 = ((ppint64(mvSYS_statx)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0)                                                 // assembler statements not supported  aar3 = ((ppint64((aadirfd))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0)                                                 // assembler statements not supported  aar4 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0)                                                 // assembler statements not supported  aar5 = ((ppint64((aaflags))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0)                                                 // assembler statements not supported  aar6 = ((ppint64((aamask))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0)                                                 // assembler statements not supported  aar7 = ((ppint64((aastx))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+1142)
-	v1 = r3
-	goto _2
-_2:
-	ret = int32(v1)
+	_ = ret
+	ret = int32(X__syscall5(tls, int64(SYS_statx), int64(dirfd), int64(path), int64(flags), int64(mask), int64(stx)))
 	if ret != -int32(ENOSYS) {
 		return int32(X__syscall_ret(tls, uint64(ret)))
 	}
@@ -32183,20 +31040,7 @@ func Xswapon(tls *TLS, path uintptr, flags int32) (r int32) {
 		trc("tls=%v path=%v flags=%v, (%v:)", tls, path, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_swapon)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1148)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_swapon), int64(path), int64(flags)))))
 }
 
 func Xswapoff(tls *TLS, path uintptr) (r int32) {
@@ -32204,19 +31048,7 @@ func Xswapoff(tls *TLS, path uintptr) (r int32) {
 		trc("tls=%v path=%v, (%v:)", tls, path, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_swapoff)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+1155)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_swapoff), int64(path)))))
 }
 
 func Xsync_file_range(tls *TLS, fd int32, pos Toff_t, len1 Toff_t, flags uint32) (r int32) {
@@ -32224,22 +31056,7 @@ func Xsync_file_range(tls *TLS, fd int32, pos Toff_t, len1 Toff_t, flags uint32)
 		trc("tls=%v fd=%v pos=%v len1=%v flags=%v, (%v:)", tls, fd, pos, len1, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_sync_file_range2)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaflags))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((aapos));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((aalen));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1163)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_sync_file_range2), int64(fd), int64(flags), pos, len1))))
 }
 
 func Xsyncfs(tls *TLS, fd int32) (r int32) {
@@ -32247,19 +31064,7 @@ func Xsyncfs(tls *TLS, fd int32) (r int32) {
 		trc("tls=%v fd=%v, (%v:)", tls, fd, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_syncfs)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+1179)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_syncfs), int64(fd)))))
 }
 
 func X__lsysinfo(tls *TLS, info uintptr) (r int32) {
@@ -32267,19 +31072,7 @@ func X__lsysinfo(tls *TLS, info uintptr) (r int32) {
 		trc("tls=%v info=%v, (%v:)", tls, info, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_sysinfo)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aainfo))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+1186)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_sysinfo), int64(info)))))
 }
 
 func Xsysinfo(tls *TLS, info uintptr) (r int32) {
@@ -32295,22 +31088,7 @@ func Xtee(tls *TLS, src int32, dest int32, len1 Tsize_t, flags uint32) (r Tssize
 		trc("tls=%v src=%v dest=%v len1=%v flags=%v, (%v:)", tls, src, dest, len1, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_tee)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aasrc))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aadest))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aalen))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1197)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_tee), int64(src), int64(dest), int64(len1), int64(flags))))
 }
 
 const TFD_CLOEXEC = 524288
@@ -32323,20 +31101,7 @@ func Xtimerfd_create(tls *TLS, clockid int32, flags int32) (r int32) {
 		trc("tls=%v clockid=%v flags=%v, (%v:)", tls, clockid, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_timerfd_create)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaclockid))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1201)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_timerfd_create), int64(clockid), int64(flags)))))
 }
 
 func Xtimerfd_settime(tls *TLS, fd int32, flags int32, new1 uintptr, old uintptr) (r int32) {
@@ -32344,22 +31109,7 @@ func Xtimerfd_settime(tls *TLS, fd int32, flags int32, new1 uintptr, old uintptr
 		trc("tls=%v fd=%v flags=%v new1=%v old=%v, (%v:)", tls, fd, flags, new1, old, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_timerfd_settime)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaflags))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aanew))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaold))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1216)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_timerfd_settime), int64(fd), int64(flags), int64(new1), int64(old)))))
 }
 
 func Xtimerfd_gettime(tls *TLS, fd int32, cur uintptr) (r int32) {
@@ -32367,20 +31117,7 @@ func Xtimerfd_gettime(tls *TLS, fd int32, cur uintptr) (r int32) {
 		trc("tls=%v fd=%v cur=%v, (%v:)", tls, fd, cur, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_timerfd_gettime)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aacur))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1232)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_timerfd_gettime), int64(fd), int64(cur)))))
 }
 
 func Xunshare(tls *TLS, flags int32) (r int32) {
@@ -32388,19 +31125,7 @@ func Xunshare(tls *TLS, flags int32) (r int32) {
 		trc("tls=%v flags=%v, (%v:)", tls, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_unshare)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+1248)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_unshare), int64(flags)))))
 }
 
 func Xutimes(tls *TLS, path uintptr, times uintptr) (r int32) {
@@ -32416,19 +31141,7 @@ func Xvhangup(tls *TLS) (r int32) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_vhangup)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+1256)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall0(tls, int64(SYS_vhangup)))))
 }
 
 func Xvmsplice(tls *TLS, fd int32, iov uintptr, cnt Tsize_t, flags uint32) (r Tssize_t) {
@@ -32436,22 +31149,7 @@ func Xvmsplice(tls *TLS, fd int32, iov uintptr, cnt Tsize_t, flags uint32) (r Ts
 		trc("tls=%v fd=%v iov=%v cnt=%v flags=%v, (%v:)", tls, fd, iov, cnt, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_vmsplice)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaiov))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aacnt))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1264)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_vmsplice), int64(fd), int64(iov), int64(cnt), int64(flags))))
 }
 
 const NSIG = 65
@@ -32513,29 +31211,15 @@ func Xwait4(tls *TLS, pid Tpid_t, status uintptr, options int32, ru uintptr) (r1
 	defer tls.Free(32)
 	var dest, v1 uintptr
 	var r int32
-	var r0, r3, r4, r5, r6, v2 int64
 	var _ /* kru at bp+0 */ [4]int64
-	_, _, _, _, _, _, _, _, _ = dest, r, r0, r3, r4, r5, r6, v1, v2
+	_, _, _ = dest, r, v1
 	if ru != 0 {
 		v1 = ru + 32 - uintptr(Uint64FromInt32(4)*Uint64FromInt64(8))
 	} else {
 		v1 = uintptr(0)
 	}
 	dest = v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_wait4)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapid))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aastatus))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaoptions))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aadest))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1273)
-	v2 = r3
-	goto _3
-_3:
-	r = int32(v2)
+	r = int32(X__syscall4(tls, int64(SYS_wait4), int64(pid), int64(status), int64(options), int64(dest)))
 	if r > 0 && ru != 0 && Bool(uint64(8) > uint64(8)) {
 		Xmemcpy(tls, bp, dest, Uint64FromInt32(4)*Uint64FromInt64(8))
 		(*Trusage)(unsafe.Pointer(ru)).Fru_utime = Ttimeval{
@@ -32559,22 +31243,7 @@ func Xgetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_t
 		trc("tls=%v path=%v name=%v value=%v size=%v, (%v:)", tls, path, name, value, size, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getxattr)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaname))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aavalue))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aasize))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1279)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_getxattr), int64(path), int64(name), int64(value), int64(size))))
 }
 
 func Xlgetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_t) (r Tssize_t) {
@@ -32582,22 +31251,7 @@ func Xlgetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_
 		trc("tls=%v path=%v name=%v value=%v size=%v, (%v:)", tls, path, name, value, size, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_lgetxattr)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaname))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aavalue))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aasize))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1288)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_lgetxattr), int64(path), int64(name), int64(value), int64(size))))
 }
 
 func Xfgetxattr(tls *TLS, filedes int32, name uintptr, value uintptr, size Tsize_t) (r Tssize_t) {
@@ -32605,22 +31259,7 @@ func Xfgetxattr(tls *TLS, filedes int32, name uintptr, value uintptr, size Tsize
 		trc("tls=%v filedes=%v name=%v value=%v size=%v, (%v:)", tls, filedes, name, value, size, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fgetxattr)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafiledes))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaname))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aavalue))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aasize))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1298)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_fgetxattr), int64(filedes), int64(name), int64(value), int64(size))))
 }
 
 func Xlistxattr(tls *TLS, path uintptr, list uintptr, size Tsize_t) (r Tssize_t) {
@@ -32628,21 +31267,7 @@ func Xlistxattr(tls *TLS, path uintptr, list uintptr, size Tsize_t) (r Tssize_t)
 		trc("tls=%v path=%v list=%v size=%v, (%v:)", tls, path, list, size, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_listxattr)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalist))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aasize))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1308)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_listxattr), int64(path), int64(list), int64(size))))
 }
 
 func Xllistxattr(tls *TLS, path uintptr, list uintptr, size Tsize_t) (r Tssize_t) {
@@ -32650,21 +31275,7 @@ func Xllistxattr(tls *TLS, path uintptr, list uintptr, size Tsize_t) (r Tssize_t
 		trc("tls=%v path=%v list=%v size=%v, (%v:)", tls, path, list, size, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_llistxattr)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalist))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aasize))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1318)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_llistxattr), int64(path), int64(list), int64(size))))
 }
 
 func Xflistxattr(tls *TLS, filedes int32, list uintptr, size Tsize_t) (r Tssize_t) {
@@ -32672,21 +31283,7 @@ func Xflistxattr(tls *TLS, filedes int32, list uintptr, size Tsize_t) (r Tssize_
 		trc("tls=%v filedes=%v list=%v size=%v, (%v:)", tls, filedes, list, size, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_flistxattr)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafiledes))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalist))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aasize))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1329)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_flistxattr), int64(filedes), int64(list), int64(size))))
 }
 
 func Xsetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_t, flags int32) (r int32) {
@@ -32694,23 +31291,7 @@ func Xsetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_t
 		trc("tls=%v path=%v name=%v value=%v size=%v flags=%v, (%v:)", tls, path, name, value, size, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setxattr)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaname))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aavalue))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aasize))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+1340)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_setxattr), int64(path), int64(name), int64(value), int64(size), int64(flags)))))
 }
 
 func Xlsetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_t, flags int32) (r int32) {
@@ -32718,23 +31299,7 @@ func Xlsetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_
 		trc("tls=%v path=%v name=%v value=%v size=%v flags=%v, (%v:)", tls, path, name, value, size, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_lsetxattr)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaname))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aavalue))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aasize))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+1349)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_lsetxattr), int64(path), int64(name), int64(value), int64(size), int64(flags)))))
 }
 
 func Xfsetxattr(tls *TLS, filedes int32, name uintptr, value uintptr, size Tsize_t, flags int32) (r int32) {
@@ -32742,23 +31307,7 @@ func Xfsetxattr(tls *TLS, filedes int32, name uintptr, value uintptr, size Tsize
 		trc("tls=%v filedes=%v name=%v value=%v size=%v flags=%v, (%v:)", tls, filedes, name, value, size, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fsetxattr)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafiledes))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaname))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aavalue))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aasize))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+1359)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_fsetxattr), int64(filedes), int64(name), int64(value), int64(size), int64(flags)))))
 }
 
 func Xremovexattr(tls *TLS, path uintptr, name uintptr) (r int32) {
@@ -32766,20 +31315,7 @@ func Xremovexattr(tls *TLS, path uintptr, name uintptr) (r int32) {
 		trc("tls=%v path=%v name=%v, (%v:)", tls, path, name, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_removexattr)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaname))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1369)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_removexattr), int64(path), int64(name)))))
 }
 
 func Xlremovexattr(tls *TLS, path uintptr, name uintptr) (r int32) {
@@ -32787,20 +31323,7 @@ func Xlremovexattr(tls *TLS, path uintptr, name uintptr) (r int32) {
 		trc("tls=%v path=%v name=%v, (%v:)", tls, path, name, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_lremovexattr)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaname))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1381)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_lremovexattr), int64(path), int64(name)))))
 }
 
 func Xfremovexattr(tls *TLS, fd int32, name uintptr) (r int32) {
@@ -32808,20 +31331,7 @@ func Xfremovexattr(tls *TLS, fd int32, name uintptr) (r int32) {
 		trc("tls=%v fd=%v name=%v, (%v:)", tls, fd, name, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fremovexattr)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaname))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1394)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_fremovexattr), int64(fd), int64(name)))))
 }
 
 type Tucontext_t2 = struct {
@@ -32849,16 +31359,7 @@ func X__lctrans_cur(tls *TLS, msg uintptr) (r uintptr) {
 		trc("tls=%v msg=%v, (%v:)", tls, msg, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+1407)
-	v1 = tp
-	goto _2
-_2:
-	return X__lctrans_impl(tls, msg, *(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale + 5*8)))
+	return X__lctrans_impl(tls, msg, *(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale + 5*8)))
 }
 
 func _swapc(tls *TLS, x Tuint32_t, c int32) (r Tuint32_t) {
@@ -32931,7 +31432,7 @@ func Xbind_textdomain_codeset(tls *TLS, domainname uintptr, codeset uintptr) (r 
 		trc("tls=%v domainname=%v codeset=%v, (%v:)", tls, domainname, codeset, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	if codeset != 0 && Xstrcasecmp(tls, codeset, __ccgo_ts+1421) != 0 {
+	if codeset != 0 && Xstrcasecmp(tls, codeset, __ccgo_ts+419) != 0 {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 	}
 	return UintptrFromInt32(0)
@@ -33169,7 +31670,7 @@ func Xcatopen(tls *TLS, name uintptr, oflag int32) (r Tnl_catd) {
 		return _do_catopen(tls, name)
 	}
 	if v2 = X__libc.Fsecure != 0; !v2 {
-		v1 = Xgetenv(tls, __ccgo_ts+1427)
+		v1 = Xgetenv(tls, __ccgo_ts+425)
 		path = v1
 	}
 	if v2 || !(v1 != 0) {
@@ -33179,7 +31680,7 @@ func Xcatopen(tls *TLS, name uintptr, oflag int32) (r Tnl_catd) {
 	if oflag != 0 {
 		v3 = Xnl_langinfo(tls, Int32FromInt32(LC_MESSAGES)<<Int32FromInt32(16)|Int32FromInt32(0xffff))
 	} else {
-		v3 = Xgetenv(tls, __ccgo_ts+1435)
+		v3 = Xgetenv(tls, __ccgo_ts+433)
 	}
 	lang = v3
 	if !(lang != 0) {
@@ -33211,18 +31712,18 @@ func Xcatopen(tls *TLS, name uintptr, oflag int32) (r Tnl_catd) {
 					l = Xstrlen(tls, v)
 				case int32('l'):
 					v = lang
-					l = Xstrcspn(tls, v, __ccgo_ts+1440)
+					l = Xstrcspn(tls, v, __ccgo_ts+438)
 				case int32('t'):
 					v = X__strchrnul(tls, lang, int32('_'))
 					if *(*uint8)(unsafe.Pointer(v)) != 0 {
 						v++
 					}
-					l = Xstrcspn(tls, v, __ccgo_ts+1444)
+					l = Xstrcspn(tls, v, __ccgo_ts+442)
 				case int32('c'):
-					v = __ccgo_ts + 1421
+					v = __ccgo_ts + 419
 					l = uint64(5)
 				case int32('%'):
-					v = __ccgo_ts + 1447
+					v = __ccgo_ts + 445
 					l = uint64(1)
 				default:
 					v = uintptr(0)
@@ -33357,11 +31858,11 @@ func Xbindtextdomain(tls *TLS, domainname uintptr, dirname uintptr) (r1 uintptr)
 		Xmemcpy(tls, (*Tbinding)(unsafe.Pointer(p4)).Fdirname, dirname, dirlen+uint64(1))
 		v2 = uintptr(unsafe.Pointer(&_bindings))
 		// __asm__ __volatile__ ("sync" : : : "memory");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+1449)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+447)
 		for {
 			v8 = v2
 			// __asm__ __volatile__ ("ldarx %0, 0, %2" : "=r"(v) : "m"(*(void *volatile *)p), "r"(p));
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 23, __ccgo_ts+1449)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 23, __ccgo_ts+447)
 			v9 = v
 			goto _10
 		_10:
@@ -33375,7 +31876,7 @@ func Xbindtextdomain(tls *TLS, domainname uintptr, dirname uintptr) (r1 uintptr)
 				//
 				//	"stdcx. %2, 0, %3 ; mfcr %0"
 				//	: "=r"(r), "=m"(*(void *volatile *)p) : "r"(v), "r"(p) : "memory", "cc");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 31, __ccgo_ts+1449)
+				X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 31, __ccgo_ts+447)
 				v4 = r & int32(0x20000000)
 				goto _5
 			_5:
@@ -33385,16 +31886,16 @@ func Xbindtextdomain(tls *TLS, domainname uintptr, dirname uintptr) (r1 uintptr)
 			}
 		}
 		// __asm__ __volatile__ ("isync" : : : "memory");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+1449)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+447)
 		_ = old
 		goto _11
 	_11:
 	}
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+1449)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+447)
 	AtomicStorePInt32(p4+12, int32(1))
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+1449)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+447)
 	q = AtomicLoadPUintptr(uintptr(unsafe.Pointer(&_bindings)))
 	for {
 		if !(q != 0) {
@@ -33402,10 +31903,10 @@ func Xbindtextdomain(tls *TLS, domainname uintptr, dirname uintptr) (r1 uintptr)
 		}
 		if !(Xstrcmp(tls, (*Tbinding)(unsafe.Pointer(q)).Fdomainname, domainname) != 0) && q != p4 {
 			// __asm__ __volatile__ ("sync" : : : "memory");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+1449)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+447)
 			AtomicStorePInt32(q+12, 0)
 			// __asm__ __volatile__ ("sync" : : : "memory");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+1449)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+447)
 		}
 		goto _12
 	_12:
@@ -33446,7 +31947,7 @@ type Tmsgcat = struct {
 }
 
 func _dummy_gettextdomain(tls *TLS) (r uintptr) {
-	return __ccgo_ts + 1464
+	return __ccgo_ts + 462
 }
 
 func Xdcngettext(tls *TLS, domainname uintptr, msgid1 uintptr, msgid2 uintptr, n uint64, category int32) (r2 uintptr) {
@@ -33456,24 +31957,17 @@ func Xdcngettext(tls *TLS, domainname uintptr, msgid1 uintptr, msgid2 uintptr, n
 	}
 	bp := tls.Alloc(80)
 	defer tls.Free(80)
-	var alt_modlen, catlen, dirlen, domlen, l, loclen, modlen, rem, v7 Tsize_t
-	var catname, csp, dirname, lm, loc, locname, locp, map1, modname, name, old, old_cats, p3, q, r1, rule, trans, v, v10, v11, v12, v19, v20, v25, v26, v28, v5 uintptr
-	var np, plural, v31 uint64
-	var old_errno, r, v13, v14, v16, v17, v21 int32
-	var tp, v1 Tuintptr_t
-	var v23 bool
-	var v8 t__predefined_size_t
+	var alt_modlen, catlen, dirlen, domlen, l, loclen, modlen, rem, v5 Tsize_t
+	var catname, csp, dirname, lm, loc, locname, locp, map1, modname, name, old, old_cats, p3, q, r1, rule, trans, v, v10, v17, v18, v23, v24, v26, v3, v8, v9 uintptr
+	var np, plural, v29 uint64
+	var old_errno, r, v11, v12, v14, v15, v19 int32
+	var v21 bool
+	var v6 t__predefined_size_t
 	var _ /* map_size at bp+0 */ Tsize_t
 	var _ /* z at bp+8 */ uintptr
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = alt_modlen, catlen, catname, csp, dirlen, dirname, domlen, l, lm, loc, loclen, locname, locp, map1, modlen, modname, name, np, old, old_cats, old_errno, p3, plural, q, r, r1, rem, rule, tp, trans, v, v1, v10, v11, v12, v13, v14, v16, v17, v19, v20, v21, v23, v25, v26, v28, v31, v5, v7, v8
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = alt_modlen, catlen, catname, csp, dirlen, dirname, domlen, l, lm, loc, loclen, locname, locp, map1, modlen, modname, name, np, old, old_cats, old_errno, p3, plural, q, r, r1, rem, rule, trans, v, v10, v11, v12, v14, v15, v17, v18, v19, v21, v23, v24, v26, v29, v3, v5, v6, v8, v9
 	defer func() { Xrealloc(tls, name, 0) }()
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+1473)
-	v1 = tp
-	goto _2
-_2:
-	loc = (*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale
+	loc = (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale
 	old_errno = *(*int32)(unsafe.Pointer(X__errno_location(tls)))
 	/* match gnu gettext behaviour */
 	if !(msgid1 != 0) {
@@ -33497,8 +31991,8 @@ _2:
 		if !(Xstrcmp(tls, (*Tbinding)(unsafe.Pointer(q)).Fdomainname, domainname) != 0) && AtomicLoadPInt32(q+12) != 0 {
 			break
 		}
-		goto _3
-	_3:
+		goto _1
+	_1:
 		;
 		q = (*Tbinding)(unsafe.Pointer(q)).Fnext
 	}
@@ -33507,19 +32001,19 @@ _2:
 	}
 	lm = *(*uintptr)(unsafe.Pointer(loc + uintptr(category)*8))
 	if !!(lm != 0) {
-		goto _4
+		goto _2
 	}
 	goto notrans
 notrans:
 	;
 	*(*int32)(unsafe.Pointer(X__errno_location(tls))) = old_errno
 	if n == uint64(1) {
-		v5 = msgid1
+		v3 = msgid1
 	} else {
-		v5 = msgid2
+		v3 = msgid2
 	}
-	return v5
-_4:
+	return v3
+_2:
 	;
 	p3 = AtomicLoadPUintptr(uintptr(unsafe.Pointer(&_cats)))
 	for {
@@ -33529,8 +32023,8 @@ _4:
 		if (*Tmsgcat)(unsafe.Pointer(p3)).Fbinding == q && (*Tmsgcat)(unsafe.Pointer(p3)).Flm == lm && (*Tmsgcat)(unsafe.Pointer(p3)).Fcat == category {
 			break
 		}
-		goto _6
-	_6:
+		goto _4
+	_4:
 		;
 		p3 = (*Tmsgcat)(unsafe.Pointer(p3)).Fnext
 	}
@@ -33546,39 +32040,39 @@ _4:
 		if !(modname != 0) {
 			modname = locname + uintptr(loclen)
 		}
-		v7 = loclen - uint64(int64(modname)-int64(locname))
-		modlen = v7
-		alt_modlen = v7
+		v5 = loclen - uint64(int64(modname)-int64(locname))
+		modlen = v5
+		alt_modlen = v5
 		loclen = uint64(int64(modname) - int64(locname))
 		/* Drop .charset identifier; it is not used. */
 		csp = Xmemchr(tls, locname, int32('.'), loclen)
 		if csp != 0 {
 			loclen = uint64(int64(csp) - int64(locname))
 		}
-		v8 = dirlen + uint64(1) + loclen + modlen + uint64(1) + catlen + uint64(1) + domlen + uint64(3) + uint64(1)
-		name = Xrealloc(tls, name, v8)
+		v6 = dirlen + uint64(1) + loclen + modlen + uint64(1) + catlen + uint64(1) + domlen + uint64(3) + uint64(1)
+		name = Xrealloc(tls, name, v6)
 		for {
-			Xsnprintf(tls, name, v8, __ccgo_ts+1484, VaList(bp+24, dirname, int32(loclen), locname, int32(alt_modlen), modname, catname, domainname))
-			v10 = X__map_file(tls, name, bp)
-			map1 = v10
-			if v10 != 0 {
+			Xsnprintf(tls, name, v6, __ccgo_ts+471, VaList(bp+24, dirname, int32(loclen), locname, int32(alt_modlen), modname, catname, domainname))
+			v8 = X__map_file(tls, name, bp)
+			map1 = v8
+			if v8 != 0 {
 				break
 			}
 			/* Try dropping @mod, _YY, then both. */
 			if alt_modlen != 0 {
 				alt_modlen = uint64(0)
 			} else {
-				v11 = Xmemchr(tls, locname, int32('_'), loclen)
-				locp = v11
-				if v11 != 0 {
+				v9 = Xmemchr(tls, locname, int32('_'), loclen)
+				locp = v9
+				if v9 != 0 {
 					loclen = uint64(int64(locp) - int64(locname))
 					alt_modlen = modlen
 				} else {
 					break
 				}
 			}
-			goto _9
-		_9:
+			goto _7
+		_7:
 		}
 		if !(map1 != 0) {
 			goto notrans
@@ -33593,31 +32087,31 @@ _4:
 		(*Tmsgcat)(unsafe.Pointer(p3)).Flm = lm
 		(*Tmsgcat)(unsafe.Pointer(p3)).Fmap1 = map1
 		(*Tmsgcat)(unsafe.Pointer(p3)).Fmap_size = *(*Tsize_t)(unsafe.Pointer(bp))
-		rule = __ccgo_ts + 1506
+		rule = __ccgo_ts + 493
 		np = uint64(2)
 		r1 = X__mo_lookup(tls, (*Tmsgcat)(unsafe.Pointer(p3)).Fmap1, (*Tmsgcat)(unsafe.Pointer(p3)).Fmap_size, __ccgo_ts)
-		for r1 != 0 && Xstrncmp(tls, r1, __ccgo_ts+1512, uint64(13)) != 0 {
+		for r1 != 0 && Xstrncmp(tls, r1, __ccgo_ts+499, uint64(13)) != 0 {
 			*(*uintptr)(unsafe.Pointer(bp + 8)) = Xstrchr(tls, r1, int32('\n'))
 			if *(*uintptr)(unsafe.Pointer(bp + 8)) != 0 {
-				v12 = *(*uintptr)(unsafe.Pointer(bp + 8)) + uintptr(1)
+				v10 = *(*uintptr)(unsafe.Pointer(bp + 8)) + uintptr(1)
 			} else {
-				v12 = uintptr(0)
+				v10 = uintptr(0)
 			}
-			r1 = v12
+			r1 = v10
 		}
 		if r1 != 0 {
 			r1 += uintptr(13)
 			for {
-				v13 = int32(*(*uint8)(unsafe.Pointer(r1)))
-				v14 = BoolInt32(v13 == int32(' ') || uint32(v13)-uint32('\t') < uint32(5))
-				goto _15
-			_15:
-				if !(v14 != 0) {
+				v11 = int32(*(*uint8)(unsafe.Pointer(r1)))
+				v12 = BoolInt32(v11 == int32(' ') || uint32(v11)-uint32('\t') < uint32(5))
+				goto _13
+			_13:
+				if !(v12 != 0) {
 					break
 				}
 				r1++
 			}
-			if !(Xstrncmp(tls, r1, __ccgo_ts+1526, uint64(9)) != 0) {
+			if !(Xstrncmp(tls, r1, __ccgo_ts+513, uint64(9)) != 0) {
 				np = Xstrtoul(tls, r1+uintptr(9), bp+8, int32(10))
 				r1 = *(*uintptr)(unsafe.Pointer(bp + 8))
 			}
@@ -33627,16 +32121,16 @@ _4:
 			if *(*uint8)(unsafe.Pointer(r1)) != 0 {
 				r1++
 				for {
-					v16 = int32(*(*uint8)(unsafe.Pointer(r1)))
-					v17 = BoolInt32(v16 == int32(' ') || uint32(v16)-uint32('\t') < uint32(5))
-					goto _18
-				_18:
-					if !(v17 != 0) {
+					v14 = int32(*(*uint8)(unsafe.Pointer(r1)))
+					v15 = BoolInt32(v14 == int32(' ') || uint32(v14)-uint32('\t') < uint32(5))
+					goto _16
+				_16:
+					if !(v15 != 0) {
 						break
 					}
 					r1++
 				}
-				if !(Xstrncmp(tls, r1, __ccgo_ts+1536, uint64(7)) != 0) {
+				if !(Xstrncmp(tls, r1, __ccgo_ts+523, uint64(7)) != 0) {
 					rule = r1 + uintptr(7)
 				}
 			}
@@ -33646,45 +32140,45 @@ _4:
 		for {
 			old_cats = AtomicLoadPUintptr(uintptr(unsafe.Pointer(&_cats)))
 			(*Tmsgcat)(unsafe.Pointer(p3)).Fnext = old_cats
-			goto _30
-		_30:
+			goto _28
+		_28:
 			;
-			v19 = uintptr(unsafe.Pointer(&_cats))
+			v17 = uintptr(unsafe.Pointer(&_cats))
 			// __asm__ __volatile__ ("sync" : : : "memory");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+1473)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+531)
 			for {
-				v25 = v19
+				v23 = v17
 				// __asm__ __volatile__ ("ldarx %0, 0, %2" : "=r"(v) : "m"(*(void *volatile *)p), "r"(p));
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 23, __ccgo_ts+1473)
-				v26 = v
-				goto _27
-			_27:
-				old = v26
-				goto _24
-			_24:
+				X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 23, __ccgo_ts+531)
+				v24 = v
+				goto _25
+			_25:
+				old = v24
+				goto _22
+			_22:
 				;
-				if v23 = old == old_cats; v23 {
-					v20 = v19
+				if v21 = old == old_cats; v21 {
+					v18 = v17
 					// __asm__ __volatile__ (
 					//
 					//	"stdcx. %2, 0, %3 ; mfcr %0"
 					//	: "=r"(r), "=m"(*(void *volatile *)p) : "r"(v), "r"(p) : "memory", "cc");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 31, __ccgo_ts+1473)
-					v21 = r & int32(0x20000000)
-					goto _22
-				_22:
+					X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 31, __ccgo_ts+531)
+					v19 = r & int32(0x20000000)
+					goto _20
+				_20:
 				}
-				if !(v23 && !(v21 != 0)) {
+				if !(v21 && !(v19 != 0)) {
 					break
 				}
 			}
 			// __asm__ __volatile__ ("isync" : : : "memory");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+1473)
-			v28 = old
-			goto _29
-		_29:
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+531)
+			v26 = old
+			goto _27
+		_27:
 			;
-			if !(v28 != old_cats) {
+			if !(v26 != old_cats) {
 				break
 			}
 		}
@@ -33701,9 +32195,9 @@ _4:
 			goto notrans
 		}
 		for {
-			v31 = plural
+			v29 = plural
 			plural--
-			if !(v31 != 0) {
+			if !(v29 != 0) {
 				break
 			}
 			rem = (*Tmsgcat)(unsafe.Pointer(p3)).Fmap_size - uint64(int64(trans)-int64((*Tmsgcat)(unsafe.Pointer(p3)).Fmap1))
@@ -33718,7 +32212,7 @@ _4:
 	return trans
 }
 
-var _cats uintptr //TODO "tp" // pthread_arch.h:3:21:
+var _cats uintptr
 
 func Xdcgettext(tls *TLS, domainname uintptr, msgid uintptr, category int32) (r uintptr) {
 	if __ccgo_strace {
@@ -100122,13 +98616,12 @@ func Xiconv(tls *TLS, cd Ticonv_t, in uintptr, inb uintptr, out uintptr, outb ui
 	}
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
-	var c, d, from, to, v64 uint32
-	var err, i, i1, j, j1, v27, v28, v29, v30, v61 int32
+	var c, d, from, to, v62 uint32
+	var err, i, i1, j, j1, v25, v26, v27, v28, v59 int32
 	var k, l, tmplen, tmpx, x Tsize_t
 	var loc Tlocale_t
-	var map1, ploc, scd, tomap, v100, v101, v102, v103, v104, v105, v106, v56, v57, v59, v60, v62, v63, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v99 uintptr
+	var map1, ploc, scd, tomap, v100, v101, v102, v103, v104, v54, v55, v57, v58, v60, v61, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v99 uintptr
 	var totype, type1 uint8
-	var tp, v1 Tuintptr_t
 	var _ /* ptmp at bp+48 */ uintptr
 	var _ /* st at bp+24 */ Tmbstate_t
 	var _ /* tmp at bp+40 */ struct {
@@ -100137,7 +98630,7 @@ func Xiconv(tls *TLS, cd Ticonv_t, in uintptr, inb uintptr, out uintptr, outb ui
 	}
 	var _ /* tmp at bp+56 */ [4]uint8
 	var _ /* wc at bp+32 */ Twchar_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c, d, err, from, i, i1, j, j1, k, l, loc, map1, ploc, scd, tmplen, tmpx, to, tomap, totype, tp, type1, x, v1, v100, v101, v102, v103, v104, v105, v106, v27, v28, v29, v30, v56, v57, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v99
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c, d, err, from, i, i1, j, j1, k, l, loc, map1, ploc, scd, tmplen, tmpx, to, tomap, totype, type1, x, v100, v101, v102, v103, v104, v25, v26, v27, v28, v54, v55, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v99
 	x = uint64(0)
 	scd = uintptr(0)
 	if !(uint64(cd)&Uint64FromInt32(1) != 0) {
@@ -100150,14 +98643,8 @@ func Xiconv(tls *TLS, cd Ticonv_t, in uintptr, inb uintptr, out uintptr, outb ui
 	tomap = uintptr(unsafe.Pointer(&_charmaps)) + uintptr(to) + uintptr(1)
 	*(*Tmbstate_t)(unsafe.Pointer(bp + 24)) = Tmbstate_t{}
 	type1 = *(*uint8)(unsafe.Pointer(map1 + uintptr(-Int32FromInt32(1))))
-	totype = *(*uint8)(unsafe.Pointer(tomap + uintptr(-Int32FromInt32(1)))) //TODO "tp" // pthread_arch.h:3:21:
-	panic(0)                                                                // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+1544)
-	v1 = tp
-	goto _2
-_2:
-	ploc = uintptr(v1) + 152
+	totype = *(*uint8)(unsafe.Pointer(tomap + uintptr(-Int32FromInt32(1))))
+	ploc = ___get_tp(tls) + 152
 	loc = *(*Tlocale_t)(unsafe.Pointer(ploc))
 	if !(in != 0) || !(*(*uintptr)(unsafe.Pointer(in)) != 0) || !(*(*Tsize_t)(unsafe.Pointer(inb)) != 0) {
 		return uint64(0)
@@ -100171,53 +98658,53 @@ _2:
 		l = uint64(1)
 		switch int32(type1) {
 		case int32(UTF_8):
-			goto _4
+			goto _2
 		case int32(US_ASCII):
-			goto _5
+			goto _3
 		case int32(WCHAR_T):
-			goto _6
+			goto _4
 		case int32(UTF_32LE):
-			goto _7
+			goto _5
 		case int32(UTF_32BE):
-			goto _8
+			goto _6
 		case int32(UTF_16LE):
-			goto _9
+			goto _7
 		case int32(UTF_16BE):
-			goto _10
+			goto _8
 		case int32(UCS2LE):
-			goto _11
+			goto _9
 		case int32(UCS2BE):
-			goto _12
+			goto _10
 		case int32(UTF_16):
-			goto _13
+			goto _11
 		case int32(UCS2):
-			goto _14
+			goto _12
 		case int32(UTF_32):
-			goto _15
+			goto _13
 		case int32(SHIFT_JIS):
-			goto _16
+			goto _14
 		case int32(EUC_JP):
-			goto _17
+			goto _15
 		case int32(ISO2022_JP):
-			goto _18
+			goto _16
 		case int32(GB2312):
-			goto _19
+			goto _17
 		case int32(GBK):
-			goto _20
+			goto _18
 		case int32(GB18030):
-			goto _21
+			goto _19
 		case int32(BIG5):
-			goto _22
+			goto _20
 		case int32(EUC_KR):
-			goto _23
+			goto _21
 		default:
-			goto _24
+			goto _22
 		}
-		goto _25
-	_4:
+		goto _23
+	_2:
 		;
 		if c < uint32(128) {
-			goto _25
+			goto _23
 		}
 		l = Xmbrtowc(tls, bp+32, *(*uintptr)(unsafe.Pointer(in)), *(*Tsize_t)(unsafe.Pointer(inb)), bp+24)
 		if l == uint64(-Int32FromInt32(1)) {
@@ -100227,14 +98714,14 @@ _2:
 			goto starved
 		}
 		c = uint32(*(*Twchar_t)(unsafe.Pointer(bp + 32)))
-		goto _25
-	_5:
+		goto _23
+	_3:
 		;
 		if c >= uint32(128) {
 			goto ilseq
 		}
-		goto _25
-	_6:
+		goto _23
+	_4:
 		;
 		l = uint64(4)
 		if *(*Tsize_t)(unsafe.Pointer(inb)) < l {
@@ -100242,30 +98729,30 @@ _2:
 		}
 		c = uint32(*(*Twchar_t)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(in)))))
 		if !(0 != 0) {
-			goto _26
+			goto _24
 		}
-	_8:
+	_6:
 		;
-	_7:
+	_5:
 		;
 		l = uint64(4)
 		if *(*Tsize_t)(unsafe.Pointer(inb)) < uint64(4) {
 			goto starved
 		}
 		c = _get_32(tls, *(*uintptr)(unsafe.Pointer(in)), int32(type1))
-	_26:
+	_24:
 		;
 		if c-uint32(0xd800) < uint32(0x800) || c >= uint32(0x110000) {
 			goto ilseq
 		}
-		goto _25
-	_12:
-		;
-	_11:
-		;
+		goto _23
 	_10:
 		;
 	_9:
+		;
+	_8:
+		;
+	_7:
 		;
 		l = uint64(2)
 		if *(*Tsize_t)(unsafe.Pointer(inb)) < uint64(2) {
@@ -100289,10 +98776,10 @@ _2:
 			}
 			c = (c-uint32(0xd7c0))<<int32(10) + (d - uint32(0xdc00))
 		}
-		goto _25
-	_14:
+		goto _23
+	_12:
 		;
-	_13:
+	_11:
 		;
 		l = uint64(0)
 		if !((*Tstateful_cd)(unsafe.Pointer(scd)).Fstate != 0) {
@@ -100302,27 +98789,27 @@ _2:
 			c = _get_16(tls, *(*uintptr)(unsafe.Pointer(in)), 0)
 			if int32(type1) == int32(UCS2) {
 				if c == uint32(0xfffe) {
-					v28 = int32(UCS2LE)
+					v26 = int32(UCS2LE)
 				} else {
-					v28 = int32(UCS2BE)
+					v26 = int32(UCS2BE)
 				}
-				v27 = v28
+				v25 = v26
 			} else {
 				if c == uint32(0xfffe) {
-					v29 = int32(UTF_16LE)
+					v27 = int32(UTF_16LE)
 				} else {
-					v29 = int32(UTF_16BE)
+					v27 = int32(UTF_16BE)
 				}
-				v27 = v29
+				v25 = v27
 			}
-			(*Tstateful_cd)(unsafe.Pointer(scd)).Fstate = uint32(v27)
+			(*Tstateful_cd)(unsafe.Pointer(scd)).Fstate = uint32(v25)
 			if c == uint32(0xfffe) || c == uint32(0xfeff) {
 				l = uint64(2)
 			}
 		}
 		type1 = uint8((*Tstateful_cd)(unsafe.Pointer(scd)).Fstate)
-		goto _3
-	_15:
+		goto _1
+	_13:
 		;
 		l = uint64(0)
 		if !((*Tstateful_cd)(unsafe.Pointer(scd)).Fstate != 0) {
@@ -100331,25 +98818,25 @@ _2:
 			}
 			c = _get_32(tls, *(*uintptr)(unsafe.Pointer(in)), 0)
 			if c == uint32(0xfffe0000) {
-				v30 = int32(UTF_32LE)
+				v28 = int32(UTF_32LE)
 			} else {
-				v30 = int32(UTF_32BE)
+				v28 = int32(UTF_32BE)
 			}
-			(*Tstateful_cd)(unsafe.Pointer(scd)).Fstate = uint32(v30)
+			(*Tstateful_cd)(unsafe.Pointer(scd)).Fstate = uint32(v28)
 			if c == uint32(0xfffe0000) || c == uint32(0xfeff) {
 				l = uint64(4)
 			}
 		}
 		type1 = uint8((*Tstateful_cd)(unsafe.Pointer(scd)).Fstate)
-		goto _3
-	_16:
+		goto _1
+	_14:
 		;
 		if c < uint32(128) {
-			goto _25
+			goto _23
 		}
 		if c-uint32(0xa1) <= uint32(Int32FromInt32(0xdf)-Int32FromInt32(0xa1)) {
 			c += uint32(Int32FromInt32(0xff61) - Int32FromInt32(0xa1))
-			goto _25
+			goto _23
 		}
 		l = uint64(2)
 		if *(*Tsize_t)(unsafe.Pointer(inb)) < uint64(2) {
@@ -100387,11 +98874,11 @@ _2:
 		if !(c != 0) {
 			goto ilseq
 		}
-		goto _25
-	_17:
+		goto _23
+	_15:
 		;
 		if c < uint32(128) {
-			goto _25
+			goto _23
 		}
 		l = uint64(2)
 		if *(*Tsize_t)(unsafe.Pointer(inb)) < uint64(2) {
@@ -100404,7 +98891,7 @@ _2:
 				goto ilseq
 			}
 			c += uint32(Int32FromInt32(0xff61) - Int32FromInt32(0xa1))
-			goto _25
+			goto _23
 		}
 		c -= uint32(0xa1)
 		d -= uint32(0xa1)
@@ -100415,8 +98902,8 @@ _2:
 		if !(c != 0) {
 			goto ilseq
 		}
-		goto _25
-	_18:
+		goto _23
+	_16:
 		;
 		if c >= uint32(128) {
 			goto ilseq
@@ -100434,19 +98921,19 @@ _2:
 			switch uint32(Int32FromInt32(128)*BoolInt32(c == Uint32FromUint8('$'))) + d {
 			case uint32('B'):
 				(*Tstateful_cd)(unsafe.Pointer(scd)).Fstate = uint32(0)
-				goto _3
+				goto _1
 			case uint32('J'):
 				(*Tstateful_cd)(unsafe.Pointer(scd)).Fstate = uint32(1)
-				goto _3
+				goto _1
 			case uint32('I'):
 				(*Tstateful_cd)(unsafe.Pointer(scd)).Fstate = uint32(4)
-				goto _3
+				goto _1
 			case uint32(Int32FromInt32(128) + Int32FromUint8('@')):
 				(*Tstateful_cd)(unsafe.Pointer(scd)).Fstate = uint32(2)
-				goto _3
+				goto _1
 			case uint32(Int32FromInt32(128) + Int32FromUint8('B')):
 				(*Tstateful_cd)(unsafe.Pointer(scd)).Fstate = uint32(3)
-				goto _3
+				goto _1
 			}
 			goto ilseq
 		}
@@ -100484,25 +98971,25 @@ _2:
 			}
 			break
 		}
-		goto _25
-	_19:
+		goto _23
+	_17:
 		;
 		if c < uint32(128) {
-			goto _25
+			goto _23
 		}
 		if c < uint32(0xa1) {
 			goto ilseq
 		}
-	_20:
+	_18:
 		;
 		if c == uint32(128) {
 			c = uint32(0x20ac)
-			goto _25
+			goto _23
 		}
-	_21:
+	_19:
 		;
 		if c < uint32(128) {
-			goto _25
+			goto _23
 		}
 		c -= uint32(0x81)
 		if c >= uint32(126) {
@@ -100555,33 +99042,33 @@ _2:
 						if uint32(*(*uint16)(unsafe.Pointer(uintptr(unsafe.Pointer(&_gb18030)) + uintptr(i)*380 + uintptr(j)*2)))-d <= c-d {
 							k++
 						}
-						goto _33
-					_33:
+						goto _31
+					_31:
 						;
 						j++
 					}
-					goto _32
-				_32:
+					goto _30
+				_30:
 					;
 					i++
 				}
 				d = c + uint32(1)
 				c = uint32(uint64(c) + k)
-				goto _31
-			_31:
+				goto _29
+			_29:
 			}
-			goto _25
+			goto _23
 		}
 		d -= uint32(0x40)
 		if d > uint32(63) {
 			d--
 		}
 		c = uint32(*(*uint16)(unsafe.Pointer(uintptr(unsafe.Pointer(&_gb18030)) + uintptr(c)*380 + uintptr(d)*2)))
-		goto _25
-	_22:
+		goto _23
+	_20:
 		;
 		if c < uint32(128) {
-			goto _25
+			goto _23
 		}
 		l = uint64(2)
 		if *(*Tsize_t)(unsafe.Pointer(inb)) < uint64(2) {
@@ -100611,10 +99098,10 @@ _2:
 			 * here. Ugly, yes. */
 			if c/uint32(256) == uint32(0xdc) {
 				*(*uintptr)(unsafe.Pointer(bp + 48)) = bp + 40
-				*(*uintptr)(unsafe.Pointer(bp)) = __ccgo_ts + 1550 + uintptr(c%uint32(256))
+				*(*uintptr)(unsafe.Pointer(bp)) = __ccgo_ts + 542 + uintptr(c%uint32(256))
 				*(*Tsize_t)(unsafe.Pointer(bp + 8)) = uint64(4)
 				*(*Tsize_t)(unsafe.Pointer(bp + 16)) = uint64(8)
-				tmpx = Xiconv(tls, _combine_to_from(tls, uint64(to), _find_charmap(tls, __ccgo_ts+1567)), bp, bp+8, bp+48, bp+16)
+				tmpx = Xiconv(tls, _combine_to_from(tls, uint64(to), _find_charmap(tls, __ccgo_ts+559)), bp, bp+8, bp+48, bp+16)
 				tmplen = uint64(int64(*(*uintptr)(unsafe.Pointer(bp + 48))) - t__predefined_ptrdiff_t(bp+40))
 				if tmplen > *(*Tsize_t)(unsafe.Pointer(outb)) {
 					goto toobig
@@ -100625,23 +99112,23 @@ _2:
 				Xmemcpy(tls, *(*uintptr)(unsafe.Pointer(out)), bp+40, tmplen)
 				*(*uintptr)(unsafe.Pointer(out)) += uintptr(tmplen)
 				*(*Tsize_t)(unsafe.Pointer(outb)) -= tmplen
-				goto _3
+				goto _1
 			}
 			if !(c != 0) {
 				goto ilseq
 			}
-			goto _25
+			goto _23
 		}
 		c -= uint32(0xa1)
 		c = uint32(int32(*(*uint16)(unsafe.Pointer(uintptr(unsafe.Pointer(&_big5)) + uintptr(c)*314 + uintptr(d)*2))) | BoolInt32(c == uint32(0x27) && (d == uint32(0x3a) || d == uint32(0x3c) || d == uint32(0x42)))<<int32(17))
 		if !(c != 0) {
 			goto ilseq
 		}
-		goto _25
-	_23:
+		goto _23
+	_21:
 		;
 		if c < uint32(128) {
-			goto _25
+			goto _23
 		}
 		l = uint64(2)
 		if *(*Tsize_t)(unsafe.Pointer(inb)) < uint64(2) {
@@ -100694,75 +99181,75 @@ _2:
 						if uint32(*(*uint16)(unsafe.Pointer(uintptr(unsafe.Pointer(&_ksc)) + uintptr(i1)*188 + uintptr(j1)*2)))-d <= c-d {
 							k++
 						}
-						goto _36
-					_36:
+						goto _34
+					_34:
 						;
 						j1++
 					}
-					goto _35
-				_35:
+					goto _33
+				_33:
 					;
 					i1++
 				}
 				d = c + uint32(1)
 				c = uint32(uint64(c) + k)
-				goto _34
-			_34:
+				goto _32
+			_32:
 			}
-			goto _25
+			goto _23
 		}
 		c = uint32(*(*uint16)(unsafe.Pointer(uintptr(unsafe.Pointer(&_ksc)) + uintptr(c)*188 + uintptr(d)*2)))
 		if !(c != 0) {
 			goto ilseq
 		}
-		goto _25
-	_24:
+		goto _23
+	_22:
 		;
 		if !(c != 0) {
-			goto _25
+			goto _23
 		}
 		c = _legacy_map(tls, map1, c)
 		if !(c != 0) {
 			goto ilseq
 		}
-	_25:
+	_23:
 		;
 		switch int32(totype) {
 		case int32(WCHAR_T):
-			goto _37
+			goto _35
 		case int32(UTF_8):
-			goto _38
+			goto _36
 		case int32(US_ASCII):
-			goto _39
+			goto _37
 		default:
-			goto _40
+			goto _38
 		case int32(SHIFT_JIS):
-			goto _41
+			goto _39
 		case int32(EUC_JP):
-			goto _42
+			goto _40
 		case int32(ISO2022_JP):
-			goto _43
+			goto _41
 		case int32(UCS2):
-			goto _44
+			goto _42
 		case int32(UTF_16LE):
-			goto _45
+			goto _43
 		case int32(UTF_16BE):
-			goto _46
+			goto _44
 		case int32(UTF_16):
-			goto _47
+			goto _45
 		case int32(UCS2LE):
-			goto _48
+			goto _46
 		case int32(UCS2BE):
-			goto _49
+			goto _47
 		case int32(UTF_32):
-			goto _50
+			goto _48
 		case int32(UTF_32LE):
-			goto _51
+			goto _49
 		case int32(UTF_32BE):
-			goto _52
+			goto _50
 		}
-		goto _53
-	_37:
+		goto _51
+	_35:
 		;
 		if *(*Tsize_t)(unsafe.Pointer(outb)) < uint64(4) {
 			goto toobig
@@ -100770,8 +99257,8 @@ _2:
 		*(*Twchar_t)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(out)))) = int32(c)
 		*(*uintptr)(unsafe.Pointer(out)) += uintptr(4)
 		*(*Tsize_t)(unsafe.Pointer(outb)) -= uint64(4)
-		goto _53
-	_38:
+		goto _51
+	_36:
 		;
 		if *(*Tsize_t)(unsafe.Pointer(outb)) < uint64(4) {
 			k = uint64(Xwctomb(tls, bp+56, int32(c)))
@@ -100784,26 +99271,26 @@ _2:
 		}
 		*(*uintptr)(unsafe.Pointer(out)) += uintptr(k)
 		*(*Tsize_t)(unsafe.Pointer(outb)) -= k
-		goto _53
-	_39:
+		goto _51
+	_37:
 		;
 		if !(c > uint32(0x7f)) {
-			goto _54
+			goto _52
 		}
 		goto subst
 	subst:
 		;
 		x++
 		c = Uint32FromUint8('*')
-	_54:
+	_52:
 		;
-	_40:
+	_38:
 		;
 		if *(*Tsize_t)(unsafe.Pointer(outb)) < uint64(1) {
 			goto toobig
 		}
 		if !(c < uint32(256) && c == _legacy_map(tls, tomap, c)) {
-			goto _55
+			goto _53
 		}
 		goto revout
 	revout:
@@ -100811,13 +99298,13 @@ _2:
 		if *(*Tsize_t)(unsafe.Pointer(outb)) < uint64(1) {
 			goto toobig
 		}
-		v57 = out
-		v56 = *(*uintptr)(unsafe.Pointer(v57))
-		*(*uintptr)(unsafe.Pointer(v57))++
-		*(*uint8)(unsafe.Pointer(v56)) = uint8(c)
+		v55 = out
+		v54 = *(*uintptr)(unsafe.Pointer(v55))
+		*(*uintptr)(unsafe.Pointer(v55))++
+		*(*uint8)(unsafe.Pointer(v54)) = uint8(c)
 		*(*Tsize_t)(unsafe.Pointer(outb)) -= uint64(1)
-		goto _53
-	_55:
+		goto _51
+	_53:
 		;
 		d = c
 		c = uint32(int32(4) * int32(totype))
@@ -100828,13 +99315,13 @@ _2:
 			if d == _legacy_map(tls, tomap, c) {
 				goto revout
 			}
-			goto _58
-		_58:
+			goto _56
+		_56:
 			;
 			c++
 		}
 		goto subst
-	_41:
+	_39:
 		;
 		if c < uint32(128) {
 			goto revout
@@ -100862,27 +99349,27 @@ _2:
 		}
 		d = c % uint32(256)
 		c = c / uint32(256)
-		v60 = out
-		v59 = *(*uintptr)(unsafe.Pointer(v60))
-		*(*uintptr)(unsafe.Pointer(v60))++
+		v58 = out
+		v57 = *(*uintptr)(unsafe.Pointer(v58))
+		*(*uintptr)(unsafe.Pointer(v58))++
 		if c < uint32(95) {
-			v61 = int32(112)
+			v59 = int32(112)
 		} else {
-			v61 = int32(176)
+			v59 = int32(176)
 		}
-		*(*uint8)(unsafe.Pointer(v59)) = uint8((c+uint32(1))/uint32(2) + uint32(v61))
-		v63 = out
-		v62 = *(*uintptr)(unsafe.Pointer(v63))
-		*(*uintptr)(unsafe.Pointer(v63))++
+		*(*uint8)(unsafe.Pointer(v57)) = uint8((c+uint32(1))/uint32(2) + uint32(v59))
+		v61 = out
+		v60 = *(*uintptr)(unsafe.Pointer(v61))
+		*(*uintptr)(unsafe.Pointer(v61))++
 		if c%uint32(2) != 0 {
-			v64 = d + uint32(31) + d/uint32(96)
+			v62 = d + uint32(31) + d/uint32(96)
 		} else {
-			v64 = d + uint32(126)
+			v62 = d + uint32(126)
 		}
-		*(*uint8)(unsafe.Pointer(v62)) = uint8(v64)
+		*(*uint8)(unsafe.Pointer(v60)) = uint8(v62)
 		*(*Tsize_t)(unsafe.Pointer(outb)) -= uint64(2)
-		goto _53
-	_42:
+		goto _51
+	_40:
 		;
 		if c < uint32(128) {
 			goto revout
@@ -100898,17 +99385,17 @@ _2:
 		if *(*Tsize_t)(unsafe.Pointer(outb)) < uint64(2) {
 			goto toobig
 		}
+		v64 = out
+		v63 = *(*uintptr)(unsafe.Pointer(v64))
+		*(*uintptr)(unsafe.Pointer(v64))++
+		*(*uint8)(unsafe.Pointer(v63)) = uint8(c/uint32(256) + uint32(0x80))
 		v66 = out
 		v65 = *(*uintptr)(unsafe.Pointer(v66))
 		*(*uintptr)(unsafe.Pointer(v66))++
-		*(*uint8)(unsafe.Pointer(v65)) = uint8(c/uint32(256) + uint32(0x80))
-		v68 = out
-		v67 = *(*uintptr)(unsafe.Pointer(v68))
-		*(*uintptr)(unsafe.Pointer(v68))++
-		*(*uint8)(unsafe.Pointer(v67)) = uint8(c%uint32(256) + uint32(0x80))
+		*(*uint8)(unsafe.Pointer(v65)) = uint8(c%uint32(256) + uint32(0x80))
 		*(*Tsize_t)(unsafe.Pointer(outb)) -= uint64(2)
-		goto _53
-	_43:
+		goto _51
+	_41:
 		;
 		if c < uint32(128) {
 			goto revout
@@ -100917,58 +99404,58 @@ _2:
 			if *(*Tsize_t)(unsafe.Pointer(outb)) < uint64(7) {
 				goto toobig
 			}
+			v68 = out
+			v67 = *(*uintptr)(unsafe.Pointer(v68))
+			*(*uintptr)(unsafe.Pointer(v68))++
+			*(*uint8)(unsafe.Pointer(v67)) = uint8('\033')
 			v70 = out
 			v69 = *(*uintptr)(unsafe.Pointer(v70))
 			*(*uintptr)(unsafe.Pointer(v70))++
-			*(*uint8)(unsafe.Pointer(v69)) = uint8('\033')
-			v72 = out
-			v71 = *(*uintptr)(unsafe.Pointer(v72))
-			*(*uintptr)(unsafe.Pointer(v72))++
-			*(*uint8)(unsafe.Pointer(v71)) = uint8('(')
+			*(*uint8)(unsafe.Pointer(v69)) = uint8('(')
 			if c == uint32(0xa5) {
+				v72 = out
+				v71 = *(*uintptr)(unsafe.Pointer(v72))
+				*(*uintptr)(unsafe.Pointer(v72))++
+				*(*uint8)(unsafe.Pointer(v71)) = uint8('J')
 				v74 = out
 				v73 = *(*uintptr)(unsafe.Pointer(v74))
 				*(*uintptr)(unsafe.Pointer(v74))++
-				*(*uint8)(unsafe.Pointer(v73)) = uint8('J')
-				v76 = out
-				v75 = *(*uintptr)(unsafe.Pointer(v76))
-				*(*uintptr)(unsafe.Pointer(v76))++
-				*(*uint8)(unsafe.Pointer(v75)) = uint8('\\')
+				*(*uint8)(unsafe.Pointer(v73)) = uint8('\\')
 			} else {
 				if c == uint32(0x203e) {
+					v76 = out
+					v75 = *(*uintptr)(unsafe.Pointer(v76))
+					*(*uintptr)(unsafe.Pointer(v76))++
+					*(*uint8)(unsafe.Pointer(v75)) = uint8('J')
 					v78 = out
 					v77 = *(*uintptr)(unsafe.Pointer(v78))
 					*(*uintptr)(unsafe.Pointer(v78))++
-					*(*uint8)(unsafe.Pointer(v77)) = uint8('J')
+					*(*uint8)(unsafe.Pointer(v77)) = uint8('~')
+				} else {
 					v80 = out
 					v79 = *(*uintptr)(unsafe.Pointer(v80))
 					*(*uintptr)(unsafe.Pointer(v80))++
-					*(*uint8)(unsafe.Pointer(v79)) = uint8('~')
-				} else {
+					*(*uint8)(unsafe.Pointer(v79)) = uint8('I')
 					v82 = out
 					v81 = *(*uintptr)(unsafe.Pointer(v82))
 					*(*uintptr)(unsafe.Pointer(v82))++
-					*(*uint8)(unsafe.Pointer(v81)) = uint8('I')
-					v84 = out
-					v83 = *(*uintptr)(unsafe.Pointer(v84))
-					*(*uintptr)(unsafe.Pointer(v84))++
-					*(*uint8)(unsafe.Pointer(v83)) = uint8(c - uint32(0xff61) + uint32(0x21))
+					*(*uint8)(unsafe.Pointer(v81)) = uint8(c - uint32(0xff61) + uint32(0x21))
 				}
 			}
+			v84 = out
+			v83 = *(*uintptr)(unsafe.Pointer(v84))
+			*(*uintptr)(unsafe.Pointer(v84))++
+			*(*uint8)(unsafe.Pointer(v83)) = uint8('\033')
 			v86 = out
 			v85 = *(*uintptr)(unsafe.Pointer(v86))
 			*(*uintptr)(unsafe.Pointer(v86))++
-			*(*uint8)(unsafe.Pointer(v85)) = uint8('\033')
+			*(*uint8)(unsafe.Pointer(v85)) = uint8('(')
 			v88 = out
 			v87 = *(*uintptr)(unsafe.Pointer(v88))
 			*(*uintptr)(unsafe.Pointer(v88))++
-			*(*uint8)(unsafe.Pointer(v87)) = uint8('(')
-			v90 = out
-			v89 = *(*uintptr)(unsafe.Pointer(v90))
-			*(*uintptr)(unsafe.Pointer(v90))++
-			*(*uint8)(unsafe.Pointer(v89)) = uint8('B')
+			*(*uint8)(unsafe.Pointer(v87)) = uint8('B')
 			*(*Tsize_t)(unsafe.Pointer(outb)) -= uint64(7)
-			goto _53
+			goto _51
 		}
 		c = _uni_to_jis(tls, c)
 		if !(c != 0) {
@@ -100977,52 +99464,52 @@ _2:
 		if *(*Tsize_t)(unsafe.Pointer(outb)) < uint64(8) {
 			goto toobig
 		}
+		v90 = out
+		v89 = *(*uintptr)(unsafe.Pointer(v90))
+		*(*uintptr)(unsafe.Pointer(v90))++
+		*(*uint8)(unsafe.Pointer(v89)) = uint8('\033')
 		v92 = out
 		v91 = *(*uintptr)(unsafe.Pointer(v92))
 		*(*uintptr)(unsafe.Pointer(v92))++
-		*(*uint8)(unsafe.Pointer(v91)) = uint8('\033')
+		*(*uint8)(unsafe.Pointer(v91)) = uint8('$')
 		v94 = out
 		v93 = *(*uintptr)(unsafe.Pointer(v94))
 		*(*uintptr)(unsafe.Pointer(v94))++
-		*(*uint8)(unsafe.Pointer(v93)) = uint8('$')
+		*(*uint8)(unsafe.Pointer(v93)) = uint8('B')
 		v96 = out
 		v95 = *(*uintptr)(unsafe.Pointer(v96))
 		*(*uintptr)(unsafe.Pointer(v96))++
-		*(*uint8)(unsafe.Pointer(v95)) = uint8('B')
+		*(*uint8)(unsafe.Pointer(v95)) = uint8(c / uint32(256))
 		v98 = out
 		v97 = *(*uintptr)(unsafe.Pointer(v98))
 		*(*uintptr)(unsafe.Pointer(v98))++
-		*(*uint8)(unsafe.Pointer(v97)) = uint8(c / uint32(256))
+		*(*uint8)(unsafe.Pointer(v97)) = uint8(c % uint32(256))
 		v100 = out
 		v99 = *(*uintptr)(unsafe.Pointer(v100))
 		*(*uintptr)(unsafe.Pointer(v100))++
-		*(*uint8)(unsafe.Pointer(v99)) = uint8(c % uint32(256))
+		*(*uint8)(unsafe.Pointer(v99)) = uint8('\033')
 		v102 = out
 		v101 = *(*uintptr)(unsafe.Pointer(v102))
 		*(*uintptr)(unsafe.Pointer(v102))++
-		*(*uint8)(unsafe.Pointer(v101)) = uint8('\033')
+		*(*uint8)(unsafe.Pointer(v101)) = uint8('(')
 		v104 = out
 		v103 = *(*uintptr)(unsafe.Pointer(v104))
 		*(*uintptr)(unsafe.Pointer(v104))++
-		*(*uint8)(unsafe.Pointer(v103)) = uint8('(')
-		v106 = out
-		v105 = *(*uintptr)(unsafe.Pointer(v106))
-		*(*uintptr)(unsafe.Pointer(v106))++
-		*(*uint8)(unsafe.Pointer(v105)) = uint8('B')
+		*(*uint8)(unsafe.Pointer(v103)) = uint8('B')
 		*(*Tsize_t)(unsafe.Pointer(outb)) -= uint64(8)
-		goto _53
-	_44:
+		goto _51
+	_42:
 		;
 		totype = uint8(UCS2BE)
-	_49:
-		;
-	_48:
-		;
 	_47:
 		;
 	_46:
 		;
 	_45:
+		;
+	_44:
+		;
+	_43:
 		;
 		if c < uint32(0x10000) || uint32(int32(totype)-int32(UCS2BE)) < uint32(2) {
 			if c >= uint32(0x10000) {
@@ -101034,7 +99521,7 @@ _2:
 			_put_16(tls, *(*uintptr)(unsafe.Pointer(out)), c, int32(totype))
 			*(*uintptr)(unsafe.Pointer(out)) += uintptr(2)
 			*(*Tsize_t)(unsafe.Pointer(outb)) -= uint64(2)
-			goto _53
+			goto _51
 		}
 		if *(*Tsize_t)(unsafe.Pointer(outb)) < uint64(4) {
 			goto toobig
@@ -101044,13 +99531,13 @@ _2:
 		_put_16(tls, *(*uintptr)(unsafe.Pointer(out))+UintptrFromInt32(2), c&uint32(0x3ff)|uint32(0xdc00), int32(totype))
 		*(*uintptr)(unsafe.Pointer(out)) += uintptr(4)
 		*(*Tsize_t)(unsafe.Pointer(outb)) -= uint64(4)
-		goto _53
-	_50:
+		goto _51
+	_48:
 		;
 		totype = uint8(UTF_32BE)
-	_52:
+	_50:
 		;
-	_51:
+	_49:
 		;
 		if *(*Tsize_t)(unsafe.Pointer(outb)) < uint64(4) {
 			goto toobig
@@ -101058,11 +99545,11 @@ _2:
 		_put_32(tls, *(*uintptr)(unsafe.Pointer(out)), c, int32(totype))
 		*(*uintptr)(unsafe.Pointer(out)) += uintptr(4)
 		*(*Tsize_t)(unsafe.Pointer(outb)) -= uint64(4)
-		goto _53
-	_53:
+		goto _51
+	_51:
 		;
-		goto _3
-	_3:
+		goto _1
+	_1:
 		;
 		*(*uintptr)(unsafe.Pointer(in)) += uintptr(l)
 		*(*Tsize_t)(unsafe.Pointer(inb)) -= l
@@ -101122,9 +99609,9 @@ func X__nl_langinfo_l(tls *TLS, item Tnl_item, loc Tlocale_t) (r uintptr) {
 	idx = item & int32(65535)
 	if item == int32(CODESET) {
 		if *(*uintptr)(unsafe.Pointer(loc)) != 0 {
-			v1 = __ccgo_ts + 1421
+			v1 = __ccgo_ts + 419
 		} else {
-			v1 = __ccgo_ts + 1572
+			v1 = __ccgo_ts + 564
 		}
 		return v1
 	}
@@ -101133,7 +99620,7 @@ func X__nl_langinfo_l(tls *TLS, item Tnl_item, loc Tlocale_t) (r uintptr) {
 		if *(*uintptr)(unsafe.Pointer(loc + uintptr(cat)*8)) != 0 {
 			v2 = *(*uintptr)(unsafe.Pointer(loc + uintptr(cat)*8)) + 16
 		} else {
-			v2 = __ccgo_ts + 1578
+			v2 = __ccgo_ts + 570
 		}
 		return v2
 	}
@@ -101191,16 +99678,7 @@ func X__nl_langinfo(tls *TLS, item Tnl_item) (r uintptr) {
 		trc("tls=%v item=%v, (%v:)", tls, item, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+1580)
-	v1 = tp
-	goto _2
-_2:
-	return X__nl_langinfo_l(tls, item, (*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale)
+	return X__nl_langinfo_l(tls, item, (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)
 }
 
 func Xnl_langinfo(tls *TLS, item Tnl_item) (r uintptr) {
@@ -101264,18 +99742,18 @@ func X__get_locale(tls *TLS, cat int32, val uintptr) (r uintptr) {
 	new1 = uintptr(0)
 	path = uintptr(0)
 	if !(*(*uint8)(unsafe.Pointer(val)) != 0) {
-		v1 = Xgetenv(tls, __ccgo_ts+1594)
+		v1 = Xgetenv(tls, __ccgo_ts+572)
 		val = v1
 		if v3 = v1 != 0 && *(*uint8)(unsafe.Pointer(val)) != 0; !v3 {
 			v2 = Xgetenv(tls, uintptr(unsafe.Pointer(&_envvars))+uintptr(cat)*12)
 			val = v2
 		}
 		if v5 = v3 || v2 != 0 && *(*uint8)(unsafe.Pointer(val)) != 0; !v5 {
-			v4 = Xgetenv(tls, __ccgo_ts+1435)
+			v4 = Xgetenv(tls, __ccgo_ts+433)
 			val = v4
 		}
 		if v7 = v5 || v4 != 0 && *(*uint8)(unsafe.Pointer(val)) != 0; !v7 {
-			v6 = __ccgo_ts + 1601
+			v6 = __ccgo_ts + 579
 			val = v6
 		}
 		_ = v7 || v6 != 0
@@ -101292,9 +99770,9 @@ func X__get_locale(tls *TLS, cat int32, val uintptr) (r uintptr) {
 		n++
 	}
 	if int32(*(*uint8)(unsafe.Pointer(val))) == int32('.') || *(*uint8)(unsafe.Pointer(val + uintptr(n))) != 0 {
-		val = __ccgo_ts + 1601
+		val = __ccgo_ts + 579
 	}
-	builtin = BoolInt32(int32(*(*uint8)(unsafe.Pointer(val))) == int32('C') && !(*(*uint8)(unsafe.Pointer(val + 1)) != 0) || !(Xstrcmp(tls, val, __ccgo_ts+1601) != 0) || !(Xstrcmp(tls, val, __ccgo_ts+1609) != 0))
+	builtin = BoolInt32(int32(*(*uint8)(unsafe.Pointer(val))) == int32('C') && !(*(*uint8)(unsafe.Pointer(val + 1)) != 0) || !(Xstrcmp(tls, val, __ccgo_ts+579) != 0) || !(Xstrcmp(tls, val, __ccgo_ts+587) != 0))
 	if builtin != 0 {
 		if cat == LC_CTYPE && int32(*(*uint8)(unsafe.Pointer(val + 1))) == int32('.') {
 			return uintptr(unsafe.Pointer(&X__c_dot_utf8))
@@ -101315,7 +99793,7 @@ func X__get_locale(tls *TLS, cat int32, val uintptr) (r uintptr) {
 		p = (*t__locale_map)(unsafe.Pointer(p)).Fnext
 	}
 	if !(X__libc.Fsecure != 0) {
-		path = Xgetenv(tls, __ccgo_ts+1615)
+		path = Xgetenv(tls, __ccgo_ts+593)
 	}
 	/* FIXME: add a default path? */
 	if path != 0 {
@@ -101389,7 +99867,7 @@ var _loc_head uintptr
  * from SUS and have nothing to do with the host system. */
 
 var _posix_lconv = Tlconv{
-	Fdecimal_point:      __ccgo_ts + 1628,
+	Fdecimal_point:      __ccgo_ts + 606,
 	Fthousands_sep:      __ccgo_ts,
 	Fgrouping:           __ccgo_ts,
 	Fint_curr_symbol:    __ccgo_ts,
@@ -101862,7 +100340,7 @@ func Xsetlocale(tls *TLS, cat int32, name uintptr) (r uintptr) {
 			if lm1 != 0 {
 				v3 = lm1 + 16
 			} else {
-				v3 = __ccgo_ts + 1578
+				v3 = __ccgo_ts + 570
 			}
 			part1 = v3
 			l = Xstrlen(tls, part1)
@@ -101898,7 +100376,7 @@ func Xsetlocale(tls *TLS, cat int32, name uintptr) (r uintptr) {
 	if lm != 0 {
 		v6 = lm + 16
 	} else {
-		v6 = __ccgo_ts + 1578
+		v6 = __ccgo_ts + 570
 	}
 	ret = v6
 	___unlock(tls, uintptr(unsafe.Pointer(&X__locale_lock)))
@@ -101918,16 +100396,7 @@ func Xstrcoll(tls *TLS, l uintptr, r uintptr) (r1 int32) {
 		trc("tls=%v l=%v r=%v, (%v:)", tls, l, r, origin(2))
 		defer func() { trc("-> %v", r1) }()
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+1630)
-	v1 = tp
-	goto _2
-_2:
-	return X__strcoll_l(tls, l, r, (*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale)
+	return X__strcoll_l(tls, l, r, (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)
 }
 
 func Xstrcoll_l(tls *TLS, l uintptr, r uintptr, loc Tlocale_t) (r1 int32) {
@@ -102053,7 +100522,7 @@ _4:
 		w = fw
 	}
 	x = VaFloat64(&ap)
-	l = uint64(Xsnprintf(tls, s, n, __ccgo_ts+1638, VaList(bp+8, w, rp, x)))
+	l = uint64(Xsnprintf(tls, s, n, __ccgo_ts+608, VaList(bp+8, w, rp, x)))
 	if l >= n {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(E2BIG)
 		return int64(-int32(1))
@@ -102091,17 +100560,9 @@ func Xstrfmon(tls *TLS, s uintptr, n Tsize_t, fmt uintptr, va uintptr) (r Tssize
 	}
 	var ap Tva_list
 	var ret Tssize_t
-	var tp, v1 Tuintptr_t
-	_, _, _, _ = ap, ret, tp, v1
+	_, _ = ap, ret
 	ap = va
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+1644)
-	v1 = tp
-	goto _2
-_2:
-	ret = _vstrfmon_l(tls, s, n, (*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale, fmt, ap)
+	ret = _vstrfmon_l(tls, s, n, (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale, fmt, ap)
 	_ = ap
 	return ret
 }
@@ -102176,16 +100637,7 @@ func Xstrxfrm(tls *TLS, dest uintptr, src uintptr, n Tsize_t) (r Tsize_t) {
 		trc("tls=%v dest=%v src=%v n=%v, (%v:)", tls, dest, src, n, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+1652)
-	v1 = tp
-	goto _2
-_2:
-	return X__strxfrm_l(tls, dest, src, n, (*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale)
+	return X__strxfrm_l(tls, dest, src, n, (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)
 }
 
 // C documentation
@@ -102220,7 +100672,7 @@ func X__gettextdomain(tls *TLS) (r uintptr) {
 	if _current_domain != 0 {
 		v1 = _current_domain
 	} else {
-		v1 = __ccgo_ts + 1464
+		v1 = __ccgo_ts + 462
 	}
 	return v1
 }
@@ -102271,33 +100723,26 @@ func X__uselocale(tls *TLS, new1 Tlocale_t) (r Tlocale_t) {
 		trc("tls=%v new1=%v, (%v:)", tls, new1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var global, old, v3, v4 Tlocale_t
+	var global, old, v1, v2 Tlocale_t
 	var self Tpthread_t
-	var tp, v1 Tuintptr_t
-	_, _, _, _, _, _, _ = global, old, self, tp, v1, v3, v4 //TODO "tp" // pthread_arch.h:3:21:
-	panic(0)                                                // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+1660)
-	v1 = tp
-	goto _2
-_2:
-	self = uintptr(v1)
+	_, _, _, _, _ = global, old, self, v1, v2
+	self = ___get_tp(tls)
 	old = (*t__pthread)(unsafe.Pointer(self)).Flocale
 	global = uintptr(unsafe.Pointer(&X__libc)) + 56
 	if new1 != 0 {
 		if new1 == uintptr(-Int32FromInt32(1)) {
-			v3 = global
+			v1 = global
 		} else {
-			v3 = new1
+			v1 = new1
 		}
-		(*t__pthread)(unsafe.Pointer(self)).Flocale = v3
+		(*t__pthread)(unsafe.Pointer(self)).Flocale = v1
 	}
 	if old == global {
-		v4 = uintptr(-Int32FromInt32(1))
+		v2 = uintptr(-Int32FromInt32(1))
 	} else {
-		v4 = old
+		v2 = old
 	}
-	return v4
+	return v2
 }
 
 func Xuselocale(tls *TLS, new1 Tlocale_t) (r Tlocale_t) {
@@ -102324,16 +100769,7 @@ func Xwcscoll(tls *TLS, l uintptr, r uintptr) (r1 int32) {
 		trc("tls=%v l=%v r=%v, (%v:)", tls, l, r, origin(2))
 		defer func() { trc("-> %v", r1) }()
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+1672)
-	v1 = tp
-	goto _2
-_2:
-	return X__wcscoll_l(tls, l, r, (*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale)
+	return X__wcscoll_l(tls, l, r, (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)
 }
 
 // C documentation
@@ -102374,16 +100810,7 @@ func Xwcsxfrm(tls *TLS, dest uintptr, src uintptr, n Tsize_t) (r Tsize_t) {
 		trc("tls=%v dest=%v src=%v n=%v, (%v:)", tls, dest, src, n, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+1680)
-	v1 = tp
-	goto _2
-_2:
-	return X__wcsxfrm_l(tls, dest, src, n, (*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale)
+	return X__wcsxfrm_l(tls, dest, src, n, (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)
 }
 
 // C documentation
@@ -107293,7 +105720,7 @@ func Xfma(tls *TLS, x1 float64, y float64, z float64) (r1 float64) {
 		e += int32(64)
 		v1 = *(*Tuint64_t)(unsafe.Pointer(bp))
 		// __asm__ ("cntlzd %0, %1" : "=r"(x) : "r"(x));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 60, __ccgo_ts+1688)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 60, __ccgo_ts+614)
 		v2 = int32(v1)
 		goto _3
 	_3:
@@ -107304,7 +105731,7 @@ func Xfma(tls *TLS, x1 float64, y float64, z float64) (r1 float64) {
 		if *(*Tuint64_t)(unsafe.Pointer(bp + 8)) != 0 {
 			v4 = *(*Tuint64_t)(unsafe.Pointer(bp + 8))
 			// __asm__ ("cntlzd %0, %1" : "=r"(x) : "r"(x));
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 60, __ccgo_ts+1688)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 60, __ccgo_ts+614)
 			v5 = int32(v4)
 			goto _6
 		_6:
@@ -115398,7 +113825,7 @@ func Xbasename(tls *TLS, s uintptr) (r uintptr) {
 	var i Tsize_t
 	_ = i
 	if !(s != 0) || !(*(*uint8)(unsafe.Pointer(s)) != 0) {
-		return __ccgo_ts + 1628
+		return __ccgo_ts + 606
 	}
 	i = Xstrlen(tls, s) - uint64(1)
 	for {
@@ -115439,7 +113866,7 @@ func Xdirname(tls *TLS, s uintptr) (r uintptr) {
 	var i Tsize_t
 	_ = i
 	if !(s != 0) || !(*(*uint8)(unsafe.Pointer(s)) != 0) {
-		return __ccgo_ts + 1628
+		return __ccgo_ts + 606
 	}
 	i = Xstrlen(tls, s) - uint64(1)
 	for {
@@ -115447,7 +113874,7 @@ func Xdirname(tls *TLS, s uintptr) (r uintptr) {
 			break
 		}
 		if !(i != 0) {
-			return __ccgo_ts + 1692
+			return __ccgo_ts + 618
 		}
 		goto _1
 	_1:
@@ -115459,7 +113886,7 @@ func Xdirname(tls *TLS, s uintptr) (r uintptr) {
 			break
 		}
 		if !(i != 0) {
-			return __ccgo_ts + 1628
+			return __ccgo_ts + 606
 		}
 		goto _2
 	_2:
@@ -115471,7 +113898,7 @@ func Xdirname(tls *TLS, s uintptr) (r uintptr) {
 			break
 		}
 		if !(i != 0) {
-			return __ccgo_ts + 1692
+			return __ccgo_ts + 618
 		}
 		goto _3
 	_3:
@@ -115593,33 +114020,33 @@ func Xfmtmsg(tls *TLS, classification int64, label uintptr, severity int32, text
 	ret = 0
 	verb = 0
 	errstring = uintptr(MM_NULLSEV)
-	cmsg = Xgetenv(tls, __ccgo_ts+1694)
+	cmsg = Xgetenv(tls, __ccgo_ts+620)
 	msgs = [6]uintptr{
-		0: __ccgo_ts + 1702,
-		1: __ccgo_ts + 1708,
-		2: __ccgo_ts + 1717,
-		3: __ccgo_ts + 1722,
-		4: __ccgo_ts + 1729,
+		0: __ccgo_ts + 628,
+		1: __ccgo_ts + 634,
+		2: __ccgo_ts + 643,
+		3: __ccgo_ts + 648,
+		4: __ccgo_ts + 655,
 		5: UintptrFromInt32(0),
 	}
 	_pthread_setcancelstate(tls, int32(PTHREAD_CANCEL_DISABLE), bp)
 	if severity == int32(MM_HALT) {
-		errstring = __ccgo_ts + 1733
+		errstring = __ccgo_ts + 659
 	} else {
 		if severity == int32(MM_ERROR) {
-			errstring = __ccgo_ts + 1740
+			errstring = __ccgo_ts + 666
 		} else {
 			if severity == int32(MM_WARNING) {
-				errstring = __ccgo_ts + 1748
+				errstring = __ccgo_ts + 674
 			} else {
 				if severity == int32(MM_INFO) {
-					errstring = __ccgo_ts + 1758
+					errstring = __ccgo_ts + 684
 				}
 			}
 		}
 	}
 	if classification&int64(MM_CONSOLE) != 0 {
-		consolefd = Xopen(tls, __ccgo_ts+1765, int32(O_WRONLY), 0)
+		consolefd = Xopen(tls, __ccgo_ts+691, int32(O_WRONLY), 0)
 		if consolefd < 0 {
 			ret = int32(MM_NOCON)
 		} else {
@@ -115629,7 +114056,7 @@ func Xfmtmsg(tls *TLS, classification int64, label uintptr, severity int32, text
 				v1 = __ccgo_ts
 			}
 			if label != 0 {
-				v2 = __ccgo_ts + 613
+				v2 = __ccgo_ts + 386
 			} else {
 				v2 = __ccgo_ts
 			}
@@ -115644,7 +114071,7 @@ func Xfmtmsg(tls *TLS, classification int64, label uintptr, severity int32, text
 				v4 = __ccgo_ts
 			}
 			if action != 0 {
-				v5 = __ccgo_ts + 1778
+				v5 = __ccgo_ts + 704
 			} else {
 				v5 = __ccgo_ts
 			}
@@ -115654,7 +114081,7 @@ func Xfmtmsg(tls *TLS, classification int64, label uintptr, severity int32, text
 				v6 = __ccgo_ts
 			}
 			if action != 0 {
-				v7 = __ccgo_ts + 1788
+				v7 = __ccgo_ts + 714
 			} else {
 				v7 = __ccgo_ts
 			}
@@ -115663,7 +114090,7 @@ func Xfmtmsg(tls *TLS, classification int64, label uintptr, severity int32, text
 			} else {
 				v8 = __ccgo_ts
 			}
-			if Xdprintf(tls, consolefd, __ccgo_ts+1790, VaList(bp+16, v1, v2, v3, v4, v5, v6, v7, v8)) < int32(1) {
+			if Xdprintf(tls, consolefd, __ccgo_ts+716, VaList(bp+16, v1, v2, v3, v4, v5, v6, v7, v8)) < int32(1) {
 				ret = int32(MM_NOCON)
 			}
 			Xclose(tls, consolefd)
@@ -115705,7 +114132,7 @@ func Xfmtmsg(tls *TLS, classification int64, label uintptr, severity int32, text
 			v10 = __ccgo_ts
 		}
 		if verb&int32(1) != 0 && label != 0 {
-			v11 = __ccgo_ts + 613
+			v11 = __ccgo_ts + 386
 		} else {
 			v11 = __ccgo_ts
 		}
@@ -115720,7 +114147,7 @@ func Xfmtmsg(tls *TLS, classification int64, label uintptr, severity int32, text
 			v13 = __ccgo_ts
 		}
 		if verb&int32(8) != 0 && action != 0 {
-			v14 = __ccgo_ts + 1778
+			v14 = __ccgo_ts + 704
 		} else {
 			v14 = __ccgo_ts
 		}
@@ -115730,7 +114157,7 @@ func Xfmtmsg(tls *TLS, classification int64, label uintptr, severity int32, text
 			v15 = __ccgo_ts
 		}
 		if verb&int32(8) != 0 && action != 0 {
-			v16 = __ccgo_ts + 1788
+			v16 = __ccgo_ts + 714
 		} else {
 			v16 = __ccgo_ts
 		}
@@ -115739,7 +114166,7 @@ func Xfmtmsg(tls *TLS, classification int64, label uintptr, severity int32, text
 		} else {
 			v17 = __ccgo_ts
 		}
-		if Xdprintf(tls, int32(2), __ccgo_ts+1790, VaList(bp+16, v10, v11, v12, v13, v14, v15, v16, v17)) < int32(1) {
+		if Xdprintf(tls, int32(2), __ccgo_ts+716, VaList(bp+16, v10, v11, v12, v13, v14, v15, v16, v17)) < int32(1) {
 			ret |= int32(MM_NOMSG)
 		}
 	}
@@ -115761,8 +114188,8 @@ func Xget_current_dir_name(tls *TLS) (r uintptr) {
 	var _ /* a at bp+0 */ Tstat
 	var _ /* b at bp+144 */ Tstat
 	_ = res
-	res = Xgetenv(tls, __ccgo_ts+1808)
-	if res != 0 && *(*uint8)(unsafe.Pointer(res)) != 0 && !(Xstat(tls, res, bp) != 0) && !(Xstat(tls, __ccgo_ts+1628, bp+144) != 0) && (*(*Tstat)(unsafe.Pointer(bp))).Fst_dev == (*(*Tstat)(unsafe.Pointer(bp + 144))).Fst_dev && (*(*Tstat)(unsafe.Pointer(bp))).Fst_ino == (*(*Tstat)(unsafe.Pointer(bp + 144))).Fst_ino {
+	res = Xgetenv(tls, __ccgo_ts+734)
+	if res != 0 && *(*uint8)(unsafe.Pointer(res)) != 0 && !(Xstat(tls, res, bp) != 0) && !(Xstat(tls, __ccgo_ts+606, bp+144) != 0) && (*(*Tstat)(unsafe.Pointer(bp))).Fst_dev == (*(*Tstat)(unsafe.Pointer(bp + 144))).Fst_dev && (*(*Tstat)(unsafe.Pointer(bp))).Fst_ino == (*(*Tstat)(unsafe.Pointer(bp + 144))).Fst_ino {
 		return Xstrdup(tls, res)
 	}
 	return Xgetcwd(tls, uintptr(0), uint64(0))
@@ -115972,7 +114399,7 @@ func Xgetopt(tls *TLS, argc int32, argv uintptr, optstring uintptr) (r int32) {
 	if *(*Twchar_t)(unsafe.Pointer(bp + 4)) != *(*Twchar_t)(unsafe.Pointer(bp)) || *(*Twchar_t)(unsafe.Pointer(bp)) == int32(':') {
 		Xoptopt = *(*Twchar_t)(unsafe.Pointer(bp))
 		if int32(*(*uint8)(unsafe.Pointer(optstring))) != int32(':') && Xopterr != 0 {
-			X__getopt_msg(tls, *(*uintptr)(unsafe.Pointer(argv)), __ccgo_ts+1812, optchar, uint64(k))
+			X__getopt_msg(tls, *(*uintptr)(unsafe.Pointer(argv)), __ccgo_ts+738, optchar, uint64(k))
 		}
 		return int32('?')
 	}
@@ -115993,7 +114420,7 @@ func Xgetopt(tls *TLS, argc int32, argv uintptr, optstring uintptr) (r int32) {
 				return int32(':')
 			}
 			if Xopterr != 0 {
-				X__getopt_msg(tls, *(*uintptr)(unsafe.Pointer(argv)), __ccgo_ts+1836, optchar, uint64(k))
+				X__getopt_msg(tls, *(*uintptr)(unsafe.Pointer(argv)), __ccgo_ts+762, optchar, uint64(k))
 			}
 			return int32('?')
 		}
@@ -116164,7 +114591,7 @@ func ___getopt_long_core(tls *TLS, argc int32, argv uintptr, optstring uintptr, 
 					if colon != 0 || !(Xopterr != 0) {
 						return int32('?')
 					}
-					X__getopt_msg(tls, *(*uintptr)(unsafe.Pointer(argv)), __ccgo_ts+1868, (*(*Toption)(unsafe.Pointer(longopts + uintptr(i)*32))).Fname, Xstrlen(tls, (*(*Toption)(unsafe.Pointer(longopts + uintptr(i)*32))).Fname))
+					X__getopt_msg(tls, *(*uintptr)(unsafe.Pointer(argv)), __ccgo_ts+794, (*(*Toption)(unsafe.Pointer(longopts + uintptr(i)*32))).Fname, Xstrlen(tls, (*(*Toption)(unsafe.Pointer(longopts + uintptr(i)*32))).Fname))
 					return int32('?')
 				}
 				Xoptarg = opt + uintptr(1)
@@ -116180,7 +114607,7 @@ func ___getopt_long_core(tls *TLS, argc int32, argv uintptr, optstring uintptr, 
 						if !(Xopterr != 0) {
 							return int32('?')
 						}
-						X__getopt_msg(tls, *(*uintptr)(unsafe.Pointer(argv)), __ccgo_ts+1836, (*(*Toption)(unsafe.Pointer(longopts + uintptr(i)*32))).Fname, Xstrlen(tls, (*(*Toption)(unsafe.Pointer(longopts + uintptr(i)*32))).Fname))
+						X__getopt_msg(tls, *(*uintptr)(unsafe.Pointer(argv)), __ccgo_ts+762, (*(*Toption)(unsafe.Pointer(longopts + uintptr(i)*32))).Fname, Xstrlen(tls, (*(*Toption)(unsafe.Pointer(longopts + uintptr(i)*32))).Fname))
 						return int32('?')
 					}
 					Xoptind++
@@ -116199,9 +114626,9 @@ func ___getopt_long_core(tls *TLS, argc int32, argv uintptr, optstring uintptr, 
 			Xoptopt = 0
 			if !(colon != 0) && Xopterr != 0 {
 				if cnt != 0 {
-					v6 = __ccgo_ts + 1905
+					v6 = __ccgo_ts + 831
 				} else {
-					v6 = __ccgo_ts + 1812
+					v6 = __ccgo_ts + 738
 				}
 				X__getopt_msg(tls, *(*uintptr)(unsafe.Pointer(argv)), v6, *(*uintptr)(unsafe.Pointer(argv + uintptr(Xoptind)*8))+uintptr(2), Xstrlen(tls, *(*uintptr)(unsafe.Pointer(argv + uintptr(Xoptind)*8))+uintptr(2)))
 			}
@@ -116233,20 +114660,9 @@ func Xgetpriority(tls *TLS, which int32, who Tid_t) (r int32) {
 		trc("tls=%v which=%v who=%v, (%v:)", tls, which, who, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
 	var ret int32
-	_, _, _, _, _ = r0, r3, r4, ret, v1 //TODO "r0" // syscall_arch.h:26:16:
-	panic(0)                            // assembler statements not supported  aar0 = ((ppint64(mvSYS_getpriority)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0)                            // assembler statements not supported  aar3 = ((ppint64((aawhich))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0)                            // assembler statements not supported  aar4 = ((ppint64((aawho))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1929)
-	v1 = r3
-	goto _2
-_2:
-	ret = int32(X__syscall_ret(tls, uint64(v1)))
+	_ = ret
+	ret = int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_getpriority), int64(which), int64(who)))))
 	if ret < 0 {
 		return ret
 	}
@@ -116258,21 +114674,7 @@ func Xgetresgid(tls *TLS, rgid uintptr, egid uintptr, sgid uintptr) (r int32) {
 		trc("tls=%v rgid=%v egid=%v sgid=%v, (%v:)", tls, rgid, egid, sgid, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getresgid)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aargid))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaegid))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aasgid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1941)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_getresgid), int64(rgid), int64(egid), int64(sgid)))))
 }
 
 func Xgetresuid(tls *TLS, ruid uintptr, euid uintptr, suid uintptr) (r int32) {
@@ -116280,21 +114682,7 @@ func Xgetresuid(tls *TLS, ruid uintptr, euid uintptr, suid uintptr) (r int32) {
 		trc("tls=%v ruid=%v euid=%v suid=%v, (%v:)", tls, ruid, euid, suid, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getresuid)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaruid))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaeuid))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aasuid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1951)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_getresuid), int64(ruid), int64(euid), int64(suid)))))
 }
 
 func Xgetrlimit(tls *TLS, resource int32, rlim uintptr) (r int32) {
@@ -116304,24 +114692,11 @@ func Xgetrlimit(tls *TLS, resource int32, rlim uintptr) (r int32) {
 	}
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
-	var r0, r01, r3, r31, r4, r41, r5, r6, v1, v3 int64
 	var ret int32
-	var v5, v6 uint64
+	var v1, v2 uint64
 	var _ /* k_rlim at bp+0 */ [2]uint64
-	_, _, _, _, _, _, _, _, _, _, _, _, _ = r0, r01, r3, r31, r4, r41, r5, r6, ret, v1, v3, v5, v6 //TODO "r0" // syscall_arch.h:49:16:
-	panic(0)                                                                                       // assembler statements not supported  aar01 = ((ppint64(mvSYS_prlimit64)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0)                                                                                       // assembler statements not supported  aar31 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0)                                                                                       // assembler statements not supported  aar41 = ((ppint64((aaresource))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0)                                                                                       // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0)                                                                                       // assembler statements not supported  aar6 = ((ppint64((aarlim))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+1961)
-	v1 = r31
-	goto _2
-_2:
-	ret = int32(X__syscall_ret(tls, uint64(v1)))
+	_, _, _ = ret, v1, v2
+	ret = int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_prlimit64), int64(Int32FromInt32(0)), int64(resource), int64(Int32FromInt32(0)), int64(rlim)))))
 	if !(ret != 0) {
 		if (*Trlimit)(unsafe.Pointer(rlim)).Frlim_cur >= ^Uint64FromUint64(0) {
 			(*Trlimit)(unsafe.Pointer(rlim)).Frlim_cur = ^Uint64FromUint64(0)
@@ -116333,32 +114708,21 @@ _2:
 	if !(ret != 0) || *(*int32)(unsafe.Pointer(X__errno_location(tls))) != int32(ENOSYS) {
 		return ret
 	}
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ugetrlimit)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaresource))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(cgbp)));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1961)
-	v3 = r3
-	goto _4
-_4:
-	if X__syscall_ret(tls, uint64(v3)) < 0 {
+	if X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_ugetrlimit), int64(resource), int64(bp)))) < 0 {
 		return -int32(1)
 	}
 	if (*(*[2]uint64)(unsafe.Pointer(bp)))[0] == -Uint64FromUint64(1) {
-		v5 = ^Uint64FromUint64(0)
+		v1 = ^Uint64FromUint64(0)
 	} else {
-		v5 = (*(*[2]uint64)(unsafe.Pointer(bp)))[0]
+		v1 = (*(*[2]uint64)(unsafe.Pointer(bp)))[0]
 	}
-	(*Trlimit)(unsafe.Pointer(rlim)).Frlim_cur = v5
+	(*Trlimit)(unsafe.Pointer(rlim)).Frlim_cur = v1
 	if (*(*[2]uint64)(unsafe.Pointer(bp)))[int32(1)] == -Uint64FromUint64(1) {
-		v6 = ^Uint64FromUint64(0)
+		v2 = ^Uint64FromUint64(0)
 	} else {
-		v6 = (*(*[2]uint64)(unsafe.Pointer(bp)))[int32(1)]
+		v2 = (*(*[2]uint64)(unsafe.Pointer(bp)))[int32(1)]
 	}
-	(*Trlimit)(unsafe.Pointer(rlim)).Frlim_max = v6
+	(*Trlimit)(unsafe.Pointer(rlim)).Frlim_max = v2
 	if (*Trlimit)(unsafe.Pointer(rlim)).Frlim_cur >= ^Uint64FromUint64(0) {
 		(*Trlimit)(unsafe.Pointer(rlim)).Frlim_cur = ^Uint64FromUint64(0)
 	}
@@ -116377,22 +114741,10 @@ func Xgetrusage(tls *TLS, who int32, ru uintptr) (r1 int32) {
 	defer tls.Free(32)
 	var dest uintptr
 	var r int32
-	var r0, r3, r4, v1 int64
 	var _ /* kru at bp+0 */ [4]int64
-	_, _, _, _, _, _ = dest, r, r0, r3, r4, v1
+	_, _ = dest, r
 	dest = ru + 32 - uintptr(Uint64FromInt32(4)*Uint64FromInt64(8))
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getrusage)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aawho))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aadest))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+1971)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
+	r = int32(X__syscall2(tls, int64(SYS_getrusage), int64(who), int64(dest)))
 	if !(r != 0) && Bool(uint64(8) > uint64(8)) {
 		Xmemcpy(tls, bp, dest, Uint64FromInt32(4)*Uint64FromInt64(8))
 		(*Trusage)(unsafe.Pointer(ru)).Fru_utime = Ttimeval{
@@ -116777,28 +115129,16 @@ func Xioctl(tls *TLS, fd int32, req int32, va uintptr) (r1 int32) {
 	var ap Tva_list
 	var arg uintptr
 	var i, r int32
-	var r0, r3, r4, r5, v1, v4 int64
 	var _ /* u at bp+0 */ struct {
 		Fbuf         [0][256]uint8
 		Falign       int64
 		F__ccgo_pad2 [248]byte
 	}
-	_, _, _, _, _, _, _, _, _, _ = ap, arg, i, r, r0, r3, r4, r5, v1, v4
+	_, _, _, _ = ap, arg, i, r
 	ap = va
 	arg = VaUintptr(&ap)
-	_ = ap   //TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ioctl)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aareq))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaarg))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1981)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
+	_ = ap
+	r = int32(X__syscall3(tls, int64(SYS_ioctl), int64(fd), int64(req), int64(arg)))
 	if Bool(Bool(int32(SIOCGSTAMP) != int32(SIOCGSTAMP_OLD)) && req != 0) && r == -int32(ENOTTY) {
 		i = 0
 		for {
@@ -116806,29 +115146,17 @@ _2:
 				break
 			}
 			if _compat_map[i].Fnew_req != req {
-				goto _3
+				goto _1
 			}
 			_convert_ioctl_struct(tls, uintptr(unsafe.Pointer(&_compat_map))+uintptr(i)*20, bp, arg, int32(W))
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ioctl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((sicompat_map[(aai)].fdold_req))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64(((cgbp)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+1981)
-			v4 = r3
-			goto _5
-		_5:
-			r = int32(v4)
+			r = int32(X__syscall3(tls, int64(SYS_ioctl), int64(fd), int64(_compat_map[i].Fold_req), int64(bp)))
 			if r < 0 {
 				break
 			}
 			_convert_ioctl_struct(tls, uintptr(unsafe.Pointer(&_compat_map))+uintptr(i)*20, bp, arg, int32(R))
 			break
-			goto _3
-		_3:
+			goto _1
+		_1:
 			;
 			i++
 		}
@@ -117058,7 +115386,7 @@ func Xgetmntent_r(tls *TLS, f uintptr, mnt uintptr, linebuf uintptr, buflen int3
 			return uintptr(0)
 		}
 		if !(Xstrchr(tls, linebuf, int32('\n')) != 0) {
-			Xfscanf(tls, f, __ccgo_ts+1987, 0)
+			Xfscanf(tls, f, __ccgo_ts+855, 0)
 			*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(ERANGE)
 			return uintptr(0)
 		}
@@ -117077,7 +115405,7 @@ func Xgetmntent_r(tls *TLS, f uintptr, mnt uintptr, linebuf uintptr, buflen int3
 			;
 			i++
 		}
-		Xsscanf(tls, linebuf, __ccgo_ts+1999, VaList(bp+40, bp, bp+uintptr(1)*4, bp+uintptr(2)*4, bp+uintptr(3)*4, bp+uintptr(4)*4, bp+uintptr(5)*4, bp+uintptr(6)*4, bp+uintptr(7)*4, mnt+32, mnt+36))
+		Xsscanf(tls, linebuf, __ccgo_ts+867, VaList(bp+40, bp, bp+uintptr(1)*4, bp+uintptr(2)*4, bp+uintptr(3)*4, bp+uintptr(4)*4, bp+uintptr(5)*4, bp+uintptr(6)*4, bp+uintptr(7)*4, mnt+32, mnt+36))
 	}
 	*(*uint8)(unsafe.Pointer(linebuf + uintptr((*(*[8]int32)(unsafe.Pointer(bp)))[int32(1)]))) = uint8(0)
 	*(*uint8)(unsafe.Pointer(linebuf + uintptr((*(*[8]int32)(unsafe.Pointer(bp)))[int32(3)]))) = uint8(0)
@@ -117110,7 +115438,7 @@ func Xaddmntent(tls *TLS, f uintptr, mnt uintptr) (r int32) {
 	if Xfseek(tls, f, 0, int32(2)) != 0 {
 		return int32(1)
 	}
-	return BoolInt32(Xfprintf(tls, f, __ccgo_ts+2054, VaList(bp+8, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_fsname, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_dir, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_type, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_opts, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_freq, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_passno)) < 0)
+	return BoolInt32(Xfprintf(tls, f, __ccgo_ts+922, VaList(bp+8, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_fsname, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_dir, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_type, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_opts, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_freq, (*Tmntent)(unsafe.Pointer(mnt)).Fmnt_passno)) < 0)
 }
 
 func Xhasmntopt(tls *TLS, mnt uintptr, opt uintptr) (r uintptr) {
@@ -117342,7 +115670,7 @@ func Xopenpty(tls *TLS, pm uintptr, ps uintptr, name uintptr, tio uintptr, ws ui
 	var _ /* n at bp+0 */ int32
 	_, _, _ = m, s, v1
 	*(*int32)(unsafe.Pointer(bp)) = 0
-	m = Xopen(tls, __ccgo_ts+2073, Int32FromInt32(O_RDWR)|Int32FromInt32(O_NOCTTY), 0)
+	m = Xopen(tls, __ccgo_ts+941, Int32FromInt32(O_RDWR)|Int32FromInt32(O_NOCTTY), 0)
 	if m < 0 {
 		return -int32(1)
 	}
@@ -117353,7 +115681,7 @@ func Xopenpty(tls *TLS, pm uintptr, ps uintptr, name uintptr, tio uintptr, ws ui
 	if !(name != 0) {
 		name = bp + 8
 	}
-	Xsnprintf(tls, name, uint64(20), __ccgo_ts+2083, VaList(bp+40, *(*int32)(unsafe.Pointer(bp))))
+	Xsnprintf(tls, name, uint64(20), __ccgo_ts+951, VaList(bp+40, *(*int32)(unsafe.Pointer(bp))))
 	v1 = Xopen(tls, name, Int32FromInt32(O_RDWR)|Int32FromInt32(O_NOCTTY), 0)
 	s = v1
 	if v1 < 0 {
@@ -117401,7 +115729,7 @@ func Xposix_openpt(tls *TLS, flags int32) (r1 int32) {
 	}
 	var r int32
 	_ = r
-	r = Xopen(tls, __ccgo_ts+2073, flags, 0)
+	r = Xopen(tls, __ccgo_ts+941, flags, 0)
 	if r < 0 && *(*int32)(unsafe.Pointer(X__errno_location(tls))) == int32(ENOSPC) {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EAGAIN)
 	}
@@ -117436,30 +115764,17 @@ func X__ptsname_r(tls *TLS, fd int32, buf uintptr, len1 Tsize_t) (r int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
 	var err, v1 int32
-	var r0, r3, r4, r5, v2 int64
 	var _ /* pty at bp+0 */ int32
-	_, _, _, _, _, _, _ = err, r0, r3, r4, r5, v1, v2
+	_, _ = err, v1
 	if !(buf != 0) {
 		len1 = uint64(0)
 	}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ioctl)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppuint64(((((ppUint32FromUint32(2)) << (ppInt32FromInt32(29))) | (ppuint32(((ppInt32FromUint8('T')) << (ppInt32FromInt32(8)))))) | (ppuint32((ppInt32FromInt32(0x30))))))) | ((ppUint64FromInt64(4)) << (ppInt32FromInt32(16)))))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64(cgbp)));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2095)
-	v2 = r3
-	goto _3
-_3:
-	v1 = int32(v2)
+	v1 = int32(X__syscall3(tls, int64(SYS_ioctl), int64(fd), int64(uint64(Uint32FromUint32(2)<<Int32FromInt32(29)|uint32(Int32FromUint8('T')<<Int32FromInt32(8))|uint32(Int32FromInt32(0x30)))|Uint64FromInt64(4)<<Int32FromInt32(16)), int64(bp)))
 	err = v1
 	if v1 != 0 {
 		return -err
 	}
-	if uint64(Xsnprintf(tls, buf, len1, __ccgo_ts+2083, VaList(bp+16, *(*int32)(unsafe.Pointer(bp))))) >= len1 {
+	if uint64(Xsnprintf(tls, buf, len1, __ccgo_ts+951, VaList(bp+16, *(*int32)(unsafe.Pointer(bp))))) >= len1 {
 		return int32(ERANGE)
 	}
 	return 0
@@ -117704,20 +116019,7 @@ func Xsetdomainname(tls *TLS, name uintptr, len1 Tsize_t) (r int32) {
 		trc("tls=%v name=%v len1=%v, (%v:)", tls, name, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setdomainname)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaname))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalen))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2107)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_setdomainname), int64(name), int64(len1)))))
 }
 
 func Xsetpriority(tls *TLS, which int32, who Tid_t, prio int32) (r int32) {
@@ -117725,21 +116027,7 @@ func Xsetpriority(tls *TLS, which int32, who Tid_t, prio int32) (r int32) {
 		trc("tls=%v which=%v who=%v prio=%v, (%v:)", tls, which, who, prio, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setpriority)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aawhich))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aawho))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaprio))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2121)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_setpriority), int64(which), int64(who), int64(prio)))))
 }
 
 type Tctx = struct {
@@ -117750,24 +116038,12 @@ type Tctx = struct {
 
 func _do_setrlimit(tls *TLS, p uintptr) {
 	var c uintptr
-	var r0, r3, r4, v1 int64
-	_, _, _, _, _ = c, r0, r3, r4, v1
+	_ = c
 	c = p
 	if (*Tctx)(unsafe.Pointer(c)).Ferr > 0 {
 		return
 	}
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setrlimit)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64(((*tsctx)(iqunsafe.ppPointer((aac))).fdres))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((((aac))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2133)
-	v1 = r3
-	goto _2
-_2:
-	(*Tctx)(unsafe.Pointer(c)).Ferr = int32(-v1)
+	(*Tctx)(unsafe.Pointer(c)).Ferr = int32(-X__syscall2(tls, int64(SYS_setrlimit), int64((*Tctx)(unsafe.Pointer(c)).Fres), int64(c)))
 }
 
 func Xsetrlimit(tls *TLS, resource int32, rlim uintptr) (r int32) {
@@ -117777,12 +116053,11 @@ func Xsetrlimit(tls *TLS, resource int32, rlim uintptr) (r int32) {
 	}
 	bp := tls.Alloc(48)
 	defer tls.Free(48)
-	var r0, r3, r4, r5, r6, v1 int64
 	var ret int32
-	var v3, v4 uint64
+	var v1, v2 uint64
 	var _ /* c at bp+16 */ Tctx
 	var _ /* tmp at bp+0 */ Trlimit
-	_, _, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, ret, v1, v3, v4
+	_, _, _ = ret, v1, v2
 	if ^Uint64FromUint64(0) != ^Uint64FromUint64(0) {
 		*(*Trlimit)(unsafe.Pointer(bp)) = *(*Trlimit)(unsafe.Pointer(rlim))
 		if (*(*Trlimit)(unsafe.Pointer(bp))).Frlim_cur >= ^Uint64FromUint64(0) {
@@ -117792,37 +116067,25 @@ func Xsetrlimit(tls *TLS, resource int32, rlim uintptr) (r int32) {
 			(*(*Trlimit)(unsafe.Pointer(bp))).Frlim_max = ^Uint64FromUint64(0)
 		}
 		rlim = bp
-	} //TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_prlimit64)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaresource))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aarlim))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((ppInt32FromInt32(0)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+2146)
-	v1 = r3
-	goto _2
-_2:
-	ret = int32(v1)
+	}
+	ret = int32(X__syscall4(tls, int64(SYS_prlimit64), int64(Int32FromInt32(0)), int64(resource), int64(rlim), int64(Int32FromInt32(0))))
 	if ret != -int32(ENOSYS) {
 		return int32(X__syscall_ret(tls, uint64(ret)))
 	}
 	if (*Trlimit)(unsafe.Pointer(rlim)).Frlim_cur < ^Uint64FromUint64(0) {
-		v3 = (*Trlimit)(unsafe.Pointer(rlim)).Frlim_cur
+		v1 = (*Trlimit)(unsafe.Pointer(rlim)).Frlim_cur
 	} else {
-		v3 = ^Uint64FromUint64(0)
+		v1 = ^Uint64FromUint64(0)
 	}
 	if (*Trlimit)(unsafe.Pointer(rlim)).Frlim_max < ^Uint64FromUint64(0) {
-		v4 = (*Trlimit)(unsafe.Pointer(rlim)).Frlim_max
+		v2 = (*Trlimit)(unsafe.Pointer(rlim)).Frlim_max
 	} else {
-		v4 = ^Uint64FromUint64(0)
+		v2 = ^Uint64FromUint64(0)
 	}
 	*(*Tctx)(unsafe.Pointer(bp + 16)) = Tctx{
 		Flim: [2]uint64{
-			0: v3,
-			1: v4,
+			0: v1,
+			1: v2,
 		},
 		Fres: resource,
 		Ferr: -int32(1),
@@ -117837,39 +116100,23 @@ _2:
 	return 0
 }
 
-func Xsyscall(tls *TLS, n1 int64, va uintptr) (r int64) {
+func Xsyscall(tls *TLS, n int64, va uintptr) (r int64) {
 	if __ccgo_strace {
-		trc("tls=%v n1=%v va=%v, (%v:)", tls, n1, va, origin(2))
+		trc("tls=%v n=%v va=%v, (%v:)", tls, n, va, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var a1, b1, c1, d1, e1, f1 Tsyscall_arg_t
+	var a, b, c, d, e, f Tsyscall_arg_t
 	var ap Tva_list
-	var r0, r3, r4, r5, r6, r7, r8, v1 int64
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = a1, ap, b1, c1, d1, e1, f1, r0, r3, r4, r5, r6, r7, r8, v1
+	_, _, _, _, _, _, _ = a, ap, b, c, d, e, f
 	ap = va
-	a1 = VaInt64(&ap)
-	b1 = VaInt64(&ap)
-	c1 = VaInt64(&ap)
-	d1 = VaInt64(&ap)
-	e1 = VaInt64(&ap)
-	f1 = VaInt64(&ap)
+	a = VaInt64(&ap)
+	b = VaInt64(&ap)
+	c = VaInt64(&ap)
+	d = VaInt64(&ap)
+	e = VaInt64(&ap)
+	f = VaInt64(&ap)
 	_ = ap
-	//TODO "r0" // syscall_arch.h:76:16:
-	panic(0) // assembler statements not supported  aar0 = ((aan1));//TODO "r3" // syscall_arch.h:77:16:
-	panic(0) // assembler statements not supported  aar3 = ((aaa1));//TODO "r4" // syscall_arch.h:78:16:
-	panic(0) // assembler statements not supported  aar4 = ((aab1));//TODO "r5" // syscall_arch.h:79:16:
-	panic(0) // assembler statements not supported  aar5 = ((aac1));//TODO "r6" // syscall_arch.h:80:16:
-	panic(0) // assembler statements not supported  aar6 = ((aad1));//TODO "r7" // syscall_arch.h:81:16:
-	panic(0) // assembler statements not supported  aar7 = ((aae1));//TODO "r8" // syscall_arch.h:82:16:
-	panic(0) // assembler statements not supported  aar8 = ((aaf1));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-	// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2156)
-	v1 = r3
-	goto _2
-_2:
-	return X__syscall_ret(tls, uint64(v1))
+	return X__syscall_ret(tls, uint64(X__syscall6(tls, n, a, b, c, d, e, f)))
 }
 
 const AF_ALG = 38
@@ -118288,14 +116535,14 @@ func __vsyslog(tls *TLS, priority int32, message uintptr, ap Tva_list) {
 	}
 	*(*Ttime_t)(unsafe.Pointer(bp + 16)) = Xtime(tls, UintptrFromInt32(0))
 	Xgmtime_r(tls, bp+16, bp+24)
-	Xstrftime_l(tls, bp, uint64(16), __ccgo_ts+2164, bp+24, uintptr(unsafe.Pointer(&X__c_locale)))
+	Xstrftime_l(tls, bp, uint64(16), __ccgo_ts+963, bp+24, uintptr(unsafe.Pointer(&X__c_locale)))
 	if _log_opt&int32(LOG_PID) != 0 {
 		v1 = Xgetpid(tls)
 	} else {
 		v1 = 0
 	}
 	pid = v1
-	l = Xsnprintf(tls, bp+80, uint64(1024), __ccgo_ts+2173, VaList(bp+1120, priority, bp, bp+1104, uintptr(unsafe.Pointer(&_log_ident)), __ccgo_ts+2195+BoolUintptr(!(pid != 0)), pid, __ccgo_ts+2197+BoolUintptr(!(pid != 0))))
+	l = Xsnprintf(tls, bp+80, uint64(1024), __ccgo_ts+972, VaList(bp+1120, priority, bp, bp+1104, uintptr(unsafe.Pointer(&_log_ident)), __ccgo_ts+994+BoolUintptr(!(pid != 0)), pid, __ccgo_ts+996+BoolUintptr(!(pid != 0))))
 	*(*int32)(unsafe.Pointer(X__errno_location(tls))) = errno_save
 	l2 = Xvsnprintf(tls, bp+80+uintptr(l), uint64(1024)-uint64(l), message, ap)
 	if l2 >= 0 {
@@ -118310,14 +116557,14 @@ func __vsyslog(tls *TLS, priority int32, message uintptr, ap Tva_list) {
 			(*(*[1024]uint8)(unsafe.Pointer(bp + 80)))[v2] = uint8('\n')
 		}
 		if Xsend(tls, _log_fd, bp+80, uint64(l), 0) < 0 && (!(_is_lost_conn(tls, *(*int32)(unsafe.Pointer(X__errno_location(tls)))) != 0) || Xconnect(tls, _log_fd, uintptr(unsafe.Pointer(&_log_addr)), uint32(12)) < 0 || Xsend(tls, _log_fd, bp+80, uint64(l), 0) < 0) && _log_opt&int32(LOG_CONS) != 0 {
-			fd = Xopen(tls, __ccgo_ts+1765, Int32FromInt32(O_WRONLY)|Int32FromInt32(O_NOCTTY)|Int32FromInt32(O_CLOEXEC), 0)
+			fd = Xopen(tls, __ccgo_ts+691, Int32FromInt32(O_WRONLY)|Int32FromInt32(O_NOCTTY)|Int32FromInt32(O_CLOEXEC), 0)
 			if fd >= 0 {
-				Xdprintf(tls, fd, __ccgo_ts+2199, VaList(bp+1120, l-*(*int32)(unsafe.Pointer(bp + 1104)), bp+80+uintptr(*(*int32)(unsafe.Pointer(bp + 1104)))))
+				Xdprintf(tls, fd, __ccgo_ts+998, VaList(bp+1120, l-*(*int32)(unsafe.Pointer(bp + 1104)), bp+80+uintptr(*(*int32)(unsafe.Pointer(bp + 1104)))))
 				Xclose(tls, fd)
 			}
 		}
 		if _log_opt&int32(LOG_PERROR) != 0 {
-			Xdprintf(tls, int32(2), __ccgo_ts+2199, VaList(bp+1120, l-*(*int32)(unsafe.Pointer(bp + 1104)), bp+80+uintptr(*(*int32)(unsafe.Pointer(bp + 1104)))))
+			Xdprintf(tls, int32(2), __ccgo_ts+998, VaList(bp+1120, l-*(*int32)(unsafe.Pointer(bp + 1104)), bp+80+uintptr(*(*int32)(unsafe.Pointer(bp + 1104)))))
 		}
 	}
 }
@@ -118361,19 +116608,7 @@ func Xuname(tls *TLS, uts uintptr) (r int32) {
 		trc("tls=%v uts=%v, (%v:)", tls, uts, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_uname)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aauts))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+2204)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_uname), int64(uts)))))
 }
 
 func X__madvise(tls *TLS, addr uintptr, len1 Tsize_t, advice int32) (r int32) {
@@ -118381,21 +116616,7 @@ func X__madvise(tls *TLS, addr uintptr, len1 Tsize_t, advice int32) (r int32) {
 		trc("tls=%v addr=%v len1=%v advice=%v, (%v:)", tls, addr, len1, advice, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_madvise)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaaddr))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalen))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaadvice))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2210)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_madvise), int64(addr), int64(len1), int64(advice)))))
 }
 
 func Xmadvise(tls *TLS, addr uintptr, len1 Tsize_t, advice int32) (r int32) {
@@ -118411,21 +116632,7 @@ func Xmincore(tls *TLS, addr uintptr, len1 Tsize_t, vec uintptr) (r int32) {
 		trc("tls=%v addr=%v len1=%v vec=%v, (%v:)", tls, addr, len1, vec, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mincore)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaaddr))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalen))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aavec))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2220)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_mincore), int64(addr), int64(len1), int64(vec)))))
 }
 
 func Xmlock(tls *TLS, addr uintptr, len1 Tsize_t) (r int32) {
@@ -118433,20 +116640,7 @@ func Xmlock(tls *TLS, addr uintptr, len1 Tsize_t) (r int32) {
 		trc("tls=%v addr=%v len1=%v, (%v:)", tls, addr, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mlock)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaaddr))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalen))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2228)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_mlock), int64(addr), int64(len1)))))
 }
 
 func Xmlockall(tls *TLS, flags int32) (r int32) {
@@ -118454,19 +116648,7 @@ func Xmlockall(tls *TLS, flags int32) (r int32) {
 		trc("tls=%v flags=%v, (%v:)", tls, flags, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mlockall)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+2234)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_mlockall), int64(flags)))))
 }
 
 const OFF_MASK = 4095
@@ -118480,8 +116662,8 @@ func X__mmap(tls *TLS, start uintptr, len1 Tsize_t, prot int32, flags int32, fd 
 		trc("tls=%v start=%v len1=%v prot=%v flags=%v fd=%v off=%v, (%v:)", tls, start, len1, prot, flags, fd, off, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, r8, ret, v1 int64
-	_, _, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, r8, ret, v1
+	var ret int64
+	_ = ret
 	if uint64(off)&(-Uint64FromUint64(0x2000)<<(Uint64FromInt32(8)*Uint64FromInt64(8)-Uint64FromInt32(1))|(Uint64FromUint64(4096)-Uint64FromInt32(1))) != 0 {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 		return uintptr(-Int32FromInt32(1))
@@ -118493,22 +116675,7 @@ func X__mmap(tls *TLS, start uintptr, len1 Tsize_t, prot int32, flags int32, fd 
 	if flags&int32(MAP_FIXED) != 0 {
 		_dummy5(tls)
 	}
-	//TODO "r0" // syscall_arch.h:76:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mmap)));//TODO "r3" // syscall_arch.h:77:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aastart))));//TODO "r4" // syscall_arch.h:78:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalen))));//TODO "r5" // syscall_arch.h:79:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaprot))));//TODO "r6" // syscall_arch.h:80:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflags))));//TODO "r7" // syscall_arch.h:81:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aafd))));//TODO "r8" // syscall_arch.h:82:16:
-	panic(0) // assembler statements not supported  aar8 = ((aaoff));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-	// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2243)
-	v1 = r3
-	goto _2
-_2:
-	ret = v1
+	ret = X__syscall6(tls, int64(SYS_mmap), int64(start), int64(len1), int64(prot), int64(flags), int64(fd), off)
 	/* Fixup incorrect EPERM from kernel. */
 	if ret == int64(-int32(EPERM)) && !(start != 0) && flags&int32(MAP_ANON) != 0 && !(flags&Int32FromInt32(MAP_FIXED) != 0) {
 		ret = int64(-int32(ENOMEM))
@@ -118530,23 +116697,10 @@ func X__mprotect(tls *TLS, addr uintptr, len1 Tsize_t, prot int32) (r int32) {
 		defer func() { trc("-> %v", r) }()
 	}
 	var end, start Tsize_t
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _, _, _ = end, r0, r3, r4, r5, start, v1
+	_, _ = end, start
 	start = uint64(addr) & -X__libc.Fpage_size
 	end = uint64(addr+uintptr(len1)+uintptr(X__libc.Fpage_size)-UintptrFromInt32(1)) & -X__libc.Fpage_size
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mprotect)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aastart))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(((aaend) - (aastart)))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaprot))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2250)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_mprotect), int64(start), int64(end-start), int64(prot)))))
 }
 
 func Xmprotect(tls *TLS, addr uintptr, len1 Tsize_t, prot int32) (r int32) {
@@ -118567,8 +116721,7 @@ func X__mremap(tls *TLS, old_addr uintptr, old_len Tsize_t, new_len Tsize_t, fla
 	}
 	var ap Tva_list
 	var new_addr uintptr
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _, _, _ = ap, new_addr, r0, r3, r4, r5, r6, r7, v1
+	_, _ = ap, new_addr
 	new_addr = uintptr(0)
 	if new_len >= uint64(Int64FromInt64(INT64_MAX)) {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(ENOMEM)
@@ -118580,21 +116733,7 @@ func X__mremap(tls *TLS, old_addr uintptr, old_len Tsize_t, new_len Tsize_t, fla
 		new_addr = VaUintptr(&ap)
 		_ = ap
 	}
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mremap)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaold_addr))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaold_len))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aanew_len))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflags))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aanew_addr))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+2261)
-	v1 = r3
-	goto _2
-_2:
-	return uintptr(X__syscall_ret(tls, uint64(v1)))
+	return uintptr(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_mremap), int64(old_addr), int64(old_len), int64(new_len), int64(flags), int64(new_addr)))))
 }
 
 func Xmremap(tls *TLS, old_addr uintptr, old_len Tsize_t, new_len Tsize_t, flags int32, va uintptr) (r uintptr) {
@@ -118618,20 +116757,7 @@ func Xmunlock(tls *TLS, addr uintptr, len1 Tsize_t) (r int32) {
 		trc("tls=%v addr=%v len1=%v, (%v:)", tls, addr, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_munlock)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaaddr))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalen))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2270)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_munlock), int64(addr), int64(len1)))))
 }
 
 func Xmunlockall(tls *TLS) (r int32) {
@@ -118639,19 +116765,7 @@ func Xmunlockall(tls *TLS) (r int32) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_munlockall)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+2278)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall0(tls, int64(SYS_munlockall)))))
 }
 
 func _dummy7(tls *TLS) {
@@ -118662,21 +116776,8 @@ func X__munmap(tls *TLS, start uintptr, len1 Tsize_t) (r int32) {
 		trc("tls=%v start=%v len1=%v, (%v:)", tls, start, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
 	_dummy7(tls)
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_munmap)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aastart))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalen))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2289)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_munmap), int64(start), int64(len1)))))
 }
 
 func Xmunmap(tls *TLS, start uintptr, len1 Tsize_t) (r int32) {
@@ -118692,24 +116793,10 @@ func Xposix_madvise(tls *TLS, addr uintptr, len1 Tsize_t, advice int32) (r int32
 		trc("tls=%v addr=%v len1=%v advice=%v, (%v:)", tls, addr, len1, advice, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
 	if advice == int32(MADV_DONTNEED) {
 		return 0
 	}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_madvise)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaaddr))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalen))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaadvice))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2298)
-	v1 = r3
-	goto _2
-_2:
-	return int32(-v1)
+	return int32(-X__syscall3(tls, int64(SYS_madvise), int64(addr), int64(len1), int64(advice)))
 }
 
 func X__shm_mapname(tls *TLS, name uintptr, buf uintptr) (r uintptr) {
@@ -118732,7 +116819,7 @@ func X__shm_mapname(tls *TLS, name uintptr, buf uintptr) (r uintptr) {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(ENAMETOOLONG)
 		return uintptr(0)
 	}
-	Xmemcpy(tls, buf, __ccgo_ts+2312, uint64(9))
+	Xmemcpy(tls, buf, __ccgo_ts+1003, uint64(9))
 	Xmemcpy(tls, buf+uintptr(9), name, uint64(int64(p)-int64(name)+int64(1)))
 	return buf
 }
@@ -118796,20 +116883,13 @@ func Xbtowc(tls *TLS, c int32) (r Twint_t) {
 		defer func() { trc("-> %v", r) }()
 	}
 	var b, v3 int32
-	var tp, v4 Tuintptr_t
 	var v1, v2 uint32
-	_, _, _, _, _, _ = b, tp, v1, v2, v3, v4
+	_, _, _, _ = b, v1, v2, v3
 	b = int32(uint8(c))
 	if uint32(b) < uint32(128) {
 		v1 = uint32(b)
-	} else { //TODO "tp" // pthread_arch.h:3:21:
-		panic(0) // assembler statements not supported
-		// __asm__ ("" : "=r" (tp) );
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+2322)
-		v4 = tp
-		goto _5
-	_5:
-		if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(uintptr(v4))).Flocale)) != 0) {
+	} else {
+		if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)) != 0) {
 			v3 = int32(4)
 		} else {
 			v3 = int32(1)
@@ -118980,12 +117060,11 @@ func Xmbrtowc(tls *TLS, wc uintptr, src uintptr, n Tsize_t, st uintptr) (r Tsize
 	defer tls.Free(16)
 	var N Tsize_t
 	var c uint32
-	var s, v5, v6 uintptr
-	var tp, v3 Tuintptr_t
+	var s, v3, v4 uintptr
 	var v1 Twchar_t
 	var v2 int32
 	var _ /* dummy at bp+0 */ Twchar_t
-	_, _, _, _, _, _, _, _, _ = N, c, s, tp, v1, v2, v3, v5, v6
+	_, _, _, _, _, _, _ = N, c, s, v1, v2, v3, v4
 	s = src
 	N = n
 	if !(st != 0) {
@@ -119011,14 +117090,7 @@ func Xmbrtowc(tls *TLS, wc uintptr, src uintptr, n Tsize_t, st uintptr) (r Tsize
 			*(*Twchar_t)(unsafe.Pointer(wc)) = v1
 			return BoolUint64(!!(v1 != 0))
 		}
-		//TODO "tp" // pthread_arch.h:3:21:
-		panic(0) // assembler statements not supported
-		// __asm__ ("" : "=r" (tp) );
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+2328)
-		v3 = tp
-		goto _4
-	_4:
-		if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(uintptr(v3))).Flocale)) != 0) {
+		if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)) != 0) {
 			v2 = int32(4)
 		} else {
 			v2 = int32(1)
@@ -119030,9 +117102,9 @@ func Xmbrtowc(tls *TLS, wc uintptr, src uintptr, n Tsize_t, st uintptr) (r Tsize
 		if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(0xc2) > Uint32FromUint32(0xf4)-Uint32FromUint32(0xc2) {
 			goto ilseq
 		}
-		v5 = s
+		v3 = s
 		s++
-		c = X__fsmu8[uint32(*(*uint8)(unsafe.Pointer(v5)))-uint32(0xc2)]
+		c = X__fsmu8[uint32(*(*uint8)(unsafe.Pointer(v3)))-uint32(0xc2)]
 		n--
 	}
 	if n != 0 {
@@ -119042,9 +117114,9 @@ func Xmbrtowc(tls *TLS, wc uintptr, src uintptr, n Tsize_t, st uintptr) (r Tsize
 		goto loop
 	loop:
 		;
-		v6 = s
+		v4 = s
 		s++
-		c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v6)))-int32(0x80))
+		c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v4)))-int32(0x80))
 		n--
 		if !(c&(Uint32FromUint32(1)<<Int32FromInt32(31)) != 0) {
 			*(*uint32)(unsafe.Pointer(st)) = uint32(0)
@@ -119169,12 +117241,11 @@ func Xmbsrtowcs(tls *TLS, ws uintptr, src uintptr, wn Tsize_t, st uintptr) (r Ts
 		defer func() { trc("-> %v", r) }()
 	}
 	var c, v1 uint32
-	var s, v14, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v7, v8 uintptr
-	var tp, v4 Tuintptr_t
+	var s, v12, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v5, v6 uintptr
 	var wn0 Tsize_t
 	var v2 bool
 	var v3 int32
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c, s, tp, wn0, v1, v14, v18, v19, v2, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v3, v30, v31, v32, v4, v7, v8
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c, s, wn0, v1, v12, v16, v17, v18, v19, v2, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v3, v30, v5, v6
 	s = *(*uintptr)(unsafe.Pointer(src))
 	wn0 = wn
 	c = uint32(0)
@@ -119190,14 +117261,7 @@ func Xmbsrtowcs(tls *TLS, ws uintptr, src uintptr, wn Tsize_t, st uintptr) (r Ts
 			goto resume0
 		}
 	}
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+2336)
-	v4 = tp
-	goto _5
-_5:
-	if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(uintptr(v4))).Flocale)) != 0) {
+	if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)) != 0) {
 		v3 = int32(4)
 	} else {
 		v3 = int32(1)
@@ -119214,24 +117278,24 @@ _5:
 			if !(*(*uint8)(unsafe.Pointer(s)) != 0) {
 				break
 			}
-			v7 = s
+			v5 = s
 			s++
-			c = uint32(*(*uint8)(unsafe.Pointer(v7)))
-			v8 = ws
+			c = uint32(*(*uint8)(unsafe.Pointer(v5)))
+			v6 = ws
 			ws += 4
-			*(*Twchar_t)(unsafe.Pointer(v8)) = Int32FromInt32(0xdfff) & int32(int8(c))
+			*(*Twchar_t)(unsafe.Pointer(v6)) = Int32FromInt32(0xdfff) & int32(int8(c))
 			wn--
-			goto _6
-		_6:
+			goto _4
+		_4:
 		}
 		*(*Twchar_t)(unsafe.Pointer(ws)) = 0
 		*(*uintptr)(unsafe.Pointer(src)) = uintptr(0)
 		return wn0 - wn
 	}
 	if !!(ws != 0) {
-		goto _9
+		goto _7
 	}
-_13:
+_11:
 	;
 	if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(1) < uint32(0x7f) && uint64(s)%uint64(4) == uint64(0) {
 		for !((*(*uint32)(unsafe.Pointer(s))|(*(*uint32)(unsafe.Pointer(s))-Uint32FromInt32(0x01010101)))&Uint32FromUint32(0x80808080) != 0) {
@@ -119242,49 +117306,49 @@ _13:
 	if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(1) < uint32(0x7f) {
 		s++
 		wn--
-		goto _12
+		goto _10
 	}
 	if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(0xc2) > Uint32FromUint32(0xf4)-Uint32FromUint32(0xc2) {
-		goto _11
+		goto _9
 	}
-	v14 = s
+	v12 = s
 	s++
-	c = X__fsmu8[uint32(*(*uint8)(unsafe.Pointer(v14)))-uint32(0xc2)]
+	c = X__fsmu8[uint32(*(*uint8)(unsafe.Pointer(v12)))-uint32(0xc2)]
 	goto resume0
 resume0:
 	;
 	if (int32(*(*uint8)(unsafe.Pointer(s)))>>int32(3)-int32(0x10)|(int32(*(*uint8)(unsafe.Pointer(s)))>>int32(3)+int32(c)>>Int32FromInt32(26))) & ^Int32FromInt32(7) != 0 {
 		s--
-		goto _11
+		goto _9
 	}
 	s++
 	if c&(Uint32FromUint32(1)<<Int32FromInt32(25)) != 0 {
 		if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(0x80) >= uint32(0x40) {
 			s -= uintptr(2)
-			goto _11
+			goto _9
 		}
 		s++
 		if c&(Uint32FromUint32(1)<<Int32FromInt32(19)) != 0 {
 			if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(0x80) >= uint32(0x40) {
 				s -= uintptr(3)
-				goto _11
+				goto _9
 			}
 			s++
 		}
 	}
 	wn--
 	c = uint32(0)
-	goto _12
-_12:
-	;
-	goto _13
-	goto _11
-_11:
-	;
 	goto _10
+_10:
+	;
+	goto _11
+	goto _9
 _9:
 	;
-_17:
+	goto _8
+_7:
+	;
+_15:
 	;
 	if !(wn != 0) {
 		*(*uintptr)(unsafe.Pointer(src)) = s
@@ -119292,6 +117356,11 @@ _17:
 	}
 	if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(1) < uint32(0x7f) && uint64(s)%uint64(4) == uint64(0) {
 		for wn >= uint64(5) && !((*(*uint32)(unsafe.Pointer(s))|(*(*uint32)(unsafe.Pointer(s))-Uint32FromInt32(0x01010101)))&Uint32FromUint32(0x80808080) != 0) {
+			v16 = ws
+			ws += 4
+			v17 = s
+			s++
+			*(*Twchar_t)(unsafe.Pointer(v16)) = int32(*(*uint8)(unsafe.Pointer(v17)))
 			v18 = ws
 			ws += 4
 			v19 = s
@@ -119307,70 +117376,65 @@ _17:
 			v23 = s
 			s++
 			*(*Twchar_t)(unsafe.Pointer(v22)) = int32(*(*uint8)(unsafe.Pointer(v23)))
-			v24 = ws
-			ws += 4
-			v25 = s
-			s++
-			*(*Twchar_t)(unsafe.Pointer(v24)) = int32(*(*uint8)(unsafe.Pointer(v25)))
 			wn -= uint64(4)
 		}
 	}
 	if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(1) < uint32(0x7f) {
-		v26 = ws
+		v24 = ws
 		ws += 4
-		v27 = s
+		v25 = s
 		s++
-		*(*Twchar_t)(unsafe.Pointer(v26)) = int32(*(*uint8)(unsafe.Pointer(v27)))
+		*(*Twchar_t)(unsafe.Pointer(v24)) = int32(*(*uint8)(unsafe.Pointer(v25)))
 		wn--
-		goto _16
+		goto _14
 	}
 	if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(0xc2) > Uint32FromUint32(0xf4)-Uint32FromUint32(0xc2) {
-		goto _15
+		goto _13
 	}
-	v28 = s
+	v26 = s
 	s++
-	c = X__fsmu8[uint32(*(*uint8)(unsafe.Pointer(v28)))-uint32(0xc2)]
+	c = X__fsmu8[uint32(*(*uint8)(unsafe.Pointer(v26)))-uint32(0xc2)]
 	goto resume
 resume:
 	;
 	if (int32(*(*uint8)(unsafe.Pointer(s)))>>int32(3)-int32(0x10)|(int32(*(*uint8)(unsafe.Pointer(s)))>>int32(3)+int32(c)>>Int32FromInt32(26))) & ^Int32FromInt32(7) != 0 {
 		s--
-		goto _15
+		goto _13
 	}
-	v29 = s
+	v27 = s
 	s++
-	c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v29)))-int32(0x80))
+	c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v27)))-int32(0x80))
 	if c&(Uint32FromUint32(1)<<Int32FromInt32(31)) != 0 {
 		if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(0x80) >= uint32(0x40) {
 			s -= uintptr(2)
-			goto _15
+			goto _13
 		}
-		v30 = s
+		v28 = s
 		s++
-		c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v30)))-int32(0x80))
+		c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v28)))-int32(0x80))
 		if c&(Uint32FromUint32(1)<<Int32FromInt32(31)) != 0 {
 			if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(0x80) >= uint32(0x40) {
 				s -= uintptr(3)
-				goto _15
+				goto _13
 			}
-			v31 = s
+			v29 = s
 			s++
-			c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v31)))-int32(0x80))
+			c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v29)))-int32(0x80))
 		}
 	}
-	v32 = ws
+	v30 = ws
 	ws += 4
-	*(*Twchar_t)(unsafe.Pointer(v32)) = int32(c)
+	*(*Twchar_t)(unsafe.Pointer(v30)) = int32(c)
 	wn--
 	c = uint32(0)
-	goto _16
-_16:
+	goto _14
+_14:
 	;
-	goto _17
 	goto _15
-_15:
+	goto _13
+_13:
 	;
-_10:
+_8:
 	;
 	if !(c != 0) && !(*(*uint8)(unsafe.Pointer(s)) != 0) {
 		if ws != 0 {
@@ -119405,12 +117469,11 @@ func Xmbtowc(tls *TLS, wc uintptr, src uintptr, n Tsize_t) (r int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
 	var c uint32
-	var s, v5, v6, v7, v8 uintptr
-	var tp, v3 Tuintptr_t
+	var s, v3, v4, v5, v6 uintptr
 	var v1 Twchar_t
 	var v2 int32
 	var _ /* dummy at bp+0 */ Twchar_t
-	_, _, _, _, _, _, _, _, _, _ = c, s, tp, v1, v2, v3, v5, v6, v7, v8
+	_, _, _, _, _, _, _, _ = c, s, v1, v2, v3, v4, v5, v6
 	s = src
 	if !(s != 0) {
 		return 0
@@ -119426,14 +117489,7 @@ func Xmbtowc(tls *TLS, wc uintptr, src uintptr, n Tsize_t) (r int32) {
 		*(*Twchar_t)(unsafe.Pointer(wc)) = v1
 		return BoolInt32(!!(v1 != 0))
 	}
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+2346)
-	v3 = tp
-	goto _4
-_4:
-	if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(uintptr(v3))).Flocale)) != 0) {
+	if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)) != 0) {
 		v2 = int32(4)
 	} else {
 		v2 = int32(1)
@@ -119445,9 +117501,9 @@ _4:
 	if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(0xc2) > Uint32FromUint32(0xf4)-Uint32FromUint32(0xc2) {
 		goto ilseq
 	}
-	v5 = s
+	v3 = s
 	s++
-	c = X__fsmu8[uint32(*(*uint8)(unsafe.Pointer(v5)))-uint32(0xc2)]
+	c = X__fsmu8[uint32(*(*uint8)(unsafe.Pointer(v3)))-uint32(0xc2)]
 	/* Avoid excessive checks against n: If shifting the state n-1
 	 * times does not clear the high bit, then the value of n is
 	 * insufficient to read a character */
@@ -119457,9 +117513,9 @@ _4:
 	if (int32(*(*uint8)(unsafe.Pointer(s)))>>int32(3)-int32(0x10)|(int32(*(*uint8)(unsafe.Pointer(s)))>>int32(3)+int32(c)>>Int32FromInt32(26))) & ^Int32FromInt32(7) != 0 {
 		goto ilseq
 	}
-	v6 = s
+	v4 = s
 	s++
-	c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v6)))-int32(0x80))
+	c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v4)))-int32(0x80))
 	if !(c&(Uint32FromUint32(1)<<Int32FromInt32(31)) != 0) {
 		*(*Twchar_t)(unsafe.Pointer(wc)) = int32(c)
 		return int32(2)
@@ -119467,9 +117523,9 @@ _4:
 	if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(0x80) >= uint32(0x40) {
 		goto ilseq
 	}
-	v7 = s
+	v5 = s
 	s++
-	c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v7)))-int32(0x80))
+	c = c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v5)))-int32(0x80))
 	if !(c&(Uint32FromUint32(1)<<Int32FromInt32(31)) != 0) {
 		*(*Twchar_t)(unsafe.Pointer(wc)) = int32(c)
 		return int32(3)
@@ -119477,9 +117533,9 @@ _4:
 	if uint32(*(*uint8)(unsafe.Pointer(s)))-uint32(0x80) >= uint32(0x40) {
 		goto ilseq
 	}
-	v8 = s
+	v6 = s
 	s++
-	*(*Twchar_t)(unsafe.Pointer(wc)) = int32(c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v8)))-int32(0x80)))
+	*(*Twchar_t)(unsafe.Pointer(wc)) = int32(c<<int32(6) | uint32(int32(*(*uint8)(unsafe.Pointer(v6)))-int32(0x80)))
 	return int32(4)
 	goto ilseq
 ilseq:
@@ -119493,24 +117549,17 @@ func Xwcrtomb(tls *TLS, s uintptr, wc Twchar_t, st uintptr) (r Tsize_t) {
 		trc("tls=%v s=%v wc=%v st=%v, (%v:)", tls, s, wc, st, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v2 Tuintptr_t
 	var v1 int32
-	var v4, v5, v6, v7, v8, v9 uintptr
-	_, _, _, _, _, _, _, _, _ = tp, v1, v2, v4, v5, v6, v7, v8, v9
+	var v2, v3, v4, v5, v6, v7 uintptr
+	_, _, _, _, _, _, _ = v1, v2, v3, v4, v5, v6, v7
 	if !(s != 0) {
 		return uint64(1)
 	}
 	if uint32(wc) < uint32(0x80) {
 		*(*uint8)(unsafe.Pointer(s)) = uint8(wc)
 		return uint64(1)
-	} else { //TODO "tp" // pthread_arch.h:3:21:
-		panic(0) // assembler statements not supported
-		// __asm__ ("" : "=r" (tp) );
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+2353)
-		v2 = tp
-		goto _3
-	_3:
-		if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(uintptr(v2))).Flocale)) != 0) {
+	} else {
+		if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)) != 0) {
 			v1 = int32(4)
 		} else {
 			v1 = int32(1)
@@ -119524,32 +117573,32 @@ func Xwcrtomb(tls *TLS, s uintptr, wc Twchar_t, st uintptr) (r Tsize_t) {
 			return uint64(1)
 		} else {
 			if uint32(wc) < uint32(0x800) {
-				v4 = s
+				v2 = s
 				s++
-				*(*uint8)(unsafe.Pointer(v4)) = uint8(int32(0xc0) | wc>>Int32FromInt32(6))
+				*(*uint8)(unsafe.Pointer(v2)) = uint8(int32(0xc0) | wc>>Int32FromInt32(6))
 				*(*uint8)(unsafe.Pointer(s)) = uint8(int32(0x80) | wc&int32(0x3f))
 				return uint64(2)
 			} else {
 				if uint32(wc) < uint32(0xd800) || uint32(wc)-uint32(0xe000) < uint32(0x2000) {
-					v5 = s
+					v3 = s
 					s++
-					*(*uint8)(unsafe.Pointer(v5)) = uint8(int32(0xe0) | wc>>Int32FromInt32(12))
-					v6 = s
+					*(*uint8)(unsafe.Pointer(v3)) = uint8(int32(0xe0) | wc>>Int32FromInt32(12))
+					v4 = s
 					s++
-					*(*uint8)(unsafe.Pointer(v6)) = uint8(int32(0x80) | wc>>Int32FromInt32(6)&int32(0x3f))
+					*(*uint8)(unsafe.Pointer(v4)) = uint8(int32(0x80) | wc>>Int32FromInt32(6)&int32(0x3f))
 					*(*uint8)(unsafe.Pointer(s)) = uint8(int32(0x80) | wc&int32(0x3f))
 					return uint64(3)
 				} else {
 					if uint32(wc)-uint32(0x10000) < uint32(0x100000) {
+						v5 = s
+						s++
+						*(*uint8)(unsafe.Pointer(v5)) = uint8(int32(0xf0) | wc>>Int32FromInt32(18))
+						v6 = s
+						s++
+						*(*uint8)(unsafe.Pointer(v6)) = uint8(int32(0x80) | wc>>Int32FromInt32(12)&int32(0x3f))
 						v7 = s
 						s++
-						*(*uint8)(unsafe.Pointer(v7)) = uint8(int32(0xf0) | wc>>Int32FromInt32(18))
-						v8 = s
-						s++
-						*(*uint8)(unsafe.Pointer(v8)) = uint8(int32(0x80) | wc>>Int32FromInt32(12)&int32(0x3f))
-						v9 = s
-						s++
-						*(*uint8)(unsafe.Pointer(v9)) = uint8(int32(0x80) | wc>>Int32FromInt32(6)&int32(0x3f))
+						*(*uint8)(unsafe.Pointer(v7)) = uint8(int32(0x80) | wc>>Int32FromInt32(6)&int32(0x3f))
 						*(*uint8)(unsafe.Pointer(s)) = uint8(int32(0x80) | wc&int32(0x3f))
 						return uint64(4)
 					}
@@ -119712,20 +117761,12 @@ func Xwctob(tls *TLS, c Twint_t) (r int32) {
 		trc("tls=%v c=%v, (%v:)", tls, c, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v2 Tuintptr_t
 	var v1 int32
-	_, _, _ = tp, v1, v2
+	_ = v1
 	if c < uint32(128) {
 		return int32(c)
 	}
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+2361)
-	v2 = tp
-	goto _3
-_3:
-	if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(uintptr(v2))).Flocale)) != 0) {
+	if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)) != 0) {
 		v1 = int32(4)
 	} else {
 		v1 = int32(1)
@@ -119754,10 +117795,10 @@ func Xaccept(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32) {
 	}
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14 int64
+	var r, v10 int64
 	var v1, v2, v3 int32
 	var v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v12, v14, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _ = r, v1, v10, v2, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_accept)
 	v2 = int32(__SC_accept)
 	v3 = int32(1)
@@ -119769,26 +117810,12 @@ func Xaccept(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32) {
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2367)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -119808,23 +117835,13 @@ func Xaccept(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32) {
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2367)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+48))
 	}
-	v12 = r
-	goto _13
-_13:
-	return int32(X__syscall_ret(tls, uint64(v12)))
+	v10 = r
+	goto _11
+_11:
+	return int32(X__syscall_ret(tls, uint64(v10)))
 }
 
 type Tucred = struct {
@@ -119845,10 +117862,10 @@ func Xaccept4(tls *TLS, fd int32, addr uintptr, len1 uintptr, flg int32) (r1 int
 	}
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
-	var r, r0, r01, r02, r3, r31, r32, r4, r41, r42, r5, r51, r6, r7, r8, v10, v12, v14 int64
+	var r, v10 int64
 	var ret, v1, v2, v3 int32
 	var v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r02, r3, r31, r32, r4, r41, r42, r5, r51, r6, r7, r8, ret, v1, v10, v12, v14, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _, _ = r, ret, v1, v10, v2, v3, v4, v5, v6, v7, v8, v9
 	if !(flg != 0) {
 		return Xaccept(tls, fd, addr, len1)
 	}
@@ -119863,26 +117880,12 @@ func Xaccept4(tls *TLS, fd int32, addr uintptr, len1 uintptr, flg int32) (r1 int
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar02 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar32 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar42 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar51 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2374)
-		v10 = r32
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -119902,23 +117905,13 @@ func Xaccept4(tls *TLS, fd int32, addr uintptr, len1 uintptr, flg int32) (r1 int
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2374)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+48))
 	}
-	v12 = r
-	goto _13
-_13:
-	ret = int32(X__syscall_ret(tls, uint64(v12)))
+	v10 = r
+	goto _11
+_11:
+	ret = int32(X__syscall_ret(tls, uint64(v10)))
 	if ret >= 0 || *(*int32)(unsafe.Pointer(X__errno_location(tls))) != int32(ENOSYS) && *(*int32)(unsafe.Pointer(X__errno_location(tls))) != int32(EINVAL) {
 		return ret
 	}
@@ -119931,32 +117924,10 @@ _13:
 		return ret
 	}
 	if flg&int32(SOCK_CLOEXEC) != 0 {
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aaret))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2374)
-		_ = r31
-		goto _16
-	_16:
+		X__syscall3(tls, int64(SYS_fcntl), int64(ret), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 	}
 	if flg&int32(SOCK_NONBLOCK) != 0 {
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aaret))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFL)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvO_NONBLOCK)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2374)
-		_ = r31
-		goto _17
-	_17:
+		X__syscall3(tls, int64(SYS_fcntl), int64(ret), int64(Int32FromInt32(F_SETFL)), int64(Int32FromInt32(O_NONBLOCK)))
 	}
 	return ret
 }
@@ -119968,10 +117939,10 @@ func Xbind(tls *TLS, fd int32, addr uintptr, len1 Tsocklen_t) (r1 int32) {
 	}
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14 int64
+	var r, v10 int64
 	var v1, v2, v3 int32
 	var v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v12, v14, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _ = r, v1, v10, v2, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_bind)
 	v2 = int32(__SC_bind)
 	v3 = 0
@@ -119983,26 +117954,12 @@ func Xbind(tls *TLS, fd int32, addr uintptr, len1 Tsocklen_t) (r1 int32) {
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2382)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -120022,23 +117979,13 @@ func Xbind(tls *TLS, fd int32, addr uintptr, len1 Tsocklen_t) (r1 int32) {
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2382)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+48))
 	}
-	v12 = r
-	goto _13
-_13:
-	return int32(X__syscall_ret(tls, uint64(v12)))
+	v10 = r
+	goto _11
+_11:
+	return int32(X__syscall_ret(tls, uint64(v10)))
 }
 
 func Xconnect(tls *TLS, fd int32, addr uintptr, len1 Tsocklen_t) (r1 int32) {
@@ -120048,10 +117995,10 @@ func Xconnect(tls *TLS, fd int32, addr uintptr, len1 Tsocklen_t) (r1 int32) {
 	}
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14 int64
+	var r, v10 int64
 	var v1, v2, v3 int32
 	var v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v12, v14, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _ = r, v1, v10, v2, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_connect)
 	v2 = int32(__SC_connect)
 	v3 = int32(1)
@@ -120063,26 +118010,12 @@ func Xconnect(tls *TLS, fd int32, addr uintptr, len1 Tsocklen_t) (r1 int32) {
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2387)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -120102,23 +118035,13 @@ func Xconnect(tls *TLS, fd int32, addr uintptr, len1 Tsocklen_t) (r1 int32) {
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2387)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+48))
 	}
-	v12 = r
-	goto _13
-_13:
-	return int32(X__syscall_ret(tls, uint64(v12)))
+	v10 = r
+	goto _11
+_11:
+	return int32(X__syscall_ret(tls, uint64(v10)))
 }
 
 const ADD = 0
@@ -121881,9 +119804,9 @@ func Xether_ntoa_r(tls *TLS, p_a uintptr, x uintptr) (r uintptr) {
 			break
 		}
 		if ii == 0 {
-			v2 = __ccgo_ts + 2395
+			v2 = __ccgo_ts + 1013
 		} else {
-			v2 = __ccgo_ts + 2400
+			v2 = __ccgo_ts + 1018
 		}
 		x += uintptr(Xsprintf(tls, x, v2, VaList(bp+8, int32(*(*Tuint8_t)(unsafe.Pointer(p_a + uintptr(ii)))))))
 		goto _1
@@ -122976,7 +120899,7 @@ func _itoa(tls *TLS, p uintptr, x uint32) (r uintptr) {
 func _mkptr4(tls *TLS, s uintptr, ip uintptr) {
 	bp := tls.Alloc(48)
 	defer tls.Free(48)
-	Xsprintf(tls, s, __ccgo_ts+2406, VaList(bp+8, int32(*(*uint8)(unsafe.Pointer(ip + 3))), int32(*(*uint8)(unsafe.Pointer(ip + 2))), int32(*(*uint8)(unsafe.Pointer(ip + 1))), int32(*(*uint8)(unsafe.Pointer(ip)))))
+	Xsprintf(tls, s, __ccgo_ts+1024, VaList(bp+8, int32(*(*uint8)(unsafe.Pointer(ip + 3))), int32(*(*uint8)(unsafe.Pointer(ip + 2))), int32(*(*uint8)(unsafe.Pointer(ip + 1))), int32(*(*uint8)(unsafe.Pointer(ip)))))
 }
 
 func _mkptr6(tls *TLS, s uintptr, ip uintptr) {
@@ -123005,7 +120928,7 @@ func _mkptr6(tls *TLS, s uintptr, ip uintptr) {
 		;
 		i--
 	}
-	Xstrcpy(tls, s, __ccgo_ts+2431)
+	Xstrcpy(tls, s, __ccgo_ts+1049)
 }
 
 var _xdigits = [17]uint8{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'}
@@ -123022,13 +120945,13 @@ func _reverse_hosts(tls *TLS, buf uintptr, a uintptr, scopeid uint32, family int
 	var _ /* iplit at bp+1560 */ Taddress
 	var _ /* line at bp+0 */ [512]uint8
 	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = f, p, z, v1, v10, v11, v13, v15, v16, v18, v2, v4, v5, v7, v8
-	f = X__fopen_rb_ca(tls, __ccgo_ts+2440, bp+1592, bp+512, uint64(1032))
+	f = X__fopen_rb_ca(tls, __ccgo_ts+1058, bp+1592, bp+512, uint64(1032))
 	if !(f != 0) {
 		return
 	}
 	if family == int32(PF_INET) {
 		Xmemcpy(tls, bp+1544+uintptr(12), a, uint64(4))
-		Xmemcpy(tls, bp+1544, __ccgo_ts+2451, uint64(12))
+		Xmemcpy(tls, bp+1544, __ccgo_ts+1069, uint64(12))
 		a = bp + 1544
 	}
 	for Xfgets(tls, bp, int32(512), f) != 0 {
@@ -123067,7 +120990,7 @@ func _reverse_hosts(tls *TLS, buf uintptr, a uintptr, scopeid uint32, family int
 		}
 		if (*(*Taddress)(unsafe.Pointer(bp + 1560))).Ffamily == int32(PF_INET) {
 			Xmemcpy(tls, bp+1560+8+uintptr(12), bp+1560+8, uint64(4))
-			Xmemcpy(tls, bp+1560+8, __ccgo_ts+2451, uint64(12))
+			Xmemcpy(tls, bp+1560+8, __ccgo_ts+1069, uint64(12))
 			(*(*Taddress)(unsafe.Pointer(bp + 1560))).Fscopeid = uint32(0)
 		}
 		if Xmemcmp(tls, a, bp+1560+8, uint64(16)) != 0 || (*(*Taddress)(unsafe.Pointer(bp + 1560))).Fscopeid != scopeid {
@@ -123125,7 +121048,7 @@ func _reverse_services(tls *TLS, buf uintptr, port int32, dgram int32) {
 	var _ /* line at bp+0 */ [128]uint8
 	var _ /* z at bp+128 */ uintptr
 	_, _, _, _, _, _, _, _, _ = f, p, svport, v1, v2, v4, v5, v7, v8
-	f = X__fopen_rb_ca(tls, __ccgo_ts+2464, bp+1168, bp+136, uint64(1032))
+	f = X__fopen_rb_ca(tls, __ccgo_ts+1082, bp+1168, bp+136, uint64(1032))
 	if !(f != 0) {
 		return
 	}
@@ -123164,10 +121087,10 @@ func _reverse_services(tls *TLS, buf uintptr, port int32, dgram int32) {
 		if svport != uint64(port) || *(*uintptr)(unsafe.Pointer(bp + 128)) == p {
 			continue
 		}
-		if dgram != 0 && Xstrncmp(tls, *(*uintptr)(unsafe.Pointer(bp + 128)), __ccgo_ts+2478, uint64(4)) != 0 {
+		if dgram != 0 && Xstrncmp(tls, *(*uintptr)(unsafe.Pointer(bp + 128)), __ccgo_ts+1096, uint64(4)) != 0 {
 			continue
 		}
-		if !(dgram != 0) && Xstrncmp(tls, *(*uintptr)(unsafe.Pointer(bp + 128)), __ccgo_ts+2483, uint64(4)) != 0 {
+		if !(dgram != 0) && Xstrncmp(tls, *(*uintptr)(unsafe.Pointer(bp + 128)), __ccgo_ts+1101, uint64(4)) != 0 {
 			continue
 		}
 		if int64(p)-t__predefined_ptrdiff_t(bp) > int64(32) {
@@ -123220,7 +121143,7 @@ func Xgetnameinfo(tls *TLS, sa uintptr, sl Tsocklen_t, node uintptr, nodelen Tso
 		if uint64(sl) < uint64(28) {
 			return -int32(6)
 		}
-		if Xmemcmp(tls, a, __ccgo_ts+2451, uint64(12)) != 0 {
+		if Xmemcmp(tls, a, __ccgo_ts+1069, uint64(12)) != 0 {
 			_mkptr6(tls, bp, a)
 		} else {
 			_mkptr4(tls, bp, a+uintptr(12))
@@ -123295,10 +121218,10 @@ func Xgetpeername(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32) {
 	}
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14 int64
+	var r, v10 int64
 	var v1, v2, v3 int32
 	var v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v12, v14, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _ = r, v1, v10, v2, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_getpeername)
 	v2 = int32(__SC_getpeername)
 	v3 = 0
@@ -123310,26 +121233,12 @@ func Xgetpeername(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32) {
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2488)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -123349,23 +121258,13 @@ func Xgetpeername(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32) {
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2488)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+48))
 	}
-	v12 = r
-	goto _13
-_13:
-	return int32(X__syscall_ret(tls, uint64(v12)))
+	v10 = r
+	goto _11
+_11:
+	return int32(X__syscall_ret(tls, uint64(v10)))
 }
 
 func Xgetservbyname(tls *TLS, name uintptr, prots uintptr) (r uintptr) {
@@ -123416,10 +121315,10 @@ func Xgetservbyname_r(tls *TLS, name uintptr, prots uintptr, se uintptr, buf uin
 	if !(prots != 0) {
 		proto = 0
 	} else {
-		if !(Xstrcmp(tls, prots, __ccgo_ts+2500) != 0) {
+		if !(Xstrcmp(tls, prots, __ccgo_ts+1106) != 0) {
 			proto = int32(IPPROTO_TCP)
 		} else {
-			if !(Xstrcmp(tls, prots, __ccgo_ts+2504) != 0) {
+			if !(Xstrcmp(tls, prots, __ccgo_ts+1110) != 0) {
 				proto = int32(IPPROTO_UDP)
 			} else {
 				return int32(EINVAL)
@@ -123443,9 +121342,9 @@ func Xgetservbyname_r(tls *TLS, name uintptr, prots uintptr, se uintptr, buf uin
 	*(*uintptr)(unsafe.Pointer((*Tservent)(unsafe.Pointer(se)).Fs_aliases + 1*8)) = uintptr(0)
 	(*Tservent)(unsafe.Pointer(se)).Fs_port = int32(Xhtons(tls, (*(*[2]Tservice)(unsafe.Pointer(bp)))[0].Fport))
 	if int32((*(*[2]Tservice)(unsafe.Pointer(bp)))[0].Fproto) == int32(IPPROTO_TCP) {
-		v1 = __ccgo_ts + 2500
+		v1 = __ccgo_ts + 1106
 	} else {
-		v1 = __ccgo_ts + 2504
+		v1 = __ccgo_ts + 1110
 	}
 	(*Tservent)(unsafe.Pointer(se)).Fs_proto = v1
 	*(*uintptr)(unsafe.Pointer(res)) = se
@@ -123459,10 +121358,10 @@ func Xgetsockname(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32) {
 	}
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14 int64
+	var r, v10 int64
 	var v1, v2, v3 int32
 	var v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v12, v14, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _ = r, v1, v10, v2, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_getsockname)
 	v2 = int32(__SC_getsockname)
 	v3 = 0
@@ -123474,26 +121373,12 @@ func Xgetsockname(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32) {
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2508)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -123513,23 +121398,13 @@ func Xgetsockname(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32) {
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2508)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+48))
 	}
-	v12 = r
-	goto _13
-_13:
-	return int32(X__syscall_ret(tls, uint64(v12)))
+	v10 = r
+	goto _11
+_11:
+	return int32(X__syscall_ret(tls, uint64(v10)))
 }
 
 func Xgetsockopt(tls *TLS, fd int32, level int32, optname int32, optval uintptr, optlen uintptr) (r2 int32) {
@@ -123539,12 +121414,12 @@ func Xgetsockopt(tls *TLS, fd int32, level int32, optname int32, optval uintptr,
 	}
 	bp := tls.Alloc(320)
 	defer tls.Free(320)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14, v25, v27, v29, v40, v42, v44 int64
-	var r1, v1, v16, v17, v18, v2, v3, v31, v32, v33 int32
+	var r, v10, v21, v32 int64
+	var r1, v1, v12, v13, v14, v2, v23, v24, v25, v3 int32
 	var tv uintptr
-	var v19, v20, v21, v22, v23, v24, v34, v35, v36, v37, v38, v39, v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
+	var v15, v16, v17, v18, v19, v20, v26, v27, v28, v29, v30, v31, v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
 	var _ /* tv32 at bp+296 */ [2]int64
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r1, r3, r31, r4, r41, r5, r6, r7, r8, tv, v1, v10, v12, v14, v16, v17, v18, v19, v2, v20, v21, v22, v23, v24, v25, v27, v29, v3, v31, v32, v33, v34, v35, v36, v37, v38, v39, v4, v40, v42, v44, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r1, tv, v1, v10, v12, v13, v14, v15, v16, v17, v18, v19, v2, v20, v21, v23, v24, v25, v26, v27, v28, v29, v3, v30, v31, v32, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_getsockopt)
 	v2 = int32(__SC_getsockopt)
 	v3 = 0
@@ -123556,26 +121431,12 @@ func Xgetsockopt(tls *TLS, fd int32, level int32, optname int32, optval uintptr,
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2520)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp + 200)) = [6]int64{
@@ -123595,23 +121456,13 @@ func Xgetsockopt(tls *TLS, fd int32, level int32, optname int32, optval uintptr,
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+248))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2520)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+248))
 	}
-	v12 = r
-	goto _13
-_13:
-	r1 = int32(v12)
+	v10 = r
+	goto _11
+_11:
+	r1 = int32(v10)
 	if r1 == -int32(ENOPROTOOPT) {
 		switch level {
 		case int32(SOL_SOCKET):
@@ -123619,7 +121470,7 @@ _13:
 			case int32(SO_RCVTIMEO):
 				fallthrough
 			case int32(SO_SNDTIMEO):
-				if true {
+				if false {
 					break
 				}
 				if uint64(*(*Tsocklen_t)(unsafe.Pointer(optlen))) < uint64(16) {
@@ -123634,73 +121485,49 @@ _13:
 				*(*[1]Tsocklen_t)(unsafe.Pointer(bp + 96)) = [1]Tsocklen_t{
 					0: uint32(16),
 				}
-				v16 = int32(SYS_getsockopt)
-				v17 = int32(__SC_getsockopt)
-				v18 = 0
-				v19 = int64(fd)
-				v20 = int64(level)
-				v21 = int64(optname)
-				v22 = int64(bp + 296)
-				v23 = int64(bp + 96)
-				v24 = int64(Int32FromInt32(0))
-				if v18 != 0 {
-					r = ___syscall_cp(tls, int64(v16), v19, v20, v21, v22, v23, v24)
-				} else { //TODO "r0" // syscall_arch.h:76:16:
-					panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv16))));//TODO "r3" // syscall_arch.h:77:16:
-					panic(0) // assembler statements not supported  aar31 = ((ccv19));//TODO "r4" // syscall_arch.h:78:16:
-					panic(0) // assembler statements not supported  aar41 = ((ccv20));//TODO "r5" // syscall_arch.h:79:16:
-					panic(0) // assembler statements not supported  aar5 = ((ccv21));//TODO "r6" // syscall_arch.h:80:16:
-					panic(0) // assembler statements not supported  aar6 = ((ccv22));//TODO "r7" // syscall_arch.h:81:16:
-					panic(0) // assembler statements not supported  aar7 = ((ccv23));//TODO "r8" // syscall_arch.h:82:16:
-					panic(0) // assembler statements not supported  aar8 = ((ccv24));
-					// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-					// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-					// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2520)
-					v25 = r31
-					goto _26
-				_26:
-					r = v25
+				v12 = int32(SYS_getsockopt)
+				v13 = int32(__SC_getsockopt)
+				v14 = 0
+				v15 = int64(fd)
+				v16 = int64(level)
+				v17 = int64(optname)
+				v18 = int64(bp + 296)
+				v19 = int64(bp + 96)
+				v20 = int64(Int32FromInt32(0))
+				if v14 != 0 {
+					r = ___syscall_cp(tls, int64(v12), v15, v16, v17, v18, v19, v20)
+				} else {
+					r = X__syscall6(tls, int64(v12), v15, v16, v17, v18, v19, v20)
 				}
 				if r != int64(-Int32FromInt32(ENOSYS)) {
-					v27 = r
-					goto _28
+					v21 = r
+					goto _22
 				}
-				if v18 != 0 {
+				if v14 != 0 {
 					*(*[6]int64)(unsafe.Pointer(bp + 200)) = [6]int64{
-						0: v19,
-						1: v20,
-						2: v21,
-						3: v22,
-						4: v23,
-						5: v24,
+						0: v15,
+						1: v16,
+						2: v17,
+						3: v18,
+						4: v19,
+						5: v20,
 					}
-					r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v17), int64(bp+200), 0, 0, 0, 0)
+					r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v13), int64(bp+200), 0, 0, 0, 0)
 				} else {
 					*(*[6]int64)(unsafe.Pointer(bp + 248)) = [6]int64{
-						0: v19,
-						1: v20,
-						2: v21,
-						3: v22,
-						4: v23,
-						5: v24,
-					} //TODO "r0" // syscall_arch.h:26:16:
-					panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-					panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv17))));//TODO "r4" // syscall_arch.h:28:16:
-					panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+248))));
-					// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-					// : "+r"(r0), "+r"(r3), "+r"(r4)
-					// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2520)
-					v29 = r3
-					goto _30
-				_30:
-					r = v29
+						0: v15,
+						1: v16,
+						2: v17,
+						3: v18,
+						4: v19,
+						5: v20,
+					}
+					r = X__syscall2(tls, int64(SYS_socketcall), int64(v13), int64(bp+248))
 				}
-				v27 = r
-				goto _28
-			_28:
-				r1 = int32(v27)
+				v21 = r
+				goto _22
+			_22:
+				r1 = int32(v21)
 				if r1 < 0 {
 					break
 				}
@@ -123720,73 +121547,49 @@ _13:
 				if optname == int32(SO_TIMESTAMPNS) {
 					optname = int32(SO_TIMESTAMPNS_OLD)
 				}
-				v31 = int32(SYS_getsockopt)
-				v32 = int32(__SC_getsockopt)
-				v33 = 0
-				v34 = int64(fd)
-				v35 = int64(level)
-				v36 = int64(optname)
-				v37 = int64(optval)
-				v38 = int64(optlen)
-				v39 = int64(Int32FromInt32(0))
-				if v33 != 0 {
-					r = ___syscall_cp(tls, int64(v31), v34, v35, v36, v37, v38, v39)
-				} else { //TODO "r0" // syscall_arch.h:76:16:
-					panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv31))));//TODO "r3" // syscall_arch.h:77:16:
-					panic(0) // assembler statements not supported  aar31 = ((ccv34));//TODO "r4" // syscall_arch.h:78:16:
-					panic(0) // assembler statements not supported  aar41 = ((ccv35));//TODO "r5" // syscall_arch.h:79:16:
-					panic(0) // assembler statements not supported  aar5 = ((ccv36));//TODO "r6" // syscall_arch.h:80:16:
-					panic(0) // assembler statements not supported  aar6 = ((ccv37));//TODO "r7" // syscall_arch.h:81:16:
-					panic(0) // assembler statements not supported  aar7 = ((ccv38));//TODO "r8" // syscall_arch.h:82:16:
-					panic(0) // assembler statements not supported  aar8 = ((ccv39));
-					// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-					// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-					// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2520)
-					v40 = r31
-					goto _41
-				_41:
-					r = v40
+				v23 = int32(SYS_getsockopt)
+				v24 = int32(__SC_getsockopt)
+				v25 = 0
+				v26 = int64(fd)
+				v27 = int64(level)
+				v28 = int64(optname)
+				v29 = int64(optval)
+				v30 = int64(optlen)
+				v31 = int64(Int32FromInt32(0))
+				if v25 != 0 {
+					r = ___syscall_cp(tls, int64(v23), v26, v27, v28, v29, v30, v31)
+				} else {
+					r = X__syscall6(tls, int64(v23), v26, v27, v28, v29, v30, v31)
 				}
 				if r != int64(-Int32FromInt32(ENOSYS)) {
-					v42 = r
-					goto _43
+					v32 = r
+					goto _33
 				}
-				if v33 != 0 {
+				if v25 != 0 {
 					*(*[6]int64)(unsafe.Pointer(bp + 200)) = [6]int64{
-						0: v34,
-						1: v35,
-						2: v36,
-						3: v37,
-						4: v38,
-						5: v39,
+						0: v26,
+						1: v27,
+						2: v28,
+						3: v29,
+						4: v30,
+						5: v31,
 					}
-					r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v32), int64(bp+200), 0, 0, 0, 0)
+					r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v24), int64(bp+200), 0, 0, 0, 0)
 				} else {
 					*(*[6]int64)(unsafe.Pointer(bp + 248)) = [6]int64{
-						0: v34,
-						1: v35,
-						2: v36,
-						3: v37,
-						4: v38,
-						5: v39,
-					} //TODO "r0" // syscall_arch.h:26:16:
-					panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-					panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv32))));//TODO "r4" // syscall_arch.h:28:16:
-					panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+248))));
-					// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-					// : "+r"(r0), "+r"(r3), "+r"(r4)
-					// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2520)
-					v44 = r3
-					goto _45
-				_45:
-					r = v44
+						0: v26,
+						1: v27,
+						2: v28,
+						3: v29,
+						4: v30,
+						5: v31,
+					}
+					r = X__syscall2(tls, int64(SYS_socketcall), int64(v24), int64(bp+248))
 				}
-				v42 = r
-				goto _43
-			_43:
-				r1 = int32(v42)
+				v32 = r
+				goto _33
+			_33:
+				r1 = int32(v32)
 				break
 			}
 		}
@@ -123799,26 +121602,10 @@ func X__h_errno_location(tls *TLS) (r uintptr) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v1, v3 Tuintptr_t
-	_, _, _ = tp, v1, v3
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+2531)
-	v1 = tp
-	goto _2
-_2:
-	if !((*t__pthread)(unsafe.Pointer(uintptr(v1))).Fstack != 0) {
+	if !((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Fstack != 0) {
 		return uintptr(unsafe.Pointer(&Xh_errno))
 	}
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+2531)
-	v3 = tp
-	goto _4
-_4:
-	return uintptr(v3) + 144
+	return ___get_tp(tls) + 144
 }
 
 func Xherror(tls *TLS, msg uintptr) {
@@ -123835,11 +121622,11 @@ func Xherror(tls *TLS, msg uintptr) {
 		v1 = __ccgo_ts
 	}
 	if msg != 0 {
-		v2 = __ccgo_ts + 613
+		v2 = __ccgo_ts + 386
 	} else {
 		v2 = __ccgo_ts
 	}
-	Xfprintf(tls, uintptr(unsafe.Pointer(&X__stderr_FILE)), __ccgo_ts+2550, VaList(bp+8, v1, v2, Xhstrerror(tls, *(*int32)(unsafe.Pointer(X__h_errno_location(tls))))))
+	Xfprintf(tls, uintptr(unsafe.Pointer(&X__stderr_FILE)), __ccgo_ts+1114, VaList(bp+8, v1, v2, Xhstrerror(tls, *(*int32)(unsafe.Pointer(X__h_errno_location(tls))))))
 }
 
 type Tcpu_set_t1 = struct {
@@ -123961,9 +121748,8 @@ func Xif_indextoname(tls *TLS, index uint32, name uintptr) (r1 uintptr) {
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
 	var fd, r, v1 int32
-	var r0, r3 int64
 	var _ /* ifr at bp+0 */ Tifreq
-	_, _, _, _, _ = fd, r, r0, r3, v1
+	_, _, _ = fd, r, v1
 	v1 = Xsocket(tls, int32(PF_LOCAL), Int32FromInt32(SOCK_DGRAM)|Int32FromInt32(SOCK_CLOEXEC), 0)
 	fd = v1
 	if v1 < 0 {
@@ -123971,17 +121757,7 @@ func Xif_indextoname(tls *TLS, index uint32, name uintptr) (r1 uintptr) {
 	}
 	*(*int32)(unsafe.Pointer(bp + 16)) = int32(index)
 	r = Xioctl(tls, fd, int32(SIOCGIFNAME), VaList(bp+48, bp))
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+2558)
-	_ = r3
-	goto _2
-_2:
-	;
+	X__syscall1(tls, int64(SYS_close), int64(fd))
 	if r < 0 {
 		if *(*int32)(unsafe.Pointer(X__errno_location(tls))) == int32(ENODEV) {
 			*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(ENXIO)
@@ -124142,10 +121918,9 @@ func Xif_nametoindex(tls *TLS, name uintptr) (r1 uint32) {
 	}
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
-	var fd, r, v1, v3 int32
-	var r0, r3 int64
+	var fd, r, v1, v2 int32
 	var _ /* ifr at bp+0 */ Tifreq
-	_, _, _, _, _, _ = fd, r, r0, r3, v1, v3
+	_, _, _, _ = fd, r, v1, v2
 	v1 = Xsocket(tls, int32(PF_LOCAL), Int32FromInt32(SOCK_DGRAM)|Int32FromInt32(SOCK_CLOEXEC), 0)
 	fd = v1
 	if v1 < 0 {
@@ -124153,23 +121928,13 @@ func Xif_nametoindex(tls *TLS, name uintptr) (r1 uint32) {
 	}
 	Xstrncpy(tls, bp, name, uint64(16))
 	r = Xioctl(tls, fd, int32(SIOCGIFINDEX), VaList(bp+48, bp))
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+2573)
-	_ = r3
-	goto _2
-_2:
-	;
+	X__syscall1(tls, int64(SYS_close), int64(fd))
 	if r < 0 {
-		v3 = 0
+		v2 = 0
 	} else {
-		v3 = *(*int32)(unsafe.Pointer(bp + 16))
+		v2 = *(*int32)(unsafe.Pointer(bp + 16))
 	}
-	return uint32(v3)
+	return uint32(v2)
 }
 
 func Xinet_addr(tls *TLS, p uintptr) (r Tin_addr_t) {
@@ -124332,7 +122097,7 @@ func Xinet_ntoa(tls *TLS, _in Tin_addr) (r uintptr) {
 	var a uintptr
 	_ = a
 	a = bp
-	Xsnprintf(tls, uintptr(unsafe.Pointer(&_buf4)), uint64(16), __ccgo_ts+2588, VaList(bp+16, int32(*(*uint8)(unsafe.Pointer(a))), int32(*(*uint8)(unsafe.Pointer(a + 1))), int32(*(*uint8)(unsafe.Pointer(a + 2))), int32(*(*uint8)(unsafe.Pointer(a + 3)))))
+	Xsnprintf(tls, uintptr(unsafe.Pointer(&_buf4)), uint64(16), __ccgo_ts+1122, VaList(bp+16, int32(*(*uint8)(unsafe.Pointer(a))), int32(*(*uint8)(unsafe.Pointer(a + 1))), int32(*(*uint8)(unsafe.Pointer(a + 2))), int32(*(*uint8)(unsafe.Pointer(a + 3)))))
 	return uintptr(unsafe.Pointer(&_buf4))
 }
 
@@ -124353,14 +122118,14 @@ func Xinet_ntop(tls *TLS, af int32, a0 uintptr, s uintptr, l Tsocklen_t) (r uint
 	a = a0
 	switch af {
 	case int32(PF_INET):
-		if uint32(Xsnprintf(tls, s, uint64(l), __ccgo_ts+2588, VaList(bp+112, int32(*(*uint8)(unsafe.Pointer(a))), int32(*(*uint8)(unsafe.Pointer(a + 1))), int32(*(*uint8)(unsafe.Pointer(a + 2))), int32(*(*uint8)(unsafe.Pointer(a + 3)))))) < l {
+		if uint32(Xsnprintf(tls, s, uint64(l), __ccgo_ts+1122, VaList(bp+112, int32(*(*uint8)(unsafe.Pointer(a))), int32(*(*uint8)(unsafe.Pointer(a + 1))), int32(*(*uint8)(unsafe.Pointer(a + 2))), int32(*(*uint8)(unsafe.Pointer(a + 3)))))) < l {
 			return s
 		}
 	case int32(PF_INET6):
-		if Xmemcmp(tls, a, __ccgo_ts+2451, uint64(12)) != 0 {
-			Xsnprintf(tls, bp, uint64(100), __ccgo_ts+2600, VaList(bp+112, int32(256)*int32(*(*uint8)(unsafe.Pointer(a)))+int32(*(*uint8)(unsafe.Pointer(a + 1))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 2)))+int32(*(*uint8)(unsafe.Pointer(a + 3))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 4)))+int32(*(*uint8)(unsafe.Pointer(a + 5))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 6)))+int32(*(*uint8)(unsafe.Pointer(a + 7))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 8)))+int32(*(*uint8)(unsafe.Pointer(a + 9))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 10)))+int32(*(*uint8)(unsafe.Pointer(a + 11))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 12)))+int32(*(*uint8)(unsafe.Pointer(a + 13))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 14)))+int32(*(*uint8)(unsafe.Pointer(a + 15)))))
+		if Xmemcmp(tls, a, __ccgo_ts+1069, uint64(12)) != 0 {
+			Xsnprintf(tls, bp, uint64(100), __ccgo_ts+1134, VaList(bp+112, int32(256)*int32(*(*uint8)(unsafe.Pointer(a)))+int32(*(*uint8)(unsafe.Pointer(a + 1))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 2)))+int32(*(*uint8)(unsafe.Pointer(a + 3))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 4)))+int32(*(*uint8)(unsafe.Pointer(a + 5))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 6)))+int32(*(*uint8)(unsafe.Pointer(a + 7))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 8)))+int32(*(*uint8)(unsafe.Pointer(a + 9))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 10)))+int32(*(*uint8)(unsafe.Pointer(a + 11))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 12)))+int32(*(*uint8)(unsafe.Pointer(a + 13))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 14)))+int32(*(*uint8)(unsafe.Pointer(a + 15)))))
 		} else {
-			Xsnprintf(tls, bp, uint64(100), __ccgo_ts+2624, VaList(bp+112, int32(256)*int32(*(*uint8)(unsafe.Pointer(a)))+int32(*(*uint8)(unsafe.Pointer(a + 1))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 2)))+int32(*(*uint8)(unsafe.Pointer(a + 3))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 4)))+int32(*(*uint8)(unsafe.Pointer(a + 5))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 6)))+int32(*(*uint8)(unsafe.Pointer(a + 7))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 8)))+int32(*(*uint8)(unsafe.Pointer(a + 9))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 10)))+int32(*(*uint8)(unsafe.Pointer(a + 11))), int32(*(*uint8)(unsafe.Pointer(a + 12))), int32(*(*uint8)(unsafe.Pointer(a + 13))), int32(*(*uint8)(unsafe.Pointer(a + 14))), int32(*(*uint8)(unsafe.Pointer(a + 15)))))
+			Xsnprintf(tls, bp, uint64(100), __ccgo_ts+1158, VaList(bp+112, int32(256)*int32(*(*uint8)(unsafe.Pointer(a)))+int32(*(*uint8)(unsafe.Pointer(a + 1))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 2)))+int32(*(*uint8)(unsafe.Pointer(a + 3))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 4)))+int32(*(*uint8)(unsafe.Pointer(a + 5))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 6)))+int32(*(*uint8)(unsafe.Pointer(a + 7))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 8)))+int32(*(*uint8)(unsafe.Pointer(a + 9))), int32(256)*int32(*(*uint8)(unsafe.Pointer(a + 10)))+int32(*(*uint8)(unsafe.Pointer(a + 11))), int32(*(*uint8)(unsafe.Pointer(a + 12))), int32(*(*uint8)(unsafe.Pointer(a + 13))), int32(*(*uint8)(unsafe.Pointer(a + 14))), int32(*(*uint8)(unsafe.Pointer(a + 15)))))
 		}
 		/* Replace longest /(^0|:)[:0]{2,}/ with "::" */
 		v2 = Int32FromInt32(0)
@@ -124374,7 +122139,7 @@ func Xinet_ntop(tls *TLS, af int32, a0 uintptr, s uintptr, l Tsocklen_t) (r uint
 			if i != 0 && int32((*(*[100]uint8)(unsafe.Pointer(bp)))[i]) != int32(':') {
 				goto _1
 			}
-			j = int32(Xstrspn(tls, bp+uintptr(i), __ccgo_ts+2654))
+			j = int32(Xstrspn(tls, bp+uintptr(i), __ccgo_ts+1188))
 			if j > max {
 				best = i
 				max = j
@@ -124577,10 +122342,10 @@ func Xlisten(tls *TLS, fd int32, backlog int32) (r1 int32) {
 	}
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14 int64
+	var r, v10 int64
 	var v1, v2, v3 int32
 	var v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v12, v14, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _ = r, v1, v10, v2, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_listen)
 	v2 = int32(__SC_listen)
 	v3 = 0
@@ -124592,26 +122357,12 @@ func Xlisten(tls *TLS, fd int32, backlog int32) (r1 int32) {
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2657)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -124631,23 +122382,13 @@ func Xlisten(tls *TLS, fd int32, backlog int32) (r1 int32) {
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2657)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+48))
 	}
-	v12 = r
-	goto _13
-_13:
-	return int32(X__syscall_ret(tls, uint64(v12)))
+	v10 = r
+	goto _11
+_11:
+	return int32(X__syscall_ret(tls, uint64(v10)))
 }
 
 func X__lookup_ipliteral(tls *TLS, buf uintptr, name uintptr, family int32) (r int32) {
@@ -124811,7 +122552,7 @@ func _name_from_hosts(tls *TLS, buf uintptr, canon uintptr, name uintptr, family
 	cnt = 0
 	badfam = 0
 	have_canon = 0
-	f = X__fopen_rb_ca(tls, __ccgo_ts+2440, bp+1544, bp+512, uint64(1032))
+	f = X__fopen_rb_ca(tls, __ccgo_ts+1058, bp+1544, bp+512, uint64(1032))
 	if !(f != 0) {
 		switch *(*int32)(unsafe.Pointer(X__errno_location(tls))) {
 		case int32(ENOENT):
@@ -125414,7 +123155,7 @@ func X__lookup_name(tls *TLS, buf uintptr, canon uintptr, name uintptr, family i
 				goto _6
 			}
 			Xmemcpy(tls, buf+uintptr(i)*28+8+uintptr(12), buf+uintptr(i)*28+8, uint64(4))
-			Xmemcpy(tls, buf+uintptr(i)*28+8, __ccgo_ts+2451, uint64(12))
+			Xmemcpy(tls, buf+uintptr(i)*28+8, __ccgo_ts+1069, uint64(12))
 			(*(*Taddress)(unsafe.Pointer(buf + uintptr(i)*28))).Ffamily = int32(PF_INET6)
 			goto _6
 		_6:
@@ -125474,9 +123215,9 @@ func X__lookup_name(tls *TLS, buf uintptr, canon uintptr, name uintptr, family i
 			sa = bp + 4
 			*(*Tsocklen_t)(unsafe.Pointer(bp + 92)) = uint32(28)
 		} else {
-			Xmemcpy(tls, bp+4+8, __ccgo_ts+2451, uint64(12))
+			Xmemcpy(tls, bp+4+8, __ccgo_ts+1069, uint64(12))
 			Xmemcpy(tls, bp+32+8+uintptr(12), buf+uintptr(i)*28+8, uint64(4))
-			Xmemcpy(tls, bp+32+8, __ccgo_ts+2451, uint64(12))
+			Xmemcpy(tls, bp+32+8, __ccgo_ts+1069, uint64(12))
 			Xmemcpy(tls, bp+32+8+uintptr(12), buf+uintptr(i)*28+8, uint64(4))
 			Xmemcpy(tls, bp+76+4, buf+uintptr(i)*28+8, uint64(4))
 			da = bp + 76
@@ -125603,7 +123344,7 @@ func X__lookup_serv(tls *TLS, buf uintptr, name uintptr, proto int32, socktype i
 		return -int32(2)
 	}
 	l = Xstrlen(tls, name)
-	f = X__fopen_rb_ca(tls, __ccgo_ts+2464, bp+1168, bp+136, uint64(1032))
+	f = X__fopen_rb_ca(tls, __ccgo_ts+1082, bp+1168, bp+136, uint64(1032))
 	if !(f != 0) {
 		switch *(*int32)(unsafe.Pointer(X__errno_location(tls))) {
 		case int32(ENOENT):
@@ -125681,7 +123422,7 @@ func X__lookup_serv(tls *TLS, buf uintptr, name uintptr, proto int32, socktype i
 		if port > uint64(65535) || *(*uintptr)(unsafe.Pointer(bp + 128)) == p {
 			continue
 		}
-		if !(Xstrncmp(tls, *(*uintptr)(unsafe.Pointer(bp + 128)), __ccgo_ts+2478, uint64(4)) != 0) {
+		if !(Xstrncmp(tls, *(*uintptr)(unsafe.Pointer(bp + 128)), __ccgo_ts+1096, uint64(4)) != 0) {
 			if proto == int32(IPPROTO_TCP) {
 				continue
 			}
@@ -125691,7 +123432,7 @@ func X__lookup_serv(tls *TLS, buf uintptr, name uintptr, proto int32, socktype i
 			cnt++
 			(*(*Tservice)(unsafe.Pointer(buf + uintptr(v20)*4))).Fproto = uint8(IPPROTO_UDP)
 		}
-		if !(Xstrncmp(tls, *(*uintptr)(unsafe.Pointer(bp + 128)), __ccgo_ts+2483, uint64(4)) != 0) {
+		if !(Xstrncmp(tls, *(*uintptr)(unsafe.Pointer(bp + 128)), __ccgo_ts+1101, uint64(4)) != 0) {
 			if proto == int32(IPPROTO_UDP) {
 				continue
 			}
@@ -125820,8 +123561,7 @@ func X__rtnetlink_enumerate(tls *TLS, link_af int32, addr_af int32, cb uintptr, 
 		defer func() { trc("-> %v", r1) }()
 	}
 	var fd, r int32
-	var r0, r3 int64
-	_, _, _, _ = fd, r, r0, r3
+	_, _ = fd, r
 	fd = Xsocket(tls, int32(PF_NETLINK), Int32FromInt32(SOCK_RAW)|Int32FromInt32(SOCK_CLOEXEC), NETLINK_ROUTE)
 	if fd < 0 {
 		return -int32(1)
@@ -125830,17 +123570,7 @@ func X__rtnetlink_enumerate(tls *TLS, link_af int32, addr_af int32, cb uintptr, 
 	if !(r != 0) {
 		r = ___netlink_enumerate(tls, fd, uint32(2), int32(RTM_GETADDR), addr_af, cb, ctx)
 	}
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+2664)
-	_ = r3
-	goto _1
-_1:
-	;
+	X__syscall1(tls, int64(SYS_close), int64(fd))
 	return r
 }
 
@@ -126258,10 +123988,10 @@ func Xrecvfrom(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32, addr 
 	}
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14 int64
+	var r, v10 int64
 	var v1, v2, v3 int32
 	var v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v12, v14, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _ = r, v1, v10, v2, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_recvfrom)
 	v2 = int32(__SC_recvfrom)
 	v3 = int32(1)
@@ -126273,26 +124003,12 @@ func Xrecvfrom(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32, addr 
 	v9 = int64(alen)
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2686)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -126312,23 +124028,13 @@ func Xrecvfrom(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32, addr 
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2686)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+48))
 	}
-	v12 = r
-	goto _13
-_13:
-	return X__syscall_ret(tls, uint64(v12))
+	v10 = r
+	goto _11
+_11:
+	return X__syscall_ret(tls, uint64(v10))
 }
 
 func Xrecvmmsg(tls *TLS, fd int32, msgvec uintptr, vlen uint32, flags uint32, timeout uintptr) (r int32) {
@@ -126456,12 +124162,12 @@ func Xrecvmsg(tls *TLS, fd int32, msg uintptr, flags int32) (r2 Tssize_t) {
 	defer tls.Free(160)
 	var orig uintptr
 	var orig_controllen Tsocklen_t
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v11, v13, v15 int64
+	var r, v11 int64
 	var r1 Tssize_t
 	var v1, v2, v3, v4 int32
 	var v10, v5, v6, v7, v8, v9 Tsyscall_arg_t
 	var _ /* h at bp+96 */ Tmsghdr
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = orig, orig_controllen, r, r0, r01, r1, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v11, v13, v15, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = orig, orig_controllen, r, r1, v1, v10, v11, v2, v3, v4, v5, v6, v7, v8, v9
 	orig_controllen = (*Tmsghdr)(unsafe.Pointer(msg)).Fmsg_controllen
 	orig = msg
 	if msg != 0 {
@@ -126482,26 +124188,12 @@ func Xrecvmsg(tls *TLS, fd int32, msg uintptr, flags int32) (r2 Tssize_t) {
 	v10 = int64(Int32FromInt32(0))
 	if v4 != 0 {
 		r = ___syscall_cp(tls, int64(v2), v5, v6, v7, v8, v9, v10)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv2))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv5));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv6));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv7));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv8));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv9));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv10));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2695)
-		v11 = r31
-		goto _12
-	_12:
-		r = v11
+	} else {
+		r = X__syscall6(tls, int64(v2), v5, v6, v7, v8, v9, v10)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v13 = r
-		goto _14
+		v11 = r
+		goto _12
 	}
 	if v4 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -126521,23 +124213,13 @@ func Xrecvmsg(tls *TLS, fd int32, msg uintptr, flags int32) (r2 Tssize_t) {
 			3: v8,
 			4: v9,
 			5: v10,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv3))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2695)
-		v15 = r3
-		goto _16
-	_16:
-		r = v15
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v3), int64(bp+48))
 	}
-	v13 = r
-	goto _14
-_14:
-	r1 = X__syscall_ret(tls, uint64(v13))
+	v11 = r
+	goto _12
+_12:
+	r1 = X__syscall_ret(tls, uint64(v11))
 	if r1 >= 0 {
 		X__convert_scm_timestamps(tls, msg, orig_controllen)
 	}
@@ -126727,24 +124409,15 @@ type Tpollfd = struct {
 func _cleanup(tls *TLS, p uintptr) {
 	var i int32
 	var pfd uintptr
-	var r0, r3 int64
-	_, _, _, _ = i, pfd, r0, r3
+	_, _ = i, pfd
 	pfd = p
 	i = 0
 	for {
 		if !((*(*Tpollfd)(unsafe.Pointer(pfd + uintptr(i)*8))).Ffd >= -int32(1)) {
 			break
 		}
-		if (*(*Tpollfd)(unsafe.Pointer(pfd + uintptr(i)*8))).Ffd >= 0 { //TODO "r0" // syscall_arch.h:16:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64(((*(*tspollfd)(iqunsafe.ppPointer((aapfd)+(((ppuintptr((aai))))*8)))).fdfd))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3)
-			// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+2703)
-			_ = r3
-			goto _2
-		_2:
+		if (*(*Tpollfd)(unsafe.Pointer(pfd + uintptr(i)*8))).Ffd >= 0 {
+			X__syscall1(tls, int64(SYS_close), int64((*(*Tpollfd)(unsafe.Pointer(pfd + uintptr(i)*8))).Ffd))
 		}
 		goto _1
 	_1:
@@ -126841,7 +124514,6 @@ func X__res_msend_rc(tls *TLS, nqueries int32, queries uintptr, qlens uintptr, a
 	defer tls.Free(400)
 	var alen, attempts, family, fd, i, j, next, nns, r, rcode, retry_interval, rlen, servfail_retry, timeout, v17, v6 int32
 	var alen_buf, apos, iplit, pfd, qpos uintptr
-	var r0, r3 int64
 	var sl Tsocklen_t
 	var t0, t1, t2, v10 uint64
 	var v1, v2, v3, v4 t__predefined_size_t
@@ -126861,7 +124533,7 @@ func X__res_msend_rc(tls *TLS, nqueries int32, queries uintptr, qlens uintptr, a
 		Fsin         Tsockaddr_in
 		F__ccgo_pad2 [12]byte
 	}
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = alen, alen_buf, apos, attempts, family, fd, i, iplit, j, next, nns, pfd, qpos, r, r0, r3, rcode, retry_interval, rlen, servfail_retry, sl, t0, t1, t2, timeout, v1, v10, v17, v18, v2, v3, v4, v6
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = alen, alen_buf, apos, attempts, family, fd, i, iplit, j, next, nns, pfd, qpos, r, rcode, retry_interval, rlen, servfail_retry, sl, t0, t1, t2, timeout, v1, v10, v17, v18, v2, v3, v4, v6
 	defer func() {
 		Xrealloc(tls, alen_buf, 0)
 		Xrealloc(tls, apos, 0)
@@ -126972,7 +124644,7 @@ func X__res_msend_rc(tls *TLS, nqueries int32, queries uintptr, qlens uintptr, a
 				goto _8
 			}
 			Xmemcpy(tls, bp+116+uintptr(i)*28+8+uintptr(12), bp+116+uintptr(i)*28+4, uint64(4))
-			Xmemcpy(tls, bp+116+uintptr(i)*28+8, __ccgo_ts+2451, uint64(12))
+			Xmemcpy(tls, bp+116+uintptr(i)*28+8, __ccgo_ts+1069, uint64(12))
 			(*(*Tsockaddr_in6)(unsafe.Pointer(bp + 116 + uintptr(i)*28))).Fsin6_family = uint16(PF_INET6)
 			(*(*Tsockaddr_in6)(unsafe.Pointer(bp + 116 + uintptr(i)*28))).Fsin6_flowinfo = uint32(0)
 			(*(*Tsockaddr_in6)(unsafe.Pointer(bp + 116 + uintptr(i)*28))).Fsin6_scope_id = uint32(0)
@@ -127258,17 +124930,7 @@ func X__res_msend_rc(tls *TLS, nqueries int32, queries uintptr, qlens uintptr, a
 				 * Immediately close TCP socket so as not to consume
 				 * resources we no longer need. */
 				*(*int32)(unsafe.Pointer(alens + uintptr(i)*4)) = alen
-				//TODO "r0" // syscall_arch.h:16:16:
-				panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-				panic(0) // assembler statements not supported  aar3 = ((ppint64(((*(*tspollfd)(iqunsafe.ppAdd(iqunsafe.ppPointer(aapfd), ((aai))*8))).fdfd))));
-				// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-				// : "+r"(r0), "+r"(r3)
-				// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+2711)
-				_ = r3
-				goto _22
-			_22:
-				;
+				X__syscall1(tls, int64(SYS_close), int64((*(*Tpollfd)(unsafe.Add(unsafe.Pointer(pfd), i*8))).Ffd))
 				(*(*Tpollfd)(unsafe.Add(unsafe.Pointer(pfd), i*8))).Ffd = -int32(1)
 			}
 			goto _21
@@ -127294,8 +124956,8 @@ out:
 		if *(*int32)(unsafe.Pointer(alens + uintptr(i)*4)) < 0 {
 			*(*int32)(unsafe.Pointer(alens + uintptr(i)*4)) = 0
 		}
-		goto _23
-	_23:
+		goto _22
+	_22:
 		;
 		i++
 	}
@@ -127395,7 +125057,7 @@ func X__get_resolv_conf(tls *TLS, conf uintptr, search uintptr, search_sz Tsize_
 	if search != 0 {
 		*(*uint8)(unsafe.Pointer(search)) = uint8(0)
 	}
-	f = X__fopen_rb_ca(tls, __ccgo_ts+2726, bp+512, bp+256, uint64(256))
+	f = X__fopen_rb_ca(tls, __ccgo_ts+1191, bp+512, bp+256, uint64(256))
 	if !(f != 0) {
 		switch *(*int32)(unsafe.Pointer(X__errno_location(tls))) {
 		case int32(ENOENT):
@@ -127415,14 +125077,14 @@ func X__get_resolv_conf(tls *TLS, conf uintptr, search uintptr, search_sz Tsize_
 			}
 			continue
 		}
-		if v4 = !(Xstrncmp(tls, bp, __ccgo_ts+2743, uint64(7)) != 0); v4 {
+		if v4 = !(Xstrncmp(tls, bp, __ccgo_ts+1208, uint64(7)) != 0); v4 {
 			v1 = int32((*(*[256]uint8)(unsafe.Pointer(bp)))[int32(7)])
 			v2 = BoolInt32(v1 == int32(' ') || uint32(v1)-uint32('\t') < uint32(5))
 			goto _3
 		_3:
 		}
 		if v4 && v2 != 0 {
-			p = Xstrstr(tls, bp, __ccgo_ts+2751)
+			p = Xstrstr(tls, bp, __ccgo_ts+1216)
 			if p != 0 && BoolInt32(uint32(*(*uint8)(unsafe.Pointer(p + 6)))-uint32('0') < uint32(10)) != 0 {
 				p += uintptr(6)
 				x = Xstrtoul(tls, p, bp+744, int32(10))
@@ -127435,7 +125097,7 @@ func X__get_resolv_conf(tls *TLS, conf uintptr, search uintptr, search_sz Tsize_
 					(*Tresolvconf)(unsafe.Pointer(conf)).Fndots = uint32(v5)
 				}
 			}
-			p = Xstrstr(tls, bp, __ccgo_ts+2758)
+			p = Xstrstr(tls, bp, __ccgo_ts+1223)
 			if p != 0 && BoolInt32(uint32(*(*uint8)(unsafe.Pointer(p + 9)))-uint32('0') < uint32(10)) != 0 {
 				p += uintptr(9)
 				x1 = Xstrtoul(tls, p, bp+744, int32(10))
@@ -127448,7 +125110,7 @@ func X__get_resolv_conf(tls *TLS, conf uintptr, search uintptr, search_sz Tsize_
 					(*Tresolvconf)(unsafe.Pointer(conf)).Fattempts = uint32(v6)
 				}
 			}
-			p = Xstrstr(tls, bp, __ccgo_ts+2768)
+			p = Xstrstr(tls, bp, __ccgo_ts+1233)
 			if p != 0 && (BoolInt32(uint32(*(*uint8)(unsafe.Pointer(p + 8)))-uint32('0') < uint32(10)) != 0 || int32(*(*uint8)(unsafe.Pointer(p + 8))) == int32('.')) {
 				p += uintptr(8)
 				x2 = Xstrtoul(tls, p, bp+744, int32(10))
@@ -127463,7 +125125,7 @@ func X__get_resolv_conf(tls *TLS, conf uintptr, search uintptr, search_sz Tsize_
 			}
 			continue
 		}
-		if v11 = !(Xstrncmp(tls, bp, __ccgo_ts+2777, uint64(10)) != 0); v11 {
+		if v11 = !(Xstrncmp(tls, bp, __ccgo_ts+1242, uint64(10)) != 0); v11 {
 			v8 = int32((*(*[256]uint8)(unsafe.Pointer(bp)))[int32(10)])
 			v9 = BoolInt32(v8 == int32(' ') || uint32(v8)-uint32('\t') < uint32(5))
 			goto _10
@@ -127512,7 +125174,7 @@ func X__get_resolv_conf(tls *TLS, conf uintptr, search uintptr, search_sz Tsize_
 		if !(search != 0) {
 			continue
 		}
-		if v24 = Xstrncmp(tls, bp, __ccgo_ts+2788, uint64(6)) != 0 && Xstrncmp(tls, bp, __ccgo_ts+2795, uint64(6)) != 0; !v24 {
+		if v24 = Xstrncmp(tls, bp, __ccgo_ts+1253, uint64(6)) != 0 && Xstrncmp(tls, bp, __ccgo_ts+1260, uint64(6)) != 0; !v24 {
 			v21 = int32((*(*[256]uint8)(unsafe.Pointer(bp)))[int32(6)])
 			v22 = BoolInt32(v21 == int32(' ') || uint32(v21)-uint32('\t') < uint32(5))
 			goto _23
@@ -127547,7 +125209,7 @@ func X__get_resolv_conf(tls *TLS, conf uintptr, search uintptr, search_sz Tsize_
 no_resolv_conf:
 	;
 	if !(nns != 0) {
-		X__lookup_ipliteral(tls, conf, __ccgo_ts+2802, PF_UNSPEC)
+		X__lookup_ipliteral(tls, conf, __ccgo_ts+1267, PF_UNSPEC)
 		nns = int32(1)
 	}
 	(*Tresolvconf)(unsafe.Pointer(conf)).Fnns = uint32(nns)
@@ -127614,13 +125276,13 @@ func Xsendmsg(tls *TLS, fd int32, msg uintptr, flags int32) (r1 Tssize_t) {
 	}
 	bp := tls.Alloc(1216)
 	defer tls.Free(1216)
-	var c2, v3, v4 uintptr
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v14, v16, v18 int64
+	var c1, v3, v4 uintptr
+	var r, v14 int64
 	var v1, v5, v6, v7 int32
 	var v10, v11, v12, v13, v8, v9 Tsyscall_arg_t
 	var _ /* chbuf at bp+152 */ [66]Tcmsghdr
 	var _ /* h at bp+96 */ Tmsghdr
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c2, r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v11, v12, v13, v14, v16, v18, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c1, r, v1, v10, v11, v12, v13, v14, v3, v4, v5, v6, v7, v8, v9
 	if msg != 0 {
 		*(*Tmsghdr)(unsafe.Pointer(bp + 96)) = *(*Tmsghdr)(unsafe.Pointer(msg))
 		v1 = Int32FromInt32(0)
@@ -127639,21 +125301,21 @@ func Xsendmsg(tls *TLS, fd int32, msg uintptr, flags int32) (r1 Tssize_t) {
 			} else {
 				v3 = UintptrFromInt32(0)
 			}
-			c2 = v3
+			c1 = v3
 			for {
-				if !(c2 != 0) {
+				if !(c1 != 0) {
 					break
 				}
-				(*Tcmsghdr)(unsafe.Pointer(c2)).F__pad1 = 0
+				(*Tcmsghdr)(unsafe.Pointer(c1)).F__pad1 = 0
 				goto _2
 			_2:
 				;
-				if uint64((*Tcmsghdr)(unsafe.Pointer(c2)).Fcmsg_len) < uint64(16) || (uint64((*Tcmsghdr)(unsafe.Pointer(c2)).Fcmsg_len)+uint64(8)-uint64(1))&uint64(^int64(Uint64FromInt64(8)-Uint64FromInt32(1)))+uint64(16) >= uint64(int64((*Tmsghdr)(unsafe.Pointer(bp+96)).Fmsg_control+uintptr((*Tmsghdr)(unsafe.Pointer(bp+96)).Fmsg_controllen))-int64(c2)) {
+				if uint64((*Tcmsghdr)(unsafe.Pointer(c1)).Fcmsg_len) < uint64(16) || (uint64((*Tcmsghdr)(unsafe.Pointer(c1)).Fcmsg_len)+uint64(8)-uint64(1))&uint64(^int64(Uint64FromInt64(8)-Uint64FromInt32(1)))+uint64(16) >= uint64(int64((*Tmsghdr)(unsafe.Pointer(bp+96)).Fmsg_control+uintptr((*Tmsghdr)(unsafe.Pointer(bp+96)).Fmsg_controllen))-int64(c1)) {
 					v4 = uintptr(0)
 				} else {
-					v4 = c2 + uintptr((uint64((*Tcmsghdr)(unsafe.Pointer(c2)).Fcmsg_len)+Uint64FromInt64(8)-Uint64FromInt32(1))&uint64(^int64(Uint64FromInt64(8)-Uint64FromInt32(1))))
+					v4 = c1 + uintptr((uint64((*Tcmsghdr)(unsafe.Pointer(c1)).Fcmsg_len)+Uint64FromInt64(8)-Uint64FromInt32(1))&uint64(^int64(Uint64FromInt64(8)-Uint64FromInt32(1))))
 				}
-				c2 = v4
+				c1 = v4
 			}
 		}
 	}
@@ -127668,26 +125330,12 @@ func Xsendmsg(tls *TLS, fd int32, msg uintptr, flags int32) (r1 Tssize_t) {
 	v13 = int64(Int32FromInt32(0))
 	if v7 != 0 {
 		r = ___syscall_cp(tls, int64(v5), v8, v9, v10, v11, v12, v13)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv5))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv8));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv9));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv10));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv11));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv12));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv13));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2812)
-		v14 = r31
-		goto _15
-	_15:
-		r = v14
+	} else {
+		r = X__syscall6(tls, int64(v5), v8, v9, v10, v11, v12, v13)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v16 = r
-		goto _17
+		v14 = r
+		goto _15
 	}
 	if v7 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -127707,23 +125355,13 @@ func Xsendmsg(tls *TLS, fd int32, msg uintptr, flags int32) (r1 Tssize_t) {
 			3: v11,
 			4: v12,
 			5: v13,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv6))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2812)
-		v18 = r3
-		goto _19
-	_19:
-		r = v18
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v6), int64(bp+48))
 	}
-	v16 = r
-	goto _17
-_17:
-	return X__syscall_ret(tls, uint64(v16))
+	v14 = r
+	goto _15
+_15:
+	return X__syscall_ret(tls, uint64(v14))
 }
 
 func Xsendto(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32, addr uintptr, alen Tsocklen_t) (r1 Tssize_t) {
@@ -127733,10 +125371,10 @@ func Xsendto(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32, addr ui
 	}
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14 int64
+	var r, v10 int64
 	var v1, v2, v3 int32
 	var v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v12, v14, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _ = r, v1, v10, v2, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_sendto)
 	v2 = int32(__SC_sendto)
 	v3 = int32(1)
@@ -127748,26 +125386,12 @@ func Xsendto(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32, addr ui
 	v9 = int64(alen)
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2820)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -127787,23 +125411,13 @@ func Xsendto(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32, addr ui
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2820)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+48))
 	}
-	v12 = r
-	goto _13
-_13:
-	return X__syscall_ret(tls, uint64(v12))
+	v10 = r
+	goto _11
+_11:
+	return X__syscall_ret(tls, uint64(v10))
 }
 
 func Xendservent(tls *TLS) {
@@ -127833,14 +125447,14 @@ func Xsetsockopt(tls *TLS, fd int32, level int32, optname int32, optval uintptr,
 	}
 	bp := tls.Alloc(304)
 	defer tls.Free(304)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14, v26, v28, v30, v41, v43, v45 int64
-	var r1, v1, v17, v18, v19, v2, v3, v32, v33, v34 int32
+	var r, v10, v22, v33 int64
+	var r1, v1, v13, v14, v15, v2, v24, v25, v26, v3 int32
 	var s Ttime_t
 	var tv uintptr
 	var us Tsuseconds_t
-	var v16 uint64
-	var v20, v21, v22, v23, v24, v25, v35, v36, v37, v38, v39, v4, v40, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r1, r3, r31, r4, r41, r5, r6, r7, r8, s, tv, us, v1, v10, v12, v14, v16, v17, v18, v19, v2, v20, v21, v22, v23, v24, v25, v26, v28, v3, v30, v32, v33, v34, v35, v36, v37, v38, v39, v4, v40, v41, v43, v45, v5, v6, v7, v8, v9
+	var v12 uint64
+	var v16, v17, v18, v19, v20, v21, v27, v28, v29, v30, v31, v32, v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r1, s, tv, us, v1, v10, v12, v13, v14, v15, v16, v17, v18, v19, v2, v20, v21, v22, v24, v25, v26, v27, v28, v29, v3, v30, v31, v32, v33, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_setsockopt)
 	v2 = int32(__SC_setsockopt)
 	v3 = 0
@@ -127852,26 +125466,12 @@ func Xsetsockopt(tls *TLS, fd int32, level int32, optname int32, optval uintptr,
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2827)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp + 208)) = [6]int64{
@@ -127891,23 +125491,13 @@ func Xsetsockopt(tls *TLS, fd int32, level int32, optname int32, optval uintptr,
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+256))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2827)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+256))
 	}
-	v12 = r
-	goto _13
-_13:
-	r1 = int32(v12)
+	v10 = r
+	goto _11
+_11:
+	r1 = int32(v10)
 	if r1 == -int32(ENOPROTOOPT) {
 		switch level {
 		case int32(SOL_SOCKET):
@@ -127915,7 +125505,7 @@ _13:
 			case int32(SO_RCVTIMEO):
 				fallthrough
 			case int32(SO_SNDTIMEO):
-				if true {
+				if false {
 					break
 				}
 				if uint64(optlen) < uint64(16) {
@@ -127934,81 +125524,57 @@ _13:
 					optname = int32(SO_SNDTIMEO_OLD)
 				}
 				if !((uint64(us)+Uint64FromUint64(0x80000000))>>Int32FromInt32(32) != 0) {
-					v16 = uint64(us)
+					v12 = uint64(us)
 				} else {
-					v16 = uint64(0x7fffffff) + (0+uint64(us))>>int32(63)
+					v12 = uint64(0x7fffffff) + (0+uint64(us))>>int32(63)
 				}
 				*(*[2]int64)(unsafe.Pointer(bp + 96)) = [2]int64{
 					0: s,
-					1: int64(int32(v16)),
+					1: int64(int32(v12)),
 				}
-				v17 = int32(SYS_setsockopt)
-				v18 = int32(__SC_setsockopt)
-				v19 = 0
-				v20 = int64(fd)
-				v21 = int64(level)
-				v22 = int64(optname)
-				v23 = int64(bp + 96)
-				v24 = int64(Uint64FromInt32(2) * Uint64FromInt64(8))
-				v25 = int64(Int32FromInt32(0))
-				if v19 != 0 {
-					r = ___syscall_cp(tls, int64(v17), v20, v21, v22, v23, v24, v25)
-				} else { //TODO "r0" // syscall_arch.h:76:16:
-					panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv17))));//TODO "r3" // syscall_arch.h:77:16:
-					panic(0) // assembler statements not supported  aar31 = ((ccv20));//TODO "r4" // syscall_arch.h:78:16:
-					panic(0) // assembler statements not supported  aar41 = ((ccv21));//TODO "r5" // syscall_arch.h:79:16:
-					panic(0) // assembler statements not supported  aar5 = ((ccv22));//TODO "r6" // syscall_arch.h:80:16:
-					panic(0) // assembler statements not supported  aar6 = ((ccv23));//TODO "r7" // syscall_arch.h:81:16:
-					panic(0) // assembler statements not supported  aar7 = ((ccv24));//TODO "r8" // syscall_arch.h:82:16:
-					panic(0) // assembler statements not supported  aar8 = ((ccv25));
-					// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-					// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-					// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2827)
-					v26 = r31
-					goto _27
-				_27:
-					r = v26
+				v13 = int32(SYS_setsockopt)
+				v14 = int32(__SC_setsockopt)
+				v15 = 0
+				v16 = int64(fd)
+				v17 = int64(level)
+				v18 = int64(optname)
+				v19 = int64(bp + 96)
+				v20 = int64(Uint64FromInt32(2) * Uint64FromInt64(8))
+				v21 = int64(Int32FromInt32(0))
+				if v15 != 0 {
+					r = ___syscall_cp(tls, int64(v13), v16, v17, v18, v19, v20, v21)
+				} else {
+					r = X__syscall6(tls, int64(v13), v16, v17, v18, v19, v20, v21)
 				}
 				if r != int64(-Int32FromInt32(ENOSYS)) {
-					v28 = r
-					goto _29
+					v22 = r
+					goto _23
 				}
-				if v19 != 0 {
+				if v15 != 0 {
 					*(*[6]int64)(unsafe.Pointer(bp + 208)) = [6]int64{
-						0: v20,
-						1: v21,
-						2: v22,
-						3: v23,
-						4: v24,
-						5: v25,
+						0: v16,
+						1: v17,
+						2: v18,
+						3: v19,
+						4: v20,
+						5: v21,
 					}
-					r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v18), int64(bp+208), 0, 0, 0, 0)
+					r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v14), int64(bp+208), 0, 0, 0, 0)
 				} else {
 					*(*[6]int64)(unsafe.Pointer(bp + 256)) = [6]int64{
-						0: v20,
-						1: v21,
-						2: v22,
-						3: v23,
-						4: v24,
-						5: v25,
-					} //TODO "r0" // syscall_arch.h:26:16:
-					panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-					panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv18))));//TODO "r4" // syscall_arch.h:28:16:
-					panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+256))));
-					// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-					// : "+r"(r0), "+r"(r3), "+r"(r4)
-					// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2827)
-					v30 = r3
-					goto _31
-				_31:
-					r = v30
+						0: v16,
+						1: v17,
+						2: v18,
+						3: v19,
+						4: v20,
+						5: v21,
+					}
+					r = X__syscall2(tls, int64(SYS_socketcall), int64(v14), int64(bp+256))
 				}
-				v28 = r
-				goto _29
-			_29:
-				r1 = int32(v28)
+				v22 = r
+				goto _23
+			_23:
+				r1 = int32(v22)
 			case int32(SO_TIMESTAMP):
 				fallthrough
 			case int32(SO_TIMESTAMPNS):
@@ -128021,73 +125587,49 @@ _13:
 				if optname == int32(SO_TIMESTAMPNS) {
 					optname = int32(SO_TIMESTAMPNS_OLD)
 				}
-				v32 = int32(SYS_setsockopt)
-				v33 = int32(__SC_setsockopt)
-				v34 = 0
-				v35 = int64(fd)
-				v36 = int64(level)
-				v37 = int64(optname)
-				v38 = int64(optval)
-				v39 = int64(optlen)
-				v40 = int64(Int32FromInt32(0))
-				if v34 != 0 {
-					r = ___syscall_cp(tls, int64(v32), v35, v36, v37, v38, v39, v40)
-				} else { //TODO "r0" // syscall_arch.h:76:16:
-					panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv32))));//TODO "r3" // syscall_arch.h:77:16:
-					panic(0) // assembler statements not supported  aar31 = ((ccv35));//TODO "r4" // syscall_arch.h:78:16:
-					panic(0) // assembler statements not supported  aar41 = ((ccv36));//TODO "r5" // syscall_arch.h:79:16:
-					panic(0) // assembler statements not supported  aar5 = ((ccv37));//TODO "r6" // syscall_arch.h:80:16:
-					panic(0) // assembler statements not supported  aar6 = ((ccv38));//TODO "r7" // syscall_arch.h:81:16:
-					panic(0) // assembler statements not supported  aar7 = ((ccv39));//TODO "r8" // syscall_arch.h:82:16:
-					panic(0) // assembler statements not supported  aar8 = ((ccv40));
-					// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-					// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-					// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2827)
-					v41 = r31
-					goto _42
-				_42:
-					r = v41
+				v24 = int32(SYS_setsockopt)
+				v25 = int32(__SC_setsockopt)
+				v26 = 0
+				v27 = int64(fd)
+				v28 = int64(level)
+				v29 = int64(optname)
+				v30 = int64(optval)
+				v31 = int64(optlen)
+				v32 = int64(Int32FromInt32(0))
+				if v26 != 0 {
+					r = ___syscall_cp(tls, int64(v24), v27, v28, v29, v30, v31, v32)
+				} else {
+					r = X__syscall6(tls, int64(v24), v27, v28, v29, v30, v31, v32)
 				}
 				if r != int64(-Int32FromInt32(ENOSYS)) {
-					v43 = r
-					goto _44
+					v33 = r
+					goto _34
 				}
-				if v34 != 0 {
+				if v26 != 0 {
 					*(*[6]int64)(unsafe.Pointer(bp + 208)) = [6]int64{
-						0: v35,
-						1: v36,
-						2: v37,
-						3: v38,
-						4: v39,
-						5: v40,
+						0: v27,
+						1: v28,
+						2: v29,
+						3: v30,
+						4: v31,
+						5: v32,
 					}
-					r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v33), int64(bp+208), 0, 0, 0, 0)
+					r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v25), int64(bp+208), 0, 0, 0, 0)
 				} else {
 					*(*[6]int64)(unsafe.Pointer(bp + 256)) = [6]int64{
-						0: v35,
-						1: v36,
-						2: v37,
-						3: v38,
-						4: v39,
-						5: v40,
-					} //TODO "r0" // syscall_arch.h:26:16:
-					panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-					panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv33))));//TODO "r4" // syscall_arch.h:28:16:
-					panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+256))));
-					// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-					// : "+r"(r0), "+r"(r3), "+r"(r4)
-					// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2827)
-					v45 = r3
-					goto _46
-				_46:
-					r = v45
+						0: v27,
+						1: v28,
+						2: v29,
+						3: v30,
+						4: v31,
+						5: v32,
+					}
+					r = X__syscall2(tls, int64(SYS_socketcall), int64(v25), int64(bp+256))
 				}
-				v43 = r
-				goto _44
-			_44:
-				r1 = int32(v43)
+				v33 = r
+				goto _34
+			_34:
+				r1 = int32(v33)
 				break
 			}
 		}
@@ -128102,10 +125644,10 @@ func Xshutdown(tls *TLS, fd int32, how int32) (r1 int32) {
 	}
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
-	var r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v10, v12, v14 int64
+	var r, v10 int64
 	var v1, v2, v3 int32
 	var v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, r41, r5, r6, r7, r8, v1, v10, v12, v14, v2, v3, v4, v5, v6, v7, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _ = r, v1, v10, v2, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_shutdown)
 	v2 = int32(__SC_shutdown)
 	v3 = 0
@@ -128117,26 +125659,12 @@ func Xshutdown(tls *TLS, fd int32, how int32) (r1 int32) {
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar41 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar5 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2838)
-		v10 = r31
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp)) = [6]int64{
@@ -128156,23 +125684,13 @@ func Xshutdown(tls *TLS, fd int32, how int32) (r1 int32) {
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+48))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2838)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+48))
 	}
-	v12 = r
-	goto _13
-_13:
-	return int32(X__syscall_ret(tls, uint64(v12)))
+	v10 = r
+	goto _11
+_11:
+	return int32(X__syscall_ret(tls, uint64(v10)))
 }
 
 func Xsockatmark(tls *TLS, s int32) (r int32) {
@@ -128196,10 +125714,10 @@ func Xsocket(tls *TLS, domain int32, type1 int32, protocol int32) (r1 int32) {
 	}
 	bp := tls.Alloc(192)
 	defer tls.Free(192)
-	var r, r0, r01, r02, r3, r31, r32, r4, r41, r42, r5, r51, r6, r7, r8, v10, v12, v14, v25, v27, v29 int64
-	var s, v1, v16, v17, v18, v2, v3 int32
-	var v19, v20, v21, v22, v23, v24, v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r02, r3, r31, r32, r4, r41, r42, r5, r51, r6, r7, r8, s, v1, v10, v12, v14, v16, v17, v18, v19, v2, v20, v21, v22, v23, v24, v25, v27, v29, v3, v4, v5, v6, v7, v8, v9
+	var r, v10, v21 int64
+	var s, v1, v12, v13, v14, v2, v3 int32
+	var v15, v16, v17, v18, v19, v20, v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, s, v1, v10, v12, v13, v14, v15, v16, v17, v18, v19, v2, v20, v21, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_socket)
 	v2 = int32(__SC_socket)
 	v3 = 0
@@ -128211,26 +125729,12 @@ func Xsocket(tls *TLS, domain int32, type1 int32, protocol int32) (r1 int32) {
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar02 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar32 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar42 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar51 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2847)
-		v10 = r32
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp + 96)) = [6]int64{
@@ -128250,121 +125754,65 @@ func Xsocket(tls *TLS, domain int32, type1 int32, protocol int32) (r1 int32) {
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+144))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2847)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+144))
 	}
-	v12 = r
-	goto _13
-_13:
-	s = int32(v12)
+	v10 = r
+	goto _11
+_11:
+	s = int32(v10)
 	if (s == -int32(EINVAL) || s == -int32(EPROTONOSUPPORT)) && type1&(Int32FromInt32(SOCK_CLOEXEC)|Int32FromInt32(SOCK_NONBLOCK)) != 0 {
-		v16 = int32(SYS_socket)
-		v17 = int32(__SC_socket)
-		v18 = 0
-		v19 = int64(domain)
-		v20 = int64(type1 & ^(Int32FromInt32(SOCK_CLOEXEC) | Int32FromInt32(SOCK_NONBLOCK)))
-		v21 = int64(protocol)
-		v22 = int64(Int32FromInt32(0))
-		v23 = int64(Int32FromInt32(0))
-		v24 = int64(Int32FromInt32(0))
-		if v18 != 0 {
-			r = ___syscall_cp(tls, int64(v16), v19, v20, v21, v22, v23, v24)
-		} else { //TODO "r0" // syscall_arch.h:76:16:
-			panic(0) // assembler statements not supported  aar02 = ((ppint64((ccv16))));//TODO "r3" // syscall_arch.h:77:16:
-			panic(0) // assembler statements not supported  aar32 = ((ccv19));//TODO "r4" // syscall_arch.h:78:16:
-			panic(0) // assembler statements not supported  aar42 = ((ccv20));//TODO "r5" // syscall_arch.h:79:16:
-			panic(0) // assembler statements not supported  aar51 = ((ccv21));//TODO "r6" // syscall_arch.h:80:16:
-			panic(0) // assembler statements not supported  aar6 = ((ccv22));//TODO "r7" // syscall_arch.h:81:16:
-			panic(0) // assembler statements not supported  aar7 = ((ccv23));//TODO "r8" // syscall_arch.h:82:16:
-			panic(0) // assembler statements not supported  aar8 = ((ccv24));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-			// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2847)
-			v25 = r32
-			goto _26
-		_26:
-			r = v25
+		v12 = int32(SYS_socket)
+		v13 = int32(__SC_socket)
+		v14 = 0
+		v15 = int64(domain)
+		v16 = int64(type1 & ^(Int32FromInt32(SOCK_CLOEXEC) | Int32FromInt32(SOCK_NONBLOCK)))
+		v17 = int64(protocol)
+		v18 = int64(Int32FromInt32(0))
+		v19 = int64(Int32FromInt32(0))
+		v20 = int64(Int32FromInt32(0))
+		if v14 != 0 {
+			r = ___syscall_cp(tls, int64(v12), v15, v16, v17, v18, v19, v20)
+		} else {
+			r = X__syscall6(tls, int64(v12), v15, v16, v17, v18, v19, v20)
 		}
 		if r != int64(-Int32FromInt32(ENOSYS)) {
-			v27 = r
-			goto _28
+			v21 = r
+			goto _22
 		}
-		if v18 != 0 {
+		if v14 != 0 {
 			*(*[6]int64)(unsafe.Pointer(bp + 96)) = [6]int64{
-				0: v19,
-				1: v20,
-				2: v21,
-				3: v22,
-				4: v23,
-				5: v24,
+				0: v15,
+				1: v16,
+				2: v17,
+				3: v18,
+				4: v19,
+				5: v20,
 			}
-			r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v17), int64(bp+96), 0, 0, 0, 0)
+			r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v13), int64(bp+96), 0, 0, 0, 0)
 		} else {
 			*(*[6]int64)(unsafe.Pointer(bp + 144)) = [6]int64{
-				0: v19,
-				1: v20,
-				2: v21,
-				3: v22,
-				4: v23,
-				5: v24,
-			} //TODO "r0" // syscall_arch.h:26:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv17))));//TODO "r4" // syscall_arch.h:28:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+144))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4)
-			// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2847)
-			v29 = r3
-			goto _30
-		_30:
-			r = v29
+				0: v15,
+				1: v16,
+				2: v17,
+				3: v18,
+				4: v19,
+				5: v20,
+			}
+			r = X__syscall2(tls, int64(SYS_socketcall), int64(v13), int64(bp+144))
 		}
-		v27 = r
-		goto _28
-	_28:
-		s = int32(v27)
+		v21 = r
+		goto _22
+	_22:
+		s = int32(v21)
 		if s < 0 {
 			return int32(X__syscall_ret(tls, uint64(s)))
 		}
 		if type1&int32(SOCK_CLOEXEC) != 0 {
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((aas))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2847)
-			_ = r31
-			goto _31
-		_31:
+			X__syscall3(tls, int64(SYS_fcntl), int64(s), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 		}
 		if type1&int32(SOCK_NONBLOCK) != 0 {
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((aas))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFL)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvO_NONBLOCK)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2847)
-			_ = r31
-			goto _32
-		_32:
+			X__syscall3(tls, int64(SYS_fcntl), int64(s), int64(Int32FromInt32(F_SETFL)), int64(Int32FromInt32(O_NONBLOCK)))
 		}
 	}
 	return int32(X__syscall_ret(tls, uint64(s)))
@@ -128377,10 +125825,10 @@ func Xsocketpair(tls *TLS, domain int32, type1 int32, protocol int32, fd uintptr
 	}
 	bp := tls.Alloc(192)
 	defer tls.Free(192)
-	var r, r0, r01, r02, r3, r31, r32, r4, r41, r42, r5, r51, r6, r7, r8, v10, v12, v14, v25, v27, v29 int64
-	var r1, v1, v16, v17, v18, v2, v3 int32
-	var v19, v20, v21, v22, v23, v24, v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r02, r1, r3, r31, r32, r4, r41, r42, r5, r51, r6, r7, r8, v1, v10, v12, v14, v16, v17, v18, v19, v2, v20, v21, v22, v23, v24, v25, v27, v29, v3, v4, v5, v6, v7, v8, v9
+	var r, v10, v21 int64
+	var r1, v1, v12, v13, v14, v2, v3 int32
+	var v15, v16, v17, v18, v19, v20, v4, v5, v6, v7, v8, v9 Tsyscall_arg_t
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r, r1, v1, v10, v12, v13, v14, v15, v16, v17, v18, v19, v2, v20, v21, v3, v4, v5, v6, v7, v8, v9
 	v1 = int32(SYS_socketpair)
 	v2 = int32(__SC_socketpair)
 	v3 = 0
@@ -128392,26 +125840,12 @@ func Xsocketpair(tls *TLS, domain int32, type1 int32, protocol int32, fd uintptr
 	v9 = int64(Int32FromInt32(0))
 	if v3 != 0 {
 		r = ___syscall_cp(tls, int64(v1), v4, v5, v6, v7, v8, v9)
-	} else { //TODO "r0" // syscall_arch.h:76:16:
-		panic(0) // assembler statements not supported  aar02 = ((ppint64((ccv1))));//TODO "r3" // syscall_arch.h:77:16:
-		panic(0) // assembler statements not supported  aar32 = ((ccv4));//TODO "r4" // syscall_arch.h:78:16:
-		panic(0) // assembler statements not supported  aar42 = ((ccv5));//TODO "r5" // syscall_arch.h:79:16:
-		panic(0) // assembler statements not supported  aar51 = ((ccv6));//TODO "r6" // syscall_arch.h:80:16:
-		panic(0) // assembler statements not supported  aar6 = ((ccv7));//TODO "r7" // syscall_arch.h:81:16:
-		panic(0) // assembler statements not supported  aar7 = ((ccv8));//TODO "r8" // syscall_arch.h:82:16:
-		panic(0) // assembler statements not supported  aar8 = ((ccv9));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-		// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2854)
-		v10 = r32
-		goto _11
-	_11:
-		r = v10
+	} else {
+		r = X__syscall6(tls, int64(v1), v4, v5, v6, v7, v8, v9)
 	}
 	if r != int64(-Int32FromInt32(ENOSYS)) {
-		v12 = r
-		goto _13
+		v10 = r
+		goto _11
 	}
 	if v3 != 0 {
 		*(*[6]int64)(unsafe.Pointer(bp + 96)) = [6]int64{
@@ -128431,147 +125865,67 @@ func Xsocketpair(tls *TLS, domain int32, type1 int32, protocol int32, fd uintptr
 			3: v7,
 			4: v8,
 			5: v9,
-		} //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv2))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+144))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2854)
-		v14 = r3
-		goto _15
-	_15:
-		r = v14
+		}
+		r = X__syscall2(tls, int64(SYS_socketcall), int64(v2), int64(bp+144))
 	}
-	v12 = r
-	goto _13
-_13:
-	r1 = int32(X__syscall_ret(tls, uint64(v12)))
+	v10 = r
+	goto _11
+_11:
+	r1 = int32(X__syscall_ret(tls, uint64(v10)))
 	if r1 < 0 && (*(*int32)(unsafe.Pointer(X__errno_location(tls))) == int32(EINVAL) || *(*int32)(unsafe.Pointer(X__errno_location(tls))) == int32(EPROTONOSUPPORT)) && type1&(Int32FromInt32(SOCK_CLOEXEC)|Int32FromInt32(SOCK_NONBLOCK)) != 0 {
-		v16 = int32(SYS_socketpair)
-		v17 = int32(__SC_socketpair)
-		v18 = 0
-		v19 = int64(domain)
-		v20 = int64(type1 & ^(Int32FromInt32(SOCK_CLOEXEC) | Int32FromInt32(SOCK_NONBLOCK)))
-		v21 = int64(protocol)
-		v22 = int64(fd)
-		v23 = int64(Int32FromInt32(0))
-		v24 = int64(Int32FromInt32(0))
-		if v18 != 0 {
-			r = ___syscall_cp(tls, int64(v16), v19, v20, v21, v22, v23, v24)
-		} else { //TODO "r0" // syscall_arch.h:76:16:
-			panic(0) // assembler statements not supported  aar02 = ((ppint64((ccv16))));//TODO "r3" // syscall_arch.h:77:16:
-			panic(0) // assembler statements not supported  aar32 = ((ccv19));//TODO "r4" // syscall_arch.h:78:16:
-			panic(0) // assembler statements not supported  aar42 = ((ccv20));//TODO "r5" // syscall_arch.h:79:16:
-			panic(0) // assembler statements not supported  aar51 = ((ccv21));//TODO "r6" // syscall_arch.h:80:16:
-			panic(0) // assembler statements not supported  aar6 = ((ccv22));//TODO "r7" // syscall_arch.h:81:16:
-			panic(0) // assembler statements not supported  aar7 = ((ccv23));//TODO "r8" // syscall_arch.h:82:16:
-			panic(0) // assembler statements not supported  aar8 = ((ccv24));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7), "+r"(r8)
-			// :: "memory", "cr0", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 83, __ccgo_ts+2854)
-			v25 = r32
-			goto _26
-		_26:
-			r = v25
+		v12 = int32(SYS_socketpair)
+		v13 = int32(__SC_socketpair)
+		v14 = 0
+		v15 = int64(domain)
+		v16 = int64(type1 & ^(Int32FromInt32(SOCK_CLOEXEC) | Int32FromInt32(SOCK_NONBLOCK)))
+		v17 = int64(protocol)
+		v18 = int64(fd)
+		v19 = int64(Int32FromInt32(0))
+		v20 = int64(Int32FromInt32(0))
+		if v14 != 0 {
+			r = ___syscall_cp(tls, int64(v12), v15, v16, v17, v18, v19, v20)
+		} else {
+			r = X__syscall6(tls, int64(v12), v15, v16, v17, v18, v19, v20)
 		}
 		if r != int64(-Int32FromInt32(ENOSYS)) {
-			v27 = r
-			goto _28
+			v21 = r
+			goto _22
 		}
-		if v18 != 0 {
+		if v14 != 0 {
 			*(*[6]int64)(unsafe.Pointer(bp + 96)) = [6]int64{
-				0: v19,
-				1: v20,
-				2: v21,
-				3: v22,
-				4: v23,
-				5: v24,
+				0: v15,
+				1: v16,
+				2: v17,
+				3: v18,
+				4: v19,
+				5: v20,
 			}
-			r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v17), int64(bp+96), 0, 0, 0, 0)
+			r = ___syscall_cp(tls, int64(SYS_socketcall), int64(v13), int64(bp+96), 0, 0, 0, 0)
 		} else {
 			*(*[6]int64)(unsafe.Pointer(bp + 144)) = [6]int64{
-				0: v19,
-				1: v20,
-				2: v21,
-				3: v22,
-				4: v23,
-				5: v24,
-			} //TODO "r0" // syscall_arch.h:26:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_socketcall)));//TODO "r3" // syscall_arch.h:27:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv17))));//TODO "r4" // syscall_arch.h:28:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp+144))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4)
-			// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+2854)
-			v29 = r3
-			goto _30
-		_30:
-			r = v29
+				0: v15,
+				1: v16,
+				2: v17,
+				3: v18,
+				4: v19,
+				5: v20,
+			}
+			r = X__syscall2(tls, int64(SYS_socketcall), int64(v13), int64(bp+144))
 		}
-		v27 = r
-		goto _28
-	_28:
-		r1 = int32(X__syscall_ret(tls, uint64(v27)))
+		v21 = r
+		goto _22
+	_22:
+		r1 = int32(X__syscall_ret(tls, uint64(v21)))
 		if r1 < 0 {
 			return r1
 		}
 		if type1&int32(SOCK_CLOEXEC) != 0 {
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((*(*ppint32)(iqunsafe.ppPointer((aafd)))))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2854)
-			_ = r31
-			goto _31
-		_31:
-			;
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((*(*ppint32)(iqunsafe.ppPointer((aafd)+((1)*4)))))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2854)
-			_ = r31
-			goto _32
-		_32:
+			X__syscall3(tls, int64(SYS_fcntl), int64(*(*int32)(unsafe.Pointer(fd))), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
+			X__syscall3(tls, int64(SYS_fcntl), int64(*(*int32)(unsafe.Pointer(fd + 1*4))), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 		}
 		if type1&int32(SOCK_NONBLOCK) != 0 {
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((*(*ppint32)(iqunsafe.ppPointer((aafd)))))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFL)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvO_NONBLOCK)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2854)
-			_ = r31
-			goto _33
-		_33:
-			;
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((*(*ppint32)(iqunsafe.ppPointer((aafd)+((1)*4)))))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFL)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvO_NONBLOCK)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2854)
-			_ = r31
-			goto _34
-		_34:
+			X__syscall3(tls, int64(SYS_fcntl), int64(*(*int32)(unsafe.Pointer(fd))), int64(Int32FromInt32(F_SETFL)), int64(Int32FromInt32(O_NONBLOCK)))
+			X__syscall3(tls, int64(SYS_fcntl), int64(*(*int32)(unsafe.Pointer(fd + 1*4))), int64(Int32FromInt32(F_SETFL)), int64(Int32FromInt32(O_NONBLOCK)))
 		}
 	}
 	return r1
@@ -128708,7 +126062,7 @@ func X__getgr_a(tls *TLS, name uintptr, gid Tgid_t, gr uintptr, buf uintptr, siz
 	rv = 0
 	*(*uintptr)(unsafe.Pointer(res)) = uintptr(0)
 	_pthread_setcancelstate(tls, int32(PTHREAD_CANCEL_DISABLE), bp)
-	f = Xfopen(tls, __ccgo_ts+2865, __ccgo_ts+639)
+	f = Xfopen(tls, __ccgo_ts+1277, __ccgo_ts+412)
 	if !(f != 0) {
 		rv = *(*int32)(unsafe.Pointer(X__errno_location(tls)))
 		goto done
@@ -128976,7 +126330,7 @@ func Xgetgrent(tls *TLS) (r uintptr) {
 	*(*Tsize_t)(unsafe.Pointer(bp + 8)) = uint64(0)
 	*(*Tsize_t)(unsafe.Pointer(bp + 16)) = uint64(0)
 	if !(_f1 != 0) {
-		_f1 = Xfopen(tls, __ccgo_ts+2865, __ccgo_ts+639)
+		_f1 = Xfopen(tls, __ccgo_ts+1277, __ccgo_ts+412)
 	}
 	if !(_f1 != 0) {
 		return uintptr(0)
@@ -129237,7 +126591,7 @@ func Xgetgrouplist(tls *TLS, user uintptr, gid Tgid_t, groups uintptr, ngroups u
 		}
 	}
 	Xfclose(tls, f)
-	f = Xfopen(tls, __ccgo_ts+2865, __ccgo_ts+639)
+	f = Xfopen(tls, __ccgo_ts+1277, __ccgo_ts+412)
 	if !(f != 0) && *(*int32)(unsafe.Pointer(X__errno_location(tls))) != int32(ENOENT) && *(*int32)(unsafe.Pointer(X__errno_location(tls))) != int32(ENOTDIR) {
 		goto cleanup
 	}
@@ -129364,7 +126718,7 @@ func X__getpw_a(tls *TLS, name uintptr, uid Tuid_t, pw uintptr, buf uintptr, siz
 	rv = 0
 	*(*uintptr)(unsafe.Pointer(res)) = uintptr(0)
 	_pthread_setcancelstate(tls, int32(PTHREAD_CANCEL_DISABLE), bp+4)
-	f = Xfopen(tls, __ccgo_ts+2876, __ccgo_ts+639)
+	f = Xfopen(tls, __ccgo_ts+1288, __ccgo_ts+412)
 	if !(f != 0) {
 		rv = *(*int32)(unsafe.Pointer(X__errno_location(tls)))
 		goto done
@@ -129554,7 +126908,7 @@ func Xgetpwent(tls *TLS) (r uintptr) {
 	defer tls.Free(16)
 	var _ /* res at bp+0 */ uintptr
 	if !(_f2 != 0) {
-		_f2 = Xfopen(tls, __ccgo_ts+2876, __ccgo_ts+639)
+		_f2 = Xfopen(tls, __ccgo_ts+1288, __ccgo_ts+412)
 	}
 	if !(_f2 != 0) {
 		return uintptr(0)
@@ -129796,7 +127150,7 @@ retry:
 	fd = Xsocket(tls, int32(PF_LOCAL), Int32FromInt32(SOCK_STREAM)|Int32FromInt32(SOCK_CLOEXEC), 0)
 	if fd < 0 {
 		if *(*int32)(unsafe.Pointer(X__errno_location(tls))) == int32(EAFNOSUPPORT) {
-			f = Xfopen(tls, __ccgo_ts+2888, __ccgo_ts+2898)
+			f = Xfopen(tls, __ccgo_ts+1300, __ccgo_ts+1310)
 			if f != 0 {
 				*(*int32)(unsafe.Pointer(X__errno_location(tls))) = errno_save
 			}
@@ -129804,7 +127158,7 @@ retry:
 		}
 		return uintptr(0)
 	}
-	v1 = Xfdopen(tls, fd, __ccgo_ts+2901)
+	v1 = Xfdopen(tls, fd, __ccgo_ts+1313)
 	f = v1
 	if !(v1 != 0) {
 		Xclose(tls, fd)
@@ -129905,7 +127259,7 @@ func Xputgrent(tls *TLS, gr uintptr, f uintptr) (r1 int32) {
 	var v4 uintptr
 	_, _, _, _, _, _ = i, r, v1, v3, v4, v5
 	Xflockfile(tls, f)
-	v1 = Xfprintf(tls, f, __ccgo_ts+2903, VaList(bp+8, (*Tgroup)(unsafe.Pointer(gr)).Fgr_name, (*Tgroup)(unsafe.Pointer(gr)).Fgr_passwd, (*Tgroup)(unsafe.Pointer(gr)).Fgr_gid))
+	v1 = Xfprintf(tls, f, __ccgo_ts+1315, VaList(bp+8, (*Tgroup)(unsafe.Pointer(gr)).Fgr_name, (*Tgroup)(unsafe.Pointer(gr)).Fgr_passwd, (*Tgroup)(unsafe.Pointer(gr)).Fgr_gid))
 	r = v1
 	if v1 < 0 {
 		goto done
@@ -129917,11 +127271,11 @@ func Xputgrent(tls *TLS, gr uintptr, f uintptr) (r1 int32) {
 				break
 			}
 			if i != 0 {
-				v4 = __ccgo_ts + 2913
+				v4 = __ccgo_ts + 1325
 			} else {
 				v4 = __ccgo_ts
 			}
-			v3 = Xfprintf(tls, f, __ccgo_ts+2915, VaList(bp+8, v4, *(*uintptr)(unsafe.Pointer((*Tgroup)(unsafe.Pointer(gr)).Fgr_mem + uintptr(i)*8))))
+			v3 = Xfprintf(tls, f, __ccgo_ts+1327, VaList(bp+8, v4, *(*uintptr)(unsafe.Pointer((*Tgroup)(unsafe.Pointer(gr)).Fgr_mem + uintptr(i)*8))))
 			r = v3
 			if v3 < 0 {
 				goto done
@@ -129954,7 +127308,7 @@ func Xputpwent(tls *TLS, pw uintptr, f uintptr) (r int32) {
 	defer tls.Free(64)
 	var v1 int32
 	_ = v1
-	if Xfprintf(tls, f, __ccgo_ts+2920, VaList(bp+8, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_name, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_passwd, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_uid, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_gid, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_gecos, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_dir, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_shell)) < 0 {
+	if Xfprintf(tls, f, __ccgo_ts+1332, VaList(bp+8, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_name, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_passwd, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_uid, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_gid, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_gecos, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_dir, (*Tpasswd)(unsafe.Pointer(pw)).Fpw_shell)) < 0 {
 		v1 = -int32(1)
 	} else {
 		v1 = 0
@@ -130054,7 +127408,7 @@ func Xputspent(tls *TLS, sp uintptr, f uintptr) (r int32) {
 	} else {
 		v17 = (*Tspwd)(unsafe.Pointer(sp)).Fsp_flag
 	}
-	if Xfprintf(tls, f, __ccgo_ts+2942, VaList(bp+8, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17)) < 0 {
+	if Xfprintf(tls, f, __ccgo_ts+1354, VaList(bp+8, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17)) < 0 {
 		v1 = -int32(1)
 	} else {
 		v1 = 0
@@ -130548,22 +127902,8 @@ func Xexecve(tls *TLS, path uintptr, argv uintptr, envp uintptr) (r int32) {
 		trc("tls=%v path=%v argv=%v envp=%v, (%v:)", tls, path, argv, envp, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
 	/* do we need to use environ if envp is null? */
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_execve)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaargv))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaenvp))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+2991)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_execve), int64(path), int64(argv), int64(envp)))))
 }
 
 func X__execvpe(tls *TLS, file uintptr, argv uintptr, envp uintptr) (r int32) {
@@ -130577,7 +127917,7 @@ func X__execvpe(tls *TLS, file uintptr, argv uintptr, envp uintptr) (r int32) {
 	var v2 t__predefined_size_t
 	_, _, _, _, _, _, _, _, _, _ = b, k, l, p, path, seen_eacces, z, v2, v3, v4
 	defer func() { Xrealloc(tls, b, 0) }()
-	path = Xgetenv(tls, __ccgo_ts+2998)
+	path = Xgetenv(tls, __ccgo_ts+1403)
 	seen_eacces = 0
 	*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(ENOENT)
 	if !(*(*uint8)(unsafe.Pointer(file)) != 0) {
@@ -130587,7 +127927,7 @@ func X__execvpe(tls *TLS, file uintptr, argv uintptr, envp uintptr) (r int32) {
 		return Xexecve(tls, file, argv, envp)
 	}
 	if !(path != 0) {
-		path = __ccgo_ts + 3003
+		path = __ccgo_ts + 1408
 	}
 	k = Xstrnlen(tls, file, uint64(Int32FromInt32(NAME_MAX)+Int32FromInt32(1)))
 	if k > uint64(NAME_MAX) {
@@ -130662,23 +128002,9 @@ func Xfexecve(tls *TLS, fd int32, argv uintptr, envp uintptr) (r1 int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
 	var r int32
-	var r0, r3, r4, r5, r6, r7, v1 int64
 	var _ /* buf at bp+0 */ [27]uint8
-	_, _, _, _, _, _, _, _ = r, r0, r3, r4, r5, r6, r7, v1 //TODO "r0" // syscall_arch.h:62:16:
-	panic(0)                                               // assembler statements not supported  aar0 = ((ppint64(mvSYS_execveat)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0)                                               // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0)                                               // assembler statements not supported  aar4 = ((ppint64("\x00")));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0)                                               // assembler statements not supported  aar5 = ((ppint64((aaargv))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0)                                               // assembler statements not supported  aar6 = ((ppint64((aaenvp))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0)                                               // assembler statements not supported  aar7 = ((ppint64((ppInt32FromInt32(mvAT_EMPTY_PATH)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+3032)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
+	_ = r
+	r = int32(X__syscall5(tls, int64(SYS_execveat), int64(fd), int64(__ccgo_ts), int64(argv), int64(envp), int64(Int32FromInt32(AT_EMPTY_PATH))))
 	if r != -int32(ENOSYS) {
 		return int32(X__syscall_ret(tls, uint64(r)))
 	}
@@ -131041,20 +128367,8 @@ func Xvfork(tls *TLS) (r Tpid_t) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
 	/* vfork syscall cannot be made from C code */
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fork)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+3040)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall0(tls, int64(SYS_fork)))))
 }
 
 func Xwait(tls *TLS, status uintptr) (r Tpid_t) {
@@ -131297,14 +128611,13 @@ func _match_bracket(tls *TLS, p uintptr, k int32, kfold int32) (r int32) {
 func _fnmatch_internal(tls *TLS, pat uintptr, m Tsize_t, str uintptr, n Tsize_t, flags int32) (r int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
-	var c, k, kfold, v14, v15, v17, v2, v3, v4, v8 int32
-	var endpat, endstr, p, ptail, s, stail, v12, v6 uintptr
+	var c, k, kfold, v12, v13, v15, v2, v3, v4, v8 int32
+	var endpat, endstr, p, ptail, s, stail, v10, v6 uintptr
 	var tailcnt Tsize_t
-	var tp, v9 Tuintptr_t
-	var v11 bool
+	var v9 bool
 	var _ /* pinc at bp+0 */ Tsize_t
 	var _ /* sinc at bp+8 */ Tsize_t
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c, endpat, endstr, k, kfold, p, ptail, s, stail, tailcnt, tp, v11, v12, v14, v15, v17, v2, v3, v4, v6, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c, endpat, endstr, k, kfold, p, ptail, s, stail, tailcnt, v10, v12, v13, v15, v2, v3, v4, v6, v8, v9
 	tailcnt = uint64(0)
 	if flags&int32(FNM_PERIOD) != 0 {
 		if int32(*(*uint8)(unsafe.Pointer(str))) == int32('.') && int32(*(*uint8)(unsafe.Pointer(pat))) != int32('.') {
@@ -131397,26 +128710,20 @@ func _fnmatch_internal(tls *TLS, pat uintptr, m Tsize_t, str uintptr, n Tsize_t,
 		if !(s > str && tailcnt != 0) {
 			break
 		}
-		if v11 = uint32(*(*uint8)(unsafe.Pointer(s + uintptr(-Int32FromInt32(1))))) < uint32(128); !v11 { //TODO "tp" // pthread_arch.h:3:21:
-			panic(0) // assembler statements not supported
-			// __asm__ ("" : "=r" (tp) );
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3046)
-			v9 = tp
-			goto _10
-		_10:
-			if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(uintptr(v9))).Flocale)) != 0) {
+		if v9 = uint32(*(*uint8)(unsafe.Pointer(s + uintptr(-Int32FromInt32(1))))) < uint32(128); !v9 {
+			if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)) != 0) {
 				v8 = int32(4)
 			} else {
 				v8 = int32(1)
 			}
 		}
-		if v11 || v8 == int32(1) {
+		if v9 || v8 == int32(1) {
 			s--
 		} else {
 			for {
 				s--
-				v12 = s
-				if !(uint32(*(*uint8)(unsafe.Pointer(v12)))-uint32(0x80) < uint32(0x40) && s > str) {
+				v10 = s
+				if !(uint32(*(*uint8)(unsafe.Pointer(v10)))-uint32(0x80) < uint32(0x40) && s > str) {
 					break
 				}
 			}
@@ -131435,9 +128742,9 @@ func _fnmatch_internal(tls *TLS, pat uintptr, m Tsize_t, str uintptr, n Tsize_t,
 	for {
 		c = _pat_next(tls, p, uint64(int64(endpat)-int64(p)), bp, flags)
 		p += uintptr(*(*Tsize_t)(unsafe.Pointer(bp)))
-		v14 = _str_next(tls, s, uint64(int64(endstr)-int64(s)), bp+8)
-		k = v14
-		if v14 <= 0 {
+		v12 = _str_next(tls, s, uint64(int64(endstr)-int64(s)), bp+8)
+		k = v12
+		if v12 <= 0 {
 			if c != END {
 				return int32(FNM_NOMATCH)
 			}
@@ -131445,11 +128752,11 @@ func _fnmatch_internal(tls *TLS, pat uintptr, m Tsize_t, str uintptr, n Tsize_t,
 		}
 		s += uintptr(*(*Tsize_t)(unsafe.Pointer(bp + 8)))
 		if flags&int32(FNM_CASEFOLD) != 0 {
-			v15 = _casefold(tls, k)
+			v13 = _casefold(tls, k)
 		} else {
-			v15 = k
+			v13 = k
 		}
-		kfold = v15
+		kfold = v13
 		if c == -int32(3) {
 			if !(_match_bracket(tls, p-uintptr(*(*Tsize_t)(unsafe.Pointer(bp))), k, kfold) != 0) {
 				return int32(FNM_NOMATCH)
@@ -131459,8 +128766,8 @@ func _fnmatch_internal(tls *TLS, pat uintptr, m Tsize_t, str uintptr, n Tsize_t,
 				return int32(FNM_NOMATCH)
 			}
 		}
-		goto _13
-	_13:
+		goto _11
+	_11:
 	}
 	/* We're all done with the tails now, so throw them out */
 	endstr = stail
@@ -131483,11 +128790,11 @@ func _fnmatch_internal(tls *TLS, pat uintptr, m Tsize_t, str uintptr, n Tsize_t,
 				return int32(FNM_NOMATCH)
 			}
 			if flags&int32(FNM_CASEFOLD) != 0 {
-				v17 = _casefold(tls, k)
+				v15 = _casefold(tls, k)
 			} else {
-				v17 = k
+				v15 = k
 			}
-			kfold = v17
+			kfold = v15
 			if c == -int32(3) {
 				if !(_match_bracket(tls, p-uintptr(*(*Tsize_t)(unsafe.Pointer(bp))), k, kfold) != 0) {
 					break
@@ -131498,8 +128805,8 @@ func _fnmatch_internal(tls *TLS, pat uintptr, m Tsize_t, str uintptr, n Tsize_t,
 				}
 			}
 			s += uintptr(*(*Tsize_t)(unsafe.Pointer(bp + 8)))
-			goto _16
-		_16:
+			goto _14
+		_14:
 		}
 		if c == -int32(5) {
 			continue
@@ -131515,8 +128822,8 @@ func _fnmatch_internal(tls *TLS, pat uintptr, m Tsize_t, str uintptr, n Tsize_t,
 				if !(_str_next(tls, str, uint64(int64(endstr)-int64(str)), bp+8) < 0) {
 					break
 				}
-				goto _18
-			_18:
+				goto _16
+			_16:
 				;
 				str++
 			}
@@ -131784,7 +129091,7 @@ func _do_glob(tls *TLS, buf uintptr, pos Tsize_t, type1 int32, pat uintptr, flag
 	if pos != 0 {
 		v7 = buf
 	} else {
-		v7 = __ccgo_ts + 1628
+		v7 = __ccgo_ts + 606
 	}
 	dir = Xopendir(tls, v7)
 	if !(dir != 0) {
@@ -131907,7 +129214,7 @@ func _expand_tilde(tls *TLS, pat uintptr, buf uintptr, pos uintptr) (r int32) {
 	if *(*uint8)(unsafe.Pointer(p)) != 0 {
 		v3 = UintptrFromInt32(0)
 	} else {
-		v3 = Xgetenv(tls, __ccgo_ts+3063)
+		v3 = Xgetenv(tls, __ccgo_ts+1437)
 	}
 	home = v3
 	if !(home != 0) {
@@ -132586,51 +129893,51 @@ var _tre_macros = [13]struct {
 }{
 	0: {
 		Fc:         uint8('t'),
-		Fexpansion: __ccgo_ts + 3068,
+		Fexpansion: __ccgo_ts + 1442,
 	},
 	1: {
 		Fc:         uint8('n'),
-		Fexpansion: __ccgo_ts + 625,
+		Fexpansion: __ccgo_ts + 398,
 	},
 	2: {
 		Fc:         uint8('r'),
-		Fexpansion: __ccgo_ts + 3070,
+		Fexpansion: __ccgo_ts + 1444,
 	},
 	3: {
 		Fc:         uint8('f'),
-		Fexpansion: __ccgo_ts + 3072,
+		Fexpansion: __ccgo_ts + 1446,
 	},
 	4: {
 		Fc:         uint8('a'),
-		Fexpansion: __ccgo_ts + 3074,
+		Fexpansion: __ccgo_ts + 1448,
 	},
 	5: {
 		Fc:         uint8('e'),
-		Fexpansion: __ccgo_ts + 3076,
+		Fexpansion: __ccgo_ts + 1450,
 	},
 	6: {
 		Fc:         uint8('w'),
-		Fexpansion: __ccgo_ts + 3078,
+		Fexpansion: __ccgo_ts + 1452,
 	},
 	7: {
 		Fc:         uint8('W'),
-		Fexpansion: __ccgo_ts + 3091,
+		Fexpansion: __ccgo_ts + 1465,
 	},
 	8: {
 		Fc:         uint8('s'),
-		Fexpansion: __ccgo_ts + 3105,
+		Fexpansion: __ccgo_ts + 1479,
 	},
 	9: {
 		Fc:         uint8('S'),
-		Fexpansion: __ccgo_ts + 3117,
+		Fexpansion: __ccgo_ts + 1491,
 	},
 	10: {
 		Fc:         uint8('d'),
-		Fexpansion: __ccgo_ts + 3130,
+		Fexpansion: __ccgo_ts + 1504,
 	},
 	11: {
 		Fc:         uint8('D'),
-		Fexpansion: __ccgo_ts + 3142,
+		Fexpansion: __ccgo_ts + 1516,
 	},
 	12: {},
 }
@@ -137731,63 +135038,21 @@ func X__block_all_sigs(tls *TLS, set uintptr) {
 	if __ccgo_strace {
 		trc("tls=%v set=%v, (%v:)", tls, set, origin(2))
 	}
-	var r0, r3, r4, r5, r6 int64
-	_, _, _, _, _ = r0, r3, r4, r5, r6
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_rt_sigprocmask)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvSIG_BLOCK)))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(ppuintptr(iqunsafe.ppPointer(&(siall_mask))))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaset))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64(((ppInt32FromInt32(mv_NSIG)) / (ppInt32FromInt32(8))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3155)
-	_ = r3
-	goto _1
-_1:
+	X__syscall4(tls, int64(SYS_rt_sigprocmask), int64(Int32FromInt32(SIG_BLOCK)), int64(uintptr(unsafe.Pointer(&_all_mask))), int64(set), int64(Int32FromInt32(_NSIG)/Int32FromInt32(8)))
 }
 
 func X__block_app_sigs(tls *TLS, set uintptr) {
 	if __ccgo_strace {
 		trc("tls=%v set=%v, (%v:)", tls, set, origin(2))
 	}
-	var r0, r3, r4, r5, r6 int64
-	_, _, _, _, _ = r0, r3, r4, r5, r6
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_rt_sigprocmask)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvSIG_BLOCK)))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(ppuintptr(iqunsafe.ppPointer(&(siapp_mask))))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaset))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64(((ppInt32FromInt32(mv_NSIG)) / (ppInt32FromInt32(8))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3172)
-	_ = r3
-	goto _1
-_1:
+	X__syscall4(tls, int64(SYS_rt_sigprocmask), int64(Int32FromInt32(SIG_BLOCK)), int64(uintptr(unsafe.Pointer(&_app_mask))), int64(set), int64(Int32FromInt32(_NSIG)/Int32FromInt32(8)))
 }
 
 func X__restore_sigs(tls *TLS, set uintptr) {
 	if __ccgo_strace {
 		trc("tls=%v set=%v, (%v:)", tls, set, origin(2))
 	}
-	var r0, r3, r4, r5, r6 int64
-	_, _, _, _, _ = r0, r3, r4, r5, r6
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_rt_sigprocmask)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvSIG_SETMASK)))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaset))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64(((ppInt32FromInt32(mv_NSIG)) / (ppInt32FromInt32(8))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3189)
-	_ = r3
-	goto _1
-_1:
+	X__syscall4(tls, int64(SYS_rt_sigprocmask), int64(Int32FromInt32(SIG_SETMASK)), int64(set), int64(Int32FromInt32(0)), int64(Int32FromInt32(_NSIG)/Int32FromInt32(8)))
 }
 
 func Xgetitimer(tls *TLS, which int32, old uintptr) (r1 int32) {
@@ -137798,21 +135063,10 @@ func Xgetitimer(tls *TLS, which int32, old uintptr) (r1 int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
 	var r int32
-	var r0, r3, r4, v1, v3 int64
 	var _ /* old32 at bp+0 */ [4]int64
-	_, _, _, _, _, _ = r, r0, r3, r4, v1, v3
-	if uint64(8) > uint64(8) { //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getitimer)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aawhich))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(cgbp)));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3204)
-		v1 = r3
-		goto _2
-	_2:
-		r = int32(v1)
+	_ = r
+	if uint64(8) > uint64(8) {
+		r = int32(X__syscall2(tls, int64(SYS_getitimer), int64(which), int64(bp)))
 		if !(r != 0) {
 			(*Titimerval)(unsafe.Pointer(old)).Fit_interval.Ftv_sec = (*(*[4]int64)(unsafe.Pointer(bp)))[0]
 			(*Titimerval)(unsafe.Pointer(old)).Fit_interval.Ftv_usec = (*(*[4]int64)(unsafe.Pointer(bp)))[int32(1)]
@@ -137821,18 +135075,7 @@ func Xgetitimer(tls *TLS, which int32, old uintptr) (r1 int32) {
 		}
 		return int32(X__syscall_ret(tls, uint64(r)))
 	}
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getitimer)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aawhich))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaold))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3204)
-	v3 = r3
-	goto _4
-_4:
-	return int32(X__syscall_ret(tls, uint64(v3)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_getitimer), int64(which), int64(old)))))
 }
 
 func Xkill(tls *TLS, pid Tpid_t, sig int32) (r int32) {
@@ -137840,20 +135083,7 @@ func Xkill(tls *TLS, pid Tpid_t, sig int32) (r int32) {
 		trc("tls=%v pid=%v sig=%v, (%v:)", tls, pid, sig, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_kill)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapid))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aasig))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3214)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_kill), int64(pid), int64(sig)))))
 }
 
 func Xkillpg(tls *TLS, pgid Tpid_t, sig int32) (r int32) {
@@ -137905,11 +135135,11 @@ func Xpsignal(tls *TLS, sig int32, msg uintptr) {
 		v2 = __ccgo_ts
 	}
 	if msg != 0 {
-		v3 = __ccgo_ts + 613
+		v3 = __ccgo_ts + 386
 	} else {
 		v3 = __ccgo_ts
 	}
-	if Xfprintf(tls, f, __ccgo_ts+2550, VaList(bp+8, v2, v3, s)) >= 0 {
+	if Xfprintf(tls, f, __ccgo_ts+1114, VaList(bp+8, v2, v3, s)) >= 0 {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = old_errno
 	}
 	(*TFILE)(unsafe.Pointer(f)).Fmode = old_mode
@@ -137926,29 +135156,11 @@ func Xraise(tls *TLS, sig int32) (r int32) {
 	}
 	bp := tls.Alloc(128)
 	defer tls.Free(128)
-	var r0, r3, r4, v3 int64
 	var ret int32
-	var tp, v1 Tuintptr_t
 	var _ /* set at bp+0 */ Tsigset_t
-	_, _, _, _, _, _, _ = r0, r3, r4, ret, tp, v1, v3
-	X__block_app_sigs(tls, bp) //TODO "tp" // pthread_arch.h:3:21:
-	panic(0)                   // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3219)
-	v1 = tp
-	goto _2
-_2: //TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_tkill)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64(((*ts__pthread)(iqunsafe.ppPointer((ppuintptr((ccv1))))).fdtid))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aasig))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3219)
-	v3 = r3
-	goto _4
-_4:
-	ret = int32(X__syscall_ret(tls, uint64(v3)))
+	_ = ret
+	X__block_app_sigs(tls, bp)
+	ret = int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_tkill), int64((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Ftid), int64(sig)))))
 	X__restore_sigs(tls, bp)
 	return ret
 }
@@ -137975,10 +135187,10 @@ func Xsetitimer(tls *TLS, which int32, new1 uintptr, old uintptr) (r1 int32) {
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
 	var is, vs Ttime_t
-	var ius, r0, r3, r4, r5, vus, v1, v3 int64
+	var ius, vus int64
 	var r int32
 	var _ /* old32 at bp+32 */ [4]int64
-	_, _, _, _, _, _, _, _, _, _, _ = is, ius, r, r0, r3, r4, r5, vs, vus, v1, v3
+	_, _, _, _, _ = is, ius, r, vs, vus
 	if uint64(8) > uint64(8) {
 		is = (*Titimerval)(unsafe.Pointer(new1)).Fit_interval.Ftv_sec
 		vs = (*Titimerval)(unsafe.Pointer(new1)).Fit_value.Ftv_sec
@@ -137992,19 +135204,8 @@ func Xsetitimer(tls *TLS, which int32, new1 uintptr, old uintptr) (r1 int32) {
 			1: ius,
 			2: vs,
 			3: vus,
-		} //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setitimer)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aawhich))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64(cgbp+32)));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3225)
-		v1 = r3
-		goto _2
-	_2:
-		r = int32(v1)
+		}
+		r = int32(X__syscall3(tls, int64(SYS_setitimer), int64(which), int64(bp), int64(bp+32)))
 		if !(r != 0) && old != 0 {
 			(*Titimerval)(unsafe.Pointer(old)).Fit_interval.Ftv_sec = (*(*[4]int64)(unsafe.Pointer(bp + 32)))[0]
 			(*Titimerval)(unsafe.Pointer(old)).Fit_interval.Ftv_usec = (*(*[4]int64)(unsafe.Pointer(bp + 32)))[int32(1)]
@@ -138013,19 +135214,7 @@ func Xsetitimer(tls *TLS, which int32, new1 uintptr, old uintptr) (r1 int32) {
 		}
 		return int32(X__syscall_ret(tls, uint64(r)))
 	}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setitimer)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aawhich))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aanew))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaold))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3225)
-	v3 = r3
-	goto _4
-_4:
-	return int32(X__syscall_ret(tls, uint64(v3)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_setitimer), int64(which), int64(new1), int64(old)))))
 }
 
 type Tk_sigaction = struct {
@@ -138053,15 +135242,15 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 	bp := tls.Alloc(80)
 	defer tls.Free(80)
 	var old, r, r1, v, v15, v19, v24, v28, v5, v9 int32
-	var r0, r3, r4, r5, r6, v2, v35 int64
-	var v1, v12, v13, v14, v18, v22, v23, v27, v3, v32, v33, v34, v4, v8 uintptr
+	var v1, v12, v13, v14, v18, v22, v23, v27, v3, v31, v32, v33, v4, v8 uintptr
+	var v2 int64
 	var _ /* ksa at bp+16 */ Tk_sigaction
 	var _ /* ksa_old at bp+48 */ Tk_sigaction
 	var _ /* u at bp+8 */ struct {
 		Fr [0][2]Tuint32_t
 		Fv Tuint64_t
 	}
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = old, r, r0, r1, r3, r4, r5, r6, v, v1, v12, v13, v14, v15, v18, v19, v2, v22, v23, v24, v27, v28, v3, v32, v33, v34, v35, v4, v5, v8, v9
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = old, r, r1, v, v1, v12, v13, v14, v15, v18, v19, v2, v22, v23, v24, v27, v28, v3, v31, v32, v33, v4, v5, v8, v9
 	if sa != 0 {
 		if uint64(*(*uintptr)(unsafe.Pointer(sa))) > uint64(1) {
 			v1 = uintptr(unsafe.Pointer(&_handler_set)) + uintptr(uint64(sig-Int32FromInt32(1))/(Uint64FromInt32(8)*Uint64FromInt64(8)))*8
@@ -138069,11 +135258,11 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 			if Uint64FromInt64(8) == Uint64FromInt64(4) {
 				v3 = v1
 				// __asm__ __volatile__ ("sync" : : : "memory");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3235)
+				X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1529)
 				for {
 					v8 = v3
 					// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3235)
+					X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1529)
 					v9 = v
 					goto _10
 				_10:
@@ -138086,7 +135275,7 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 					//
 					//	"stwcx. %2, 0, %3 ; mfcr %0"
 					//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3235)
+					X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1529)
 					v5 = r & int32(0x20000000)
 					goto _6
 				_6:
@@ -138096,7 +135285,7 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 					}
 				}
 				// __asm__ __volatile__ ("isync" : : : "memory");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3235)
+				X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1529)
 				_ = old
 				goto _11
 			_11:
@@ -138113,11 +135302,11 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 				if *(*Tuint32_t)(unsafe.Pointer(bp + 8)) != 0 {
 					v13 = v12
 					// __asm__ __volatile__ ("sync" : : : "memory");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3235)
+					X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1529)
 					for {
 						v18 = v13
 						// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-						X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3235)
+						X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1529)
 						v19 = v
 						goto _20
 					_20:
@@ -138130,7 +135319,7 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 						//
 						//	"stwcx. %2, 0, %3 ; mfcr %0"
 						//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-						X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3235)
+						X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1529)
 						v15 = r & int32(0x20000000)
 						goto _16
 					_16:
@@ -138140,7 +135329,7 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 						}
 					}
 					// __asm__ __volatile__ ("isync" : : : "memory");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3235)
+					X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1529)
 					_ = old
 					goto _21
 				_21:
@@ -138148,11 +135337,11 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 				if *(*Tuint32_t)(unsafe.Pointer(bp + 8 + 1*4)) != 0 {
 					v22 = v12 + uintptr(1)*4
 					// __asm__ __volatile__ ("sync" : : : "memory");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3235)
+					X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1529)
 					for {
 						v27 = v22
 						// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-						X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3235)
+						X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1529)
 						v28 = v
 						goto _29
 					_29:
@@ -138165,7 +135354,7 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 						//
 						//	"stwcx. %2, 0, %3 ; mfcr %0"
 						//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-						X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3235)
+						X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1529)
 						v24 = r & int32(0x20000000)
 						goto _25
 					_25:
@@ -138175,7 +135364,7 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 						}
 					}
 					// __asm__ __volatile__ ("isync" : : : "memory");
-					X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3235)
+					X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1529)
 					_ = old
 					goto _30
 				_30:
@@ -138192,64 +135381,40 @@ func X__libc_sigaction(tls *TLS, sig int32, sa uintptr, old1 uintptr) (r2 int32)
 			if !(X__libc.Fthreaded != 0) && !(_unmask_done != 0) {
 				*(*[1]uint64)(unsafe.Pointer(bp)) = [1]uint64{
 					0: Uint64FromUint64(3) << (Int32FromInt32(32) * BoolInt32(Uint64FromInt64(8) > Uint64FromInt32(4))),
-				} //TODO "r0" // syscall_arch.h:49:16:
-				panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_rt_sigprocmask)));//TODO "r3" // syscall_arch.h:50:16:
-				panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(mvSIG_UNBLOCK)))));//TODO "r4" // syscall_arch.h:51:16:
-				panic(0) // assembler statements not supported  aar4 = ((ppint64((cgbp))));//TODO "r5" // syscall_arch.h:52:16:
-				panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r6" // syscall_arch.h:53:16:
-				panic(0) // assembler statements not supported  aar6 = ((ppint64(((ppInt32FromInt32(mv_NSIG)) / (ppInt32FromInt32(8))))));
-				// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-				// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-				// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3235)
-				_ = r3
-				goto _31
-			_31:
-				;
+				}
+				X__syscall4(tls, int64(SYS_rt_sigprocmask), int64(Int32FromInt32(SIG_UNBLOCK)), int64(bp), int64(Int32FromInt32(0)), int64(Int32FromInt32(_NSIG)/Int32FromInt32(8)))
 				_unmask_done = int32(1)
 			}
 			if !(uint32((*Tsigaction)(unsafe.Pointer(sa)).Fsa_flags)&Uint32FromUint32(0x10000000) != 0) {
 				// __asm__ __volatile__ ("sync" : : : "memory");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3235)
+				X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1529)
 				AtomicStorePInt32(uintptr(unsafe.Pointer(&X__eintr_valid_flag)), int32(1))
 				// __asm__ __volatile__ ("sync" : : : "memory");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3235)
+				X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1529)
 			}
 		}
 		(*(*Tk_sigaction)(unsafe.Pointer(bp + 16))).Fhandler = *(*uintptr)(unsafe.Pointer(sa))
 		(*(*Tk_sigaction)(unsafe.Pointer(bp + 16))).Fflags = uint64((*Tsigaction)(unsafe.Pointer(sa)).Fsa_flags)
 		(*(*Tk_sigaction)(unsafe.Pointer(bp + 16))).Fflags |= uint64(0x04000000)
 		if uint32((*Tsigaction)(unsafe.Pointer(sa)).Fsa_flags)&uint32(4) != 0 {
-			v32 = __ccgo_fp(X__restore_rt)
+			v31 = __ccgo_fp(X__restore_rt)
 		} else {
-			v32 = __ccgo_fp(X__restore)
+			v31 = __ccgo_fp(X__restore)
 		}
-		(*(*Tk_sigaction)(unsafe.Pointer(bp + 16))).Frestorer = v32
+		(*(*Tk_sigaction)(unsafe.Pointer(bp + 16))).Frestorer = v31
 		Xmemcpy(tls, bp+16+24, sa+8, uint64(Int32FromInt32(_NSIG)/Int32FromInt32(8)))
 	}
 	if sa != 0 {
-		v33 = bp + 16
+		v32 = bp + 16
+	} else {
+		v32 = uintptr(0)
+	}
+	if old1 != 0 {
+		v33 = bp + 48
 	} else {
 		v33 = uintptr(0)
 	}
-	if old1 != 0 {
-		v34 = bp + 48
-	} else {
-		v34 = uintptr(0)
-	} //TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_rt_sigaction)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aasig))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(ccv33)));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64(ccv34)));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64(((ppInt32FromInt32(mv_NSIG)) / (ppInt32FromInt32(8))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3235)
-	v35 = r3
-	goto _36
-_36:
-	r1 = int32(v35)
+	r1 = int32(X__syscall4(tls, int64(SYS_rt_sigaction), int64(sig), int64(v32), int64(v33), int64(Int32FromInt32(_NSIG)/Int32FromInt32(8))))
 	if old1 != 0 && !(r1 != 0) {
 		*(*uintptr)(unsafe.Pointer(old1)) = (*(*Tk_sigaction)(unsafe.Pointer(bp + 48))).Fhandler
 		(*Tsigaction)(unsafe.Pointer(old1)).Fsa_flags = int32((*(*Tk_sigaction)(unsafe.Pointer(bp + 48))).Fflags)
@@ -138316,8 +135481,6 @@ func Xsigaltstack(tls *TLS, ss uintptr, old uintptr) (r int32) {
 		trc("tls=%v ss=%v old=%v, (%v:)", tls, ss, old, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
 	if ss != 0 {
 		if !((*Tstack_t)(unsafe.Pointer(ss)).Fss_flags&Int32FromInt32(SS_DISABLE) != 0) && (*Tstack_t)(unsafe.Pointer(ss)).Fss_size < uint64(MINSIGSTKSZ) {
 			*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(ENOMEM)
@@ -138328,18 +135491,7 @@ func Xsigaltstack(tls *TLS, ss uintptr, old uintptr) (r int32) {
 			return -int32(1)
 		}
 	}
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_sigaltstack)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aass))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaold))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3252)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_sigaltstack), int64(ss), int64(old)))))
 }
 
 const SST_SIZE = 8
@@ -138497,20 +135649,7 @@ func Xsigpending(tls *TLS, set uintptr) (r int32) {
 		trc("tls=%v set=%v, (%v:)", tls, set, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_rt_sigpending)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaset))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppInt32FromInt32(mv_NSIG)) / (ppInt32FromInt32(8))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3264)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_rt_sigpending), int64(set), int64(Int32FromInt32(_NSIG)/Int32FromInt32(8))))))
 }
 
 func Xsigprocmask(tls *TLS, how int32, set uintptr, old uintptr) (r1 int32) {
@@ -138536,10 +135675,9 @@ func Xsigqueue(tls *TLS, pid Tpid_t, sig int32, value Tsigval) (r1 int32) {
 	bp := tls.Alloc(256)
 	defer tls.Free(256)
 	var r int32
-	var r0, r3, r4, r5, v1 int64
 	var _ /* set at bp+128 */ Tsigset_t
 	var _ /* si at bp+0 */ Tsiginfo_t
-	_, _, _, _, _, _ = r, r0, r3, r4, r5, v1
+	_ = r
 	Xmemset(tls, bp, 0, uint64(128))
 	(*(*Tsiginfo_t)(unsafe.Pointer(bp))).Fsi_signo = sig
 	(*(*Tsiginfo_t)(unsafe.Pointer(bp))).Fsi_code = -int32(1)
@@ -138547,19 +135685,7 @@ func Xsigqueue(tls *TLS, pid Tpid_t, sig int32, value Tsigval) (r1 int32) {
 	*(*Tuid_t)(unsafe.Pointer(bp + 16 + 4)) = Xgetuid(tls)
 	X__block_app_sigs(tls, bp+128)
 	*(*Tpid_t)(unsafe.Pointer(bp + 16)) = Xgetpid(tls)
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_rt_sigqueueinfo)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapid))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aasig))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64(cgbp)));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3275)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(X__syscall_ret(tls, uint64(v1)))
+	r = int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_rt_sigqueueinfo), int64(pid), int64(sig), int64(bp)))))
 	X__restore_sigs(tls, bp+128)
 	return r
 }
@@ -138681,20 +135807,7 @@ func Xchmod(tls *TLS, path uintptr, mode Tmode_t) (r int32) {
 		trc("tls=%v path=%v mode=%v, (%v:)", tls, path, mode, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_chmod)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aamode))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3284)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_chmod), int64(path), int64(mode)))))
 }
 
 func Xfchmod(tls *TLS, fd int32, mode Tmode_t) (r int32) {
@@ -138704,50 +135817,15 @@ func Xfchmod(tls *TLS, fd int32, mode Tmode_t) (r int32) {
 	}
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
-	var r0, r3, r4, v1, v3, v6 int64
 	var ret int32
-	var v5 bool
 	var _ /* buf at bp+0 */ [27]uint8
-	_, _, _, _, _, _, _, _ = r0, r3, r4, ret, v1, v3, v5, v6 //TODO "r0" // syscall_arch.h:26:16:
-	panic(0)                                                 // assembler statements not supported  aar0 = ((ppint64(mvSYS_fchmod)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0)                                                 // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0)                                                 // assembler statements not supported  aar4 = ((ppint64((aamode))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3290)
-	v1 = r3
-	goto _2
-_2:
-	ret = int32(v1)
-	if v5 = ret != -int32(EBADF); !v5 { //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_GETFD)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3290)
-		v3 = r3
-		goto _4
-	_4:
-	}
-	if v5 || v3 < 0 {
+	_ = ret
+	ret = int32(X__syscall2(tls, int64(SYS_fchmod), int64(fd), int64(mode)))
+	if ret != -int32(EBADF) || X__syscall2(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_GETFD))) < 0 {
 		return int32(X__syscall_ret(tls, uint64(ret)))
 	}
 	X__procfdname(tls, bp, uint32(fd))
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_chmod)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64(cgbp)));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aamode))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3290)
-	v6 = r3
-	goto _7
-_7:
-	return int32(X__syscall_ret(tls, uint64(v6)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_chmod), int64(bp), int64(mode)))))
 }
 
 func Xfchmodat(tls *TLS, fd int32, path uintptr, mode Tmode_t, flag int32) (r int32) {
@@ -138757,38 +135835,14 @@ func Xfchmodat(tls *TLS, fd int32, path uintptr, mode Tmode_t, flag int32) (r in
 	}
 	bp := tls.Alloc(176)
 	defer tls.Free(176)
-	var fd2, ret, v5 int32
-	var r0, r01, r02, r3, r31, r32, r4, r41, r5, r51, r6, v1, v3, v6, v8 int64
+	var fd2, ret, v1 int32
 	var _ /* proc at bp+144 */ [27]uint8
 	var _ /* st at bp+0 */ Tstat
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = fd2, r0, r01, r02, r3, r31, r32, r4, r41, r5, r51, r6, ret, v1, v3, v5, v6, v8
-	if !(flag != 0) { //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fchmodat)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((aamode))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3297)
-		v1 = r31
-		goto _2
-	_2:
-		return int32(X__syscall_ret(tls, uint64(v1)))
-	} //TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar02 = ((ppint64(mvSYS_fchmodat2)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar32 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar41 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar51 = ((ppint64((aamode))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflag))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3297)
-	v3 = r32
-	goto _4
-_4:
-	ret = int32(v3)
+	_, _, _ = fd2, ret, v1
+	if !(flag != 0) {
+		return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_fchmodat), int64(fd), int64(path), int64(mode)))))
+	}
+	ret = int32(X__syscall4(tls, int64(SYS_fchmodat2), int64(fd), int64(path), int64(mode), int64(flag)))
 	if ret != -int32(ENOSYS) {
 		return int32(X__syscall_ret(tls, uint64(ret)))
 	}
@@ -138801,21 +135855,9 @@ _4:
 	if (*(*Tstat)(unsafe.Pointer(bp))).Fst_mode&uint32(S_IFMT) == uint32(S_IFLNK) {
 		return int32(X__syscall_ret(tls, uint64(-Int32FromInt32(EOPNOTSUPP))))
 	}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_openat)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((((((ppInt32FromInt32(mvO_RDONLY)) | (ppInt32FromInt32(mvO_PATH))) | (ppInt32FromInt32(mvO_NOFOLLOW))) | (ppInt32FromInt32(mvO_NOCTTY))) | (ppInt32FromInt32(mvO_CLOEXEC))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3297)
-	v6 = r31
-	goto _7
-_7:
-	v5 = int32(v6)
-	fd2 = v5
-	if v5 < 0 {
+	v1 = int32(X__syscall3(tls, int64(SYS_openat), int64(fd), int64(path), int64(Int32FromInt32(O_RDONLY)|Int32FromInt32(O_PATH)|Int32FromInt32(O_NOFOLLOW)|Int32FromInt32(O_NOCTTY)|Int32FromInt32(O_CLOEXEC))))
+	fd2 = v1
+	if v1 < 0 {
 		if fd2 == -int32(ELOOP) {
 			return int32(X__syscall_ret(tls, uint64(-Int32FromInt32(EOPNOTSUPP))))
 		}
@@ -138826,32 +135868,11 @@ _7:
 	if !(ret != 0) {
 		if (*(*Tstat)(unsafe.Pointer(bp))).Fst_mode&uint32(S_IFMT) == uint32(S_IFLNK) {
 			ret = int32(X__syscall_ret(tls, uint64(-Int32FromInt32(EOPNOTSUPP))))
-		} else { //TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fchmodat)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((-((ppInt32FromInt32(100)))))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64(cgbp+144)));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((aamode))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3297)
-			v8 = r31
-			goto _9
-		_9:
-			ret = int32(X__syscall_ret(tls, uint64(v8)))
+		} else {
+			ret = int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_fchmodat), int64(-Int32FromInt32(100)), int64(bp+144), int64(mode)))))
 		}
 	}
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd2))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+3297)
-	_ = r3
-	goto _10
-_10:
-	;
+	X__syscall1(tls, int64(SYS_close), int64(fd2))
 	return ret
 }
 
@@ -138917,25 +135938,11 @@ type Tstatx1 = struct {
 func _fstatat_statx(tls *TLS, fd int32, path uintptr, st uintptr, flag int32) (r int32) {
 	bp := tls.Alloc(256)
 	defer tls.Free(256)
-	var r0, r3, r4, r5, r6, r7, v1 int64
 	var ret int32
 	var _ /* stx at bp+0 */ Tstatx1
-	_, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, ret, v1
-	flag |= int32(AT_NO_AUTOMOUNT) //TODO "r0" // syscall_arch.h:62:16:
-	panic(0)                       // assembler statements not supported  aar0 = ((ppint64(mvSYS_statx)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0)                       // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0)                       // assembler statements not supported  aar4 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0)                       // assembler statements not supported  aar5 = ((ppint64((aaflag))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0)                       // assembler statements not supported  aar6 = ((ppint64((ppInt32FromInt32(0x7ff)))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0)                       // assembler statements not supported  aar7 = ((ppint64(cgbp)));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+3306)
-	v1 = r3
-	goto _2
-_2:
-	ret = int32(v1)
+	_ = ret
+	flag |= int32(AT_NO_AUTOMOUNT)
+	ret = int32(X__syscall5(tls, int64(SYS_statx), int64(fd), int64(path), int64(flag), int64(Int32FromInt32(0x7ff)), int64(bp)))
 	if ret != 0 {
 		return ret
 	}
@@ -138989,110 +135996,27 @@ type Tkstat = struct {
 func _fstatat_kstat(tls *TLS, fd int32, path uintptr, st uintptr, flag int32) (r int32) {
 	bp := tls.Alloc(176)
 	defer tls.Free(176)
-	var r0, r01, r3, r31, r4, r41, r5, r6, v1, v10, v12, v14, v3, v6, v8 int64
 	var ret int32
-	var v5 bool
 	var _ /* buf at bp+144 */ [27]uint8
 	var _ /* kst at bp+0 */ Tkstat
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = r0, r01, r3, r31, r4, r41, r5, r6, ret, v1, v10, v12, v14, v3, v5, v6, v8
+	_ = ret
 	if flag == int32(AT_EMPTY_PATH) && fd >= 0 && !(*(*uint8)(unsafe.Pointer(path)) != 0) {
-		//TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fstat)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(cgbp)));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3320)
-		v1 = r3
-		goto _2
-	_2:
-		ret = int32(v1)
-		if v5 = ret == -int32(EBADF); v5 { //TODO "r0" // syscall_arch.h:26:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:27:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_GETFD)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4)
-			// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3320)
-			v3 = r3
-			goto _4
-		_4:
-		}
-		if v5 && v3 >= 0 {
-			//TODO "r0" // syscall_arch.h:49:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_newfstatat)));//TODO "r3" // syscall_arch.h:50:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-			panic(0) // assembler statements not supported  aar41 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:52:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64(cgbp)));//TODO "r6" // syscall_arch.h:53:16:
-			panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflag))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-			// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3320)
-			v6 = r31
-			goto _7
-		_7:
-			ret = int32(v6)
+		ret = int32(X__syscall2(tls, int64(SYS_fstat), int64(fd), int64(bp)))
+		if ret == -int32(EBADF) && X__syscall2(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_GETFD))) >= 0 {
+			ret = int32(X__syscall4(tls, int64(SYS_newfstatat), int64(fd), int64(path), int64(bp), int64(flag)))
 			if ret == -int32(EINVAL) {
 				X__procfdname(tls, bp+144, uint32(fd))
-				//TODO "r0" // syscall_arch.h:26:16:
-				panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_stat)));//TODO "r3" // syscall_arch.h:27:16:
-				panic(0) // assembler statements not supported  aar3 = ((ppint64(cgbp+144)));//TODO "r4" // syscall_arch.h:28:16:
-				panic(0) // assembler statements not supported  aar4 = ((ppint64(cgbp)));
-				// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-				// : "+r"(r0), "+r"(r3), "+r"(r4)
-				// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3320)
-				v8 = r3
-				goto _9
-			_9:
-				ret = int32(v8)
+				ret = int32(X__syscall2(tls, int64(SYS_stat), int64(bp+144), int64(bp)))
 			}
 		}
 	} else {
 		if (fd == -int32(100) || int32(*(*uint8)(unsafe.Pointer(path))) == int32('/')) && flag == int32(AT_SYMLINK_NOFOLLOW) {
-			//TODO "r0" // syscall_arch.h:26:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_lstat)));//TODO "r3" // syscall_arch.h:27:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:28:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64(cgbp)));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4)
-			// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3320)
-			v10 = r3
-			goto _11
-		_11:
-			ret = int32(v10)
+			ret = int32(X__syscall2(tls, int64(SYS_lstat), int64(path), int64(bp)))
 		} else {
 			if (fd == -int32(100) || int32(*(*uint8)(unsafe.Pointer(path))) == int32('/')) && !(flag != 0) {
-				//TODO "r0" // syscall_arch.h:26:16:
-				panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_stat)));//TODO "r3" // syscall_arch.h:27:16:
-				panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:28:16:
-				panic(0) // assembler statements not supported  aar4 = ((ppint64(cgbp)));
-				// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-				// : "+r"(r0), "+r"(r3), "+r"(r4)
-				// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3320)
-				v12 = r3
-				goto _13
-			_13:
-				ret = int32(v12)
-			} else { //TODO "r0" // syscall_arch.h:49:16:
-				panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_newfstatat)));//TODO "r3" // syscall_arch.h:50:16:
-				panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-				panic(0) // assembler statements not supported  aar41 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:52:16:
-				panic(0) // assembler statements not supported  aar5 = ((ppint64(cgbp)));//TODO "r6" // syscall_arch.h:53:16:
-				panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflag))));
-				// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-				// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-				// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3320)
-				v14 = r31
-				goto _15
-			_15:
-				ret = int32(v14)
+				ret = int32(X__syscall2(tls, int64(SYS_stat), int64(path), int64(bp)))
+			} else {
+				ret = int32(X__syscall4(tls, int64(SYS_newfstatat), int64(fd), int64(path), int64(bp), int64(flag)))
 			}
 		}
 	}
@@ -139224,20 +136148,7 @@ func Xmkdir(tls *TLS, path uintptr, mode Tmode_t) (r int32) {
 		trc("tls=%v path=%v mode=%v, (%v:)", tls, path, mode, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mkdir)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aamode))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3334)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_mkdir), int64(path), int64(mode)))))
 }
 
 func Xmkdirat(tls *TLS, fd int32, path uintptr, mode Tmode_t) (r int32) {
@@ -139245,21 +136156,7 @@ func Xmkdirat(tls *TLS, fd int32, path uintptr, mode Tmode_t) (r int32) {
 		trc("tls=%v fd=%v path=%v mode=%v, (%v:)", tls, fd, path, mode, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mkdirat)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aamode))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3340)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_mkdirat), int64(fd), int64(path), int64(mode)))))
 }
 
 func Xmkfifo(tls *TLS, path uintptr, mode Tmode_t) (r int32) {
@@ -139283,21 +136180,7 @@ func Xmknod(tls *TLS, path uintptr, mode Tmode_t, dev Tdev_t) (r int32) {
 		trc("tls=%v path=%v mode=%v dev=%v, (%v:)", tls, path, mode, dev, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mknod)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aamode))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aadev))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3348)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_mknod), int64(path), int64(mode), int64(dev)))))
 }
 
 func Xmknodat(tls *TLS, fd int32, path uintptr, mode Tmode_t, dev Tdev_t) (r int32) {
@@ -139305,22 +136188,7 @@ func Xmknodat(tls *TLS, fd int32, path uintptr, mode Tmode_t, dev Tdev_t) (r int
 		trc("tls=%v fd=%v path=%v mode=%v dev=%v, (%v:)", tls, fd, path, mode, dev, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_mknodat)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aamode))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aadev))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3354)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_mknodat), int64(fd), int64(path), int64(mode), int64(dev)))))
 }
 
 func Xstat(tls *TLS, path uintptr, buf uintptr) (r int32) {
@@ -139332,22 +136200,8 @@ func Xstat(tls *TLS, path uintptr, buf uintptr) (r int32) {
 }
 
 func ___statfs(tls *TLS, path uintptr, buf uintptr) (r int32) {
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
 	*(*Tstatfs)(unsafe.Pointer(buf)) = Tstatfs{}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_statfs64)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((ppUint64FromInt64(120)))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aabuf))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3362)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_statfs64), int64(path), int64(Uint64FromInt64(120)), int64(buf)))))
 }
 
 func Xfstatfs(tls *TLS, fd int32, buf uintptr) (r int32) {
@@ -139355,22 +136209,8 @@ func Xfstatfs(tls *TLS, fd int32, buf uintptr) (r int32) {
 		trc("tls=%v fd=%v buf=%v, (%v:)", tls, fd, buf, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
 	*(*Tstatfs)(unsafe.Pointer(buf)) = Tstatfs{}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fstatfs64)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((ppUint64FromInt64(120)))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aabuf))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3371)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_fstatfs64), int64(fd), int64(Uint64FromInt64(120)), int64(buf)))))
 }
 
 func _fixup(tls *TLS, out uintptr, in uintptr) {
@@ -139431,19 +136271,7 @@ func Xumask(tls *TLS, mode Tmode_t) (r Tmode_t) {
 		trc("tls=%v mode=%v, (%v:)", tls, mode, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_umask)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aamode))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+3381)
-	v1 = r3
-	goto _2
-_2:
-	return uint32(X__syscall_ret(tls, uint64(v1)))
+	return uint32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_umask), int64(mode)))))
 }
 
 func Xutimensat(tls *TLS, fd int32, path uintptr, times uintptr, flags int32) (r1 int32) {
@@ -139454,27 +136282,13 @@ func Xutimensat(tls *TLS, fd int32, path uintptr, times uintptr, flags int32) (r
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
 	var i, r int32
-	var r0, r01, r02, r3, r31, r32, r4, r41, r42, r5, r51, r6, v1, v4, v6 int64
 	var tv uintptr
 	var _ /* tmp at bp+0 */ [4]int64
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = i, r, r0, r01, r02, r3, r31, r32, r4, r41, r42, r5, r51, r6, tv, v1, v4, v6
+	_, _, _ = i, r, tv
 	if times != 0 && (*(*Ttimespec)(unsafe.Pointer(times))).Ftv_nsec == int64(UTIME_NOW) && (*(*Ttimespec)(unsafe.Pointer(times + 1*16))).Ftv_nsec == int64(UTIME_NOW) {
 		times = uintptr(0)
 	}
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar02 = ((ppint64(mvSYS_utimensat)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar32 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar42 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar51 = ((ppint64((aatimes))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflags))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3387)
-	v1 = r32
-	goto _2
-_2:
-	r = int32(v1)
+	r = int32(X__syscall4(tls, int64(SYS_utimensat), int64(fd), int64(path), int64(times), int64(flags)))
 	if r != -int32(ENOSYS) || flags != 0 {
 		return int32(X__syscall_ret(tls, uint64(r)))
 	}
@@ -139494,40 +136308,17 @@ _2:
 			}
 			(*(*[4]int64)(unsafe.Pointer(bp)))[int32(2)*i+0] = (*(*Ttimespec)(unsafe.Pointer(times + uintptr(i)*16))).Ftv_sec
 			(*(*[4]int64)(unsafe.Pointer(bp)))[int32(2)*i+int32(1)] = (*(*Ttimespec)(unsafe.Pointer(times + uintptr(i)*16))).Ftv_nsec / int64(1000)
-			goto _3
-		_3:
+			goto _1
+		_1:
 			;
 			i++
 		}
 	}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_futimesat)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar41 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aatv))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3387)
-	v4 = r31
-	goto _5
-_5:
-	r = int32(v4)
+	r = int32(X__syscall3(tls, int64(SYS_futimesat), int64(fd), int64(path), int64(tv)))
 	if r != -int32(ENOSYS) || fd != -int32(100) {
 		return int32(X__syscall_ret(tls, uint64(r)))
 	}
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_utimes)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aatv))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3387)
-	v6 = r3
-	goto _7
-_7:
-	r = int32(v6)
+	r = int32(X__syscall2(tls, int64(SYS_utimes), int64(path), int64(tv)))
 	return int32(X__syscall_ret(tls, uint64(r)))
 }
 
@@ -139548,12 +136339,10 @@ func X__fdopen(tls *TLS, fd int32, mode uintptr) (r uintptr) {
 	defer tls.Free(16)
 	var f, v1 uintptr
 	var flags, v2 int32
-	var r0, r01, r3, r31, r4, r41, r5, v4, v7 int64
-	var v9 bool
 	var _ /* wsz at bp+0 */ Twinsize
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _ = f, flags, r0, r01, r3, r31, r4, r41, r5, v1, v2, v4, v7, v9
+	_, _, _, _ = f, flags, v1, v2
 	/* Check for valid initial mode character */
-	if !(Xstrchr(tls, __ccgo_ts+3397, int32(*(*uint8)(unsafe.Pointer(mode)))) != 0) {
+	if !(Xstrchr(tls, __ccgo_ts+1546, int32(*(*uint8)(unsafe.Pointer(mode)))) != 0) {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 		return uintptr(0)
 	}
@@ -139575,45 +136364,14 @@ func X__fdopen(tls *TLS, fd int32, mode uintptr) (r uintptr) {
 		(*TFILE)(unsafe.Pointer(f)).Fflags = uint32(v2)
 	}
 	/* Apply close-on-exec flag */
-	if Xstrchr(tls, mode, int32('e')) != 0 { //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3401)
-		_ = r31
-		goto _3
-	_3:
+	if Xstrchr(tls, mode, int32('e')) != 0 {
+		X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 	}
 	/* Set append mode on fd if opened for append */
-	if int32(*(*uint8)(unsafe.Pointer(mode))) == int32('a') { //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_GETFL)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3401)
-		v4 = r3
-		goto _5
-	_5:
-		flags = int32(v4)
+	if int32(*(*uint8)(unsafe.Pointer(mode))) == int32('a') {
+		flags = int32(X__syscall2(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_GETFL))))
 		if !(flags&Int32FromInt32(O_APPEND) != 0) {
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFL)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64(((aaflags) | (ppInt32FromInt32(mvO_APPEND))))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3401)
-			_ = r31
-			goto _6
-		_6:
+			X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_SETFL)), int64(flags|Int32FromInt32(O_APPEND)))
 		}
 		*(*uint32)(unsafe.Pointer(f)) |= uint32(F_APP)
 	}
@@ -139622,20 +136380,7 @@ func X__fdopen(tls *TLS, fd int32, mode uintptr) (r uintptr) {
 	(*TFILE)(unsafe.Pointer(f)).Fbuf_size = uint64(BUFSIZ)
 	/* Activate line buffered mode for terminals */
 	(*TFILE)(unsafe.Pointer(f)).Flbf = -int32(1)
-	if v9 = !((*TFILE)(unsafe.Pointer(f)).Fflags&Uint32FromInt32(F_NOWR) != 0); v9 { //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_ioctl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar41 = ((ppint64(((ppuint64(((((ppUint32FromUint32(2)) << (ppInt32FromInt32(29))) | (ppuint32(((ppInt32FromUint8('t')) << (ppInt32FromInt32(8)))))) | (ppuint32((ppInt32FromInt32(104))))))) | ((ppUint64FromInt64(8)) << (ppInt32FromInt32(16)))))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64(cgbp)));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3401)
-		v7 = r31
-		goto _8
-	_8:
-	}
-	if v9 && !(v7 != 0) {
+	if !((*TFILE)(unsafe.Pointer(f)).Fflags&Uint32FromInt32(F_NOWR) != 0) && !(X__syscall3(tls, int64(SYS_ioctl), int64(fd), int64(uint64(Uint32FromUint32(2)<<Int32FromInt32(29)|uint32(Int32FromUint8('t')<<Int32FromInt32(8))|uint32(Int32FromInt32(104)))|Uint64FromInt64(8)<<Int32FromInt32(16)), int64(bp)) != 0) {
 		(*TFILE)(unsafe.Pointer(f)).Flbf = int32('\n')
 	}
 	/* Initialize op ptrs. No problem if some are unneeded. */
@@ -139697,37 +136442,12 @@ func X__fopen_rb_ca(tls *TLS, filename uintptr, f uintptr, buf uintptr, len1 Tsi
 		trc("tls=%v filename=%v f=%v buf=%v len1=%v, (%v:)", tls, filename, f, buf, len1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r01, r3, r31, r4, r41, r5, v1 int64
-	_, _, _, _, _, _, _, _ = r0, r01, r3, r31, r4, r41, r5, v1
 	Xmemset(tls, f, 0, uint64(232))
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_open)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafilename))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((((ppInt32FromInt32(mvO_RDONLY)) | (ppInt32FromInt32(mvO_CLOEXEC))) | (ppInt32FromInt32(mvO_LARGEFILE))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3410)
-	v1 = r3
-	goto _2
-_2:
-	(*TFILE)(unsafe.Pointer(f)).Ffd = int32(X__syscall_ret(tls, uint64(v1)))
+	(*TFILE)(unsafe.Pointer(f)).Ffd = int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_open), int64(filename), int64(Int32FromInt32(O_RDONLY)|Int32FromInt32(O_CLOEXEC)|Int32FromInt32(O_LARGEFILE))))))
 	if (*TFILE)(unsafe.Pointer(f)).Ffd < 0 {
 		return uintptr(0)
 	}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar31 = ((ppint64(((*tnFILE)(iqunsafe.ppPointer((aaf))).fdfd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3410)
-	_ = r31
-	goto _3
-_3:
-	;
+	X__syscall3(tls, int64(SYS_fcntl), int64((*TFILE)(unsafe.Pointer(f)).Ffd), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 	(*TFILE)(unsafe.Pointer(f)).Fflags = uint32(Int32FromInt32(F_NOWR) | Int32FromInt32(F_PERM))
 	(*TFILE)(unsafe.Pointer(f)).Fbuf = buf + uintptr(UNGET)
 	(*TFILE)(unsafe.Pointer(f)).Fbuf_size = len1 - uint64(UNGET)
@@ -139776,19 +136496,7 @@ func X__stdio_close(tls *TLS, f uintptr) (r int32) {
 		trc("tls=%v f=%v, (%v:)", tls, f, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64(X__aio_close(cgtls, ((*tnFILE)(iqunsafe.ppPointer((aaf))).fdfd)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+3424)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_close), int64(_dummy9(tls, (*TFILE)(unsafe.Pointer(f)).Ffd))))))
 }
 
 var _dummy_file = uintptr(0)
@@ -139845,11 +136553,11 @@ func X__stdio_read(tls *TLS, f uintptr, buf uintptr, len1 Tsize_t) (r Tsize_t) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
 	var cnt Tssize_t
-	var r0, r3, r4, r5, v1, v2, v4 int64
-	var v6 int32
-	var v7, v8 uintptr
+	var v1 int64
+	var v2 int32
+	var v3, v4 uintptr
 	var _ /* iov at bp+0 */ [2]Tiovec
-	_, _, _, _, _, _, _, _, _, _, _ = cnt, r0, r3, r4, r5, v1, v2, v4, v6, v7, v8
+	_, _, _, _, _ = cnt, v1, v2, v3, v4
 	*(*[2]Tiovec)(unsafe.Pointer(bp)) = [2]Tiovec{
 		0: {
 			Fiov_base: buf,
@@ -139860,41 +136568,19 @@ func X__stdio_read(tls *TLS, f uintptr, buf uintptr, len1 Tsize_t) (r Tsize_t) {
 			Fiov_len:  (*TFILE)(unsafe.Pointer(f)).Fbuf_size,
 		},
 	}
-	if (*(*[2]Tiovec)(unsafe.Pointer(bp)))[0].Fiov_len != 0 { //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_readv)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64(((*tnFILE)(iqunsafe.ppPointer((aaf))).fdfd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(cgbp)));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(2)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3438)
-		v2 = r3
-		goto _3
-	_3:
-		v1 = X__syscall_ret(tls, uint64(v2))
-	} else { //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_read)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64(((*tnFILE)(iqunsafe.ppPointer((aaf))).fdfd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(((*(*[2]tsiovec)(iqunsafe.ppPointer(cgbp)))[(ppint32(1))].fdiov_base))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64(((*(*[2]tsiovec)(iqunsafe.ppPointer(cgbp)))[(ppint32(1))].fdiov_len))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3438)
-		v4 = r3
-		goto _5
-	_5:
-		v1 = X__syscall_ret(tls, uint64(v4))
+	if (*(*[2]Tiovec)(unsafe.Pointer(bp)))[0].Fiov_len != 0 {
+		v1 = X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_readv), int64((*TFILE)(unsafe.Pointer(f)).Ffd), int64(bp), int64(Int32FromInt32(2)))))
+	} else {
+		v1 = X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_read), int64((*TFILE)(unsafe.Pointer(f)).Ffd), int64((*(*[2]Tiovec)(unsafe.Pointer(bp)))[int32(1)].Fiov_base), int64((*(*[2]Tiovec)(unsafe.Pointer(bp)))[int32(1)].Fiov_len))))
 	}
 	cnt = v1
 	if cnt <= 0 {
 		if cnt != 0 {
-			v6 = int32(F_ERR)
+			v2 = int32(F_ERR)
 		} else {
-			v6 = int32(F_EOF)
+			v2 = int32(F_EOF)
 		}
-		*(*uint32)(unsafe.Pointer(f)) |= uint32(v6)
+		*(*uint32)(unsafe.Pointer(f)) |= uint32(v2)
 		return uint64(0)
 	}
 	if uint64(cnt) <= (*(*[2]Tiovec)(unsafe.Pointer(bp)))[0].Fiov_len {
@@ -139904,10 +136590,10 @@ func X__stdio_read(tls *TLS, f uintptr, buf uintptr, len1 Tsize_t) (r Tsize_t) {
 	(*TFILE)(unsafe.Pointer(f)).Frpos = (*TFILE)(unsafe.Pointer(f)).Fbuf
 	(*TFILE)(unsafe.Pointer(f)).Frend = (*TFILE)(unsafe.Pointer(f)).Fbuf + uintptr(cnt)
 	if (*TFILE)(unsafe.Pointer(f)).Fbuf_size != 0 {
-		v8 = f + 8
-		v7 = *(*uintptr)(unsafe.Pointer(v8))
-		*(*uintptr)(unsafe.Pointer(v8))++
-		*(*uint8)(unsafe.Pointer(buf + uintptr(len1-uint64(1)))) = *(*uint8)(unsafe.Pointer(v7))
+		v4 = f + 8
+		v3 = *(*uintptr)(unsafe.Pointer(v4))
+		*(*uintptr)(unsafe.Pointer(v4))++
+		*(*uint8)(unsafe.Pointer(buf + uintptr(len1-uint64(1)))) = *(*uint8)(unsafe.Pointer(v3))
 	}
 	return len1
 }
@@ -139928,13 +136614,12 @@ func X__stdio_write(tls *TLS, f uintptr, buf uintptr, len1 Tsize_t) (r Tsize_t) 
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
 	var cnt Tssize_t
-	var iov, v4, v5, v6 uintptr
+	var iov, v2, v3, v4 uintptr
 	var iovcnt int32
-	var r0, r3, r4, r5, v2 int64
 	var rem Tsize_t
-	var v7 uint64
+	var v5 uint64
 	var _ /* iovs at bp+0 */ [2]Tiovec
-	_, _, _, _, _, _, _, _, _, _, _, _, _ = cnt, iov, iovcnt, r0, r3, r4, r5, rem, v2, v4, v5, v6, v7
+	_, _, _, _, _, _, _, _ = cnt, iov, iovcnt, rem, v2, v3, v4, v5
 	*(*[2]Tiovec)(unsafe.Pointer(bp)) = [2]Tiovec{
 		0: {
 			Fiov_base: (*TFILE)(unsafe.Pointer(f)).Fwbase,
@@ -139949,39 +136634,27 @@ func X__stdio_write(tls *TLS, f uintptr, buf uintptr, len1 Tsize_t) (r Tsize_t) 
 	rem = (*(*Tiovec)(unsafe.Pointer(iov))).Fiov_len + (*(*Tiovec)(unsafe.Pointer(iov + 1*16))).Fiov_len
 	iovcnt = int32(2)
 	for {
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_writev)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64(((*tnFILE)(iqunsafe.ppPointer((aaf))).fdfd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((aaiov))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((aaiovcnt))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3451)
-		v2 = r3
-		goto _3
-	_3:
-		cnt = X__syscall_ret(tls, uint64(v2))
+		cnt = X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_writev), int64((*TFILE)(unsafe.Pointer(f)).Ffd), int64(iov), int64(iovcnt))))
 		if uint64(cnt) == rem {
 			(*TFILE)(unsafe.Pointer(f)).Fwend = (*TFILE)(unsafe.Pointer(f)).Fbuf + uintptr((*TFILE)(unsafe.Pointer(f)).Fbuf_size)
-			v4 = (*TFILE)(unsafe.Pointer(f)).Fbuf
-			(*TFILE)(unsafe.Pointer(f)).Fwbase = v4
-			(*TFILE)(unsafe.Pointer(f)).Fwpos = v4
+			v2 = (*TFILE)(unsafe.Pointer(f)).Fbuf
+			(*TFILE)(unsafe.Pointer(f)).Fwbase = v2
+			(*TFILE)(unsafe.Pointer(f)).Fwpos = v2
 			return len1
 		}
 		if cnt < 0 {
-			v6 = UintptrFromInt32(0)
-			(*TFILE)(unsafe.Pointer(f)).Fwend = v6
-			v5 = v6
-			(*TFILE)(unsafe.Pointer(f)).Fwbase = v5
-			(*TFILE)(unsafe.Pointer(f)).Fwpos = v5
+			v4 = UintptrFromInt32(0)
+			(*TFILE)(unsafe.Pointer(f)).Fwend = v4
+			v3 = v4
+			(*TFILE)(unsafe.Pointer(f)).Fwbase = v3
+			(*TFILE)(unsafe.Pointer(f)).Fwpos = v3
 			*(*uint32)(unsafe.Pointer(f)) |= uint32(F_ERR)
 			if iovcnt == int32(2) {
-				v7 = uint64(0)
+				v5 = uint64(0)
 			} else {
-				v7 = len1 - (*(*Tiovec)(unsafe.Pointer(iov))).Fiov_len
+				v5 = len1 - (*(*Tiovec)(unsafe.Pointer(iov))).Fiov_len
 			}
-			return v7
+			return v5
 		}
 		rem -= uint64(cnt)
 		if uint64(cnt) > (*(*Tiovec)(unsafe.Pointer(iov))).Fiov_len {
@@ -140004,25 +136677,9 @@ func X__stdout_write(tls *TLS, f uintptr, buf uintptr, len1 Tsize_t) (r Tsize_t)
 	}
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
-	var r0, r3, r4, r5, v1 int64
-	var v3 bool
 	var _ /* wsz at bp+0 */ Twinsize
-	_, _, _, _, _, _ = r0, r3, r4, r5, v1, v3
 	(*TFILE)(unsafe.Pointer(f)).Fwrite = __ccgo_fp(X__stdio_write)
-	if v3 = !((*TFILE)(unsafe.Pointer(f)).Fflags&Uint32FromInt32(F_SVB) != 0); v3 { //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ioctl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64(((*tnFILE)(iqunsafe.ppPointer((aaf))).fdfd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppuint64(((((ppUint32FromUint32(2)) << (ppInt32FromInt32(29))) | (ppuint32(((ppInt32FromUint8('t')) << (ppInt32FromInt32(8)))))) | (ppuint32((ppInt32FromInt32(104))))))) | ((ppUint64FromInt64(8)) << (ppInt32FromInt32(16)))))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64(cgbp)));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3465)
-		v1 = r3
-		goto _2
-	_2:
-	}
-	if v3 && v1 != 0 {
+	if !((*TFILE)(unsafe.Pointer(f)).Fflags&Uint32FromInt32(F_SVB) != 0) && X__syscall3(tls, int64(SYS_ioctl), int64((*TFILE)(unsafe.Pointer(f)).Ffd), int64(uint64(Uint32FromUint32(2)<<Int32FromInt32(29)|uint32(Int32FromUint8('t')<<Int32FromInt32(8))|uint32(Int32FromInt32(104)))|Uint64FromInt64(8)<<Int32FromInt32(16)), int64(bp)) != 0 {
 		(*TFILE)(unsafe.Pointer(f)).Flbf = -int32(1)
 	}
 	return X__stdio_write(tls, f, buf, len1)
@@ -140531,18 +137188,17 @@ func Xfflush_unlocked(tls *TLS, f uintptr) (r int32) {
 }
 
 func _locking_getc(tls *TLS, f uintptr) (r1 int32) {
-	var c1, old, old1, r, v, v10, v12, v17, v21, v23, v26, v27, v3, v8 int32
-	var r0, r3, r4, r5, v28, v30 int64
+	var c, old, old1, r, v, v10, v12, v17, v21, v23, v26, v27, v3, v8 int32
 	var v1, v13, v14, v15, v16, v2, v20, v25, v7 uintptr
-	var v32, v5 bool
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c1, old, old1, r, r0, r3, r4, r5, v, v1, v10, v12, v13, v14, v15, v16, v17, v2, v20, v21, v23, v25, v26, v27, v28, v3, v30, v32, v5, v7, v8
+	var v5 bool
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c, old, old1, r, v, v1, v10, v12, v13, v14, v15, v16, v17, v2, v20, v21, v23, v25, v26, v27, v3, v5, v7, v8
 	v1 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1550)
 	for {
 		v7 = v1
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3480)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1550)
 		v8 = v
 		goto _9
 	_9:
@@ -140556,7 +137212,7 @@ func _locking_getc(tls *TLS, f uintptr) (r1 int32) {
 			//
 			//	"stwcx. %2, 0, %3 ; mfcr %0"
 			//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3480)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1550)
 			v3 = r & int32(0x20000000)
 			goto _4
 		_4:
@@ -140566,7 +137222,7 @@ func _locking_getc(tls *TLS, f uintptr) (r1 int32) {
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1550)
 	v10 = old
 	goto _11
 _11:
@@ -140581,14 +137237,14 @@ _11:
 	} else {
 		v12 = X__uflow(tls, f)
 	}
-	c1 = v12
+	c = v12
 	v15 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1550)
 	for {
 		v20 = v15
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3480)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1550)
 		v21 = v
 		goto _22
 	_22:
@@ -140601,7 +137257,7 @@ _11:
 		//
 		//	"stwcx. %2, 0, %3 ; mfcr %0"
 		//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3480)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1550)
 		v17 = r & int32(0x20000000)
 		goto _18
 	_18:
@@ -140611,7 +137267,7 @@ _11:
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1550)
 	v23 = old1
 	goto _24
 _24:
@@ -140624,35 +137280,10 @@ _24:
 		}
 		if v26 < Int32FromInt32(0) {
 			v26 = int32(INT_MAX)
-		} //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv25))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppInt32FromInt32(mvFUTEX_WAKE)) | (ccv27)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv26))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3480)
-		v28 = r3
-		goto _29
-	_29:
-		;
-		if v32 = v28 != int64(-int32(ENOSYS)); !v32 { //TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv25))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvFUTEX_WAKE)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv26))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3480)
-			v30 = r3
-			goto _31
-		_31:
 		}
-		_ = v32 || v30 != 0
+		_ = X__syscall3(tls, int64(SYS_futex), int64(v25), int64(Int32FromInt32(FUTEX_WAKE)|v27), int64(v26)) != int64(-int32(ENOSYS)) || X__syscall3(tls, int64(SYS_futex), int64(v25), int64(Int32FromInt32(FUTEX_WAKE)), int64(v26)) != 0
 	}
-	return c1
+	return c
 }
 
 func Xfgetc(tls *TLS, f1 uintptr) (r int32) {
@@ -140660,39 +137291,27 @@ func Xfgetc(tls *TLS, f1 uintptr) (r int32) {
 		trc("tls=%v f1=%v, (%v:)", tls, f1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var l, v6, v8 int32
-	var tp, v2 Tuintptr_t
-	var v1, v10, v9 uintptr
-	var v4, v5 bool
-	_, _, _, _, _, _, _, _, _, _ = l, tp, v1, v10, v2, v4, v5, v6, v8, v9
+	var l, v2, v4 int32
+	var v1, v5, v6 uintptr
+	_, _, _, _, _, _ = l, v1, v2, v4, v5, v6
 	v1 = f1
 	l = AtomicLoadPInt32(v1 + 140)
-	if v5 = l < 0; !v5 {
-		if v4 = l != 0; v4 { //TODO "tp" // pthread_arch.h:3:21:
-			panic(0) // assembler statements not supported
-			// __asm__ ("" : "=r" (tp) );
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3493)
-			v2 = tp
-			goto _3
-		_3:
-		}
-	}
-	if v5 || v4 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(uintptr(v2))).Ftid {
+	if l < 0 || l != 0 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Ftid {
 		if (*TFILE)(unsafe.Pointer(v1)).Frpos != (*TFILE)(unsafe.Pointer(v1)).Frend {
-			v10 = v1 + 8
-			v9 = *(*uintptr)(unsafe.Pointer(v10))
-			*(*uintptr)(unsafe.Pointer(v10))++
-			v8 = int32(*(*uint8)(unsafe.Pointer(v9)))
+			v6 = v1 + 8
+			v5 = *(*uintptr)(unsafe.Pointer(v6))
+			*(*uintptr)(unsafe.Pointer(v6))++
+			v4 = int32(*(*uint8)(unsafe.Pointer(v5)))
 		} else {
-			v8 = X__uflow(tls, v1)
+			v4 = X__uflow(tls, v1)
 		}
-		v6 = v8
-		goto _7
+		v2 = v4
+		goto _3
 	}
-	v6 = _locking_getc(tls, v1)
-	goto _7
-_7:
-	return v6
+	v2 = _locking_getc(tls, v1)
+	goto _3
+_3:
+	return v2
 }
 
 func Xfgetln(tls *TLS, f uintptr, plen uintptr) (r uintptr) {
@@ -140919,16 +137538,9 @@ func X__fgetwc_unlocked(tls *TLS, f uintptr) (r Twint_t) {
 	}
 	var loc Tlocale_t
 	var ploc uintptr
-	var tp, v1 Tuintptr_t
 	var wc Twchar_t
-	_, _, _, _, _ = loc, ploc, tp, wc, v1 //TODO "tp" // pthread_arch.h:3:21:
-	panic(0)                              // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3499)
-	v1 = tp
-	goto _2
-_2:
-	ploc = uintptr(v1) + 152
+	_, _, _ = loc, ploc, wc
+	ploc = ___get_tp(tls) + 152
 	loc = *(*Tlocale_t)(unsafe.Pointer(ploc))
 	if (*TFILE)(unsafe.Pointer(f)).Fmode <= 0 {
 		Xfwide(tls, f, int32(1))
@@ -141075,20 +137687,11 @@ func Xflockfile(tls *TLS, f uintptr) {
 	if __ccgo_strace {
 		trc("tls=%v f=%v, (%v:)", tls, f, origin(2))
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
 	if !(Xftrylockfile(tls, f) != 0) {
 		return
 	}
 	___lockfile(tls, f)
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3517)
-	v1 = tp
-	goto _2
-_2:
-	X__register_locked_file(tls, f, uintptr(v1))
+	X__register_locked_file(tls, f, ___get_tp(tls))
 }
 
 type Tcookie = struct {
@@ -141211,7 +137814,7 @@ func Xfmemopen(tls *TLS, buf uintptr, size Tsize_t, mode uintptr) (r uintptr) {
 	var v3 Tsize_t
 	_, _, _, _, _ = f, plus, v1, v2, v3
 	plus = BoolInt32(!!(Xstrchr(tls, mode, int32('+')) != 0))
-	if !(Xstrchr(tls, __ccgo_ts+3397, int32(*(*uint8)(unsafe.Pointer(mode)))) != 0) {
+	if !(Xstrchr(tls, __ccgo_ts+1546, int32(*(*uint8)(unsafe.Pointer(mode)))) != 0) {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 		return uintptr(0)
 	}
@@ -141279,60 +137882,26 @@ func Xfopen(tls *TLS, filename uintptr, mode uintptr) (r uintptr) {
 	}
 	var f uintptr
 	var fd, flags int32
-	var r0, r01, r3, r31, r4, r5, v1 int64
-	_, _, _, _, _, _, _, _, _, _ = f, fd, flags, r0, r01, r3, r31, r4, r5, v1
+	_, _, _ = f, fd, flags
 	/* Check for valid initial mode character */
-	if !(Xstrchr(tls, __ccgo_ts+3397, int32(*(*uint8)(unsafe.Pointer(mode)))) != 0) {
+	if !(Xstrchr(tls, __ccgo_ts+1546, int32(*(*uint8)(unsafe.Pointer(mode)))) != 0) {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 		return uintptr(0)
 	}
 	/* Compute the flags to pass to open() */
 	flags = X__fmodeflags(tls, mode)
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_open)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar31 = ((ppint64((aafilename))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(((aaflags) | (ppInt32FromInt32(mvO_LARGEFILE))))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(0666)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3527)
-	v1 = r31
-	goto _2
-_2:
-	fd = int32(X__syscall_ret(tls, uint64(v1)))
+	fd = int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_open), int64(filename), int64(flags|Int32FromInt32(O_LARGEFILE)), int64(Int32FromInt32(0666))))))
 	if fd < 0 {
 		return uintptr(0)
 	}
 	if flags&int32(O_CLOEXEC) != 0 {
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3527)
-		_ = r31
-		goto _3
-	_3:
+		X__syscall3(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 	}
 	f = X__fdopen(tls, fd, mode)
 	if f != 0 {
 		return f
 	}
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+3527)
-	_ = r3
-	goto _4
-_4:
-	;
+	X__syscall1(tls, int64(SYS_close), int64(fd))
 	return uintptr(0)
 }
 
@@ -141471,7 +138040,7 @@ func Xfopencookie(tls *TLS, cookie uintptr, mode uintptr, iofuncs Tcookie_io_fun
 	var v2 int32
 	_, _, _ = f, v1, v2
 	/* Check for valid initial mode character */
-	if !(Xstrchr(tls, __ccgo_ts+3397, int32(*(*uint8)(unsafe.Pointer(mode)))) != 0) {
+	if !(Xstrchr(tls, __ccgo_ts+1546, int32(*(*uint8)(unsafe.Pointer(mode)))) != 0) {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 		return uintptr(0)
 	}
@@ -141523,20 +138092,19 @@ func Xfprintf(tls *TLS, f uintptr, fmt uintptr, va uintptr) (r int32) {
 	return ret
 }
 
-func _locking_putc(tls *TLS, c1 int32, f uintptr) (r1 int32) {
+func _locking_putc(tls *TLS, c int32, f uintptr) (r1 int32) {
 	var old, old1, r, v, v10, v12, v18, v22, v24, v27, v28, v3, v8 int32
-	var r0, r3, r4, r5, v29, v31 int64
 	var v1, v14, v15, v16, v17, v2, v21, v26, v7 uintptr
 	var v13 uint8
-	var v33, v5 bool
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = old, old1, r, r0, r3, r4, r5, v, v1, v10, v12, v13, v14, v15, v16, v17, v18, v2, v21, v22, v24, v26, v27, v28, v29, v3, v31, v33, v5, v7, v8
+	var v5 bool
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = old, old1, r, v, v1, v10, v12, v13, v14, v15, v16, v17, v18, v2, v21, v22, v24, v26, v27, v28, v3, v5, v7, v8
 	v1 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1563)
 	for {
 		v7 = v1
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3533)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1563)
 		v8 = v
 		goto _9
 	_9:
@@ -141550,7 +138118,7 @@ func _locking_putc(tls *TLS, c1 int32, f uintptr) (r1 int32) {
 			//
 			//	"stwcx. %2, 0, %3 ; mfcr %0"
 			//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3533)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1563)
 			v3 = r & int32(0x20000000)
 			goto _4
 		_4:
@@ -141560,31 +138128,31 @@ func _locking_putc(tls *TLS, c1 int32, f uintptr) (r1 int32) {
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1563)
 	v10 = old
 	goto _11
 _11:
 	if v10 != 0 {
 		___lockfile(tls, f)
 	}
-	if int32(uint8(c1)) != (*TFILE)(unsafe.Pointer(f)).Flbf && (*TFILE)(unsafe.Pointer(f)).Fwpos != (*TFILE)(unsafe.Pointer(f)).Fwend {
-		v13 = uint8(c1)
+	if int32(uint8(c)) != (*TFILE)(unsafe.Pointer(f)).Flbf && (*TFILE)(unsafe.Pointer(f)).Fwpos != (*TFILE)(unsafe.Pointer(f)).Fwend {
+		v13 = uint8(c)
 		v15 = f + 40
 		v14 = *(*uintptr)(unsafe.Pointer(v15))
 		*(*uintptr)(unsafe.Pointer(v15))++
 		*(*uint8)(unsafe.Pointer(v14)) = v13
 		v12 = int32(v13)
 	} else {
-		v12 = X__overflow(tls, f, int32(uint8(c1)))
+		v12 = X__overflow(tls, f, int32(uint8(c)))
 	}
-	c1 = v12
+	c = v12
 	v16 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1563)
 	for {
 		v21 = v16
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3533)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1563)
 		v22 = v
 		goto _23
 	_23:
@@ -141597,7 +138165,7 @@ _11:
 		//
 		//	"stwcx. %2, 0, %3 ; mfcr %0"
 		//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3533)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1563)
 		v18 = r & int32(0x20000000)
 		goto _19
 	_19:
@@ -141607,7 +138175,7 @@ _11:
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1563)
 	v24 = old1
 	goto _25
 _25:
@@ -141620,35 +138188,10 @@ _25:
 		}
 		if v27 < Int32FromInt32(0) {
 			v27 = int32(INT_MAX)
-		} //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv26))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppInt32FromInt32(mvFUTEX_WAKE)) | (ccv28)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv27))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3533)
-		v29 = r3
-		goto _30
-	_30:
-		;
-		if v33 = v29 != int64(-int32(ENOSYS)); !v33 { //TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv26))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvFUTEX_WAKE)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv27))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3533)
-			v31 = r3
-			goto _32
-		_32:
 		}
-		_ = v33 || v31 != 0
+		_ = X__syscall3(tls, int64(SYS_futex), int64(v26), int64(Int32FromInt32(FUTEX_WAKE)|v28), int64(v27)) != int64(-int32(ENOSYS)) || X__syscall3(tls, int64(SYS_futex), int64(v26), int64(Int32FromInt32(FUTEX_WAKE)), int64(v27)) != 0
 	}
-	return c1
+	return c
 }
 
 func Xfputc(tls *TLS, c1 int32, f1 uintptr) (r int32) {
@@ -141656,43 +138199,31 @@ func Xfputc(tls *TLS, c1 int32, f1 uintptr) (r int32) {
 		trc("tls=%v c1=%v f1=%v, (%v:)", tls, c1, f1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var l, v1, v7, v9 int32
-	var tp, v3 Tuintptr_t
-	var v10 uint8
-	var v11, v12, v2 uintptr
-	var v5, v6 bool
-	_, _, _, _, _, _, _, _, _, _, _, _ = l, tp, v1, v10, v11, v12, v2, v3, v5, v6, v7, v9
+	var l, v1, v3, v5 int32
+	var v2, v7, v8 uintptr
+	var v6 uint8
+	_, _, _, _, _, _, _, _ = l, v1, v2, v3, v5, v6, v7, v8
 	v1 = c1
 	v2 = f1
 	l = AtomicLoadPInt32(v2 + 140)
-	if v6 = l < 0; !v6 {
-		if v5 = l != 0; v5 { //TODO "tp" // pthread_arch.h:3:21:
-			panic(0) // assembler statements not supported
-			// __asm__ ("" : "=r" (tp) );
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3546)
-			v3 = tp
-			goto _4
-		_4:
-		}
-	}
-	if v6 || v5 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(uintptr(v3))).Ftid {
+	if l < 0 || l != 0 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Ftid {
 		if int32(uint8(v1)) != (*TFILE)(unsafe.Pointer(v2)).Flbf && (*TFILE)(unsafe.Pointer(v2)).Fwpos != (*TFILE)(unsafe.Pointer(v2)).Fwend {
-			v10 = uint8(v1)
-			v12 = v2 + 40
-			v11 = *(*uintptr)(unsafe.Pointer(v12))
-			*(*uintptr)(unsafe.Pointer(v12))++
-			*(*uint8)(unsafe.Pointer(v11)) = v10
-			v9 = int32(v10)
+			v6 = uint8(v1)
+			v8 = v2 + 40
+			v7 = *(*uintptr)(unsafe.Pointer(v8))
+			*(*uintptr)(unsafe.Pointer(v8))++
+			*(*uint8)(unsafe.Pointer(v7)) = v6
+			v5 = int32(v6)
 		} else {
-			v9 = X__overflow(tls, v2, int32(uint8(v1)))
+			v5 = X__overflow(tls, v2, int32(uint8(v1)))
 		}
-		v7 = v9
-		goto _8
+		v3 = v5
+		goto _4
 	}
-	v7 = _locking_putc(tls, v1, v2)
-	goto _8
-_8:
-	return v7
+	v3 = _locking_putc(tls, v1, v2)
+	goto _4
+_4:
+	return v3
 }
 
 func Xfputs(tls *TLS, s uintptr, f uintptr) (r int32) {
@@ -141721,20 +138252,13 @@ func X__fputwc_unlocked(tls *TLS, c Twchar_t, f uintptr) (r Twint_t) {
 	}
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
-	var l, v3 int32
+	var l, v1 int32
 	var loc Tlocale_t
-	var ploc, v5, v6 uintptr
-	var tp, v1 Tuintptr_t
-	var v4 uint8
+	var ploc, v3, v4 uintptr
+	var v2 uint8
 	var _ /* mbc at bp+0 */ [4]uint8
-	_, _, _, _, _, _, _, _, _ = l, loc, ploc, tp, v1, v3, v4, v5, v6 //TODO "tp" // pthread_arch.h:3:21:
-	panic(0)                                                         // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3552)
-	v1 = tp
-	goto _2
-_2:
-	ploc = uintptr(v1) + 152
+	_, _, _, _, _, _, _ = l, loc, ploc, v1, v2, v3, v4
+	ploc = ___get_tp(tls) + 152
 	loc = *(*Tlocale_t)(unsafe.Pointer(ploc))
 	if (*TFILE)(unsafe.Pointer(f)).Fmode <= 0 {
 		Xfwide(tls, f, int32(1))
@@ -141742,16 +138266,16 @@ _2:
 	*(*Tlocale_t)(unsafe.Pointer(ploc)) = (*TFILE)(unsafe.Pointer(f)).Flocale
 	if BoolInt32(uint32(c) < uint32(128)) != 0 {
 		if int32(uint8(c)) != (*TFILE)(unsafe.Pointer(f)).Flbf && (*TFILE)(unsafe.Pointer(f)).Fwpos != (*TFILE)(unsafe.Pointer(f)).Fwend {
-			v4 = uint8(c)
-			v6 = f + 40
-			v5 = *(*uintptr)(unsafe.Pointer(v6))
-			*(*uintptr)(unsafe.Pointer(v6))++
-			*(*uint8)(unsafe.Pointer(v5)) = v4
-			v3 = int32(v4)
+			v2 = uint8(c)
+			v4 = f + 40
+			v3 = *(*uintptr)(unsafe.Pointer(v4))
+			*(*uintptr)(unsafe.Pointer(v4))++
+			*(*uint8)(unsafe.Pointer(v3)) = v2
+			v1 = int32(v2)
 		} else {
-			v3 = X__overflow(tls, f, int32(uint8(c)))
+			v1 = X__overflow(tls, f, int32(uint8(c)))
 		}
-		c = v3
+		c = v1
 	} else {
 		if (*TFILE)(unsafe.Pointer(f)).Fwpos+uintptr(MB_LEN_MAX) < (*TFILE)(unsafe.Pointer(f)).Fwend {
 			l = Xwctomb(tls, (*TFILE)(unsafe.Pointer(f)).Fwpos, c)
@@ -141818,37 +138342,30 @@ func Xfputws(tls *TLS, _ws uintptr, f uintptr) (r int32) {
 	bp := tls.Alloc(1040)
 	defer tls.Free(1040)
 	*(*uintptr)(unsafe.Pointer(bp)) = _ws
-	var __need_unlock, v3 int32
-	var l, v4 Tsize_t
+	var __need_unlock, v1 int32
+	var l, v2 Tsize_t
 	var loc Tlocale_t
 	var ploc uintptr
-	var tp, v1 Tuintptr_t
-	var v5 bool
+	var v3 bool
 	var _ /* buf at bp+8 */ [1024]uint8
-	_, _, _, _, _, _, _, _, _ = __need_unlock, l, loc, ploc, tp, v1, v3, v4, v5
-	l = uint64(0) //TODO "tp" // pthread_arch.h:3:21:
-	panic(0)      // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3570)
-	v1 = tp
-	goto _2
-_2:
-	ploc = uintptr(v1) + 152
+	_, _, _, _, _, _, _ = __need_unlock, l, loc, ploc, v1, v2, v3
+	l = uint64(0)
+	ploc = ___get_tp(tls) + 152
 	loc = *(*Tlocale_t)(unsafe.Pointer(ploc))
 	if AtomicLoadPInt32(f+140) >= 0 {
-		v3 = ___lockfile(tls, f)
+		v1 = ___lockfile(tls, f)
 	} else {
-		v3 = 0
+		v1 = 0
 	}
-	__need_unlock = v3
+	__need_unlock = v1
 	Xfwide(tls, f, int32(1))
 	*(*Tlocale_t)(unsafe.Pointer(ploc)) = (*TFILE)(unsafe.Pointer(f)).Flocale
 	for {
-		if v5 = *(*uintptr)(unsafe.Pointer(bp)) != 0; v5 {
-			v4 = Xwcsrtombs(tls, bp+8, bp, uint64(1024), uintptr(0))
-			l = v4
+		if v3 = *(*uintptr)(unsafe.Pointer(bp)) != 0; v3 {
+			v2 = Xwcsrtombs(tls, bp+8, bp, uint64(1024), uintptr(0))
+			l = v2
 		}
-		if !(v5 && v4+uint64(1) > uint64(1)) {
+		if !(v3 && v2+uint64(1) > uint64(1)) {
 			break
 		}
 		if X__fwritex(tls, bp+8, l, f) < l {
@@ -141962,8 +138479,7 @@ func Xfreopen(tls *TLS, filename uintptr, mode uintptr, f uintptr) (r uintptr) {
 	}
 	var __need_unlock, fl, v1 int32
 	var f2 uintptr
-	var r0, r3, r4, r5, v3 int64
-	_, _, _, _, _, _, _, _, _ = __need_unlock, f2, fl, r0, r3, r4, r5, v1, v3
+	_, _, _, _ = __need_unlock, f2, fl, v1
 	fl = X__fmodeflags(tls, mode)
 	if AtomicLoadPInt32(f+140) >= 0 {
 		v1 = ___lockfile(tls, f)
@@ -141974,33 +138490,10 @@ func Xfreopen(tls *TLS, filename uintptr, mode uintptr, f uintptr) (r uintptr) {
 	Xfflush(tls, f)
 	if !(filename != 0) {
 		if fl&int32(O_CLOEXEC) != 0 {
-			//TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64(((*tnFILE)(iqunsafe.ppPointer((aaf))).fdfd))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3577)
-			_ = r3
-			goto _2
-		_2:
+			X__syscall3(tls, int64(SYS_fcntl), int64((*TFILE)(unsafe.Pointer(f)).Ffd), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 		}
 		fl &= ^(Int32FromInt32(O_CREAT) | Int32FromInt32(O_EXCL) | Int32FromInt32(O_CLOEXEC))
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64(((*tnFILE)(iqunsafe.ppPointer((aaf))).fdfd))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_SETFL)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((aafl))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3577)
-		v3 = r3
-		goto _4
-	_4:
-		if X__syscall_ret(tls, uint64(v3)) < 0 {
+		if X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_fcntl), int64((*TFILE)(unsafe.Pointer(f)).Ffd), int64(Int32FromInt32(F_SETFL)), int64(fl)))) < 0 {
 			goto fail
 		}
 	} else {
@@ -142232,25 +138725,17 @@ func X__do_orphaned_stdio_locks(tls *TLS) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 	}
 	var f uintptr
-	var tp, v2 Tuintptr_t
-	_, _, _ = f, tp, v2
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3585)
-	v2 = tp
-	goto _3
-_3:
-	f = (*t__pthread)(unsafe.Pointer(uintptr(v2))).Fstdio_locks
+	_ = f
+	f = (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Fstdio_locks
 	for {
 		if !(f != 0) {
 			break
 		}
 		// __asm__ __volatile__ ("sync" : : : "memory");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3585)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1576)
 		AtomicStorePInt32(f+140, int32(0x40000000))
 		// __asm__ __volatile__ ("sync" : : : "memory");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3585)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1576)
 		goto _1
 	_1:
 		;
@@ -142262,22 +138747,14 @@ func X__unlist_locked_file(tls *TLS, f uintptr) {
 	if __ccgo_strace {
 		trc("tls=%v f=%v, (%v:)", tls, f, origin(2))
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
 	if (*TFILE)(unsafe.Pointer(f)).Flockcount != 0 {
 		if (*TFILE)(unsafe.Pointer(f)).Fnext_locked != 0 {
 			(*TFILE)(unsafe.Pointer((*TFILE)(unsafe.Pointer(f)).Fnext_locked)).Fprev_locked = (*TFILE)(unsafe.Pointer(f)).Fprev_locked
 		}
 		if (*TFILE)(unsafe.Pointer(f)).Fprev_locked != 0 {
 			(*TFILE)(unsafe.Pointer((*TFILE)(unsafe.Pointer(f)).Fprev_locked)).Fnext_locked = (*TFILE)(unsafe.Pointer(f)).Fnext_locked
-		} else { //TODO "tp" // pthread_arch.h:3:21:
-			panic(0) // assembler statements not supported
-			// __asm__ ("" : "=r" (tp) );
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3611)
-			v1 = tp
-			goto _2
-		_2:
-			(*t__pthread)(unsafe.Pointer(uintptr(v1))).Fstdio_locks = (*TFILE)(unsafe.Pointer(f)).Fnext_locked
+		} else {
+			(*t__pthread)(unsafe.Pointer(___get_tp(tls))).Fstdio_locks = (*TFILE)(unsafe.Pointer(f)).Fnext_locked
 		}
 	}
 }
@@ -142300,19 +138777,12 @@ func Xftrylockfile(tls *TLS, f uintptr) (r1 int32) {
 		trc("tls=%v f=%v, (%v:)", tls, f, origin(2))
 		defer func() { trc("-> %v", r1) }()
 	}
-	var old, owner, r, tid, v, v11, v13, v3, v6 int32
+	var old, owner, r, tid, v, v1, v11, v4, v9 int32
 	var self Tpthread_t
-	var tp, v1 Tuintptr_t
-	var v10, v4, v5 uintptr
-	var v15, v8 bool
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = old, owner, r, self, tid, tp, v, v1, v10, v11, v13, v15, v3, v4, v5, v6, v8 //TODO "tp" // pthread_arch.h:3:21:
-	panic(0)                                                                                                                        // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3632)
-	v1 = tp
-	goto _2
-_2:
-	self = uintptr(v1)
+	var v13, v6 bool
+	var v2, v3, v8 uintptr
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = old, owner, r, self, tid, v, v1, v11, v13, v2, v3, v4, v6, v8, v9
+	self = ___get_tp(tls)
 	tid = (*t__pthread)(unsafe.Pointer(self)).Ftid
 	owner = AtomicLoadPInt32(f + 140)
 	if owner & ^Int32FromInt32(MAYBE_WAITERS) == tid {
@@ -142323,47 +138793,47 @@ _2:
 		return 0
 	}
 	if owner < 0 {
-		v3 = Int32FromInt32(0)
-		owner = v3
-		AtomicStorePInt32(f+140, v3)
+		v1 = Int32FromInt32(0)
+		owner = v1
+		AtomicStorePInt32(f+140, v1)
 	}
-	if v15 = owner != 0; !v15 {
-		v4 = f + 140
+	if v13 = owner != 0; !v13 {
+		v2 = f + 140
 		// __asm__ __volatile__ ("sync" : : : "memory");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3632)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1602)
 		for {
-			v10 = v4
+			v8 = v2
 			// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3632)
-			v11 = v
-			goto _12
-		_12:
-			old = v11
-			goto _9
-		_9:
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1602)
+			v9 = v
+			goto _10
+		_10:
+			old = v9
+			goto _7
+		_7:
 			;
-			if v8 = old == 0; v8 {
-				v5 = v4
+			if v6 = old == 0; v6 {
+				v3 = v2
 				// __asm__ __volatile__ (
 				//
 				//	"stwcx. %2, 0, %3 ; mfcr %0"
 				//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3632)
-				v6 = r & int32(0x20000000)
-				goto _7
-			_7:
+				X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1602)
+				v4 = r & int32(0x20000000)
+				goto _5
+			_5:
 			}
-			if !(v8 && !(v6 != 0)) {
+			if !(v6 && !(v4 != 0)) {
 				break
 			}
 		}
 		// __asm__ __volatile__ ("isync" : : : "memory");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3632)
-		v13 = old
-		goto _14
-	_14:
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1602)
+		v11 = old
+		goto _12
+	_12:
 	}
-	if v15 || v13 != 0 {
+	if v13 || v11 != 0 {
 		return -int32(1)
 	}
 	X__register_locked_file(tls, f, self)
@@ -142388,10 +138858,9 @@ func Xfwide(tls *TLS, f uintptr, mode int32) (r int32) {
 		trc("tls=%v f=%v mode=%v, (%v:)", tls, f, mode, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var __need_unlock, v1, v3, v6 int32
-	var tp, v4 Tuintptr_t
+	var __need_unlock, v1, v3, v4 int32
 	var v2 Tlocale_t
-	_, _, _, _, _, _, _ = __need_unlock, tp, v1, v2, v3, v4, v6
+	_, _, _, _, _ = __need_unlock, v1, v2, v3, v4
 	if AtomicLoadPInt32(f+140) >= 0 {
 		v1 = ___lockfile(tls, f)
 	} else {
@@ -142399,14 +138868,8 @@ func Xfwide(tls *TLS, f uintptr, mode int32) (r int32) {
 	}
 	__need_unlock = v1
 	if mode != 0 {
-		if !((*TFILE)(unsafe.Pointer(f)).Flocale != 0) { //TODO "tp" // pthread_arch.h:3:21:
-			panic(0) // assembler statements not supported
-			// __asm__ ("" : "=r" (tp) );
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3645)
-			v4 = tp
-			goto _5
-		_5:
-			if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(uintptr(v4))).Flocale)) != 0) {
+		if !((*TFILE)(unsafe.Pointer(f)).Flocale != 0) {
+			if !!(*(*uintptr)(unsafe.Pointer((*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)) != 0) {
 				v3 = int32(4)
 			} else {
 				v3 = int32(1)
@@ -142420,11 +138883,11 @@ func Xfwide(tls *TLS, f uintptr, mode int32) (r int32) {
 		}
 		if !((*TFILE)(unsafe.Pointer(f)).Fmode != 0) {
 			if mode > 0 {
-				v6 = int32(1)
+				v4 = int32(1)
 			} else {
-				v6 = -int32(1)
+				v4 = -int32(1)
 			}
-			(*TFILE)(unsafe.Pointer(f)).Fmode = v6
+			(*TFILE)(unsafe.Pointer(f)).Fmode = v4
 		}
 	}
 	mode = (*TFILE)(unsafe.Pointer(f)).Fmode
@@ -142550,18 +139013,17 @@ func X__isoc99_fwscanf(tls *TLS, f uintptr, fmt uintptr, va uintptr) (r int32) {
 }
 
 func _locking_getc1(tls *TLS, f uintptr) (r1 int32) {
-	var c1, old, old1, r, v, v10, v12, v17, v21, v23, v26, v27, v3, v8 int32
-	var r0, r3, r4, r5, v28, v30 int64
+	var c, old, old1, r, v, v10, v12, v17, v21, v23, v26, v27, v3, v8 int32
 	var v1, v13, v14, v15, v16, v2, v20, v25, v7 uintptr
-	var v32, v5 bool
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c1, old, old1, r, r0, r3, r4, r5, v, v1, v10, v12, v13, v14, v15, v16, v17, v2, v20, v21, v23, v25, v26, v27, v28, v3, v30, v32, v5, v7, v8
+	var v5 bool
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c, old, old1, r, v, v1, v10, v12, v13, v14, v15, v16, v17, v2, v20, v21, v23, v25, v26, v27, v3, v5, v7, v8
 	v1 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1550)
 	for {
 		v7 = v1
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3480)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1550)
 		v8 = v
 		goto _9
 	_9:
@@ -142575,7 +139037,7 @@ func _locking_getc1(tls *TLS, f uintptr) (r1 int32) {
 			//
 			//	"stwcx. %2, 0, %3 ; mfcr %0"
 			//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3480)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1550)
 			v3 = r & int32(0x20000000)
 			goto _4
 		_4:
@@ -142585,7 +139047,7 @@ func _locking_getc1(tls *TLS, f uintptr) (r1 int32) {
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1550)
 	v10 = old
 	goto _11
 _11:
@@ -142600,14 +139062,14 @@ _11:
 	} else {
 		v12 = X__uflow(tls, f)
 	}
-	c1 = v12
+	c = v12
 	v15 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1550)
 	for {
 		v20 = v15
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3480)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1550)
 		v21 = v
 		goto _22
 	_22:
@@ -142620,7 +139082,7 @@ _11:
 		//
 		//	"stwcx. %2, 0, %3 ; mfcr %0"
 		//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3480)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1550)
 		v17 = r & int32(0x20000000)
 		goto _18
 	_18:
@@ -142630,7 +139092,7 @@ _11:
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1550)
 	v23 = old1
 	goto _24
 _24:
@@ -142643,35 +139105,10 @@ _24:
 		}
 		if v26 < Int32FromInt32(0) {
 			v26 = int32(INT_MAX)
-		} //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv25))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppInt32FromInt32(mvFUTEX_WAKE)) | (ccv27)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv26))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3480)
-		v28 = r3
-		goto _29
-	_29:
-		;
-		if v32 = v28 != int64(-int32(ENOSYS)); !v32 { //TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv25))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvFUTEX_WAKE)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv26))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3480)
-			v30 = r3
-			goto _31
-		_31:
 		}
-		_ = v32 || v30 != 0
+		_ = X__syscall3(tls, int64(SYS_futex), int64(v25), int64(Int32FromInt32(FUTEX_WAKE)|v27), int64(v26)) != int64(-int32(ENOSYS)) || X__syscall3(tls, int64(SYS_futex), int64(v25), int64(Int32FromInt32(FUTEX_WAKE)), int64(v26)) != 0
 	}
-	return c1
+	return c
 }
 
 func Xgetc(tls *TLS, f1 uintptr) (r int32) {
@@ -142679,39 +139116,27 @@ func Xgetc(tls *TLS, f1 uintptr) (r int32) {
 		trc("tls=%v f1=%v, (%v:)", tls, f1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var l, v6, v8 int32
-	var tp, v2 Tuintptr_t
-	var v1, v10, v9 uintptr
-	var v4, v5 bool
-	_, _, _, _, _, _, _, _, _, _ = l, tp, v1, v10, v2, v4, v5, v6, v8, v9
+	var l, v2, v4 int32
+	var v1, v5, v6 uintptr
+	_, _, _, _, _, _ = l, v1, v2, v4, v5, v6
 	v1 = f1
 	l = AtomicLoadPInt32(v1 + 140)
-	if v5 = l < 0; !v5 {
-		if v4 = l != 0; v4 { //TODO "tp" // pthread_arch.h:3:21:
-			panic(0) // assembler statements not supported
-			// __asm__ ("" : "=r" (tp) );
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3651)
-			v2 = tp
-			goto _3
-		_3:
-		}
-	}
-	if v5 || v4 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(uintptr(v2))).Ftid {
+	if l < 0 || l != 0 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Ftid {
 		if (*TFILE)(unsafe.Pointer(v1)).Frpos != (*TFILE)(unsafe.Pointer(v1)).Frend {
-			v10 = v1 + 8
-			v9 = *(*uintptr)(unsafe.Pointer(v10))
-			*(*uintptr)(unsafe.Pointer(v10))++
-			v8 = int32(*(*uint8)(unsafe.Pointer(v9)))
+			v6 = v1 + 8
+			v5 = *(*uintptr)(unsafe.Pointer(v6))
+			*(*uintptr)(unsafe.Pointer(v6))++
+			v4 = int32(*(*uint8)(unsafe.Pointer(v5)))
 		} else {
-			v8 = X__uflow(tls, v1)
+			v4 = X__uflow(tls, v1)
 		}
-		v6 = v8
-		goto _7
+		v2 = v4
+		goto _3
 	}
-	v6 = _locking_getc1(tls, v1)
-	goto _7
-_7:
-	return v6
+	v2 = _locking_getc1(tls, v1)
+	goto _3
+_3:
+	return v2
 }
 
 func X_IO_getc(tls *TLS, f1 uintptr) (r int32) {
@@ -142758,18 +139183,17 @@ func Xfgetc_unlocked(tls *TLS, f uintptr) (r int32) {
 }
 
 func _locking_getc2(tls *TLS, f uintptr) (r1 int32) {
-	var c1, old, old1, r, v, v10, v12, v17, v21, v23, v26, v27, v3, v8 int32
-	var r0, r3, r4, r5, v28, v30 int64
+	var c, old, old1, r, v, v10, v12, v17, v21, v23, v26, v27, v3, v8 int32
 	var v1, v13, v14, v15, v16, v2, v20, v25, v7 uintptr
-	var v32, v5 bool
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c1, old, old1, r, r0, r3, r4, r5, v, v1, v10, v12, v13, v14, v15, v16, v17, v2, v20, v21, v23, v25, v26, v27, v28, v3, v30, v32, v5, v7, v8
+	var v5 bool
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c, old, old1, r, v, v1, v10, v12, v13, v14, v15, v16, v17, v2, v20, v21, v23, v25, v26, v27, v3, v5, v7, v8
 	v1 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1550)
 	for {
 		v7 = v1
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3480)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1550)
 		v8 = v
 		goto _9
 	_9:
@@ -142783,7 +139207,7 @@ func _locking_getc2(tls *TLS, f uintptr) (r1 int32) {
 			//
 			//	"stwcx. %2, 0, %3 ; mfcr %0"
 			//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3480)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1550)
 			v3 = r & int32(0x20000000)
 			goto _4
 		_4:
@@ -142793,7 +139217,7 @@ func _locking_getc2(tls *TLS, f uintptr) (r1 int32) {
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1550)
 	v10 = old
 	goto _11
 _11:
@@ -142808,14 +139232,14 @@ _11:
 	} else {
 		v12 = X__uflow(tls, f)
 	}
-	c1 = v12
+	c = v12
 	v15 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1550)
 	for {
 		v20 = v15
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3480)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1550)
 		v21 = v
 		goto _22
 	_22:
@@ -142828,7 +139252,7 @@ _11:
 		//
 		//	"stwcx. %2, 0, %3 ; mfcr %0"
 		//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3480)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1550)
 		v17 = r & int32(0x20000000)
 		goto _18
 	_18:
@@ -142838,7 +139262,7 @@ _11:
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3480)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1550)
 	v23 = old1
 	goto _24
 _24:
@@ -142851,35 +139275,10 @@ _24:
 		}
 		if v26 < Int32FromInt32(0) {
 			v26 = int32(INT_MAX)
-		} //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv25))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppInt32FromInt32(mvFUTEX_WAKE)) | (ccv27)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv26))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3480)
-		v28 = r3
-		goto _29
-	_29:
-		;
-		if v32 = v28 != int64(-int32(ENOSYS)); !v32 { //TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv25))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvFUTEX_WAKE)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv26))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3480)
-			v30 = r3
-			goto _31
-		_31:
 		}
-		_ = v32 || v30 != 0
+		_ = X__syscall3(tls, int64(SYS_futex), int64(v25), int64(Int32FromInt32(FUTEX_WAKE)|v27), int64(v26)) != int64(-int32(ENOSYS)) || X__syscall3(tls, int64(SYS_futex), int64(v25), int64(Int32FromInt32(FUTEX_WAKE)), int64(v26)) != 0
 	}
-	return c1
+	return c
 }
 
 func Xgetchar(tls *TLS) (r int32) {
@@ -142887,39 +139286,27 @@ func Xgetchar(tls *TLS) (r int32) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var l, v6, v8 int32
-	var tp, v2 Tuintptr_t
-	var v1, v10, v9 uintptr
-	var v4, v5 bool
-	_, _, _, _, _, _, _, _, _, _ = l, tp, v1, v10, v2, v4, v5, v6, v8, v9
+	var l, v2, v4 int32
+	var v1, v5, v6 uintptr
+	_, _, _, _, _, _ = l, v1, v2, v4, v5, v6
 	v1 = uintptr(unsafe.Pointer(&X__stdin_FILE))
 	l = AtomicLoadPInt32(v1 + 140)
-	if v5 = l < 0; !v5 {
-		if v4 = l != 0; v4 { //TODO "tp" // pthread_arch.h:3:21:
-			panic(0) // assembler statements not supported
-			// __asm__ ("" : "=r" (tp) );
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3656)
-			v2 = tp
-			goto _3
-		_3:
-		}
-	}
-	if v5 || v4 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(uintptr(v2))).Ftid {
+	if l < 0 || l != 0 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Ftid {
 		if (*TFILE)(unsafe.Pointer(v1)).Frpos != (*TFILE)(unsafe.Pointer(v1)).Frend {
-			v10 = v1 + 8
-			v9 = *(*uintptr)(unsafe.Pointer(v10))
-			*(*uintptr)(unsafe.Pointer(v10))++
-			v8 = int32(*(*uint8)(unsafe.Pointer(v9)))
+			v6 = v1 + 8
+			v5 = *(*uintptr)(unsafe.Pointer(v6))
+			*(*uintptr)(unsafe.Pointer(v6))++
+			v4 = int32(*(*uint8)(unsafe.Pointer(v5)))
 		} else {
-			v8 = X__uflow(tls, v1)
+			v4 = X__uflow(tls, v1)
 		}
-		v6 = v8
-		goto _7
+		v2 = v4
+		goto _3
 	}
-	v6 = _locking_getc2(tls, v1)
-	goto _7
-_7:
-	return v6
+	v2 = _locking_getc2(tls, v1)
+	goto _3
+_3:
+	return v2
 }
 
 func Xgetchar_unlocked(tls *TLS) (r int32) {
@@ -143488,25 +139875,12 @@ func Xpclose(tls *TLS, f uintptr) (r1 int32) {
 	defer tls.Free(16)
 	var pid Tpid_t
 	var r, v1 int32
-	var r0, r3, r4, r5, r6, v2 int64
 	var _ /* status at bp+0 */ int32
-	_, _, _, _, _, _, _, _, _ = pid, r, r0, r3, r4, r5, r6, v1, v2
+	_, _, _ = pid, r, v1
 	pid = (*TFILE)(unsafe.Pointer(f)).Fpipe_pid
 	Xfclose(tls, f)
-	for { //TODO "r0" // syscall_arch.h:49:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_wait4)));//TODO "r3" // syscall_arch.h:50:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aapid))));//TODO "r4" // syscall_arch.h:51:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(cgbp)));//TODO "r5" // syscall_arch.h:52:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(0)))));//TODO "r6" // syscall_arch.h:53:16:
-		panic(0) // assembler statements not supported  aar6 = ((ppint64((ppInt32FromInt32(0)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-		// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+3664)
-		v2 = r3
-		goto _3
-	_3:
-		v1 = int32(v2)
+	for {
+		v1 = int32(X__syscall4(tls, int64(SYS_wait4), int64(pid), int64(bp), int64(Int32FromInt32(0)), int64(Int32FromInt32(0))))
 		r = v1
 		if !(v1 == -int32(EINTR)) {
 			break
@@ -143565,20 +139939,19 @@ func Xprintf(tls *TLS, fmt uintptr, va uintptr) (r int32) {
 	return ret
 }
 
-func _locking_putc1(tls *TLS, c1 int32, f uintptr) (r1 int32) {
+func _locking_putc1(tls *TLS, c int32, f uintptr) (r1 int32) {
 	var old, old1, r, v, v10, v12, v18, v22, v24, v27, v28, v3, v8 int32
-	var r0, r3, r4, r5, v29, v31 int64
 	var v1, v14, v15, v16, v17, v2, v21, v26, v7 uintptr
 	var v13 uint8
-	var v33, v5 bool
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = old, old1, r, r0, r3, r4, r5, v, v1, v10, v12, v13, v14, v15, v16, v17, v18, v2, v21, v22, v24, v26, v27, v28, v29, v3, v31, v33, v5, v7, v8
+	var v5 bool
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = old, old1, r, v, v1, v10, v12, v13, v14, v15, v16, v17, v18, v2, v21, v22, v24, v26, v27, v28, v3, v5, v7, v8
 	v1 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1563)
 	for {
 		v7 = v1
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3533)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1563)
 		v8 = v
 		goto _9
 	_9:
@@ -143592,7 +139965,7 @@ func _locking_putc1(tls *TLS, c1 int32, f uintptr) (r1 int32) {
 			//
 			//	"stwcx. %2, 0, %3 ; mfcr %0"
 			//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3533)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1563)
 			v3 = r & int32(0x20000000)
 			goto _4
 		_4:
@@ -143602,31 +139975,31 @@ func _locking_putc1(tls *TLS, c1 int32, f uintptr) (r1 int32) {
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1563)
 	v10 = old
 	goto _11
 _11:
 	if v10 != 0 {
 		___lockfile(tls, f)
 	}
-	if int32(uint8(c1)) != (*TFILE)(unsafe.Pointer(f)).Flbf && (*TFILE)(unsafe.Pointer(f)).Fwpos != (*TFILE)(unsafe.Pointer(f)).Fwend {
-		v13 = uint8(c1)
+	if int32(uint8(c)) != (*TFILE)(unsafe.Pointer(f)).Flbf && (*TFILE)(unsafe.Pointer(f)).Fwpos != (*TFILE)(unsafe.Pointer(f)).Fwend {
+		v13 = uint8(c)
 		v15 = f + 40
 		v14 = *(*uintptr)(unsafe.Pointer(v15))
 		*(*uintptr)(unsafe.Pointer(v15))++
 		*(*uint8)(unsafe.Pointer(v14)) = v13
 		v12 = int32(v13)
 	} else {
-		v12 = X__overflow(tls, f, int32(uint8(c1)))
+		v12 = X__overflow(tls, f, int32(uint8(c)))
 	}
-	c1 = v12
+	c = v12
 	v16 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1563)
 	for {
 		v21 = v16
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3533)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1563)
 		v22 = v
 		goto _23
 	_23:
@@ -143639,7 +140012,7 @@ _11:
 		//
 		//	"stwcx. %2, 0, %3 ; mfcr %0"
 		//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3533)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1563)
 		v18 = r & int32(0x20000000)
 		goto _19
 	_19:
@@ -143649,7 +140022,7 @@ _11:
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1563)
 	v24 = old1
 	goto _25
 _25:
@@ -143662,35 +140035,10 @@ _25:
 		}
 		if v27 < Int32FromInt32(0) {
 			v27 = int32(INT_MAX)
-		} //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv26))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppInt32FromInt32(mvFUTEX_WAKE)) | (ccv28)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv27))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3533)
-		v29 = r3
-		goto _30
-	_30:
-		;
-		if v33 = v29 != int64(-int32(ENOSYS)); !v33 { //TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv26))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvFUTEX_WAKE)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv27))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3533)
-			v31 = r3
-			goto _32
-		_32:
 		}
-		_ = v33 || v31 != 0
+		_ = X__syscall3(tls, int64(SYS_futex), int64(v26), int64(Int32FromInt32(FUTEX_WAKE)|v28), int64(v27)) != int64(-int32(ENOSYS)) || X__syscall3(tls, int64(SYS_futex), int64(v26), int64(Int32FromInt32(FUTEX_WAKE)), int64(v27)) != 0
 	}
-	return c1
+	return c
 }
 
 func Xputc(tls *TLS, c1 int32, f1 uintptr) (r int32) {
@@ -143698,43 +140046,31 @@ func Xputc(tls *TLS, c1 int32, f1 uintptr) (r int32) {
 		trc("tls=%v c1=%v f1=%v, (%v:)", tls, c1, f1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var l, v1, v7, v9 int32
-	var tp, v3 Tuintptr_t
-	var v10 uint8
-	var v11, v12, v2 uintptr
-	var v5, v6 bool
-	_, _, _, _, _, _, _, _, _, _, _, _ = l, tp, v1, v10, v11, v12, v2, v3, v5, v6, v7, v9
+	var l, v1, v3, v5 int32
+	var v2, v7, v8 uintptr
+	var v6 uint8
+	_, _, _, _, _, _, _, _ = l, v1, v2, v3, v5, v6, v7, v8
 	v1 = c1
 	v2 = f1
 	l = AtomicLoadPInt32(v2 + 140)
-	if v6 = l < 0; !v6 {
-		if v5 = l != 0; v5 { //TODO "tp" // pthread_arch.h:3:21:
-			panic(0) // assembler statements not supported
-			// __asm__ ("" : "=r" (tp) );
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3671)
-			v3 = tp
-			goto _4
-		_4:
-		}
-	}
-	if v6 || v5 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(uintptr(v3))).Ftid {
+	if l < 0 || l != 0 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Ftid {
 		if int32(uint8(v1)) != (*TFILE)(unsafe.Pointer(v2)).Flbf && (*TFILE)(unsafe.Pointer(v2)).Fwpos != (*TFILE)(unsafe.Pointer(v2)).Fwend {
-			v10 = uint8(v1)
-			v12 = v2 + 40
-			v11 = *(*uintptr)(unsafe.Pointer(v12))
-			*(*uintptr)(unsafe.Pointer(v12))++
-			*(*uint8)(unsafe.Pointer(v11)) = v10
-			v9 = int32(v10)
+			v6 = uint8(v1)
+			v8 = v2 + 40
+			v7 = *(*uintptr)(unsafe.Pointer(v8))
+			*(*uintptr)(unsafe.Pointer(v8))++
+			*(*uint8)(unsafe.Pointer(v7)) = v6
+			v5 = int32(v6)
 		} else {
-			v9 = X__overflow(tls, v2, int32(uint8(v1)))
+			v5 = X__overflow(tls, v2, int32(uint8(v1)))
 		}
-		v7 = v9
-		goto _8
+		v3 = v5
+		goto _4
 	}
-	v7 = _locking_putc1(tls, v1, v2)
-	goto _8
-_8:
-	return v7
+	v3 = _locking_putc1(tls, v1, v2)
+	goto _4
+_4:
+	return v3
 }
 
 func X_IO_putc(tls *TLS, c1 int32, f1 uintptr) (r int32) {
@@ -143783,20 +140119,19 @@ func Xfputc_unlocked(tls *TLS, c int32, f uintptr) (r int32) {
 	return Xputc_unlocked(tls, c, f)
 }
 
-func _locking_putc2(tls *TLS, c1 int32, f uintptr) (r1 int32) {
+func _locking_putc2(tls *TLS, c int32, f uintptr) (r1 int32) {
 	var old, old1, r, v, v10, v12, v18, v22, v24, v27, v28, v3, v8 int32
-	var r0, r3, r4, r5, v29, v31 int64
 	var v1, v14, v15, v16, v17, v2, v21, v26, v7 uintptr
 	var v13 uint8
-	var v33, v5 bool
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = old, old1, r, r0, r3, r4, r5, v, v1, v10, v12, v13, v14, v15, v16, v17, v18, v2, v21, v22, v24, v26, v27, v28, v29, v3, v31, v33, v5, v7, v8
+	var v5 bool
+	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = old, old1, r, v, v1, v10, v12, v13, v14, v15, v16, v17, v18, v2, v21, v22, v24, v26, v27, v28, v3, v5, v7, v8
 	v1 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1563)
 	for {
 		v7 = v1
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3533)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1563)
 		v8 = v
 		goto _9
 	_9:
@@ -143810,7 +140145,7 @@ func _locking_putc2(tls *TLS, c1 int32, f uintptr) (r1 int32) {
 			//
 			//	"stwcx. %2, 0, %3 ; mfcr %0"
 			//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3533)
+			X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1563)
 			v3 = r & int32(0x20000000)
 			goto _4
 		_4:
@@ -143820,31 +140155,31 @@ func _locking_putc2(tls *TLS, c1 int32, f uintptr) (r1 int32) {
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1563)
 	v10 = old
 	goto _11
 _11:
 	if v10 != 0 {
 		___lockfile(tls, f)
 	}
-	if int32(uint8(c1)) != (*TFILE)(unsafe.Pointer(f)).Flbf && (*TFILE)(unsafe.Pointer(f)).Fwpos != (*TFILE)(unsafe.Pointer(f)).Fwend {
-		v13 = uint8(c1)
+	if int32(uint8(c)) != (*TFILE)(unsafe.Pointer(f)).Flbf && (*TFILE)(unsafe.Pointer(f)).Fwpos != (*TFILE)(unsafe.Pointer(f)).Fwend {
+		v13 = uint8(c)
 		v15 = f + 40
 		v14 = *(*uintptr)(unsafe.Pointer(v15))
 		*(*uintptr)(unsafe.Pointer(v15))++
 		*(*uint8)(unsafe.Pointer(v14)) = v13
 		v12 = int32(v13)
 	} else {
-		v12 = X__overflow(tls, f, int32(uint8(c1)))
+		v12 = X__overflow(tls, f, int32(uint8(c)))
 	}
-	c1 = v12
+	c = v12
 	v16 = f + 140
 	// __asm__ __volatile__ ("sync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1563)
 	for {
 		v21 = v16
 		// __asm__ __volatile__ ("lwarx %0, 0, %2" : "=r"(v) : "m"(*p), "r"(p));
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 5, __ccgo_ts+3533)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 5, __ccgo_ts+1563)
 		v22 = v
 		goto _23
 	_23:
@@ -143857,7 +140192,7 @@ _11:
 		//
 		//	"stwcx. %2, 0, %3 ; mfcr %0"
 		//	: "=r"(r), "=m"(*p) : "r"(v), "r"(p) : "memory", "cc");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 13, __ccgo_ts+3533)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 13, __ccgo_ts+1563)
 		v18 = r & int32(0x20000000)
 		goto _19
 	_19:
@@ -143867,7 +140202,7 @@ _11:
 		}
 	}
 	// __asm__ __volatile__ ("isync" : : : "memory");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 48, __ccgo_ts+3533)
+	X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 48, __ccgo_ts+1563)
 	v24 = old1
 	goto _25
 _25:
@@ -143880,35 +140215,10 @@ _25:
 		}
 		if v27 < Int32FromInt32(0) {
 			v27 = int32(INT_MAX)
-		} //TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv26))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppInt32FromInt32(mvFUTEX_WAKE)) | (ccv28)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv27))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3533)
-		v29 = r3
-		goto _30
-	_30:
-		;
-		if v33 = v29 != int64(-int32(ENOSYS)); !v33 { //TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_futex)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((ccv26))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvFUTEX_WAKE)))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((ccv27))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3533)
-			v31 = r3
-			goto _32
-		_32:
 		}
-		_ = v33 || v31 != 0
+		_ = X__syscall3(tls, int64(SYS_futex), int64(v26), int64(Int32FromInt32(FUTEX_WAKE)|v28), int64(v27)) != int64(-int32(ENOSYS)) || X__syscall3(tls, int64(SYS_futex), int64(v26), int64(Int32FromInt32(FUTEX_WAKE)), int64(v27)) != 0
 	}
-	return c1
+	return c
 }
 
 func Xputchar(tls *TLS, c1 int32) (r int32) {
@@ -143916,43 +140226,31 @@ func Xputchar(tls *TLS, c1 int32) (r int32) {
 		trc("tls=%v c1=%v, (%v:)", tls, c1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var l, v1, v7, v9 int32
-	var tp, v3 Tuintptr_t
-	var v10 uint8
-	var v11, v12, v2 uintptr
-	var v5, v6 bool
-	_, _, _, _, _, _, _, _, _, _, _, _ = l, tp, v1, v10, v11, v12, v2, v3, v5, v6, v7, v9
+	var l, v1, v3, v5 int32
+	var v2, v7, v8 uintptr
+	var v6 uint8
+	_, _, _, _, _, _, _, _ = l, v1, v2, v3, v5, v6, v7, v8
 	v1 = c1
 	v2 = uintptr(unsafe.Pointer(&X__stdout_FILE))
 	l = AtomicLoadPInt32(v2 + 140)
-	if v6 = l < 0; !v6 {
-		if v5 = l != 0; v5 { //TODO "tp" // pthread_arch.h:3:21:
-			panic(0) // assembler statements not supported
-			// __asm__ ("" : "=r" (tp) );
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3676)
-			v3 = tp
-			goto _4
-		_4:
-		}
-	}
-	if v6 || v5 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(uintptr(v3))).Ftid {
+	if l < 0 || l != 0 && l & ^Int32FromInt32(MAYBE_WAITERS) == (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Ftid {
 		if int32(uint8(v1)) != (*TFILE)(unsafe.Pointer(v2)).Flbf && (*TFILE)(unsafe.Pointer(v2)).Fwpos != (*TFILE)(unsafe.Pointer(v2)).Fwend {
-			v10 = uint8(v1)
-			v12 = v2 + 40
-			v11 = *(*uintptr)(unsafe.Pointer(v12))
-			*(*uintptr)(unsafe.Pointer(v12))++
-			*(*uint8)(unsafe.Pointer(v11)) = v10
-			v9 = int32(v10)
+			v6 = uint8(v1)
+			v8 = v2 + 40
+			v7 = *(*uintptr)(unsafe.Pointer(v8))
+			*(*uintptr)(unsafe.Pointer(v8))++
+			*(*uint8)(unsafe.Pointer(v7)) = v6
+			v5 = int32(v6)
 		} else {
-			v9 = X__overflow(tls, v2, int32(uint8(v1)))
+			v5 = X__overflow(tls, v2, int32(uint8(v1)))
 		}
-		v7 = v9
-		goto _8
+		v3 = v5
+		goto _4
 	}
-	v7 = _locking_putc2(tls, v1, v2)
-	goto _8
-_8:
-	return v7
+	v3 = _locking_putc2(tls, v1, v2)
+	goto _4
+_4:
+	return v3
 }
 
 func Xputchar_unlocked(tls *TLS, c int32) (r int32) {
@@ -144053,29 +140351,10 @@ func Xremove(tls *TLS, path uintptr) (r1 int32) {
 		defer func() { trc("-> %v", r1) }()
 	}
 	var r int32
-	var r0, r3, v1, v3 int64
-	_, _, _, _, _ = r, r0, r3, v1, v3 //TODO "r0" // syscall_arch.h:16:16:
-	panic(0)                          // assembler statements not supported  aar0 = ((ppint64(mvSYS_unlink)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0)                          // assembler statements not supported  aar3 = ((ppint64((aapath))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+3684)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
-	if r == -int32(EISDIR) { //TODO "r0" // syscall_arch.h:16:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_rmdir)));//TODO "r3" // syscall_arch.h:17:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3)
-		// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+3684)
-		v3 = r3
-		goto _4
-	_4:
-		r = int32(v3)
+	_ = r
+	r = int32(X__syscall1(tls, int64(SYS_unlink), int64(path)))
+	if r == -int32(EISDIR) {
+		r = int32(X__syscall1(tls, int64(SYS_rmdir), int64(path)))
 	}
 	return int32(X__syscall_ret(tls, uint64(r)))
 }
@@ -144085,20 +140364,7 @@ func Xrename(tls *TLS, old uintptr, new1 uintptr) (r int32) {
 		trc("tls=%v old=%v new1=%v, (%v:)", tls, old, new1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_rename)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaold))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aanew))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3691)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_rename), int64(old), int64(new1)))))
 }
 
 func Xrewind(tls *TLS, f uintptr) {
@@ -144332,14 +140598,13 @@ func Xtempnam(tls *TLS, dir uintptr, pfx uintptr) (r1 uintptr) {
 	defer tls.Free(4112)
 	var dl, l, pl Tsize_t
 	var r, try int32
-	var r0, r3, r4, r5, v2 int64
 	var _ /* s at bp+1 */ [4096]uint8
-	_, _, _, _, _, _, _, _, _, _ = dl, l, pl, r, r0, r3, r4, r5, try, v2
+	_, _, _, _, _ = dl, l, pl, r, try
 	if !(dir != 0) {
-		dir = __ccgo_ts + 3698
+		dir = __ccgo_ts + 1615
 	}
 	if !(pfx != 0) {
-		pfx = __ccgo_ts + 3703
+		pfx = __ccgo_ts + 1620
 	}
 	dl = Xstrlen(tls, dir)
 	pl = Xstrlen(tls, pfx)
@@ -144359,19 +140624,8 @@ func Xtempnam(tls *TLS, dir uintptr, pfx uintptr) (r1 uintptr) {
 			break
 		}
 		___randname(tls, bp+1+uintptr(l)-uintptr(6))
-		*(*[1]uint8)(unsafe.Pointer(bp)) = [1]uint8{} //TODO "r0" // syscall_arch.h:37:16:
-		panic(0)                                      // assembler statements not supported  aar0 = ((ppint64(mvSYS_readlink)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0)                                      // assembler statements not supported  aar3 = ((ppint64(cgbp+1)));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0)                                      // assembler statements not supported  aar4 = ((ppint64((cgbp))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0)                                      // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(1)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3708)
-		v2 = r3
-		goto _3
-	_3:
-		r = int32(v2)
+		*(*[1]uint8)(unsafe.Pointer(bp)) = [1]uint8{}
+		r = int32(X__syscall3(tls, int64(SYS_readlink), int64(bp+1), int64(bp), int64(Int32FromInt32(1))))
 		if r == -int32(ENOENT) {
 			return Xstrdup(tls, bp+1)
 		}
@@ -144392,9 +140646,8 @@ func Xtmpfile(tls *TLS) (r uintptr) {
 	defer tls.Free(32)
 	var f uintptr
 	var fd, try int32
-	var r0, r01, r3, r31, r4, r5, v2 int64
 	var _ /* s at bp+0 */ [20]uint8
-	_, _, _, _, _, _, _, _, _, _ = f, fd, r0, r01, r3, r31, r4, r5, try, v2
+	_, _, _ = f, fd, try
 	*(*[20]uint8)(unsafe.Pointer(bp)) = [20]uint8{'/', 't', 'm', 'p', '/', 't', 'm', 'p', 'f', 'i', 'l', 'e', '_', 'X', 'X', 'X', 'X', 'X', 'X'}
 	try = 0
 	for {
@@ -144402,42 +140655,12 @@ func Xtmpfile(tls *TLS) (r uintptr) {
 			break
 		}
 		___randname(tls, bp+uintptr(13))
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_open)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64(cgbp)));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64(((((ppInt32FromInt32(mvO_RDWR)) | (ppInt32FromInt32(mvO_CREAT))) | (ppInt32FromInt32(mvO_EXCL))) | (ppInt32FromInt32(mvO_LARGEFILE))))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(0600)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3716)
-		v2 = r31
-		goto _3
-	_3:
-		fd = int32(X__syscall_ret(tls, uint64(v2)))
+		fd = int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_open), int64(bp), int64(Int32FromInt32(O_RDWR)|Int32FromInt32(O_CREAT)|Int32FromInt32(O_EXCL)|Int32FromInt32(O_LARGEFILE)), int64(Int32FromInt32(0600))))))
 		if fd >= 0 {
-			//TODO "r0" // syscall_arch.h:16:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_unlink)));//TODO "r3" // syscall_arch.h:17:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64(cgbp)));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3)
-			// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+3716)
-			_ = r3
-			goto _4
-		_4:
-			;
-			f = X__fdopen(tls, fd, __ccgo_ts+3724)
-			if !(f != 0) { //TODO "r0" // syscall_arch.h:16:16:
-				panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-				panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));
-				// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-				// : "+r"(r0), "+r"(r3)
-				// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-				X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+3716)
-				_ = r3
-				goto _5
-			_5:
+			X__syscall1(tls, int64(SYS_unlink), int64(bp))
+			f = X__fdopen(tls, fd, __ccgo_ts+1625)
+			if !(f != 0) {
+				X__syscall1(tls, int64(SYS_close), int64(fd))
 			}
 			return f
 		}
@@ -144457,10 +140680,9 @@ func Xtmpnam(tls *TLS, buf uintptr) (r1 uintptr) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
 	var r, try int32
-	var r0, r3, r4, r5, v2 int64
-	var v4 uintptr
+	var v2 uintptr
 	var _ /* s at bp+1 */ [19]uint8
-	_, _, _, _, _, _, _, _ = r, r0, r3, r4, r5, try, v2, v4
+	_, _, _ = r, try, v2
 	*(*[19]uint8)(unsafe.Pointer(bp + 1)) = [19]uint8{'/', 't', 'm', 'p', '/', 't', 'm', 'p', 'n', 'a', 'm', '_', 'X', 'X', 'X', 'X', 'X', 'X'}
 	try = 0
 	for {
@@ -144468,26 +140690,15 @@ func Xtmpnam(tls *TLS, buf uintptr) (r1 uintptr) {
 			break
 		}
 		___randname(tls, bp+1+uintptr(12))
-		*(*[1]uint8)(unsafe.Pointer(bp)) = [1]uint8{} //TODO "r0" // syscall_arch.h:37:16:
-		panic(0)                                      // assembler statements not supported  aar0 = ((ppint64(mvSYS_readlink)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0)                                      // assembler statements not supported  aar3 = ((ppint64(cgbp+1)));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0)                                      // assembler statements not supported  aar4 = ((ppint64((cgbp))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0)                                      // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(1)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3727)
-		v2 = r3
-		goto _3
-	_3:
-		r = int32(v2)
+		*(*[1]uint8)(unsafe.Pointer(bp)) = [1]uint8{}
+		r = int32(X__syscall3(tls, int64(SYS_readlink), int64(bp+1), int64(bp), int64(Int32FromInt32(1))))
 		if r == -int32(ENOENT) {
 			if buf != 0 {
-				v4 = buf
+				v2 = buf
 			} else {
-				v4 = uintptr(unsafe.Pointer(&_internal1))
+				v2 = uintptr(unsafe.Pointer(&_internal1))
 			}
-			return Xstrcpy(tls, v4, bp+1)
+			return Xstrcpy(tls, v2, bp+1)
 		}
 		goto _1
 	_1:
@@ -144543,27 +140754,20 @@ func Xungetwc(tls *TLS, c Twint_t, f uintptr) (r Twint_t) {
 	}
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
-	var __need_unlock, l, v3, v4 int32
+	var __need_unlock, l, v1, v2 int32
 	var loc Tlocale_t
-	var ploc, v6, v7, p8 uintptr
-	var tp, v1 Tuintptr_t
-	var v5 bool
+	var ploc, v4, v5, p6 uintptr
+	var v3 bool
 	var _ /* mbc at bp+0 */ [4]uint8
-	_, _, _, _, _, _, _, _, _, _, _, _ = __need_unlock, l, loc, ploc, tp, v1, v3, v4, v5, v6, v7, p8 //TODO "tp" // pthread_arch.h:3:21:
-	panic(0)                                                                                         // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+3734)
-	v1 = tp
-	goto _2
-_2:
-	ploc = uintptr(v1) + 152
+	_, _, _, _, _, _, _, _, _, _ = __need_unlock, l, loc, ploc, v1, v2, v3, v4, v5, p6
+	ploc = ___get_tp(tls) + 152
 	loc = *(*Tlocale_t)(unsafe.Pointer(ploc))
 	if AtomicLoadPInt32(f+140) >= 0 {
-		v3 = ___lockfile(tls, f)
+		v1 = ___lockfile(tls, f)
 	} else {
-		v3 = 0
+		v1 = 0
 	}
-	__need_unlock = v3
+	__need_unlock = v1
 	if (*TFILE)(unsafe.Pointer(f)).Fmode <= 0 {
 		Xfwide(tls, f, int32(1))
 	}
@@ -144571,11 +140775,11 @@ _2:
 	if !((*TFILE)(unsafe.Pointer(f)).Frpos != 0) {
 		X__toread(tls, f)
 	}
-	if v5 = !((*TFILE)(unsafe.Pointer(f)).Frpos != 0) || c == uint32(0xffffffff); !v5 {
-		v4 = int32(Xwcrtomb(tls, bp, int32(c), uintptr(0)))
-		l = v4
+	if v3 = !((*TFILE)(unsafe.Pointer(f)).Frpos != 0) || c == uint32(0xffffffff); !v3 {
+		v2 = int32(Xwcrtomb(tls, bp, int32(c), uintptr(0)))
+		l = v2
 	}
-	if v5 || v4 < 0 || (*TFILE)(unsafe.Pointer(f)).Frpos < (*TFILE)(unsafe.Pointer(f)).Fbuf-uintptr(UNGET)+uintptr(l) {
+	if v3 || v2 < 0 || (*TFILE)(unsafe.Pointer(f)).Frpos < (*TFILE)(unsafe.Pointer(f)).Fbuf-uintptr(UNGET)+uintptr(l) {
 		if __need_unlock != 0 {
 			___unlockfile(tls, f)
 		}
@@ -144583,14 +140787,14 @@ _2:
 		return uint32(0xffffffff)
 	}
 	if BoolInt32(c < uint32(128)) != 0 {
-		v7 = f + 8
-		*(*uintptr)(unsafe.Pointer(v7))--
-		v6 = *(*uintptr)(unsafe.Pointer(v7))
-		*(*uint8)(unsafe.Pointer(v6)) = uint8(c)
+		v5 = f + 8
+		*(*uintptr)(unsafe.Pointer(v5))--
+		v4 = *(*uintptr)(unsafe.Pointer(v5))
+		*(*uint8)(unsafe.Pointer(v4)) = uint8(c)
 	} else {
-		p8 = f + 8
-		*(*uintptr)(unsafe.Pointer(p8)) -= uintptr(l)
-		Xmemcpy(tls, *(*uintptr)(unsafe.Pointer(p8)), bp, uint64(l))
+		p6 = f + 8
+		*(*uintptr)(unsafe.Pointer(p6)) -= uintptr(l)
+		Xmemcpy(tls, *(*uintptr)(unsafe.Pointer(p6)), bp, uint64(l))
 	}
 	*(*uint32)(unsafe.Pointer(f)) &= uint32(^Int32FromInt32(F_EOF))
 	if __need_unlock != 0 {
@@ -144968,7 +141172,7 @@ func _fmt_fp(tls *TLS, f uintptr, y float64, w int32, p int32, fl int32, t int32
 	var _ /* ebuf0 at bp+538 */ [12]uint8
 	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = a, b, carry, carry1, d, e, ebuf, estr, i, j, l, need, pl, prefix, r, re, rm, round, round1, s, s1, s2, s3, s4, sh, sh1, small, x, x1, x2, z, v1, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v24, v25, v27, v28, v3, v31, v32, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v48, v49, v5, v51, v52, v54, v55, v56, v57, v58, v6, v7, v8, v9
 	*(*int32)(unsafe.Pointer(bp + 512)) = 0
-	prefix = __ccgo_ts + 3742
+	prefix = __ccgo_ts + 1628
 	ebuf = bp + 538 + uintptr(Uint64FromInt32(3)*Uint64FromInt64(4))
 	pl = int32(1)
 	*(*float64)(unsafe.Pointer(bp)) = y
@@ -144995,16 +141199,16 @@ _2:
 _4:
 	if !(BoolInt32(v3&(-Uint64FromUint64(1)>>Int32FromInt32(1)) < Uint64FromUint64(0x7ff)<<Int32FromInt32(52)) != 0) {
 		if t&int32(32) != 0 {
-			v5 = __ccgo_ts + 3761
+			v5 = __ccgo_ts + 1647
 		} else {
-			v5 = __ccgo_ts + 3765
+			v5 = __ccgo_ts + 1651
 		}
 		s1 = v5
 		if y != y {
 			if t&int32(32) != 0 {
-				v6 = __ccgo_ts + 509
+				v6 = __ccgo_ts + 353
 			} else {
-				v6 = __ccgo_ts + 3769
+				v6 = __ccgo_ts + 1655
 			}
 			s1 = v6
 		}
@@ -145448,7 +141652,7 @@ _4:
 			d += 4
 		}
 		if p != 0 || uint32(fl)&(Uint32FromUint32(1)<<(Int32FromUint8('#')-Int32FromUint8(' '))) != 0 {
-			_out(tls, f, __ccgo_ts+1628, uint64(1))
+			_out(tls, f, __ccgo_ts+606, uint64(1))
 		}
 		for {
 			if !(d < z && p > 0) {
@@ -145499,7 +141703,7 @@ _4:
 				s4++
 				_out(tls, f, v56, uint64(1))
 				if p > 0 || uint32(fl)&(Uint32FromUint32(1)<<(Int32FromUint8('#')-Int32FromUint8(' '))) != 0 {
-					_out(tls, f, __ccgo_ts+1628, uint64(1))
+					_out(tls, f, __ccgo_ts+606, uint64(1))
 				}
 			}
 			if int64(bp+516+UintptrFromInt32(9))-int64(s4) < int64(p) {
@@ -145742,7 +141946,7 @@ func _printf_core(tls *TLS, f uintptr, fmt uintptr, ap uintptr, nl_arg uintptr, 
 			return -int32(1)
 		}
 		z = bp + 16 + uintptr(24)
-		prefix = __ccgo_ts + 3773
+		prefix = __ccgo_ts + 1659
 		pl = 0
 		t = int32(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp)) + uintptr(-Int32FromInt32(1)))))
 		/* Transform ls,lc -> S,C */
@@ -145917,7 +142121,7 @@ func _printf_core(tls *TLS, f uintptr, fmt uintptr, ap uintptr, nl_arg uintptr, 
 		if *(*uintptr)(unsafe.Pointer(bp + 8)) != 0 {
 			v39 = *(*uintptr)(unsafe.Pointer(bp + 8))
 		} else {
-			v39 = __ccgo_ts + 3783
+			v39 = __ccgo_ts + 1669
 		}
 		a = v39
 	_38:
@@ -147035,7 +143239,7 @@ func _pad4(tls *TLS, f uintptr, n int32, fl int32) {
 	if uint32(fl)&(Uint32FromUint32(1)<<(Int32FromUint8('-')-Int32FromUint8(' '))) != 0 || !(n != 0) || (*TFILE)(unsafe.Pointer(f)).Fflags&uint32(F_ERR) != 0 {
 		return
 	}
-	Xfprintf(tls, f, __ccgo_ts+3790, VaList(bp+8, n, __ccgo_ts))
+	Xfprintf(tls, f, __ccgo_ts+1676, VaList(bp+8, n, __ccgo_ts))
 }
 
 func _getint1(tls *TLS, s uintptr) (r int32) {
@@ -147318,7 +143522,7 @@ func _wprintf_core(tls *TLS, f uintptr, fmt uintptr, ap uintptr, nl_arg uintptr,
 			fallthrough
 		case int32('s'):
 			if !(*(*uintptr)(unsafe.Pointer(bp + 16)) != 0) {
-				*(*uintptr)(unsafe.Pointer(bp + 16)) = __ccgo_ts + 3783
+				*(*uintptr)(unsafe.Pointer(bp + 16)) = __ccgo_ts + 1669
 			}
 			bs = *(*uintptr)(unsafe.Pointer(bp + 16))
 			v12 = Int32FromInt32(0)
@@ -147372,7 +143576,7 @@ func _wprintf_core(tls *TLS, f uintptr, fmt uintptr, ap uintptr, nl_arg uintptr,
 		if xp != 0 && p < 0 {
 			goto overflow
 		}
-		Xsnprintf(tls, bp+24, uint64(16), __ccgo_ts+3794, VaList(bp+56, __ccgo_ts+3814+BoolUintptr(!(fl&(Uint32FromUint32(1)<<(Int32FromUint8('#')-Int32FromUint8(' '))) != 0)), __ccgo_ts+3816+BoolUintptr(!(fl&(Uint32FromUint32(1)<<(Int32FromUint8('+')-Int32FromUint8(' '))) != 0)), __ccgo_ts+3818+BoolUintptr(!(fl&(Uint32FromUint32(1)<<(Int32FromUint8('-')-Int32FromUint8(' '))) != 0)), __ccgo_ts+1788+BoolUintptr(!(fl&(Uint32FromUint32(1)<<(Int32FromUint8(' ')-Int32FromUint8(' '))) != 0)), __ccgo_ts+3820+BoolUintptr(!(fl&(Uint32FromUint32(1)<<(Int32FromUint8('0')-Int32FromUint8(' '))) != 0)), int32(_sizeprefix[t|int32(32)-int32('a')]), t))
+		Xsnprintf(tls, bp+24, uint64(16), __ccgo_ts+1680, VaList(bp+56, __ccgo_ts+1700+BoolUintptr(!(fl&(Uint32FromUint32(1)<<(Int32FromUint8('#')-Int32FromUint8(' '))) != 0)), __ccgo_ts+1702+BoolUintptr(!(fl&(Uint32FromUint32(1)<<(Int32FromUint8('+')-Int32FromUint8(' '))) != 0)), __ccgo_ts+1704+BoolUintptr(!(fl&(Uint32FromUint32(1)<<(Int32FromUint8('-')-Int32FromUint8(' '))) != 0)), __ccgo_ts+714+BoolUintptr(!(fl&(Uint32FromUint32(1)<<(Int32FromUint8(' ')-Int32FromUint8(' '))) != 0)), __ccgo_ts+1706+BoolUintptr(!(fl&(Uint32FromUint32(1)<<(Int32FromUint8('0')-Int32FromUint8(' '))) != 0)), int32(_sizeprefix[t|int32(32)-int32('a')]), t))
 		switch t | Int32FromInt32(32) {
 		case int32('a'):
 			fallthrough
@@ -147844,7 +144048,7 @@ func Xvfwscanf(tls *TLS, f uintptr, fmt uintptr, ap Tva_list) (r int32) {
 					width = int32(1)
 				}
 				invert = int32(1)
-				set = __ccgo_ts + 3822
+				set = __ccgo_ts + 1708
 			} else {
 				if t == int32('s') {
 					invert = int32(1)
@@ -148021,7 +144225,7 @@ func Xvfwscanf(tls *TLS, f uintptr, fmt uintptr, ap Tva_list) (r int32) {
 			if width < int32(1) {
 				width = 0
 			}
-			Xsnprintf(tls, bp+8, uint64(22), __ccgo_ts+3826, VaList(bp+40, int32(1)+BoolInt32(!(dest != 0)), __ccgo_ts+3844, width, uintptr(unsafe.Pointer(&_size_pfx))+uintptr(size+int32(2))*3, t))
+			Xsnprintf(tls, bp+8, uint64(22), __ccgo_ts+1712, VaList(bp+40, int32(1)+BoolInt32(!(dest != 0)), __ccgo_ts+1730, width, uintptr(unsafe.Pointer(&_size_pfx))+uintptr(size+int32(2))*3, t))
 			*(*Toff_t)(unsafe.Pointer(bp)) = 0
 			if dest != 0 {
 				v45 = dest
@@ -148686,7 +144890,7 @@ func Xecvt(tls *TLS, x float64, n int32, dp uintptr, sign uintptr) (r uintptr) {
 	if uint32(n)-uint32(1) > uint32(15) {
 		n = int32(15)
 	}
-	Xsprintf(tls, bp, __ccgo_ts+3847, VaList(bp+40, n-int32(1), x))
+	Xsprintf(tls, bp, __ccgo_ts+1733, VaList(bp+40, n-int32(1), x))
 	v1 = BoolInt32(int32((*(*[32]uint8)(unsafe.Pointer(bp)))[0]) == Int32FromUint8('-'))
 	*(*int32)(unsafe.Pointer(sign)) = v1
 	i = v1
@@ -148723,12 +144927,12 @@ func Xfcvt(tls *TLS, x float64, n int32, dp uintptr, sign uintptr) (r uintptr) {
 	if uint32(n) > uint32(1400) {
 		n = int32(1400)
 	}
-	Xsprintf(tls, bp, __ccgo_ts+3852, VaList(bp+1512, n, x))
+	Xsprintf(tls, bp, __ccgo_ts+1738, VaList(bp+1512, n, x))
 	i = BoolInt32(int32((*(*[1500]uint8)(unsafe.Pointer(bp)))[0]) == int32('-'))
 	if int32((*(*[1500]uint8)(unsafe.Pointer(bp)))[i]) == int32('0') {
-		lz = int32(Xstrspn(tls, bp+uintptr(i)+uintptr(2), __ccgo_ts+3820))
+		lz = int32(Xstrspn(tls, bp+uintptr(i)+uintptr(2), __ccgo_ts+1706))
 	} else {
-		lz = -int32(Xstrcspn(tls, bp+uintptr(i), __ccgo_ts+1628))
+		lz = -int32(Xstrcspn(tls, bp+uintptr(i), __ccgo_ts+606))
 	}
 	if n <= lz {
 		*(*int32)(unsafe.Pointer(sign)) = i
@@ -148736,7 +144940,7 @@ func Xfcvt(tls *TLS, x float64, n int32, dp uintptr, sign uintptr) (r uintptr) {
 		if uint32(n) > uint32(14) {
 			n = int32(14)
 		}
-		return __ccgo_ts + 3857 + UintptrFromInt32(14) - uintptr(n)
+		return __ccgo_ts + 1743 + UintptrFromInt32(14) - uintptr(n)
 	}
 	return Xecvt(tls, x, n-lz, dp, sign)
 }
@@ -148748,7 +144952,7 @@ func Xgcvt(tls *TLS, x float64, n int32, b uintptr) (r uintptr) {
 	}
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
-	Xsprintf(tls, b, __ccgo_ts+3873, VaList(bp+8, n, x))
+	Xsprintf(tls, b, __ccgo_ts+1759, VaList(bp+8, n, x))
 	return b
 }
 
@@ -149264,7 +145468,7 @@ func _do_read(tls *TLS, f uintptr, buf uintptr, len1 Tsize_t) (r Tsize_t) {
 	_, _, _, _, _ = i, wcs, v2, v3, v4
 	wcs = (*TFILE)(unsafe.Pointer(f)).Fcookie
 	if !(*(*Twchar_t)(unsafe.Pointer(wcs)) != 0) {
-		wcs = __ccgo_ts + 3878
+		wcs = __ccgo_ts + 1764
 	}
 	i = uint64(0)
 	for {
@@ -149368,7 +145572,7 @@ func _do_read1(tls *TLS, f uintptr, buf uintptr, len1 Tsize_t) (r Tsize_t) {
 	_, _, _, _, _ = i, wcs, v2, v3, v4
 	wcs = (*TFILE)(unsafe.Pointer(f)).Fcookie
 	if !(*(*Twchar_t)(unsafe.Pointer(wcs)) != 0) {
-		wcs = __ccgo_ts + 3878
+		wcs = __ccgo_ts + 1764
 	}
 	i = uint64(0)
 	for {
@@ -152656,7 +148860,7 @@ func Xmkdtemp(tls *TLS, template uintptr) (r uintptr) {
 	_, _, _ = l, retries, v1
 	l = Xstrlen(tls, template)
 	retries = int32(100)
-	if l < uint64(6) || Xmemcmp(tls, template+uintptr(l)-uintptr(6), __ccgo_ts+3886, uint64(6)) != 0 {
+	if l < uint64(6) || Xmemcmp(tls, template+uintptr(l)-uintptr(6), __ccgo_ts+1772, uint64(6)) != 0 {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 		return uintptr(0)
 	}
@@ -152674,7 +148878,7 @@ func Xmkdtemp(tls *TLS, template uintptr) (r uintptr) {
 			break
 		}
 	}
-	Xmemcpy(tls, template+uintptr(l)-uintptr(6), __ccgo_ts+3886, uint64(6))
+	Xmemcpy(tls, template+uintptr(l)-uintptr(6), __ccgo_ts+1772, uint64(6))
 	return uintptr(0)
 }
 
@@ -152697,7 +148901,7 @@ func X__mkostemps(tls *TLS, template uintptr, len1 int32, flags int32) (r int32)
 	var l Tsize_t
 	_, _, _, _, _ = fd, l, retries, v1, v3
 	l = Xstrlen(tls, template)
-	if l < uint64(6) || uint64(len1) > l-uint64(6) || Xmemcmp(tls, template+uintptr(l)-uintptr(len1)-uintptr(6), __ccgo_ts+3886, uint64(6)) != 0 {
+	if l < uint64(6) || uint64(len1) > l-uint64(6) || Xmemcmp(tls, template+uintptr(l)-uintptr(len1)-uintptr(6), __ccgo_ts+1772, uint64(6)) != 0 {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 		return -int32(1)
 	}
@@ -152719,7 +148923,7 @@ func X__mkostemps(tls *TLS, template uintptr, len1 int32, flags int32) (r int32)
 			break
 		}
 	}
-	Xmemcpy(tls, template+uintptr(l)-uintptr(len1)-uintptr(6), __ccgo_ts+3886, uint64(6))
+	Xmemcpy(tls, template+uintptr(l)-uintptr(len1)-uintptr(6), __ccgo_ts+1772, uint64(6))
 	return -int32(1)
 }
 
@@ -152760,7 +148964,7 @@ func Xmktemp(tls *TLS, template uintptr) (r uintptr) {
 	_, _, _ = l, retries, v1
 	l = Xstrlen(tls, template)
 	retries = int32(100)
-	if l < uint64(6) || Xmemcmp(tls, template+uintptr(l)-uintptr(6), __ccgo_ts+3886, uint64(6)) != 0 {
+	if l < uint64(6) || Xmemcmp(tls, template+uintptr(l)-uintptr(6), __ccgo_ts+1772, uint64(6)) != 0 {
 		*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 		*(*uint8)(unsafe.Pointer(template)) = uint8(0)
 		return template
@@ -152913,21 +149117,7 @@ func Xtcgetwinsize(tls *TLS, fd int32, wsz uintptr) (r int32) {
 		trc("tls=%v fd=%v wsz=%v, (%v:)", tls, fd, wsz, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ioctl)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppuint64(((((ppUint32FromUint32(2)) << (ppInt32FromInt32(29))) | (ppuint32(((ppInt32FromUint8('t')) << (ppInt32FromInt32(8)))))) | (ppuint32((ppInt32FromInt32(104))))))) | ((ppUint64FromInt64(8)) << (ppInt32FromInt32(16)))))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aawsz))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3893)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_ioctl), int64(fd), int64(uint64(Uint32FromUint32(2)<<Int32FromInt32(29)|uint32(Int32FromUint8('t')<<Int32FromInt32(8))|uint32(Int32FromInt32(104)))|Uint64FromInt64(8)<<Int32FromInt32(16)), int64(wsz)))))
 }
 
 func Xtcsendbreak(tls *TLS, fd int32, dur int32) (r int32) {
@@ -152960,21 +149150,7 @@ func Xtcsetwinsize(tls *TLS, fd int32, wsz uintptr) (r int32) {
 		trc("tls=%v fd=%v wsz=%v, (%v:)", tls, fd, wsz, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ioctl)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64(((ppuint64(((((ppUint32FromUint32(4)) << (ppInt32FromInt32(29))) | (ppuint32(((ppInt32FromUint8('t')) << (ppInt32FromInt32(8)))))) | (ppuint32((ppInt32FromInt32(103))))))) | ((ppUint64FromInt64(8)) << (ppInt32FromInt32(16)))))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aawsz))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+3906)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_ioctl), int64(fd), int64(uint64(Uint32FromUint32(4)<<Int32FromInt32(29)|uint32(Int32FromUint8('t')<<Int32FromInt32(8))|uint32(Int32FromInt32(103)))|Uint64FromInt64(8)<<Int32FromInt32(16)), int64(wsz)))))
 }
 
 func X__map_file(tls *TLS, pathname uintptr, size uintptr) (r uintptr) {
@@ -152985,22 +149161,11 @@ func X__map_file(tls *TLS, pathname uintptr, size uintptr) (r uintptr) {
 	bp := tls.Alloc(144)
 	defer tls.Free(144)
 	var fd int32
-	var map1, v4 uintptr
-	var r0, r01, r3, r31, r4, v1 int64
+	var map1, v1 uintptr
 	var _ /* st at bp+0 */ Tstat
-	_, _, _, _, _, _, _, _, _ = fd, map1, r0, r01, r3, r31, r4, v1, v4
-	map1 = uintptr(-Int32FromInt32(1)) //TODO "r0" // syscall_arch.h:26:16:
-	panic(0)                           // assembler statements not supported  aar01 = ((ppint64(mvSYS_open)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0)                           // assembler statements not supported  aar31 = ((ppint64((aapathname))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0)                           // assembler statements not supported  aar4 = ((ppint64(((((ppInt32FromInt32(mvO_RDONLY)) | (ppInt32FromInt32(mvO_CLOEXEC))) | (ppInt32FromInt32(mvO_NONBLOCK))) | (ppInt32FromInt32(mvO_LARGEFILE))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+3919)
-	v1 = r31
-	goto _2
-_2:
-	fd = int32(X__syscall_ret(tls, uint64(v1)))
+	_, _, _ = fd, map1, v1
+	map1 = uintptr(-Int32FromInt32(1))
+	fd = int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_open), int64(pathname), int64(Int32FromInt32(O_RDONLY)|Int32FromInt32(O_CLOEXEC)|Int32FromInt32(O_NONBLOCK)|Int32FromInt32(O_LARGEFILE))))))
 	if fd < 0 {
 		return uintptr(0)
 	}
@@ -153008,23 +149173,13 @@ _2:
 		map1 = X__mmap(tls, uintptr(0), uint64((*(*Tstat)(unsafe.Pointer(bp))).Fst_size), int32(PROT_READ), int32(MAP_SHARED), fd, 0)
 		*(*Tsize_t)(unsafe.Pointer(size)) = uint64((*(*Tstat)(unsafe.Pointer(bp))).Fst_size)
 	}
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_close)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+3919)
-	_ = r3
-	goto _3
-_3:
-	;
+	X__syscall1(tls, int64(SYS_close), int64(fd))
 	if map1 == uintptr(-Int32FromInt32(1)) {
-		v4 = uintptr(0)
+		v1 = uintptr(0)
 	} else {
-		v4 = map1
+		v1 = map1
 	}
-	return v4
+	return v1
 }
 
 func X__month_to_secs(tls *TLS, month int32, is_leap int32) (r int32) {
@@ -153376,9 +149531,9 @@ func _do_tzset(tls *TLS) {
 	_, _, _, _, _, _, _, _, _, _, _, _, _ = i, l, map1, p1, pathname, posix_form, scale, skip, try, v2, v5, v6, v7
 	pathname = bp + 6 + uintptr(24)
 	map1 = uintptr(0)
-	*(*uintptr)(unsafe.Pointer(bp + 288)) = Xgetenv(tls, __ccgo_ts+3930)
+	*(*uintptr)(unsafe.Pointer(bp + 288)) = Xgetenv(tls, __ccgo_ts+1779)
 	if !(*(*uintptr)(unsafe.Pointer(bp + 288)) != 0) {
-		*(*uintptr)(unsafe.Pointer(bp + 288)) = __ccgo_ts + 3933
+		*(*uintptr)(unsafe.Pointer(bp + 288)) = __ccgo_ts + 1782
 	}
 	if !(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp + 288)))) != 0) {
 		*(*uintptr)(unsafe.Pointer(bp + 288)) = uintptr(unsafe.Pointer(&X__utc))
@@ -153427,7 +149582,7 @@ func _do_tzset(tls *TLS) {
 	if int32(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp + 288))))) != int32(':') {
 		*(*uintptr)(unsafe.Pointer(bp + 296)) = *(*uintptr)(unsafe.Pointer(bp + 288))
 		_getname(tls, bp+308, bp+296)
-		if *(*uintptr)(unsafe.Pointer(bp + 296)) != *(*uintptr)(unsafe.Pointer(bp + 288)) && (int32(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp + 296))))) == int32('+') || int32(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp + 296))))) == int32('-') || BoolInt32(uint32(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp + 296)))))-uint32('0') < uint32(10)) != 0 || !(Xstrcmp(tls, bp+308, __ccgo_ts+3948) != 0) || !(Xstrcmp(tls, bp+308, __ccgo_ts+3952) != 0)) {
+		if *(*uintptr)(unsafe.Pointer(bp + 296)) != *(*uintptr)(unsafe.Pointer(bp + 288)) && (int32(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp + 296))))) == int32('+') || int32(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp + 296))))) == int32('-') || BoolInt32(uint32(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp + 296)))))-uint32('0') < uint32(10)) != 0 || !(Xstrcmp(tls, bp+308, __ccgo_ts+1797) != 0) || !(Xstrcmp(tls, bp+308, __ccgo_ts+1801) != 0)) {
 			posix_form = int32(1)
 		}
 	}
@@ -153439,7 +149594,7 @@ func _do_tzset(tls *TLS) {
 			*(*uintptr)(unsafe.Pointer(bp + 288))++
 		}
 		if int32(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp + 288))))) == int32('/') || int32(*(*uint8)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(bp + 288))))) == int32('.') {
-			if !(X__libc.Fsecure != 0) || !(Xstrcmp(tls, *(*uintptr)(unsafe.Pointer(bp + 288)), __ccgo_ts+3933) != 0) {
+			if !(X__libc.Fsecure != 0) || !(Xstrcmp(tls, *(*uintptr)(unsafe.Pointer(bp + 288)), __ccgo_ts+1782) != 0) {
 				map1 = X__map_file(tls, *(*uintptr)(unsafe.Pointer(bp + 288)), uintptr(unsafe.Pointer(&_map_size)))
 			}
 		} else {
@@ -153466,7 +149621,7 @@ func _do_tzset(tls *TLS) {
 			*(*uintptr)(unsafe.Pointer(bp + 288)) = uintptr(unsafe.Pointer(&X__utc))
 		}
 	}
-	if map1 != 0 && (_map_size < uint64(44) || Xmemcmp(tls, map1, __ccgo_ts+3956, uint64(4)) != 0) {
+	if map1 != 0 && (_map_size < uint64(44) || Xmemcmp(tls, map1, __ccgo_ts+1805, uint64(4)) != 0) {
 		X__munmap(tls, map1, _map_size)
 		map1 = uintptr(0)
 		*(*uintptr)(unsafe.Pointer(bp + 288)) = uintptr(unsafe.Pointer(&X__utc))
@@ -153905,7 +150060,7 @@ func X__asctime_r(tls *TLS, tm uintptr, buf uintptr) (r uintptr) {
 	}
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
-	if Xsnprintf(tls, buf, uint64(26), __ccgo_ts+3961, VaList(bp+8, X__nl_langinfo_l(tls, int32(ABDAY_1)+(*Ttm)(unsafe.Pointer(tm)).Ftm_wday, uintptr(unsafe.Pointer(&X__c_locale))), X__nl_langinfo_l(tls, int32(ABMON_1)+(*Ttm)(unsafe.Pointer(tm)).Ftm_mon, uintptr(unsafe.Pointer(&X__c_locale))), (*Ttm)(unsafe.Pointer(tm)).Ftm_mday, (*Ttm)(unsafe.Pointer(tm)).Ftm_hour, (*Ttm)(unsafe.Pointer(tm)).Ftm_min, (*Ttm)(unsafe.Pointer(tm)).Ftm_sec, int32(1900)+(*Ttm)(unsafe.Pointer(tm)).Ftm_year)) >= int32(26) {
+	if Xsnprintf(tls, buf, uint64(26), __ccgo_ts+1810, VaList(bp+8, X__nl_langinfo_l(tls, int32(ABDAY_1)+(*Ttm)(unsafe.Pointer(tm)).Ftm_wday, uintptr(unsafe.Pointer(&X__c_locale))), X__nl_langinfo_l(tls, int32(ABMON_1)+(*Ttm)(unsafe.Pointer(tm)).Ftm_mon, uintptr(unsafe.Pointer(&X__c_locale))), (*Ttm)(unsafe.Pointer(tm)).Ftm_mday, (*Ttm)(unsafe.Pointer(tm)).Ftm_hour, (*Ttm)(unsafe.Pointer(tm)).Ftm_min, (*Ttm)(unsafe.Pointer(tm)).Ftm_sec, int32(1900)+(*Ttm)(unsafe.Pointer(tm)).Ftm_year)) >= int32(26) {
 		/* ISO C requires us to use the above format string,
 		 * even if it will not fit in the buffer. Thus asctime_r
 		 * is _supposed_ to crash if the fields in tm are too large.
@@ -153914,7 +150069,7 @@ func X__asctime_r(tls *TLS, tm uintptr, buf uintptr) (r uintptr) {
 		 * on other implementations (e.g. stack smashing..).
 		 */
 		// __asm__ __volatile__ (".long 0");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 54, __ccgo_ts+3993)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 54, __ccgo_ts+1842)
 	}
 	return buf
 }
@@ -153961,22 +150116,11 @@ func Xclock_getcpuclockid(tls *TLS, pid Tpid_t, clk uintptr) (r int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
 	var id Tclockid_t
-	var r0, r3, r4, v1 int64
 	var ret int32
 	var _ /* ts at bp+0 */ Ttimespec
-	_, _, _, _, _, _ = id, r0, r3, r4, ret, v1
-	id = int32(uint32(-pid-Int32FromInt32(1))*uint32(8) + uint32(2)) //TODO "r0" // syscall_arch.h:26:16:
-	panic(0)                                                         // assembler statements not supported  aar0 = ((ppint64(mvSYS_clock_getres)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0)                                                         // assembler statements not supported  aar3 = ((ppint64((aaid))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0)                                                         // assembler statements not supported  aar4 = ((ppint64(cgbp)));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4005)
-	v1 = r3
-	goto _2
-_2:
-	ret = int32(v1)
+	_, _ = id, ret
+	id = int32(uint32(-pid-Int32FromInt32(1))*uint32(8) + uint32(2))
+	ret = int32(X__syscall2(tls, int64(SYS_clock_getres), int64(id), int64(bp)))
 	if ret == -int32(EINVAL) {
 		ret = -int32(ESRCH)
 	}
@@ -153992,22 +150136,9 @@ func Xclock_getres(tls *TLS, clk Tclockid_t, ts uintptr) (r int32) {
 		trc("tls=%v clk=%v ts=%v, (%v:)", tls, clk, ts, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
 	/* If reaching this point, it's a 64-bit arch or time64-only
 	 * 32-bit arch and we can get result directly into timespec. */
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_clock_getres)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaclk))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aats))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4025)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_clock_getres), int64(clk), int64(ts)))))
 }
 
 func X__clock_gettime(tls *TLS, clk Tclockid_t, ts uintptr) (r1 int32) {
@@ -154016,34 +150147,11 @@ func X__clock_gettime(tls *TLS, clk Tclockid_t, ts uintptr) (r1 int32) {
 		defer func() { trc("-> %v", r1) }()
 	}
 	var r int32
-	var r0, r3, r4, v1 int64
-	_, _, _, _, _ = r, r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_clock_gettime)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaclk))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aats))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4038)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
+	_ = r
+	r = int32(X__syscall2(tls, int64(SYS_clock_gettime), int64(clk), int64(ts)))
 	if r == -int32(ENOSYS) {
 		if clk == CLOCK_REALTIME {
-			//TODO "r0" // syscall_arch.h:26:16:
-			panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_gettimeofday)));//TODO "r3" // syscall_arch.h:27:16:
-			panic(0) // assembler statements not supported  aar3 = ((ppint64((aats))));//TODO "r4" // syscall_arch.h:28:16:
-			panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(0)))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4)
-			// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4038)
-			_ = r3
-			goto _3
-		_3:
-			;
+			X__syscall2(tls, int64(SYS_gettimeofday), int64(ts), int64(Int32FromInt32(0)))
 			(*Ttimespec)(unsafe.Pointer(ts)).Ftv_nsec = int64(int32((*Ttimespec)(unsafe.Pointer(ts)).Ftv_nsec) * int32(1000))
 			return 0
 		}
@@ -154087,20 +150195,7 @@ func Xclock_settime(tls *TLS, clk Tclockid_t, ts uintptr) (r int32) {
 		trc("tls=%v clk=%v ts=%v, (%v:)", tls, clk, ts, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_clock_settime)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaclk))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aats))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4054)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_clock_settime), int64(clk), int64(ts)))))
 }
 
 func Xctime(tls *TLS, t uintptr) (r uintptr) {
@@ -154182,14 +150277,14 @@ func Xgetdate(tls *TLS, s uintptr) (r uintptr) {
 	var _ /* fmt at bp+0 */ [100]uint8
 	_, _, _, _ = datemsk, f, p, ret
 	ret = uintptr(0)
-	datemsk = Xgetenv(tls, __ccgo_ts+4068)
+	datemsk = Xgetenv(tls, __ccgo_ts+1854)
 	f = uintptr(0)
 	_pthread_setcancelstate(tls, PTHREAD_CANCEL_DEFERRED, bp+100)
 	if !(datemsk != 0) {
 		Xgetdate_err = int32(1)
 		goto out
 	}
-	f = Xfopen(tls, datemsk, __ccgo_ts+639)
+	f = Xfopen(tls, datemsk, __ccgo_ts+412)
 	if !(f != 0) {
 		if *(*int32)(unsafe.Pointer(X__errno_location(tls))) == int32(ENOMEM) {
 			Xgetdate_err = int32(6)
@@ -154421,7 +150516,7 @@ func X__strftime_fmt_1(tls *TLS, s uintptr, l uintptr, f int32, tm uintptr, loc 
 	var item Tnl_item
 	var val int64
 	_, _, _, _, _, _, _, _, _, _, _, _ = d, def_pad, fmt, item, val, width, v1, v2, v4, v5, v6, v7
-	fmt = __ccgo_ts + 3818
+	fmt = __ccgo_ts + 1704
 	width = int32(2)
 	def_pad = int32('0')
 	switch f {
@@ -154464,10 +150559,10 @@ func X__strftime_fmt_1(tls *TLS, s uintptr, l uintptr, f int32, tm uintptr, loc 
 		val = int64((*Ttm)(unsafe.Pointer(tm)).Ftm_mday)
 		goto number
 	case int32('D'):
-		fmt = __ccgo_ts + 4076
+		fmt = __ccgo_ts + 1862
 		goto recu_strftime
 	case int32('F'):
-		fmt = __ccgo_ts + 4085
+		fmt = __ccgo_ts + 1871
 		goto recu_strftime
 	case int32('g'):
 		fallthrough
@@ -154518,7 +150613,7 @@ func X__strftime_fmt_1(tls *TLS, s uintptr, l uintptr, f int32, tm uintptr, loc 
 		goto number
 	case int32('n'):
 		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(1)
-		return __ccgo_ts + 625
+		return __ccgo_ts + 398
 	case int32('p'):
 		if (*Ttm)(unsafe.Pointer(tm)).Ftm_hour >= int32(12) {
 			v1 = int32(PM_STR)
@@ -154556,7 +150651,7 @@ func X__strftime_fmt_1(tls *TLS, s uintptr, l uintptr, f int32, tm uintptr, loc 
 		item = int32(T_FMT_AMPM)
 		goto nl_strftime
 	case int32('R'):
-		fmt = __ccgo_ts + 4094
+		fmt = __ccgo_ts + 1880
 		goto recu_strftime
 	case int32('s'):
 		val = X__tm_to_secs(tls, tm) - (*Ttm)(unsafe.Pointer(tm)).F__tm_gmtoff
@@ -154567,9 +150662,9 @@ func X__strftime_fmt_1(tls *TLS, s uintptr, l uintptr, f int32, tm uintptr, loc 
 		goto number
 	case int32('t'):
 		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(1)
-		return __ccgo_ts + 3068
+		return __ccgo_ts + 1442
 	case int32('T'):
-		fmt = __ccgo_ts + 4100
+		fmt = __ccgo_ts + 1886
 		goto recu_strftime
 	case int32('u'):
 		if (*Ttm)(unsafe.Pointer(tm)).Ftm_wday != 0 {
@@ -154608,7 +150703,7 @@ func X__strftime_fmt_1(tls *TLS, s uintptr, l uintptr, f int32, tm uintptr, loc 
 	case int32('Y'):
 		val = int64((*Ttm)(unsafe.Pointer(tm)).Ftm_year) + int64(1900)
 		if val >= int64(10000) {
-			*(*Tsize_t)(unsafe.Pointer(l)) = uint64(Xsnprintf(tls, s, uint64(100), __ccgo_ts+4109, VaList(bp+8, val)))
+			*(*Tsize_t)(unsafe.Pointer(l)) = uint64(Xsnprintf(tls, s, uint64(100), __ccgo_ts+1895, VaList(bp+8, val)))
 			return s
 		}
 		width = int32(4)
@@ -154618,7 +150713,7 @@ func X__strftime_fmt_1(tls *TLS, s uintptr, l uintptr, f int32, tm uintptr, loc 
 			*(*Tsize_t)(unsafe.Pointer(l)) = uint64(0)
 			return __ccgo_ts
 		}
-		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(Xsnprintf(tls, s, uint64(100), __ccgo_ts+4115, VaList(bp+8, (*Ttm)(unsafe.Pointer(tm)).F__tm_gmtoff/int64(3600)*int64(100)+(*Ttm)(unsafe.Pointer(tm)).F__tm_gmtoff%int64(3600)/int64(60))))
+		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(Xsnprintf(tls, s, uint64(100), __ccgo_ts+1901, VaList(bp+8, (*Ttm)(unsafe.Pointer(tm)).F__tm_gmtoff/int64(3600)*int64(100)+(*Ttm)(unsafe.Pointer(tm)).F__tm_gmtoff%int64(3600)/int64(60))))
 		return s
 	case int32('Z'):
 		if (*Ttm)(unsafe.Pointer(tm)).Ftm_isdst < 0 {
@@ -154629,7 +150724,7 @@ func X__strftime_fmt_1(tls *TLS, s uintptr, l uintptr, f int32, tm uintptr, loc 
 		goto string
 	case int32('%'):
 		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(1)
-		return __ccgo_ts + 1447
+		return __ccgo_ts + 445
 	default:
 		return uintptr(0)
 	}
@@ -154643,13 +150738,13 @@ number:
 	}
 	switch v7 {
 	case int32('-'):
-		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(Xsnprintf(tls, s, uint64(100), __ccgo_ts+4122, VaList(bp+8, val)))
+		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(Xsnprintf(tls, s, uint64(100), __ccgo_ts+1908, VaList(bp+8, val)))
 	case int32('_'):
-		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(Xsnprintf(tls, s, uint64(100), __ccgo_ts+4127, VaList(bp+8, width, val)))
+		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(Xsnprintf(tls, s, uint64(100), __ccgo_ts+1913, VaList(bp+8, width, val)))
 	case int32('0'):
 		fallthrough
 	default:
-		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(Xsnprintf(tls, s, uint64(100), __ccgo_ts+4133, VaList(bp+8, width, val)))
+		*(*Tsize_t)(unsafe.Pointer(l)) = uint64(Xsnprintf(tls, s, uint64(100), __ccgo_ts+1919, VaList(bp+8, width, val)))
 		break
 	}
 	return s
@@ -154828,16 +150923,7 @@ func Xstrftime(tls *TLS, s uintptr, n Tsize_t, f uintptr, tm uintptr) (r Tsize_t
 		trc("tls=%v s=%v n=%v f=%v tm=%v, (%v:)", tls, s, n, f, tm, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+4140)
-	v1 = tp
-	goto _2
-_2:
-	return X__strftime_l(tls, s, n, f, tm, (*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale)
+	return X__strftime_l(tls, s, n, f, tm, (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)
 }
 
 func Xstrftime_l(tls *TLS, s uintptr, n Tsize_t, f uintptr, tm uintptr, loc Tlocale_t) (r Tsize_t) {
@@ -155020,7 +151106,7 @@ func Xstrptime(tls *TLS, s uintptr, f uintptr, tm uintptr) (r uintptr) {
 		goto numeric_range
 	_19:
 		;
-		s = Xstrptime(tls, s, __ccgo_ts+4076, tm)
+		s = Xstrptime(tls, s, __ccgo_ts+1862, tm)
 		if !(s != 0) {
 			return uintptr(0)
 		}
@@ -155108,7 +151194,7 @@ func Xstrptime(tls *TLS, s uintptr, f uintptr, tm uintptr) (r uintptr) {
 		goto _41
 	_29:
 		;
-		s = Xstrptime(tls, s, __ccgo_ts+4094, tm)
+		s = Xstrptime(tls, s, __ccgo_ts+1880, tm)
 		if !(s != 0) {
 			return uintptr(0)
 		}
@@ -155121,7 +151207,7 @@ func Xstrptime(tls *TLS, s uintptr, f uintptr, tm uintptr) (r uintptr) {
 		goto numeric_range
 	_31:
 		;
-		s = Xstrptime(tls, s, __ccgo_ts+4100, tm)
+		s = Xstrptime(tls, s, __ccgo_ts+1886, tm)
 		if !(s != 0) {
 			return uintptr(0)
 		}
@@ -155330,41 +151416,19 @@ func Xtimer_delete(tls *TLS, t Ttimer_t) (r int32) {
 		trc("tls=%v t=%v, (%v:)", tls, t, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r01, r3, r31, r4, v2 int64
 	var td Tpthread_t
-	_, _, _, _, _, _, _ = r0, r01, r3, r31, r4, td, v2
+	_ = td
 	if int64(t) < 0 {
 		td = uintptr(uint64(t) << Int32FromInt32(1))
 		// __asm__ __volatile__ ("sync" : : : "memory");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+4149)
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1926)
 		AtomicStorePInt32(td+148, AtomicLoadPInt32(td+148)|(-Int32FromInt32(1)-Int32FromInt32(0x7fffffff)))
 		// __asm__ __volatile__ ("sync" : : : "memory");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+347, 40, __ccgo_ts+4149)
-		//TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_tkill)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64(((*ts__pthread)(iqunsafe.ppPointer((aatd))).fdtid))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvSIGTIMER)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4149)
-		_ = r31
-		goto _1
-	_1:
-		;
+		X__assert_fail(tls, __ccgo_ts+212, __ccgo_ts+247, 40, __ccgo_ts+1926)
+		X__syscall2(tls, int64(SYS_tkill), int64((*t__pthread)(unsafe.Pointer(td)).Ftid), int64(Int32FromInt32(SIGTIMER)))
 		return 0
 	}
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_timer_delete)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aat))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4149)
-	v2 = r3
-	goto _3
-_3:
-	return int32(v2)
+	return int32(X__syscall1(tls, int64(SYS_timer_delete), int64(t)))
 }
 
 func Xtimer_getoverrun(tls *TLS, t Ttimer_t) (r int32) {
@@ -155372,24 +151436,13 @@ func Xtimer_getoverrun(tls *TLS, t Ttimer_t) (r int32) {
 		trc("tls=%v t=%v, (%v:)", tls, t, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
 	var td Tpthread_t
-	_, _, _, _ = r0, r3, td, v1
+	_ = td
 	if int64(t) < 0 {
 		td = uintptr(uint64(t) << Int32FromInt32(1))
 		t = uintptr(uint64(AtomicLoadPInt32(td+148) & Int32FromInt32(INT_MAX)))
 	}
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_timer_getoverrun)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aat))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4162)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_timer_getoverrun), int64(t)))))
 }
 
 func Xtimer_gettime(tls *TLS, t Ttimer_t, val uintptr) (r int32) {
@@ -155397,25 +151450,13 @@ func Xtimer_gettime(tls *TLS, t Ttimer_t, val uintptr) (r int32) {
 		trc("tls=%v t=%v val=%v, (%v:)", tls, t, val, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
 	var td Tpthread_t
-	_, _, _, _, _ = r0, r3, r4, td, v1
+	_ = td
 	if int64(t) < 0 {
 		td = uintptr(uint64(t) << Int32FromInt32(1))
 		t = uintptr(uint64(AtomicLoadPInt32(td+148) & Int32FromInt32(INT_MAX)))
 	}
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_timer_gettime)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aat))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaval))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4179)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_timer_gettime), int64(t), int64(val)))))
 }
 
 func Xtimer_settime(tls *TLS, t Ttimer_t, flags int32, val uintptr, old uintptr) (r int32) {
@@ -155423,27 +151464,13 @@ func Xtimer_settime(tls *TLS, t Ttimer_t, flags int32, val uintptr, old uintptr)
 		trc("tls=%v t=%v flags=%v val=%v old=%v, (%v:)", tls, t, flags, val, old, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
 	var td Tpthread_t
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, td, v1
+	_ = td
 	if int64(t) < 0 {
 		td = uintptr(uint64(t) << Int32FromInt32(1))
 		t = uintptr(uint64(AtomicLoadPInt32(td+148) & Int32FromInt32(INT_MAX)))
 	}
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_timer_settime)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aat))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaflags))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaval))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aaold))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+4193)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_timer_settime), int64(t), int64(flags), int64(val), int64(old)))))
 }
 
 type Ttms = struct {
@@ -155458,19 +151485,7 @@ func Xtimes(tls *TLS, tms uintptr) (r Tclock_t) {
 		trc("tls=%v tms=%v, (%v:)", tls, tms, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_times)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aatms))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4207)
-	v1 = r3
-	goto _2
-_2:
-	return v1
+	return X__syscall1(tls, int64(SYS_times), int64(tms))
 }
 
 // C documentation
@@ -155652,16 +151667,7 @@ func Xwcsftime(tls *TLS, wcs uintptr, n Tsize_t, f uintptr, tm uintptr) (r Tsize
 		trc("tls=%v wcs=%v n=%v f=%v tm=%v, (%v:)", tls, wcs, n, f, tm, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var tp, v1 Tuintptr_t
-	_, _ = tp, v1
-	//TODO "tp" // pthread_arch.h:3:21:
-	panic(0) // assembler statements not supported
-	// __asm__ ("" : "=r" (tp) );
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+254, 4, __ccgo_ts+4213)
-	v1 = tp
-	goto _2
-_2:
-	return X__wcsftime_l(tls, wcs, n, f, tm, (*t__pthread)(unsafe.Pointer(uintptr(v1))).Flocale)
+	return X__wcsftime_l(tls, wcs, n, f, tm, (*t__pthread)(unsafe.Pointer(___get_tp(tls))).Flocale)
 }
 
 func Xwcsftime_l(tls *TLS, s uintptr, n Tsize_t, f uintptr, tm uintptr, loc Tlocale_t) (r Tsize_t) {
@@ -155684,20 +151690,7 @@ func Xaccess(tls *TLS, filename uintptr, amode int32) (r int32) {
 		trc("tls=%v filename=%v amode=%v, (%v:)", tls, filename, amode, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_access)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafilename))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaamode))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4222)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_access), int64(filename), int64(amode)))))
 }
 
 func Xacct(tls *TLS, filename uintptr) (r int32) {
@@ -155705,19 +151698,7 @@ func Xacct(tls *TLS, filename uintptr) (r int32) {
 		trc("tls=%v filename=%v, (%v:)", tls, filename, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_acct)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafilename))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4229)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_acct), int64(filename)))))
 }
 
 func Xalarm(tls *TLS, seconds uint32) (r uint32) {
@@ -155744,19 +151725,7 @@ func Xchdir(tls *TLS, path uintptr) (r int32) {
 		trc("tls=%v path=%v, (%v:)", tls, path, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_chdir)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4234)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_chdir), int64(path)))))
 }
 
 func Xchown(tls *TLS, path uintptr, uid Tuid_t, gid Tgid_t) (r int32) {
@@ -155764,21 +151733,7 @@ func Xchown(tls *TLS, path uintptr, uid Tuid_t, gid Tgid_t) (r int32) {
 		trc("tls=%v path=%v uid=%v gid=%v, (%v:)", tls, path, uid, gid, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_chown)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aauid))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aagid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4240)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_chown), int64(path), int64(uid), int64(gid)))))
 }
 
 func _dummy12(tls *TLS, fd int32) (r int32) {
@@ -155808,9 +151763,9 @@ func Xctermid(tls *TLS, s uintptr) (r uintptr) {
 	var v1 uintptr
 	_ = v1
 	if s != 0 {
-		v1 = Xstrcpy(tls, s, __ccgo_ts+616)
+		v1 = Xstrcpy(tls, s, __ccgo_ts+389)
 	} else {
-		v1 = __ccgo_ts + 616
+		v1 = __ccgo_ts + 389
 	}
 	return v1
 }
@@ -155820,19 +151775,7 @@ func Xdup(tls *TLS, fd int32) (r int32) {
 		trc("tls=%v fd=%v, (%v:)", tls, fd, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_dup)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4246)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_dup), int64(fd)))))
 }
 
 func Xdup2(tls *TLS, old int32, new1 int32) (r1 int32) {
@@ -155841,20 +151784,9 @@ func Xdup2(tls *TLS, old int32, new1 int32) (r1 int32) {
 		defer func() { trc("-> %v", r1) }()
 	}
 	var r, v1 int32
-	var r0, r3, r4, v2 int64
-	_, _, _, _, _, _ = r, r0, r3, r4, v1, v2
-	for { //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_dup2)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aaold))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((aanew))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4250)
-		v2 = r3
-		goto _3
-	_3:
-		v1 = int32(v2)
+	_, _ = r, v1
+	for {
+		v1 = int32(X__syscall2(tls, int64(SYS_dup2), int64(old), int64(new1)))
 		r = v1
 		if !(v1 == -int32(EBUSY)) {
 			break
@@ -155868,26 +151800,14 @@ func X__dup3(tls *TLS, old int32, new1 int32, flags int32) (r1 int32) {
 		trc("tls=%v old=%v new1=%v flags=%v, (%v:)", tls, old, new1, flags, origin(2))
 		defer func() { trc("-> %v", r1) }()
 	}
-	var r, v1, v4 int32
-	var r0, r01, r3, r31, r4, r41, r5, v2, v5 int64
-	_, _, _, _, _, _, _, _, _, _, _, _ = r, r0, r01, r3, r31, r4, r41, r5, v1, v2, v4, v5
+	var r, v1, v2 int32
+	_, _, _ = r, v1, v2
 	if old == new1 {
 		return int32(X__syscall_ret(tls, uint64(-Int32FromInt32(EINVAL))))
 	}
 	if flags != 0 {
-		for { //TODO "r0" // syscall_arch.h:37:16:
-			panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_dup3)));//TODO "r3" // syscall_arch.h:38:16:
-			panic(0) // assembler statements not supported  aar31 = ((ppint64((aaold))));//TODO "r4" // syscall_arch.h:39:16:
-			panic(0) // assembler statements not supported  aar41 = ((ppint64((aanew))));//TODO "r5" // syscall_arch.h:40:16:
-			panic(0) // assembler statements not supported  aar5 = ((ppint64((aaflags))));
-			// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-			// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-			// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-			X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4255)
-			v2 = r31
-			goto _3
-		_3:
-			v1 = int32(v2)
+		for {
+			v1 = int32(X__syscall3(tls, int64(SYS_dup3), int64(old), int64(new1), int64(flags)))
 			r = v1
 			if !(v1 == -int32(EBUSY)) {
 				break
@@ -155900,36 +151820,15 @@ func X__dup3(tls *TLS, old int32, new1 int32, flags int32) (r1 int32) {
 			return int32(X__syscall_ret(tls, uint64(-Int32FromInt32(EINVAL))))
 		}
 	}
-	for { //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_dup2)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aaold))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((aanew))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4255)
-		v5 = r3
-		goto _6
-	_6:
-		v4 = int32(v5)
-		r = v4
-		if !(v4 == -int32(EBUSY)) {
+	for {
+		v2 = int32(X__syscall2(tls, int64(SYS_dup2), int64(old), int64(new1)))
+		r = v2
+		if !(v2 == -int32(EBUSY)) {
 			break
 		}
 	}
 	if r >= 0 && flags&int32(O_CLOEXEC) != 0 {
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aanew))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4255)
-		_ = r31
-		goto _7
-	_7:
+		X__syscall3(tls, int64(SYS_fcntl), int64(new1), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 	}
 	return int32(X__syscall_ret(tls, uint64(r)))
 }
@@ -155952,93 +151851,15 @@ type Tctx1 = struct {
 func _checker(tls *TLS, p uintptr) (r int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
-	var c2 uintptr
-	var r0, r01, r02, r03, r04, r3, r31, r32, r33, r34, r4, r41, r42, r5, r51, r6, v1, v11, v3, v5, v7 int64
-	var v9 bool
+	var c uintptr
 	var _ /* ret at bp+0 */ int32
-	_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ = c2, r0, r01, r02, r03, r04, r3, r31, r32, r33, r34, r4, r41, r42, r5, r51, r6, v1, v11, v3, v5, v7, v9
-	c2 = p
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getegid)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4262)
-	v1 = r3
-	goto _2
-_2: //TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar02 = ((ppint64(mvSYS_setregid)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar32 = ((ccv1));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((-((ppInt32FromInt32(1)))))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4262)
-	v3 = r32
-	goto _4
-_4:
-	;
-	if v9 = v3 != 0; !v9 { //TODO "r0" // syscall_arch.h:6:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_geteuid)));//TODO "r3" // syscall_arch.h:7:16:
-		panic(0) // assembler statements not supported
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "=r"(r3)
-		// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4262)
-		v5 = r3
-		goto _6
-	_6: //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar02 = ((ppint64(mvSYS_setreuid)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar32 = ((ccv5));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((-((ppInt32FromInt32(1)))))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4262)
-		v7 = r32
-		goto _8
-	_8:
+	_ = c
+	c = p
+	if X__syscall2(tls, int64(SYS_setregid), X__syscall0(tls, int64(SYS_getegid)), int64(-Int32FromInt32(1))) != 0 || X__syscall2(tls, int64(SYS_setreuid), X__syscall0(tls, int64(SYS_geteuid)), int64(-Int32FromInt32(1))) != 0 {
+		X__syscall1(tls, int64(SYS_exit), int64(Int32FromInt32(1)))
 	}
-	if v9 || v7 != 0 {
-		//TODO "r0" // syscall_arch.h:16:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_exit)));//TODO "r3" // syscall_arch.h:17:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((ppInt32FromInt32(1)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3)
-		// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4262)
-		_ = r31
-		goto _10
-	_10:
-	}
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar04 = ((ppint64(mvSYS_faccessat)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar34 = ((ppint64(((*tsctx)(iqunsafe.ppPointer((aac2))).fdfd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar42 = ((ppint64(((*tsctx)(iqunsafe.ppPointer((aac2))).fdfilename))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar51 = ((ppint64(((*tsctx)(iqunsafe.ppPointer((aac2))).fdamode))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((ppInt32FromInt32(0)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+4262)
-	v11 = r34
-	goto _12
-_12:
-	*(*int32)(unsafe.Pointer(bp)) = int32(v11)
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar03 = ((ppint64(mvSYS_write)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar33 = ((ppint64(((*tsctx)(iqunsafe.ppPointer((aac2))).fdp))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar41 = ((ppint64(cgbp)));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((ppUint64FromInt64(4)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4262)
-	_ = r33
-	goto _13
-_13:
-	;
+	*(*int32)(unsafe.Pointer(bp)) = int32(X__syscall4(tls, int64(SYS_faccessat), int64((*Tctx1)(unsafe.Pointer(c)).Ffd), int64((*Tctx1)(unsafe.Pointer(c)).Ffilename), int64((*Tctx1)(unsafe.Pointer(c)).Famode), int64(Int32FromInt32(0))))
+	X__syscall3(tls, int64(SYS_write), int64((*Tctx1)(unsafe.Pointer(c)).Fp), int64(bp), int64(Uint64FromInt64(4)))
 	return 0
 }
 
@@ -156047,23 +151868,10 @@ func Xfaccessat(tls *TLS, fd int32, filename uintptr, amode int32, flag int32) (
 		trc("tls=%v fd=%v filename=%v amode=%v flag=%v, (%v:)", tls, fd, filename, amode, flag, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r01, r3, r31, r4, r41, r5, r51, r6, v1, v3 int64
 	var ret int32
-	_, _, _, _, _, _, _, _, _, _, _, _ = r0, r01, r3, r31, r4, r41, r5, r51, r6, ret, v1, v3
-	if flag != 0 { //TODO "r0" // syscall_arch.h:49:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_faccessat2)));//TODO "r3" // syscall_arch.h:50:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-		panic(0) // assembler statements not supported  aar41 = ((ppint64((aafilename))));//TODO "r5" // syscall_arch.h:52:16:
-		panic(0) // assembler statements not supported  aar51 = ((ppint64((aaamode))));//TODO "r6" // syscall_arch.h:53:16:
-		panic(0) // assembler statements not supported  aar6 = ((ppint64((aaflag))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-		// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+4270)
-		v1 = r31
-		goto _2
-	_2:
-		ret = int32(v1)
+	_ = ret
+	if flag != 0 {
+		ret = int32(X__syscall4(tls, int64(SYS_faccessat2), int64(fd), int64(filename), int64(amode), int64(flag)))
 		if ret != -int32(ENOSYS) {
 			return int32(X__syscall_ret(tls, uint64(ret)))
 		}
@@ -156071,19 +151879,7 @@ func Xfaccessat(tls *TLS, fd int32, filename uintptr, amode int32, flag int32) (
 	if flag & ^Int32FromInt32(AT_EACCESS) != 0 {
 		return int32(X__syscall_ret(tls, uint64(-Int32FromInt32(EINVAL))))
 	}
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_faccessat)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aafilename))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaamode))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4270)
-	v3 = r3
-	goto _4
-_4:
-	return int32(X__syscall_ret(tls, uint64(v3)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_faccessat), int64(fd), int64(filename), int64(amode)))))
 }
 
 func Xfchdir(tls *TLS, fd int32) (r int32) {
@@ -156093,48 +151889,15 @@ func Xfchdir(tls *TLS, fd int32) (r int32) {
 	}
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
-	var r0, r01, r3, r31, r4, v1, v3, v6 int64
 	var ret int32
-	var v5 bool
 	var _ /* buf at bp+0 */ [27]uint8
-	_, _, _, _, _, _, _, _, _, _ = r0, r01, r3, r31, r4, ret, v1, v3, v5, v6 //TODO "r0" // syscall_arch.h:16:16:
-	panic(0)                                                                 // assembler statements not supported  aar0 = ((ppint64(mvSYS_fchdir)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0)                                                                 // assembler statements not supported  aar3 = ((ppint64((aafd))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4280)
-	v1 = r3
-	goto _2
-_2:
-	ret = int32(v1)
-	if v5 = ret != -int32(EBADF); !v5 { //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_GETFD)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4280)
-		v3 = r31
-		goto _4
-	_4:
-	}
-	if v5 || v3 < 0 {
+	_ = ret
+	ret = int32(X__syscall1(tls, int64(SYS_fchdir), int64(fd)))
+	if ret != -int32(EBADF) || X__syscall2(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_GETFD))) < 0 {
 		return int32(X__syscall_ret(tls, uint64(ret)))
 	}
 	X__procfdname(tls, bp, uint32(fd))
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_chdir)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64(cgbp)));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4280)
-	v6 = r3
-	goto _7
-_7:
-	return int32(X__syscall_ret(tls, uint64(v6)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_chdir), int64(bp)))))
 }
 
 func Xfchown(tls *TLS, fd int32, uid Tuid_t, gid Tgid_t) (r int32) {
@@ -156144,52 +151907,15 @@ func Xfchown(tls *TLS, fd int32, uid Tuid_t, gid Tgid_t) (r int32) {
 	}
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
-	var r0, r01, r3, r31, r4, r41, r5, v1, v3, v6 int64
 	var ret int32
-	var v5 bool
 	var _ /* buf at bp+0 */ [27]uint8
-	_, _, _, _, _, _, _, _, _, _, _, _ = r0, r01, r3, r31, r4, r41, r5, ret, v1, v3, v5, v6 //TODO "r0" // syscall_arch.h:37:16:
-	panic(0)                                                                                // assembler statements not supported  aar01 = ((ppint64(mvSYS_fchown)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0)                                                                                // assembler statements not supported  aar31 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0)                                                                                // assembler statements not supported  aar41 = ((ppint64((aauid))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0)                                                                                // assembler statements not supported  aar5 = ((ppint64((aagid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4287)
-	v1 = r31
-	goto _2
-_2:
-	ret = int32(v1)
-	if v5 = ret != -int32(EBADF); !v5 { //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvF_GETFD)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4287)
-		v3 = r3
-		goto _4
-	_4:
-	}
-	if v5 || v3 < 0 {
+	_ = ret
+	ret = int32(X__syscall3(tls, int64(SYS_fchown), int64(fd), int64(uid), int64(gid)))
+	if ret != -int32(EBADF) || X__syscall2(tls, int64(SYS_fcntl), int64(fd), int64(Int32FromInt32(F_GETFD))) < 0 {
 		return int32(X__syscall_ret(tls, uint64(ret)))
 	}
 	X__procfdname(tls, bp, uint32(fd))
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_chown)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar31 = ((ppint64(cgbp)));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar41 = ((ppint64((aauid))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aagid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4287)
-	v6 = r31
-	goto _7
-_7:
-	return int32(X__syscall_ret(tls, uint64(v6)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_chown), int64(bp), int64(uid), int64(gid)))))
 }
 
 func Xfchownat(tls *TLS, fd int32, path uintptr, uid Tuid_t, gid Tgid_t, flag int32) (r int32) {
@@ -156197,23 +151923,7 @@ func Xfchownat(tls *TLS, fd int32, path uintptr, uid Tuid_t, gid Tgid_t, flag in
 		trc("tls=%v fd=%v path=%v uid=%v gid=%v flag=%v, (%v:)", tls, fd, path, uid, gid, flag, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_fchownat)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aauid))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aagid))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aaflag))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+4294)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_fchownat), int64(fd), int64(path), int64(uid), int64(gid), int64(flag)))))
 }
 
 func Xfdatasync(tls *TLS, fd int32) (r int32) {
@@ -156237,20 +151947,7 @@ func Xftruncate(tls *TLS, fd int32, length Toff_t) (r int32) {
 		trc("tls=%v fd=%v length=%v, (%v:)", tls, fd, length, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_ftruncate)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((aalength));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4303)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_ftruncate), int64(fd), length))))
 }
 
 func Xgetcwd(tls *TLS, buf uintptr, size Tsize_t) (r uintptr) {
@@ -156258,11 +151955,11 @@ func Xgetcwd(tls *TLS, buf uintptr, size Tsize_t) (r uintptr) {
 		trc("tls=%v buf=%v size=%v, (%v:)", tls, buf, size, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, ret, v3 int64
-	var tmp, v5 uintptr
+	var ret int64
+	var tmp, v3 uintptr
 	var v1 t__predefined_size_t
 	var v2 int32
-	_, _, _, _, _, _, _, _, _ = r0, r3, r4, ret, tmp, v1, v2, v3, v5
+	_, _, _, _, _ = ret, tmp, v1, v2, v3
 	defer func() { Xrealloc(tls, tmp, 0) }()
 	if buf != 0 {
 		v2 = int32(1)
@@ -156279,18 +151976,8 @@ func Xgetcwd(tls *TLS, buf uintptr, size Tsize_t) (r uintptr) {
 			*(*int32)(unsafe.Pointer(X__errno_location(tls))) = int32(EINVAL)
 			return uintptr(0)
 		}
-	} //TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getcwd)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aabuf))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aasize))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4313)
-	v3 = r3
-	goto _4
-_4:
-	ret = X__syscall_ret(tls, uint64(v3))
+	}
+	ret = X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_getcwd), int64(buf), int64(size))))
 	if ret < 0 {
 		return uintptr(0)
 	}
@@ -156299,11 +151986,11 @@ _4:
 		return uintptr(0)
 	}
 	if buf == tmp {
-		v5 = Xstrdup(tls, buf)
+		v3 = Xstrdup(tls, buf)
 	} else {
-		v5 = buf
+		v3 = buf
 	}
-	return v5
+	return v3
 }
 
 func Xgetegid(tls *TLS) (r Tgid_t) {
@@ -156311,19 +151998,7 @@ func Xgetegid(tls *TLS) (r Tgid_t) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getegid)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4320)
-	v1 = r3
-	goto _2
-_2:
-	return uint32(v1)
+	return uint32(X__syscall0(tls, int64(SYS_getegid)))
 }
 
 func Xgeteuid(tls *TLS) (r Tuid_t) {
@@ -156331,19 +152006,7 @@ func Xgeteuid(tls *TLS) (r Tuid_t) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_geteuid)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4328)
-	v1 = r3
-	goto _2
-_2:
-	return uint32(v1)
+	return uint32(X__syscall0(tls, int64(SYS_geteuid)))
 }
 
 func Xgetgid(tls *TLS) (r Tgid_t) {
@@ -156351,19 +152014,7 @@ func Xgetgid(tls *TLS) (r Tgid_t) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getgid)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4336)
-	v1 = r3
-	goto _2
-_2:
-	return uint32(v1)
+	return uint32(X__syscall0(tls, int64(SYS_getgid)))
 }
 
 func Xgetgroups(tls *TLS, count int32, list uintptr) (r int32) {
@@ -156371,20 +152022,7 @@ func Xgetgroups(tls *TLS, count int32, list uintptr) (r int32) {
 		trc("tls=%v count=%v list=%v, (%v:)", tls, count, list, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getgroups)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aacount))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aalist))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4343)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_getgroups), int64(count), int64(list)))))
 }
 
 func Xgethostname(tls *TLS, name uintptr, len1 Tsize_t) (r int32) {
@@ -156430,7 +152068,7 @@ func Xgetlogin(tls *TLS) (r uintptr) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	return Xgetenv(tls, __ccgo_ts+4353)
+	return Xgetenv(tls, __ccgo_ts+1939)
 }
 
 func Xgetlogin_r(tls *TLS, name uintptr, size Tsize_t) (r int32) {
@@ -156456,19 +152094,7 @@ func Xgetpgid(tls *TLS, pid Tpid_t) (r Tpid_t) {
 		trc("tls=%v pid=%v, (%v:)", tls, pid, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getpgid)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4361)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_getpgid), int64(pid)))))
 }
 
 func Xgetpgrp(tls *TLS) (r Tpid_t) {
@@ -156476,19 +152102,7 @@ func Xgetpgrp(tls *TLS) (r Tpid_t) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getpgid)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((ppInt32FromInt32(0)))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4369)
-	v1 = r3
-	goto _2
-_2:
-	return int32(v1)
+	return int32(X__syscall1(tls, int64(SYS_getpgid), int64(Int32FromInt32(0))))
 }
 
 func Xgetpid(tls *TLS) (r Tpid_t) {
@@ -156496,19 +152110,7 @@ func Xgetpid(tls *TLS) (r Tpid_t) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getpid)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4377)
-	v1 = r3
-	goto _2
-_2:
-	return int32(v1)
+	return int32(X__syscall0(tls, int64(SYS_getpid)))
 }
 
 func Xgetppid(tls *TLS) (r Tpid_t) {
@@ -156516,19 +152118,7 @@ func Xgetppid(tls *TLS) (r Tpid_t) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getppid)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4384)
-	v1 = r3
-	goto _2
-_2:
-	return int32(v1)
+	return int32(X__syscall0(tls, int64(SYS_getppid)))
 }
 
 func Xgetsid(tls *TLS, pid Tpid_t) (r Tpid_t) {
@@ -156536,19 +152126,7 @@ func Xgetsid(tls *TLS, pid Tpid_t) (r Tpid_t) {
 		trc("tls=%v pid=%v, (%v:)", tls, pid, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getsid)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4392)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_getsid), int64(pid)))))
 }
 
 func Xgetuid(tls *TLS) (r Tuid_t) {
@@ -156556,19 +152134,7 @@ func Xgetuid(tls *TLS) (r Tuid_t) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getuid)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4399)
-	v1 = r3
-	goto _2
-_2:
-	return uint32(v1)
+	return uint32(X__syscall0(tls, int64(SYS_getuid)))
 }
 
 func Xisatty(tls *TLS, fd int32) (r1 int32) {
@@ -156579,21 +152145,9 @@ func Xisatty(tls *TLS, fd int32) (r1 int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
 	var r uint64
-	var r0, r3, r4, r5, v1 int64
 	var _ /* wsz at bp+0 */ Twinsize
-	_, _, _, _, _, _ = r, r0, r3, r4, r5, v1 //TODO "r0" // syscall_arch.h:37:16:
-	panic(0)                                 // assembler statements not supported  aar0 = ((ppint64(mvSYS_ioctl)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0)                                 // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0)                                 // assembler statements not supported  aar4 = ((ppint64(((ppuint64(((((ppUint32FromUint32(2)) << (ppInt32FromInt32(29))) | (ppuint32(((ppInt32FromUint8('t')) << (ppInt32FromInt32(8)))))) | (ppuint32((ppInt32FromInt32(104))))))) | ((ppUint64FromInt64(8)) << (ppInt32FromInt32(16)))))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0)                                 // assembler statements not supported  aar5 = ((ppint64(cgbp)));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4406)
-	v1 = r3
-	goto _2
-_2:
-	r = uint64(X__syscall_ret(tls, uint64(v1)))
+	_ = r
+	r = uint64(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_ioctl), int64(fd), int64(uint64(Uint32FromUint32(2)<<Int32FromInt32(29)|uint32(Int32FromUint8('t')<<Int32FromInt32(8))|uint32(Int32FromInt32(104)))|Uint64FromInt64(8)<<Int32FromInt32(16)), int64(bp)))))
 	if r == uint64(0) {
 		return int32(1)
 	}
@@ -156608,21 +152162,7 @@ func Xlchown(tls *TLS, path uintptr, uid Tuid_t, gid Tgid_t) (r int32) {
 		trc("tls=%v path=%v uid=%v gid=%v, (%v:)", tls, path, uid, gid, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_lchown)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aauid))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aagid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4413)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_lchown), int64(path), int64(uid), int64(gid)))))
 }
 
 func Xlink(tls *TLS, existing uintptr, new1 uintptr) (r int32) {
@@ -156630,20 +152170,7 @@ func Xlink(tls *TLS, existing uintptr, new1 uintptr) (r int32) {
 		trc("tls=%v existing=%v new1=%v, (%v:)", tls, existing, new1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_link)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaexisting))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aanew))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4420)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_link), int64(existing), int64(new1)))))
 }
 
 func Xlinkat(tls *TLS, fd1 int32, existing uintptr, fd2 int32, new1 uintptr, flag int32) (r int32) {
@@ -156651,23 +152178,7 @@ func Xlinkat(tls *TLS, fd1 int32, existing uintptr, fd2 int32, new1 uintptr, fla
 		trc("tls=%v fd1=%v existing=%v fd2=%v new1=%v flag=%v, (%v:)", tls, fd1, existing, fd2, new1, flag, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, r7, v1 int64
-	_, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_linkat)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd1))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaexisting))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aafd2))));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aanew))));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aaflag))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+4425)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS_linkat), int64(fd1), int64(existing), int64(fd2), int64(new1), int64(flag)))))
 }
 
 func X__lseek(tls *TLS, fd int32, offset Toff_t, whence int32) (r Toff_t) {
@@ -156677,24 +152188,10 @@ func X__lseek(tls *TLS, fd int32, offset Toff_t, whence int32) (r Toff_t) {
 	}
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
-	var r0, r3, r4, r5, r6, r7, v1, v2 int64
+	var v1 int64
 	var _ /* result at bp+0 */ Toff_t
-	_, _, _, _, _, _, _, _ = r0, r3, r4, r5, r6, r7, v1, v2
-	//TODO "r0" // syscall_arch.h:62:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS__llseek)));//TODO "r3" // syscall_arch.h:63:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:64:16:
-	panic(0) // assembler statements not supported  aar4 = (((aaoffset) >> (ppInt32FromInt32(32))));//TODO "r5" // syscall_arch.h:65:16:
-	panic(0) // assembler statements not supported  aar5 = ((aaoffset));//TODO "r6" // syscall_arch.h:66:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64(cgbp)));//TODO "r7" // syscall_arch.h:67:16:
-	panic(0) // assembler statements not supported  aar7 = ((ppint64((aawhence))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6), "+r"(r7)
-	// :: "memory", "cr0", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 68, __ccgo_ts+4432)
-	v2 = r3
-	goto _3
-_3:
-	if X__syscall_ret(tls, uint64(v2)) != 0 {
+	_ = v1
+	if X__syscall_ret(tls, uint64(X__syscall5(tls, int64(SYS__llseek), int64(fd), offset>>Int32FromInt32(32), offset, int64(bp), int64(whence)))) != 0 {
 		v1 = int64(-int32(1))
 	} else {
 		v1 = *(*Toff_t)(unsafe.Pointer(bp))
@@ -156753,19 +152250,7 @@ func Xpipe(tls *TLS, fd uintptr) (r int32) {
 		trc("tls=%v fd=%v, (%v:)", tls, fd, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_pipe)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4440)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_pipe), int64(fd)))))
 }
 
 func Xpipe2(tls *TLS, fd uintptr, flag int32) (r int32) {
@@ -156773,23 +152258,12 @@ func Xpipe2(tls *TLS, fd uintptr, flag int32) (r int32) {
 		trc("tls=%v fd=%v flag=%v, (%v:)", tls, fd, flag, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r01, r3, r31, r4, r41, r5, v1 int64
 	var ret int32
-	_, _, _, _, _, _, _, _, _ = r0, r01, r3, r31, r4, r41, r5, ret, v1
+	_ = ret
 	if !(flag != 0) {
 		return Xpipe(tls, fd)
-	} //TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_pipe2)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaflag))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4445)
-	v1 = r3
-	goto _2
-_2:
-	ret = int32(v1)
+	}
+	ret = int32(X__syscall2(tls, int64(SYS_pipe2), int64(fd), int64(flag)))
 	if ret != -int32(ENOSYS) {
 		return int32(X__syscall_ret(tls, uint64(ret)))
 	}
@@ -156801,58 +152275,12 @@ _2:
 		return ret
 	}
 	if flag&int32(O_CLOEXEC) != 0 {
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((*(*ppint32)(iqunsafe.ppPointer((aafd)))))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4445)
-		_ = r31
-		goto _3
-	_3:
-		;
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((*(*ppint32)(iqunsafe.ppPointer((aafd)+((1)*4)))))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFD)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvFD_CLOEXEC)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4445)
-		_ = r31
-		goto _4
-	_4:
+		X__syscall3(tls, int64(SYS_fcntl), int64(*(*int32)(unsafe.Pointer(fd))), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
+		X__syscall3(tls, int64(SYS_fcntl), int64(*(*int32)(unsafe.Pointer(fd + 1*4))), int64(Int32FromInt32(F_SETFD)), int64(Int32FromInt32(FD_CLOEXEC)))
 	}
 	if flag&int32(O_NONBLOCK) != 0 {
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((*(*ppint32)(iqunsafe.ppPointer((aafd)))))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFL)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvO_NONBLOCK)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4445)
-		_ = r31
-		goto _5
-	_5:
-		;
-		//TODO "r0" // syscall_arch.h:37:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_fcntl)));//TODO "r3" // syscall_arch.h:38:16:
-		panic(0) // assembler statements not supported  aar31 = ((ppint64((*(*ppint32)(iqunsafe.ppPointer((aafd)+((1)*4)))))));//TODO "r4" // syscall_arch.h:39:16:
-		panic(0) // assembler statements not supported  aar41 = ((ppint64((ppInt32FromInt32(mvF_SETFL)))));//TODO "r5" // syscall_arch.h:40:16:
-		panic(0) // assembler statements not supported  aar5 = ((ppint64((ppInt32FromInt32(mvO_NONBLOCK)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-		// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4445)
-		_ = r31
-		goto _6
-	_6:
+		X__syscall3(tls, int64(SYS_fcntl), int64(*(*int32)(unsafe.Pointer(fd))), int64(Int32FromInt32(F_SETFL)), int64(Int32FromInt32(O_NONBLOCK)))
+		X__syscall3(tls, int64(SYS_fcntl), int64(*(*int32)(unsafe.Pointer(fd + 1*4))), int64(Int32FromInt32(F_SETFL)), int64(Int32FromInt32(O_NONBLOCK)))
 	}
 	return 0
 }
@@ -156913,25 +152341,13 @@ func Xreadlink(tls *TLS, path uintptr, buf uintptr, bufsize Tsize_t) (r1 Tssize_
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
 	var r int32
-	var r0, r3, r4, r5, v1 int64
 	var _ /* dummy at bp+0 */ [1]uint8
-	_, _, _, _, _, _ = r, r0, r3, r4, r5, v1
+	_ = r
 	if !(bufsize != 0) {
 		buf = bp
 		bufsize = uint64(1)
-	} //TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_readlink)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aabuf))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aabufsize))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4451)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
+	}
+	r = int32(X__syscall3(tls, int64(SYS_readlink), int64(path), int64(buf), int64(bufsize)))
 	if buf == bp && r > 0 {
 		r = 0
 	}
@@ -156946,26 +152362,13 @@ func Xreadlinkat(tls *TLS, fd int32, path uintptr, buf uintptr, bufsize Tsize_t)
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
 	var r int32
-	var r0, r3, r4, r5, r6, v1 int64
 	var _ /* dummy at bp+0 */ [1]uint8
-	_, _, _, _, _, _, _ = r, r0, r3, r4, r5, r6, v1
+	_ = r
 	if !(bufsize != 0) {
 		buf = bp
 		bufsize = uint64(1)
-	} //TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_readlinkat)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aabuf))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aabufsize))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+4460)
-	v1 = r3
-	goto _2
-_2:
-	r = int32(v1)
+	}
+	r = int32(X__syscall4(tls, int64(SYS_readlinkat), int64(fd), int64(path), int64(buf), int64(bufsize)))
 	if buf == bp && r > 0 {
 		r = 0
 	}
@@ -156985,22 +152388,7 @@ func Xrenameat(tls *TLS, oldfd int32, old uintptr, newfd int32, new1 uintptr) (r
 		trc("tls=%v oldfd=%v old=%v newfd=%v new1=%v, (%v:)", tls, oldfd, old, newfd, new1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, r6, v1 int64
-	_, _, _, _, _, _ = r0, r3, r4, r5, r6, v1
-	//TODO "r0" // syscall_arch.h:49:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_renameat)));//TODO "r3" // syscall_arch.h:50:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaoldfd))));//TODO "r4" // syscall_arch.h:51:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aaold))));//TODO "r5" // syscall_arch.h:52:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aanewfd))));//TODO "r6" // syscall_arch.h:53:16:
-	panic(0) // assembler statements not supported  aar6 = ((ppint64((aanew))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5), "+r"(r6)
-	// :: "memory", "cr0", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 54, __ccgo_ts+4471)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall4(tls, int64(SYS_renameat), int64(oldfd), int64(old), int64(newfd), int64(new1)))))
 }
 
 func Xrmdir(tls *TLS, path uintptr) (r int32) {
@@ -157008,19 +152396,7 @@ func Xrmdir(tls *TLS, path uintptr) (r int32) {
 		trc("tls=%v path=%v, (%v:)", tls, path, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_rmdir)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4480)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_rmdir), int64(path)))))
 }
 
 func Xsetgid(tls *TLS, gid Tgid_t) (r int32) {
@@ -157036,20 +152412,7 @@ func Xsetpgid(tls *TLS, pid Tpid_t, pgid Tpid_t) (r int32) {
 		trc("tls=%v pid=%v pgid=%v, (%v:)", tls, pid, pgid, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setpgid)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapid))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aapgid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4486)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_setpgid), int64(pid), int64(pgid)))))
 }
 
 func Xsetpgrp(tls *TLS) (r Tpid_t) {
@@ -157065,19 +152428,7 @@ func Xsetsid(tls *TLS) (r Tpid_t) {
 		trc("tls=%v, (%v:)", tls, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_setsid)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4494)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall0(tls, int64(SYS_setsid)))))
 }
 
 func Xsetuid(tls *TLS, uid Tuid_t) (r int32) {
@@ -157097,54 +152448,23 @@ type Tctx2 = struct {
 }
 
 func _do_setxid(tls *TLS, p uintptr) {
-	var c1 uintptr
-	var r0, r01, r02, r3, r31, r32, r4, r41, r5, v1, v3 int64
+	var c uintptr
 	var ret int32
-	_, _, _, _, _, _, _, _, _, _, _, _, _ = c1, r0, r01, r02, r3, r31, r32, r4, r41, r5, ret, v1, v3
-	c1 = p
-	if (*Tctx2)(unsafe.Pointer(c1)).Fret < 0 {
+	_, _ = c, ret
+	c = p
+	if (*Tctx2)(unsafe.Pointer(c)).Fret < 0 {
 		return
-	} //TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar02 = ((ppint64(((*tsctx)(iqunsafe.ppPointer((aac1))).fdnr))));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar32 = ((ppint64(((*tsctx)(iqunsafe.ppPointer((aac1))).fdid))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar41 = ((ppint64(((*tsctx)(iqunsafe.ppPointer((aac1))).fdeid))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64(((*tsctx)(iqunsafe.ppPointer((aac1))).fdsid))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4501)
-	v1 = r32
-	goto _2
-_2:
-	ret = int32(v1)
-	if ret != 0 && !((*Tctx2)(unsafe.Pointer(c1)).Fret != 0) {
+	}
+	ret = int32(X__syscall3(tls, int64((*Tctx2)(unsafe.Pointer(c)).Fnr), int64((*Tctx2)(unsafe.Pointer(c)).Fid), int64((*Tctx2)(unsafe.Pointer(c)).Feid), int64((*Tctx2)(unsafe.Pointer(c)).Fsid)))
+	if ret != 0 && !((*Tctx2)(unsafe.Pointer(c)).Fret != 0) {
 		/* If one thread fails to set ids after another has already
 		 * succeeded, forcibly killing the process is the only safe
 		 * thing to do. State is inconsistent and dangerous. Use
 		 * SIGKILL because it is uncatchable. */
 		X__block_all_sigs(tls, uintptr(0))
-		//TODO "r0" // syscall_arch.h:6:16:
-		panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_getpid)));//TODO "r3" // syscall_arch.h:7:16:
-		panic(0) // assembler statements not supported
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "=r"(r3)
-		// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4501)
-		v3 = r3
-		goto _4
-	_4: //TODO "r0" // syscall_arch.h:26:16:
-		panic(0) // assembler statements not supported  aar01 = ((ppint64(mvSYS_kill)));//TODO "r3" // syscall_arch.h:27:16:
-		panic(0) // assembler statements not supported  aar31 = ((ccv3));//TODO "r4" // syscall_arch.h:28:16:
-		panic(0) // assembler statements not supported  aar4 = ((ppint64((ppInt32FromInt32(mvSIGKILL)))));
-		// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-		// : "+r"(r0), "+r"(r3), "+r"(r4)
-		// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-		X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4501)
-		_ = r31
-		goto _5
-	_5:
+		X__syscall2(tls, int64(SYS_kill), X__syscall0(tls, int64(SYS_getpid)), int64(Int32FromInt32(SIGKILL)))
 	}
-	(*Tctx2)(unsafe.Pointer(c1)).Fret = ret
+	(*Tctx2)(unsafe.Pointer(c)).Fret = ret
 }
 
 func X__setxid(tls *TLS, nr int32, id int32, eid int32, sid int32) (r int32) {
@@ -157197,20 +152517,7 @@ func Xsymlink(tls *TLS, existing uintptr, new1 uintptr) (r int32) {
 		trc("tls=%v existing=%v new1=%v, (%v:)", tls, existing, new1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_symlink)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaexisting))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aanew))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4511)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_symlink), int64(existing), int64(new1)))))
 }
 
 func Xsymlinkat(tls *TLS, existing uintptr, fd int32, new1 uintptr) (r int32) {
@@ -157218,39 +152525,14 @@ func Xsymlinkat(tls *TLS, existing uintptr, fd int32, new1 uintptr) (r int32) {
 		trc("tls=%v existing=%v fd=%v new1=%v, (%v:)", tls, existing, fd, new1, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_symlinkat)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aaexisting))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aafd))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aanew))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4519)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_symlinkat), int64(existing), int64(fd), int64(new1)))))
 }
 
 func Xsync(tls *TLS) {
 	if __ccgo_strace {
 		trc("tls=%v, (%v:)", tls, origin(2))
 	}
-	var r0, r3 int64
-	_, _ = r0, r3
-	// TODO "r0" // syscall_arch.h:6:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_sync)));//TODO "r3" // syscall_arch.h:7:16:
-	panic(0) // assembler statements not supported
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "=r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 8, __ccgo_ts+4529)
-	_ = r3
-	goto _1
-_1:
+	X__syscall0(tls, int64(SYS_sync))
 }
 
 func Xtcgetpgrp(tls *TLS, fd int32) (r Tpid_t) {
@@ -157284,20 +152566,7 @@ func Xtruncate(tls *TLS, path uintptr, length Toff_t) (r int32) {
 		trc("tls=%v path=%v length=%v, (%v:)", tls, path, length, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, v1 int64
-	_, _, _, _ = r0, r3, r4, v1
-	//TODO "r0" // syscall_arch.h:26:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_truncate)));//TODO "r3" // syscall_arch.h:27:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));//TODO "r4" // syscall_arch.h:28:16:
-	panic(0) // assembler statements not supported  aar4 = ((aalength));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4)
-	// :: "memory", "cr0", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 29, __ccgo_ts+4534)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall2(tls, int64(SYS_truncate), int64(path), length))))
 }
 
 /* Support signed or unsigned plain-char */
@@ -157387,19 +152656,7 @@ func Xunlink(tls *TLS, path uintptr) (r int32) {
 		trc("tls=%v path=%v, (%v:)", tls, path, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, v1 int64
-	_, _, _ = r0, r3, v1
-	//TODO "r0" // syscall_arch.h:16:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_unlink)));//TODO "r3" // syscall_arch.h:17:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aapath))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3)
-	// :: "memory", "cr0", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 18, __ccgo_ts+4543)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall1(tls, int64(SYS_unlink), int64(path)))))
 }
 
 func Xunlinkat(tls *TLS, fd int32, path uintptr, flag int32) (r int32) {
@@ -157407,21 +152664,7 @@ func Xunlinkat(tls *TLS, fd int32, path uintptr, flag int32) (r int32) {
 		trc("tls=%v fd=%v path=%v flag=%v, (%v:)", tls, fd, path, flag, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	var r0, r3, r4, r5, v1 int64
-	_, _, _, _, _ = r0, r3, r4, r5, v1
-	//TODO "r0" // syscall_arch.h:37:16:
-	panic(0) // assembler statements not supported  aar0 = ((ppint64(mvSYS_unlinkat)));//TODO "r3" // syscall_arch.h:38:16:
-	panic(0) // assembler statements not supported  aar3 = ((ppint64((aafd))));//TODO "r4" // syscall_arch.h:39:16:
-	panic(0) // assembler statements not supported  aar4 = ((ppint64((aapath))));//TODO "r5" // syscall_arch.h:40:16:
-	panic(0) // assembler statements not supported  aar5 = ((ppint64((aaflag))));
-	// __asm__ __volatile__("sc ; bns+ 1f ; neg %1, %1 ; 1:"
-	// : "+r"(r0), "+r"(r3), "+r"(r4), "+r"(r5)
-	// :: "memory", "cr0", "r6", "r7", "r8", "r9", "r10", "r11", "r12");
-	X__assert_fail(tls, __ccgo_ts+18, __ccgo_ts+53, 41, __ccgo_ts+4550)
-	v1 = r3
-	goto _2
-_2:
-	return int32(X__syscall_ret(tls, uint64(v1)))
+	return int32(X__syscall_ret(tls, uint64(X__syscall3(tls, int64(SYS_unlinkat), int64(fd), int64(path), int64(flag)))))
 }
 
 func Xusleep(tls *TLS, useconds uint32) (r int32) {
@@ -159872,4 +155115,4 @@ var Xstdout = uintptr(unsafe.Pointer(&X__stdout_FILE))
 
 var __ccgo_ts = (*reflect.StringHeader)(unsafe.Pointer(&__ccgo_ts1)).Data
 
-var __ccgo_ts1 = "\x00/bin:/usr/bin\x00%s\x00assembler statements not supported\x00syscall_arch.h\x00sysconf\x008b \xd0\xc1\xd2\xcf\xcc\xd8\x00$2a$00$abcdefghijklmnopqrstuu\x00\xff\xa334\xff\xff\xff\xa3345\x00*\x00\x80\xff\x80\x01 \x7f\x81\x80\x80\r\n\xff\x7f \x81 test\x00_0.../9Zz\x00_0.../9ZzX7iSJNd21sU\x00\x80x\x00\x80x22/wK52ZKGA\x00x\x00$1$\x00$5$\x00rounds=\x00rounds=%u$\x00$5$%s%.*s$\x00$6$\x00$6$%s%.*s$\x00pthread_arch.h\x00__ctype_get_mb_cur_max\x00toupper\x00tolower\x00opendir\x00readdir\x00__reset_tls\x00__init_ssp\x00atomic_arch.h\x00__stack_chk_fail\x00strerror\x00_Exit\x00Assertion failed: %s (%s: %s: %d)\n\x00fcntl\x00open\x00posix_fadvise\x00posix_fallocate\x00fenv.c\x00get_fpscr_f\x00set_fpscr_f\x00infinity\x00nan\x00\x00\x01\x02\x04\a\x03\x06\x05\x00/proc/self/fd/\x00msgctl\x00msgget\x00semctl\x00semget\x00semop\x00semtimedop\x00shmat\x00shmctl\x00shmdt\x00shmget\x00%s: \x00: \x00/dev/tty\x00\n\x00/etc/shells\x00rbe\x00rb\x00capset\x00capget\x00chroot\x00clock_adjtime\x00copy_file_range\x00epoll_create1\x00epoll_ctl\x00eventfd\x00fallocate\x00fanotify_init\x00fanotify_mark\x00flock\x00getdents\x00inotify_init1\x00inotify_add_watch\x00inotify_rm_watch\x00ioperm\x00iopl\x00klogctl\x00memfd_create\x00mlock2\x00init_module\x00delete_module\x00mount\x00umount\x00umount2\x00name_to_handle_at\x00open_by_handle_at\x00personality\x00pivot_root\x00prctl\x00prlimit\x00process_vm_writev\x00process_vm_readv\x00ptrace\x00quotactl\x00readahead\x00reboot\x00remap_file_pages\x00sbrk\x00sendfile\x00setfsgid\x00setfsuid\x00sethostname\x00setns\x00signalfd\x00splice\x00statx\x00swapon\x00swapoff\x00sync_file_range\x00syncfs\x00__lsysinfo\x00tee\x00timerfd_create\x00timerfd_settime\x00timerfd_gettime\x00unshare\x00vhangup\x00vmsplice\x00wait4\x00getxattr\x00lgetxattr\x00fgetxattr\x00listxattr\x00llistxattr\x00flistxattr\x00setxattr\x00lsetxattr\x00fsetxattr\x00removexattr\x00lremovexattr\x00fremovexattr\x00__lctrans_cur\x00UTF-8\x00NLSPATH\x00LANG\x00_.@\x00.@\x00%\x00bindtextdomain\x00messages\x00dcngettext\x00%s/%.*s%.*s/%s/%s.mo\x00\x00n!=1;\x00Plural-Forms:\x00nplurals=\x00plural=\x00iconv\x00Ê̄Ê̌ê̄ê̌\x00utf8\x00ASCII\x00C\x00__nl_langinfo\x00LC_ALL\x00C.UTF-8\x00POSIX\x00MUSL_LOCPATH\x00.\x00strcoll\x00%*.*f\x00strfmon\x00strxfrm\x00__uselocale\x00wcscoll\x00wcsxfrm\x00fma\x00/\x00MSGVERB\x00label\x00severity\x00text\x00action\x00tag\x00HALT: \x00ERROR: \x00WARNING: \x00INFO: \x00/dev/console\x00\nTO FIX: \x00 \x00%s%s%s%s%s%s%s%s\n\x00PWD\x00: unrecognized option: \x00: option requires an argument: \x00: option does not take an argument: \x00: option is ambiguous: \x00getpriority\x00getresgid\x00getresuid\x00getrlimit\x00getrusage\x00ioctl\x00%*[^\n]%*[\n]\x00 %n%*[^ \t]%n %n%*[^ \t]%n %n%*[^ \t]%n %n%*[^ \t]%n %d %d\x00%s\t%s\t%s\t%s\t%d\t%d\n\x00/dev/ptmx\x00/dev/pts/%d\x00__ptsname_r\x00setdomainname\x00setpriority\x00do_setrlimit\x00setrlimit\x00syscall\x00%b %e %T\x00<%d>%s %n%s%s%.0d%s: \x00[\x00]\x00%.*s\x00uname\x00__madvise\x00mincore\x00mlock\x00mlockall\x00__mmap\x00__mprotect\x00__mremap\x00munlock\x00munlockall\x00__munmap\x00posix_madvise\x00/dev/shm/\x00btowc\x00mbrtowc\x00mbsrtowcs\x00mbtowc\x00wcrtomb\x00wctob\x00accept\x00accept4\x00bind\x00connect\x00%.2X\x00:%.2X\x00%d.%d.%d.%d.in-addr.arpa\x00ip6.arpa\x00/etc/hosts\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\x00/etc/services\x00/udp\x00/tcp\x00getpeername\x00tcp\x00udp\x00getsockname\x00getsockopt\x00__h_errno_location\x00%s%s%s\n\x00if_indextoname\x00if_nametoindex\x00%d.%d.%d.%d\x00%x:%x:%x:%x:%x:%x:%x:%x\x00%x:%x:%x:%x:%x:%x:%d.%d.%d.%d\x00:0\x00listen\x00__rtnetlink_enumerate\x00recvfrom\x00recvmsg\x00cleanup\x00__res_msend_rc\x00/etc/resolv.conf\x00options\x00ndots:\x00attempts:\x00timeout:\x00nameserver\x00domain\x00search\x00127.0.0.1\x00sendmsg\x00sendto\x00setsockopt\x00shutdown\x00socket\x00socketpair\x00/etc/group\x00/etc/passwd\x00/dev/null\x00re\x00r\x00%s:%s:%u:\x00,\x00%s%s\x00%s:%s:%u:%u:%s:%s:%s\n\x00%s:%s:%.*ld:%.*ld:%.*ld:%.*ld:%.*ld:%.*ld:%.*lu\n\x00execve\x00PATH\x00/usr/local/bin:/bin:/usr/bin\x00fexecve\x00vfork\x00fnmatch_internal\x00HOME\x00\t\x00\r\x00\f\x00\a\x00\x1b\x00[[:alnum:]_]\x00[^[:alnum:]_]\x00[[:space:]]\x00[^[:space:]]\x00[[:digit:]]\x00[^[:digit:]]\x00__block_all_sigs\x00__block_app_sigs\x00__restore_sigs\x00getitimer\x00kill\x00raise\x00setitimer\x00__libc_sigaction\x00sigaltstack\x00sigpending\x00sigqueue\x00chmod\x00fchmod\x00fchmodat\x00fstatat_statx\x00fstatat_kstat\x00mkdir\x00mkdirat\x00mknod\x00mknodat\x00__statfs\x00__fstatfs\x00umask\x00utimensat\x00rwa\x00__fdopen\x00__fopen_rb_ca\x00__stdio_close\x00__stdio_read\x00__stdio_write\x00__stdout_write\x00locking_getc\x00fgetc\x00__fgetwc_unlocked\x00flockfile\x00fopen\x00locking_putc\x00fputc\x00__fputwc_unlocked\x00fputws\x00freopen\x00__do_orphaned_stdio_locks\x00__unlist_locked_file\x00ftrylockfile\x00fwide\x00getc\x00getchar\x00pclose\x00putc\x00putchar\x00remove\x00rename\x00/tmp\x00temp\x00tempnam\x00tmpfile\x00w+\x00tmpnam\x00ungetwc\x00-0X+0X 0X-0x+0x 0x\x00inf\x00INF\x00NAN\x00-+   0X0x\x00(null)\x00%*s\x00%%%s%s%s%s%s*.*%c%c\x00#\x00+\x00-\x000\x00\x00\x00\x00\x00%.*s%.0d%s%c%%lln\x00%*\x00%.*e\x00%.*f\x00000000000000000\x00%.*g\x00@\x00\x00\x00\x00\x00\x00\x00XXXXXX\x00tcgetwinsize\x00tcsetwinsize\x00__map_file\x00TZ\x00/etc/localtime\x00UTC\x00GMT\x00TZif\x00%.3s %.3s%3d %.2d:%.2d:%.2d %d\n\x00__asctime_r\x00clock_getcpuclockid\x00clock_getres\x00__clock_gettime\x00clock_settime\x00DATEMSK\x00%m/%d/%y\x00%Y-%m-%d\x00%H:%M\x00%H:%M:%S\x00+%lld\x00%+.4ld\x00%lld\x00%*lld\x00%0*lld\x00strftime\x00timer_delete\x00timer_getoverrun\x00timer_gettime\x00timer_settime\x00times\x00wcsftime\x00access\x00acct\x00chdir\x00chown\x00dup\x00dup2\x00__dup3\x00checker\x00faccessat\x00fchdir\x00fchown\x00fchownat\x00ftruncate\x00getcwd\x00getegid\x00geteuid\x00getgid\x00getgroups\x00LOGNAME\x00getpgid\x00getpgrp\x00getpid\x00getppid\x00getsid\x00getuid\x00isatty\x00lchown\x00link\x00linkat\x00__lseek\x00pipe\x00pipe2\x00readlink\x00readlinkat\x00renameat\x00rmdir\x00setpgid\x00setsid\x00do_setxid\x00symlink\x00symlinkat\x00sync\x00truncate\x00unlink\x00unlinkat\x00"
+var __ccgo_ts1 = "\x00/bin:/usr/bin\x00%s\x008b \xd0\xc1\xd2\xcf\xcc\xd8\x00$2a$00$abcdefghijklmnopqrstuu\x00\xff\xa334\xff\xff\xff\xa3345\x00*\x00\x80\xff\x80\x01 \x7f\x81\x80\x80\r\n\xff\x7f \x81 test\x00_0.../9Zz\x00_0.../9ZzX7iSJNd21sU\x00\x80x\x00\x80x22/wK52ZKGA\x00x\x00$1$\x00$5$\x00rounds=\x00rounds=%u$\x00$5$%s%.*s$\x00$6$\x00$6$%s%.*s$\x00toupper\x00tolower\x00assembler statements not supported\x00atomic_arch.h\x00__stack_chk_fail\x00Assertion failed: %s (%s: %s: %d)\n\x00fenv.c\x00get_fpscr_f\x00set_fpscr_f\x00infinity\x00nan\x00\x00\x01\x02\x04\a\x03\x06\x05\x00/proc/self/fd/\x00%s: \x00: \x00/dev/tty\x00\n\x00/etc/shells\x00rbe\x00rb\x00UTF-8\x00NLSPATH\x00LANG\x00_.@\x00.@\x00%\x00bindtextdomain\x00messages\x00%s/%.*s%.*s/%s/%s.mo\x00\x00n!=1;\x00Plural-Forms:\x00nplurals=\x00plural=\x00dcngettext\x00Ê̄Ê̌ê̄ê̌\x00utf8\x00ASCII\x00C\x00LC_ALL\x00C.UTF-8\x00POSIX\x00MUSL_LOCPATH\x00.\x00%*.*f\x00fma\x00/\x00MSGVERB\x00label\x00severity\x00text\x00action\x00tag\x00HALT: \x00ERROR: \x00WARNING: \x00INFO: \x00/dev/console\x00\nTO FIX: \x00 \x00%s%s%s%s%s%s%s%s\n\x00PWD\x00: unrecognized option: \x00: option requires an argument: \x00: option does not take an argument: \x00: option is ambiguous: \x00%*[^\n]%*[\n]\x00 %n%*[^ \t]%n %n%*[^ \t]%n %n%*[^ \t]%n %n%*[^ \t]%n %d %d\x00%s\t%s\t%s\t%s\t%d\t%d\n\x00/dev/ptmx\x00/dev/pts/%d\x00%b %e %T\x00<%d>%s %n%s%s%.0d%s: \x00[\x00]\x00%.*s\x00/dev/shm/\x00%.2X\x00:%.2X\x00%d.%d.%d.%d.in-addr.arpa\x00ip6.arpa\x00/etc/hosts\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\x00/etc/services\x00/udp\x00/tcp\x00tcp\x00udp\x00%s%s%s\n\x00%d.%d.%d.%d\x00%x:%x:%x:%x:%x:%x:%x:%x\x00%x:%x:%x:%x:%x:%x:%d.%d.%d.%d\x00:0\x00/etc/resolv.conf\x00options\x00ndots:\x00attempts:\x00timeout:\x00nameserver\x00domain\x00search\x00127.0.0.1\x00/etc/group\x00/etc/passwd\x00/dev/null\x00re\x00r\x00%s:%s:%u:\x00,\x00%s%s\x00%s:%s:%u:%u:%s:%s:%s\n\x00%s:%s:%.*ld:%.*ld:%.*ld:%.*ld:%.*ld:%.*ld:%.*lu\n\x00PATH\x00/usr/local/bin:/bin:/usr/bin\x00HOME\x00\t\x00\r\x00\f\x00\a\x00\x1b\x00[[:alnum:]_]\x00[^[:alnum:]_]\x00[[:space:]]\x00[^[:space:]]\x00[[:digit:]]\x00[^[:digit:]]\x00__libc_sigaction\x00rwa\x00locking_getc\x00locking_putc\x00__do_orphaned_stdio_locks\x00ftrylockfile\x00/tmp\x00temp\x00w+\x00-0X+0X 0X-0x+0x 0x\x00inf\x00INF\x00NAN\x00-+   0X0x\x00(null)\x00%*s\x00%%%s%s%s%s%s*.*%c%c\x00#\x00+\x00-\x000\x00\x00\x00\x00\x00%.*s%.0d%s%c%%lln\x00%*\x00%.*e\x00%.*f\x00000000000000000\x00%.*g\x00@\x00\x00\x00\x00\x00\x00\x00XXXXXX\x00TZ\x00/etc/localtime\x00UTC\x00GMT\x00TZif\x00%.3s %.3s%3d %.2d:%.2d:%.2d %d\n\x00__asctime_r\x00DATEMSK\x00%m/%d/%y\x00%Y-%m-%d\x00%H:%M\x00%H:%M:%S\x00+%lld\x00%+.4ld\x00%lld\x00%*lld\x00%0*lld\x00timer_delete\x00LOGNAME\x00"
