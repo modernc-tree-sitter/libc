@@ -30,6 +30,7 @@ var (
 	goos                 = runtime.GOOS
 	j                    = fmt.Sprint(runtime.GOMAXPROCS(-1))
 	muslArch             string
+	target               = fmt.Sprintf("%s/%s", goos, goarch)
 )
 
 func fail(rc int, msg string, args ...any) {
@@ -191,8 +192,11 @@ func main() {
 		cflags := []string{
 			"-DNDEBUG",
 		}
-		if s := cc.LongDouble64Flag(goos, goarch); s != "" {
-			cflags = append(cflags, s)
+		switch target {
+		case "linux/ppc64le":
+			if s := cc.LongDouble64Flag(goos, goarch); s != "" {
+				cflags = append(cflags, s)
+			}
 		}
 		util.MustShell(true, nil, "sh", "-c", fmt.Sprintf("CFLAGS='%s' ./configure "+
 			"--disable-static "+
@@ -224,6 +228,10 @@ func main() {
 			"-extended-errors",
 			"-ignore-asm-errors",
 			"-isystem", "",
+		}
+		switch target {
+		case "linux/s390x":
+			args = append(args, "-hide", "__mmap")
 		}
 		if s := cc.LongDouble64Flag(goos, goarch); s != "" {
 			args = append(args, s)
@@ -302,9 +310,6 @@ func main() {
 	}
 	if format {
 		util.MustShell(true, nil, "sh", "-c", "gofmt -w *.go")
-	}
-	if !dev {
-		util.Shell(nil, "sh", "-c", "./unconvert.sh")
 	}
 	util.MustShell(true, nil, "go", "test", "-run", "@")
 	util.Shell(nil, "git", "status")

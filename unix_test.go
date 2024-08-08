@@ -38,6 +38,7 @@ func TestIssue29(t *testing.T) {
 		t.Fatal("mmap failed")
 	}
 
+	t.Logf("%#0x", d)
 	if rc := Xmunmap(tls, d, 4096); rc != 0 {
 		t.Fatalf("munmap failed: %v", rc)
 	}
