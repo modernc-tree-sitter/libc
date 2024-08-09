@@ -14064,6 +14064,7 @@ type Tpthread_mutex_t = struct {
 		F__p  [0][6]uintptr
 		F__i  [6]int32
 	}
+	F__ccgo_room int32
 }
 
 type Tpthread_cond_t = struct {
@@ -153128,6 +153129,7 @@ type Tmtx_t = struct {
 		F__p  [0][6]uintptr
 		F__i  [6]int32
 	}
+	F__ccgo_room int32
 }
 
 type Tcnd_t = struct {
