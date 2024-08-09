@@ -374,7 +374,7 @@ func Xpthread_cond_timedwait(tls *TLS, c, m, ts uintptr) (r int32) {
 	if ts != 0 {
 		deadlineSecs := (*Ttimespec)(unsafe.Pointer(ts)).Ftv_sec
 		deadlineNsecs := (*Ttimespec)(unsafe.Pointer(ts)).Ftv_nsec
-		deadline := time.Unix(deadlineSecs, deadlineNsecs)
+		deadline := time.Unix(deadlineSecs, int64(deadlineNsecs))
 		d := deadline.Sub(time.Now())
 		if d <= 0 {
 			return ETIMEDOUT
