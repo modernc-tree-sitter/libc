@@ -22,14 +22,14 @@ type pthreadCleanupItem struct {
 	routine, arg uintptr
 }
 
-// C version is 40 bytes.
-type pthreadMutex struct {
-	sync.Mutex            //  0	8
-	count      int32      //  8	4
-	mType      uint32     // 12	4
-	outer      sync.Mutex // 16	8
-	owner      int32      // 20	4
-	//			 24
+// C version is 40 bytes (64b) and 24 bytes (32b).
+type pthreadMutex struct { // 64b        32b
+	sync.Mutex            //  0	8    0     8
+	count      int32      //  8	4    8     4
+	mType      uint32     // 12	4   12     4
+	outer      sync.Mutex // 16	8   16     8
+	owner      int32      // 24	4   24     4
+	//			 28         28
 }
 
 type pthreadConds struct {
