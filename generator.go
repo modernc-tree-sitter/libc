@@ -145,6 +145,21 @@ func main() {
 		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "sched_rr_get_interval_time32.c")))
 		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "sem_timedwait_time32.c")))
 		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "thrd_sleep_time32.c")))
+	case "linux/arm":
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "aio_suspend_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "cnd_timedwait_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "mq_timedreceive_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "mq_timedsend_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "mtx_timedlock_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "pthread_cond_timedwait_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "pthread_mutex_timedlock_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "pthread_rwlock_timedrdlock_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "pthread_rwlock_timedwrlock_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "pthread_timedjoin_np_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "sched_rr_get_interval_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "sem_timedwait_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "compat", "time32", "thrd_sleep_time32.c")))
+		util.Shell(nil, "sh", "-c", fmt.Sprintf("rm -f %s", filepath.Join(libRoot, "src", "exit", "arm", "__aeabi_atexit.c")))
 	}
 
 	util.Shell(nil, "rm", filepath.Join(libRoot, "src", "env", "__init_tls.c"))
