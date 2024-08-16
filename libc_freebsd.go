@@ -1969,3 +1969,7 @@ func Xpwrite(t *TLS, fd int32, buf uintptr, count types.Size_t, offset types.Off
 	// 	}
 	return types.Ssize_t(n)
 }
+
+func Xexplicit_bzero(tls *TLS, d uintptr, n types.Size_t) {
+	Xmemset(tls, d, 0, n)
+}
