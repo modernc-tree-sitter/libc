@@ -1591,7 +1591,16 @@ func Xwritev(t *TLS, fd int32, iov uintptr, iovcnt int32) types.Ssize_t {
 	if __ccgo_strace {
 		trc("t=%v fd=%v iov=%v iovcnt=%v, (%v:)", t, fd, iov, iovcnt, origin(2))
 	}
-	panic(todo(""))
+	r, _, err := unix.Syscall(unix.SYS_WRITEV, uintptr(fd), iov, uintptr(iovcnt))
+	if err != 0 {
+		if dmesgs {
+			dmesg("%v: %v FAIL", origin(1), err)
+		}
+		t.setErrno(err)
+		return -1
+	}
+
+	return types.Ssize_t(r)
 }
 
 // int __isoc99_sscanf(const char *str, const char *format, ...);
