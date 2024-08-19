@@ -119,7 +119,6 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
-	"syscall"
 	"unsafe"
 
 	guuid "github.com/google/uuid"
@@ -414,7 +413,7 @@ func (tls *TLS) Free(n int) {
 
 	select {
 	case sig := <-tls.pendingSignals:
-		signum := int32(sig.(syscall.Signal))
+		signum := int32(sig.(unix.Signal))
 		h, ok := tls.sigHandlers[signum]
 		if !ok {
 			break
@@ -517,7 +516,7 @@ var abort Tsigaction
 
 func Xabort(tls *TLS) {
 	X__libc_sigaction(tls, SIGABRT, uintptr(unsafe.Pointer(&abort)), 0)
-	unix.Kill(unix.Getpid(), syscall.Signal(SIGABRT))
+	unix.Kill(unix.Getpid(), unix.Signal(SIGABRT))
 	panic(todo("unrechable"))
 }
 
@@ -682,15 +681,15 @@ func Xsignal(tls *TLS, signum int32, handler uintptr) (r uintptr) {
 	r, tls.sigHandlers[signum] = tls.sigHandlers[signum], handler
 	switch handler {
 	case SIG_DFL:
-		gosignal.Reset(syscall.Signal(signum))
+		gosignal.Reset(unix.Signal(signum))
 	case SIG_IGN:
-		gosignal.Ignore(syscall.Signal(signum))
+		gosignal.Ignore(unix.Signal(signum))
 	default:
 		if tls.pendingSignals == nil {
 			tls.pendingSignals = make(chan os.Signal, 3)
 			tls.checkSignals = true
 		}
-		gosignal.Notify(tls.pendingSignals, syscall.Signal(signum))
+		gosignal.Notify(tls.pendingSignals, unix.Signal(signum))
 	}
 	return r
 }
