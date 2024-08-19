@@ -33,6 +33,10 @@ import (
 	"modernc.org/libc/unistd"
 )
 
+const (
+	INVALID_FILE_SIZE = 0xffffffff
+)
+
 // Keep these outside of the var block otherwise go generate will miss them.
 var X__imp__environ = EnvironP()
 var X__imp__wenviron = uintptr(unsafe.Pointer(&wenviron))
@@ -110,122 +114,115 @@ var (
 	procGetCurrentProcess          = modkernel32.NewProc("GetCurrentProcess")          // xx
 	procGetCurrentProcessId        = modkernel32.NewProc("GetCurrentProcessId")        // xx
 	procGetCurrentThread           = modkernel32.NewProc("GetCurrentThread")           // xx
-	procGetCurrentThreadId         = modkernel32.NewProc("GetCurrentThreadId")
-	procGetEnvironmentVariableA    = modkernel32.NewProc("GetEnvironmentVariableA")
-	procGetEnvironmentVariableW    = modkernel32.NewProc("GetEnvironmentVariableW")
-	procGetExitCodeProcess         = modkernel32.NewProc("GetExitCodeProcess")
-	procGetExitCodeThread          = modkernel32.NewProc("GetExitCodeThread")
-	procGetFileAttributesA         = modkernel32.NewProc("GetFileAttributesA")
-	procGetFileAttributesExA       = modkernel32.NewProc("GetFileAttributesExA")
-	procGetFileAttributesExW       = modkernel32.NewProc("GetFileAttributesExW")
-	procGetFileInformationByHandle = modkernel32.NewProc("GetFileInformationByHandle")
-	procGetFileSize                = modkernel32.NewProc("GetFileSize")
-	procGetFullPathNameW           = modkernel32.NewProc("GetFullPathNameW")
-	procGetLastError               = modkernel32.NewProc("GetLastError")
-	procGetLogicalDriveStringsA    = modkernel32.NewProc("GetLogicalDriveStringsA")
-	procGetModuleFileNameW         = modkernel32.NewProc("GetModuleFileNameW")
-	procGetModuleHandleA           = modkernel32.NewProc("GetModuleHandleA")
-	procGetModuleHandleW           = modkernel32.NewProc("GetModuleHandleW")
-	procGetPrivateProfileStringA   = modkernel32.NewProc("GetPrivateProfileStringA")
-	procGetProcAddress             = modkernel32.NewProc("GetProcAddress")
-	procGetProcessHeap             = modkernel32.NewProc("GetProcessHeap")
-	procGetSystemInfo              = modkernel32.NewProc("GetSystemInfo")
-	procGetSystemTime              = modkernel32.NewProc("GetSystemTime")
-	procGetSystemTimeAsFileTime    = modkernel32.NewProc("GetSystemTimeAsFileTime")
-	procGetTempFileNameW           = modkernel32.NewProc("GetTempFileNameW")
-	procGetTickCount               = modkernel32.NewProc("GetTickCount")
-	procGetVersionExA              = modkernel32.NewProc("GetVersionExA")
-	procGetVersionExW              = modkernel32.NewProc("GetVersionExW")
-	procGetVolumeInformationA      = modkernel32.NewProc("GetVolumeInformationA")
-	procGetVolumeInformationW      = modkernel32.NewProc("GetVolumeInformationW")
-	procHeapAlloc                  = modkernel32.NewProc("HeapAlloc")
-	procHeapFree                   = modkernel32.NewProc("HeapFree")
-	procInitializeCriticalSection  = modkernel32.NewProc("InitializeCriticalSection")
-	procLeaveCriticalSection       = modkernel32.NewProc("LeaveCriticalSection")
-	procLockFile                   = modkernel32.NewProc("LockFile")
-	procLockFileEx                 = modkernel32.NewProc("LockFileEx")
-	procLstrlenW                   = modkernel32.NewProc("lstrlenW")
-	procMapViewOfFile              = modkernel32.NewProc("MapViewOfFile")
-	procMoveFileW                  = modkernel32.NewProc("MoveFileW")
-	procMultiByteToWideChar        = modkernel32.NewProc("MultiByteToWideChar")
-	procOpenEventA                 = modkernel32.NewProc("OpenEventA")
-	procOpenProcessToken           = modkernel32.NewProc("OpenProcessToken")
-	procPeekConsoleInputW          = modkernel32.NewProc("PeekConsoleInputW")
-	procPeekNamedPipe              = modkernel32.NewProc("PeekNamedPipe")
-	procQueryPerformanceCounter    = modkernel32.NewProc("QueryPerformanceCounter")
-	procQueryPerformanceFrequency  = modkernel32.NewProc("QueryPerformanceFrequency")
-	procReadConsoleW               = modkernel32.NewProc("ReadConsoleW")
-	procReadFile                   = modkernel32.NewProc("ReadFile")
-	procResetEvent                 = modkernel32.NewProc("ResetEvent")
-	procSearchPathW                = modkernel32.NewProc("SearchPathW")
-	procSetConsoleCtrlHandler      = modkernel32.NewProc("SetConsoleCtrlHandler")
-	procSetConsoleMode             = modkernel32.NewProc("SetConsoleMode")
-	procSetConsoleTextAttribute    = modkernel32.NewProc("SetConsoleTextAttribute")
-	procSetEvent                   = modkernel32.NewProc("SetEvent")
-	procSetFilePointer             = modkernel32.NewProc("SetFilePointer")
-	procSetFileTime                = modkernel32.NewProc("SetFileTime")
-	procSleepEx                    = modkernel32.NewProc("SleepEx")
-	procSystemTimeToFileTime       = modkernel32.NewProc("SystemTimeToFileTime")
-	procTerminateThread            = modkernel32.NewProc("TerminateThread")
-	procTryEnterCriticalSection    = modkernel32.NewProc("TryEnterCriticalSection")
-	procUnlockFile                 = modkernel32.NewProc("UnlockFile")
-	procUnlockFileEx               = modkernel32.NewProc("UnlockFileEx")
-	procWaitForSingleObjectEx      = modkernel32.NewProc("WaitForSingleObjectEx")
-	procWideCharToMultiByte        = modkernel32.NewProc("WideCharToMultiByte")
-	procWriteConsoleA              = modkernel32.NewProc("WriteConsoleA")
-	procWriteConsoleW              = modkernel32.NewProc("WriteConsoleW")
-	procWriteFile                  = modkernel32.NewProc("WriteFile")
-
-	//	procSetConsoleCP               = modkernel32.NewProc("SetConsoleCP")
-	//	procSetThreadPriority          = modkernel32.NewProc("SetThreadPriority")
+	procGetCurrentThreadId         = modkernel32.NewProc("GetCurrentThreadId")         // xx
+	procGetEnvironmentVariableA    = modkernel32.NewProc("GetEnvironmentVariableA")    // xx
+	procGetEnvironmentVariableW    = modkernel32.NewProc("GetEnvironmentVariableW")    // xx
+	procGetExitCodeProcess         = modkernel32.NewProc("GetExitCodeProcess")         // xx
+	procGetExitCodeThread          = modkernel32.NewProc("GetExitCodeThread")          // xx
+	procGetFileAttributesA         = modkernel32.NewProc("GetFileAttributesA")         // xx
+	procGetFileAttributesExA       = modkernel32.NewProc("GetFileAttributesExA")       // xx
+	procGetFileAttributesExW       = modkernel32.NewProc("GetFileAttributesExW")       // xx
+	procGetFileInformationByHandle = modkernel32.NewProc("GetFileInformationByHandle") // xx
+	procGetFileSize                = modkernel32.NewProc("GetFileSize")                // xx
+	procGetFullPathNameW           = modkernel32.NewProc("GetFullPathNameW")           // xx
+	procGetLogicalDriveStringsA    = modkernel32.NewProc("GetLogicalDriveStringsA")    // xx
+	procGetModuleFileNameW         = modkernel32.NewProc("GetModuleFileNameW")         // xx
+	procGetModuleHandleA           = modkernel32.NewProc("GetModuleHandleA")           // xx
+	procGetModuleHandleW           = modkernel32.NewProc("GetModuleHandleW")           // xx
+	procGetPrivateProfileStringA   = modkernel32.NewProc("GetPrivateProfileStringA")   // xx
+	procGetProcessHeap             = modkernel32.NewProc("GetProcessHeap")             // xx
+	procGetSystemInfo              = modkernel32.NewProc("GetSystemInfo")              // xx
+	procGetSystemTime              = modkernel32.NewProc("GetSystemTime")              // xx
+	procGetSystemTimeAsFileTime    = modkernel32.NewProc("GetSystemTimeAsFileTime")    // xx
+	procGetTempFileNameW           = modkernel32.NewProc("GetTempFileNameW")           // xx
+	procGetTickCount               = modkernel32.NewProc("GetTickCount")               // xx
+	procGetVersionExA              = modkernel32.NewProc("GetVersionExA")              // xx
+	procGetVersionExW              = modkernel32.NewProc("GetVersionExW")              // xx
+	procGetVolumeInformationA      = modkernel32.NewProc("GetVolumeInformationA")      // xx
+	procGetVolumeInformationW      = modkernel32.NewProc("GetVolumeInformationW")      // xx
+	procHeapAlloc                  = modkernel32.NewProc("HeapAlloc")                  // xx
+	procHeapFree                   = modkernel32.NewProc("HeapFree")                   // xx
+	procInitializeCriticalSection  = modkernel32.NewProc("InitializeCriticalSection")  // xx
+	procLeaveCriticalSection       = modkernel32.NewProc("LeaveCriticalSection")       // xx
+	procLockFile                   = modkernel32.NewProc("LockFile")                   // xx
+	procLockFileEx                 = modkernel32.NewProc("LockFileEx")                 // xx
+	procLstrlenW                   = modkernel32.NewProc("lstrlenW")                   // xx
+	procMapViewOfFile              = modkernel32.NewProc("MapViewOfFile")              // xx
+	procMoveFileW                  = modkernel32.NewProc("MoveFileW")                  // xx
+	procMultiByteToWideChar        = modkernel32.NewProc("MultiByteToWideChar")        // xx
+	procOpenEventA                 = modkernel32.NewProc("OpenEventA")                 // xx
+	procOpenProcessToken           = modkernel32.NewProc("OpenProcessToken")           // xx
+	procPeekConsoleInputW          = modkernel32.NewProc("PeekConsoleInputW")          // xx
+	procPeekNamedPipe              = modkernel32.NewProc("PeekNamedPipe")              // xx
+	procQueryPerformanceCounter    = modkernel32.NewProc("QueryPerformanceCounter")    // xx
+	procQueryPerformanceFrequency  = modkernel32.NewProc("QueryPerformanceFrequency")  // xx
+	procReadConsoleW               = modkernel32.NewProc("ReadConsoleW")               // xx
+	procReadFile                   = modkernel32.NewProc("ReadFile")                   // xx
+	procResetEvent                 = modkernel32.NewProc("ResetEvent")                 // xx
+	procSearchPathW                = modkernel32.NewProc("SearchPathW")                // xx
+	procSetConsoleMode             = modkernel32.NewProc("SetConsoleMode")             // xx
+	procSetConsoleTextAttribute    = modkernel32.NewProc("SetConsoleTextAttribute")    // xx
+	procSetEvent                   = modkernel32.NewProc("SetEvent")                   // xx
+	procSetFilePointer             = modkernel32.NewProc("SetFilePointer")             // xx
+	procSetFileTime                = modkernel32.NewProc("SetFileTime")                // xx
+	procSleepEx                    = modkernel32.NewProc("SleepEx")                    // xx
+	procSystemTimeToFileTime       = modkernel32.NewProc("SystemTimeToFileTime")       // xx
+	procTerminateThread            = modkernel32.NewProc("TerminateThread")            // xx
+	procTryEnterCriticalSection    = modkernel32.NewProc("TryEnterCriticalSection")    // xx
+	procUnlockFile                 = modkernel32.NewProc("UnlockFile")                 // xx
+	procUnlockFileEx               = modkernel32.NewProc("UnlockFileEx")               // xx
+	procWaitForSingleObjectEx      = modkernel32.NewProc("WaitForSingleObjectEx")      // xx
+	procWideCharToMultiByte        = modkernel32.NewProc("WideCharToMultiByte")        // xx
+	procWriteConsoleW              = modkernel32.NewProc("WriteConsoleW")              // xx
+	procWriteFile                  = modkernel32.NewProc("WriteFile")                  // xx
 	//--
 
 	modadvapi = windows.NewLazySystemDLL("advapi32.dll")
 	//--
-	procAccessCheck                = modadvapi.NewProc("AccessCheck")
-	procAddAce                     = modadvapi.NewProc("AddAce")
-	procEqualSid                   = modadvapi.NewProc("EqualSid")
-	procGetAce                     = modadvapi.NewProc("GetAce")
-	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")
-	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")
-	procGetFileSecurityW           = modadvapi.NewProc("GetFileSecurityW")
-	procGetLengthSid               = modadvapi.NewProc("GetLengthSid")
-	procGetNamedSecurityInfoW      = modadvapi.NewProc("GetNamedSecurityInfoW")
-	procGetSecurityDescriptorDacl  = modadvapi.NewProc("GetSecurityDescriptorDacl")
-	procGetSecurityDescriptorOwner = modadvapi.NewProc("GetSecurityDescriptorOwner")
-	procGetSidIdentifierAuthority  = modadvapi.NewProc("GetSidIdentifierAuthority")
-	procGetSidLengthRequired       = modadvapi.NewProc("GetSidLengthRequired")
-	procGetSidSubAuthority         = modadvapi.NewProc("GetSidSubAuthority")
-	procGetTokenInformation        = modadvapi.NewProc("GetTokenInformation")
-	procImpersonateSelf            = modadvapi.NewProc("ImpersonateSelf")
-	procInitializeAcl              = modadvapi.NewProc("InitializeAcl")
-	procInitializeSid              = modadvapi.NewProc("InitializeSid")
-	procOpenThreadToken            = modadvapi.NewProc("OpenThreadToken")
-	procRevertToSelf               = modadvapi.NewProc("RevertToSelf")
+	procAccessCheck                = modadvapi.NewProc("AccessCheck")                // xx
+	procAddAce                     = modadvapi.NewProc("AddAce")                     // xx
+	procEqualSid                   = modadvapi.NewProc("EqualSid")                   // xx
+	procGetAce                     = modadvapi.NewProc("GetAce")                     // xx
+	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")          // xx
+	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")           // xx
+	procGetFileSecurityW           = modadvapi.NewProc("GetFileSecurityW")           // xx
+	procGetLengthSid               = modadvapi.NewProc("GetLengthSid")               // xx
+	procGetNamedSecurityInfoW      = modadvapi.NewProc("GetNamedSecurityInfoW")      // xx
+	procGetSecurityDescriptorDacl  = modadvapi.NewProc("GetSecurityDescriptorDacl")  // xx
+	procGetSecurityDescriptorOwner = modadvapi.NewProc("GetSecurityDescriptorOwner") // xx
+	procGetSidIdentifierAuthority  = modadvapi.NewProc("GetSidIdentifierAuthority")  // xx
+	procGetSidLengthRequired       = modadvapi.NewProc("GetSidLengthRequired")       // xx
+	procGetSidSubAuthority         = modadvapi.NewProc("GetSidSubAuthority")         // xx
+	procGetTokenInformation        = modadvapi.NewProc("GetTokenInformation")        // xx
+	procImpersonateSelf            = modadvapi.NewProc("ImpersonateSelf")            // xx
+	procInitializeAcl              = modadvapi.NewProc("InitializeAcl")              // xx
+	procInitializeSid              = modadvapi.NewProc("InitializeSid")              // xx
+	procOpenThreadToken            = modadvapi.NewProc("OpenThreadToken")            // xx
+	procRevertToSelf               = modadvapi.NewProc("RevertToSelf")               // xx
 	//--
 
 	modws2_32 = windows.NewLazySystemDLL("ws2_32.dll")
 	//--
-	procWSAStartup = modws2_32.NewProc("WSAStartup")
+	procWSAStartup = modws2_32.NewProc("WSAStartup") // xx
 	//--
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
-	procCharLowerW                  = moduser32.NewProc("CharLowerW")
-	procCreateWindowExW             = moduser32.NewProc("CreateWindowExW")
-	procMsgWaitForMultipleObjectsEx = moduser32.NewProc("MsgWaitForMultipleObjectsEx")
-	procPeekMessageW                = moduser32.NewProc("PeekMessageW")
-	procRegisterClassW              = moduser32.NewProc("RegisterClassW")
-	procUnregisterClassW            = moduser32.NewProc("UnregisterClassW")
-	procWaitForInputIdle            = moduser32.NewProc("WaitForInputIdle")
+	procCharLowerW                  = moduser32.NewProc("CharLowerW")                  // xx
+	procCreateWindowExW             = moduser32.NewProc("CreateWindowExW")             // xx
+	procMsgWaitForMultipleObjectsEx = moduser32.NewProc("MsgWaitForMultipleObjectsEx") // xx
+	procPeekMessageW                = moduser32.NewProc("PeekMessageW")                // xx
+	procRegisterClassW              = moduser32.NewProc("RegisterClassW")              // xx
+	procUnregisterClassW            = moduser32.NewProc("UnregisterClassW")            // xx
+	procWaitForInputIdle            = moduser32.NewProc("WaitForInputIdle")            // xx
 	//--
 
 	netapi             = windows.NewLazySystemDLL("netapi32.dll")
-	procNetGetDCName   = netapi.NewProc("NetGetDCName")
-	procNetUserGetInfo = netapi.NewProc("NetUserGetInfo")
+	procNetGetDCName   = netapi.NewProc("NetGetDCName")   // xx
+	procNetUserGetInfo = netapi.NewProc("NetUserGetInfo") // xx
 
 	userenvapi                = windows.NewLazySystemDLL("userenv.dll")
-	procGetProfilesDirectoryW = userenvapi.NewProc("GetProfilesDirectoryW")
+	procGetProfilesDirectoryW = userenvapi.NewProc("GetProfilesDirectoryW") // xx
 
 	modcrt       = windows.NewLazySystemDLL("msvcrt.dll")
 	crtAccess    = modcrt.NewProc("_access")
@@ -2228,7 +2225,7 @@ func XSetEvent(t *TLS, hEvent uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v hEvent=%v, (%v:)", t, hEvent, origin(2))
 	}
-	r0, _, err := procSetEvent.Call(hEvent, 0, 0)
+	r0, _, err := procSetEvent.Call(hEvent)
 	if r0 == 0 {
 		t.setLastError(err)
 	}
@@ -2262,8 +2259,8 @@ func XHeapFree(t *TLS, hHeap uintptr, dwFlags uint32, lpMem uintptr) int32 {
 		trc("t=%v hHeap=%v dwFlags=%v lpMem=%v, (%v:)", t, hHeap, dwFlags, lpMem, origin(2))
 	}
 	r0, _, err := procHeapFree.Call(hHeap, uintptr(dwFlags), lpMem)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -2275,7 +2272,7 @@ func XGetProcessHeap(t *TLS) uintptr {
 	}
 	r0, _, err := procGetProcessHeap.Call(0, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return r0
 }
@@ -2291,10 +2288,7 @@ func XHeapAlloc(t *TLS, hHeap uintptr, dwFlags uint32, dwBytes types.Size_t) uin
 	if __ccgo_strace {
 		trc("t=%v hHeap=%v dwFlags=%v dwBytes=%v, (%v:)", t, hHeap, dwFlags, dwBytes, origin(2))
 	}
-	r0, _, err := procHeapAlloc.Call(hHeap, uintptr(dwFlags), uintptr(dwBytes))
-	if r0 == 0 {
-		t.setErrno(err)
-	}
+	r0, _, _ := procHeapAlloc.Call(hHeap, uintptr(dwFlags), uintptr(dwBytes))
 	return r0
 }
 
@@ -2367,7 +2361,7 @@ func XGetVersionExW(t *TLS, lpVersionInformation uintptr) int32 {
 	}
 	r0, _, err := procGetVersionExW.Call(lpVersionInformation, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -2450,13 +2444,8 @@ func XSetFilePointer(t *TLS, hFile uintptr, lDistanceToMove long, lpDistanceToMo
 		trc("t=%v hFile=%v lDistanceToMove=%v lpDistanceToMoveHigh=%v dwMoveMethod=%v, (%v:)", t, hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod, origin(2))
 	}
 	r0, _, e1 := procSetFilePointer.Call(hFile, uintptr(lDistanceToMove), lpDistanceToMoveHigh, uintptr(dwMoveMethod), 0, 0)
-	var uOff = uint32(r0)
-	if uOff == 0xffffffff {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+	if uint32(r0) == INVALID_FILE_SIZE {
+		t.setLastError(e1)
 	}
 	return uint32(r0)
 }
@@ -2493,12 +2482,7 @@ func XReadFile(t *TLS, hFile, lpBuffer uintptr, nNumberOfBytesToRead uint32, lpN
 	}
 	r1, _, e1 := procReadFile.Call(hFile, lpBuffer, uintptr(nNumberOfBytesToRead), uintptr(lpNumberOfBytesRead), uintptr(lpOverlapped), 0)
 	if r1 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
-		return 0
+		t.setLastError(e1)
 	}
 	return int32(r1)
 }
@@ -2518,12 +2502,7 @@ func XWriteFile(t *TLS, hFile, lpBuffer uintptr, nNumberOfBytesToWrite uint32, l
 	}
 	r1, _, e1 := procWriteFile.Call(hFile, lpBuffer, uintptr(nNumberOfBytesToWrite), lpNumberOfBytesWritten, lpOverlapped, 0)
 	if r1 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
-		return 0
+		t.setLastError(e1)
 	}
 	return int32(r1)
 }
@@ -2725,12 +2704,10 @@ func XReadConsoleW(t *TLS, hConsoleInput, lpBuffer uintptr, nNumberOfCharsToRead
 		trc("t=%v lpBuffer=%v nNumberOfCharsToRead=%v pInputControl=%v, (%v:)", t, lpBuffer, nNumberOfCharsToRead, pInputControl, origin(2))
 	}
 
-	rv, _, err := procReadConsoleW.Call(hConsoleInput,
-		lpBuffer, uintptr(nNumberOfCharsToRead), lpNumberOfCharsRead, pInputControl, 0)
+	rv, _, err := procReadConsoleW.Call(hConsoleInput, lpBuffer, uintptr(nNumberOfCharsToRead), lpNumberOfCharsRead, pInputControl, 0)
 	if rv == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
-
 	return int32(rv)
 }
 
@@ -2750,7 +2727,7 @@ func XWriteConsoleW(t *TLS, hConsoleOutput, lpBuffer uintptr, nNumberOfCharsToWr
 	rv, _, err := procWriteConsoleW.Call(hConsoleOutput,
 		lpBuffer, uintptr(nNumberOfCharsToWrite), lpNumberOfCharsWritten, lpReserved, 0)
 	if rv == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(rv)
 }
@@ -2783,7 +2760,7 @@ func XResetEvent(t *TLS, hEvent uintptr) int32 {
 	}
 	rv, _, err := procResetEvent.Call(hEvent, 0, 0)
 	if rv == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(rv)
 }
@@ -2802,7 +2779,7 @@ func XPeekConsoleInputW(t *TLS, hConsoleInput, lpBuffer uintptr, nLength uint32,
 	}
 	r0, _, err := procPeekConsoleInputW.Call(hConsoleInput, lpBuffer, uintptr(nLength), lpNumberOfEventsRead, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -2942,7 +2919,7 @@ func XSetConsoleMode(t *TLS, hConsoleHandle uintptr, dwMode uint32) int32 {
 	}
 	rv, _, err := procSetConsoleMode.Call(hConsoleHandle, uintptr(dwMode), 0)
 	if rv == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(rv)
 }
@@ -2988,10 +2965,7 @@ func XTryEnterCriticalSection(t *TLS, lpCriticalSection uintptr) (r int32) {
 	if __ccgo_strace {
 		trc("t=%v lpCriticalSection=%v, (%v:)", t, lpCriticalSection, origin(2))
 	}
-	r0, _, err := procTryEnterCriticalSection.Call(lpCriticalSection)
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
+	r0, _, _ := procTryEnterCriticalSection.Call(lpCriticalSection)
 	return int32(r0)
 }
 
@@ -3059,8 +3033,8 @@ func XMoveFileW(t *TLS, lpExistingFileName, lpNewFileName uintptr) int32 {
 		trc("t=%v lpNewFileName=%v, (%v:)", t, lpNewFileName, origin(2))
 	}
 	r0, _, err := procMoveFileW.Call(lpExistingFileName, lpNewFileName, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -3078,15 +3052,10 @@ func XGetFullPathNameW(t *TLS, lpFileName uintptr, nBufferLength uint32, lpBuffe
 		trc("t=%v lpFileName=%v nBufferLength=%v lpFilePart=%v, (%v:)", t, lpFileName, nBufferLength, lpFilePart, origin(2))
 	}
 	r0, _, e1 := procGetFullPathNameW.Call(lpFileName, uintptr(nBufferLength), uintptr(lpBuffer), uintptr(lpFilePart), 0, 0)
-	n := uint32(r0)
-	if n == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+	if r0 == 0 {
+		t.setLastError(e1)
 	}
-	return n
+	return uint32(r0)
 }
 
 // __attribute__((dllimport)) LPWSTR CharLowerW(LPWSTR lpsz);
@@ -3095,13 +3064,7 @@ func XCharLowerW(tls *TLS, _lpsz uintptr) (r uintptr) {
 		trc("lpsz=%+v", _lpsz)
 		defer func() { trc(`XCharLowerW->%+v`, r) }()
 	}
-	r0, r1, err := procCharLowerW.Call(_lpsz)
-	if err != windows.NOERROR {
-		if __ccgo_strace {
-			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
-		}
-		tls.SetLastError(uint32(err.(windows.Errno)))
-	}
+	r0, _, _ := procCharLowerW.Call(_lpsz)
 	return r0
 }
 
@@ -3156,7 +3119,7 @@ func XGetTempFileNameW(t *TLS, lpPathName, lpPrefixString uintptr, uUnique uint3
 	}
 	r0, _, e1 := procGetTempFileNameW.Call(lpPathName, lpPrefixString, uintptr(uUnique), lpTempFileName, 0, 0)
 	if r0 == 0 {
-		t.setErrno(e1)
+		t.setLastError(e1)
 	}
 	return uint32(r0)
 }
@@ -3288,8 +3251,8 @@ func XGetLogicalDriveStringsA(t *TLS, nBufferLength uint32, lpBuffer uintptr) ui
 		trc("t=%v nBufferLength=%v lpBuffer=%v, (%v:)", t, nBufferLength, lpBuffer, origin(2))
 	}
 	r0, _, err := procGetLogicalDriveStringsA.Call(uintptr(nBufferLength), lpBuffer, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return uint32(r0)
 }
@@ -3320,8 +3283,8 @@ func XGetVolumeInformationA(t *TLS, lpRootPathName, lpVolumeNameBuffer uintptr, 
 		uintptr(nFileSystemNameSize),
 		0,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -3414,9 +3377,12 @@ func XMultiByteToWideChar(t *TLS, CodePage uint32, dwFlags uint32, lpMultiByteSt
 	if __ccgo_strace {
 		trc("t=%v CodePage=%v dwFlags=%v lpMultiByteStr=%v cbMultiByte=%v lpWideCharStr=%v cchWideChar=%v, (%v:)", t, CodePage, dwFlags, lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar, origin(2))
 	}
-	r1, _, _ := procMultiByteToWideChar.Call(uintptr(CodePage), uintptr(dwFlags), uintptr(lpMultiByteStr),
+	r1, _, err := procMultiByteToWideChar.Call(uintptr(CodePage), uintptr(dwFlags), uintptr(lpMultiByteStr),
 		uintptr(cbMultiByte), uintptr(lpWideCharStr), uintptr(cchWideChar))
-	return (int32(r1))
+	if r1 == 0 {
+		t.setLastError(err)
+	}
+	return int32(r1)
 }
 
 // void OutputDebugStringW(
@@ -3664,8 +3630,8 @@ func XGetFileAttributesA(t *TLS, lpFileName uintptr) uint32 {
 		trc("t=%v lpFileName=%v, (%v:)", t, lpFileName, origin(2))
 	}
 	r0, _, err := procGetFileAttributesA.Call(lpFileName, 0, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == windows.INVALID_FILE_ATTRIBUTES {
+		t.setLastError(err)
 	}
 	return uint32(r0)
 }
@@ -3683,12 +3649,7 @@ func XGetFileAttributesExW(t *TLS, lpFileName uintptr, fInfoLevelId int32, lpFil
 	}
 	r1, _, e1 := procGetFileAttributesExW.Call(lpFileName, uintptr(fInfoLevelId), lpFileInformation)
 	if r1 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
-		return 0
+		t.setLastError(e1)
 	}
 	return int32(r1)
 }
@@ -3704,19 +3665,8 @@ func XGetFileSize(t *TLS, hFile, lpFileSizeHigh uintptr) uint32 {
 		trc("t=%v lpFileSizeHigh=%v, (%v:)", t, lpFileSizeHigh, origin(2))
 	}
 	r1, _, e1 := procGetFileSize.Call(hFile, lpFileSizeHigh, 0)
-	if r1 == math.MaxUint32 {
-		if lpFileSizeHigh == 0 {
-			// If the function fails and lpFileSizeHigh is NULL, the return value is INVALID_FILE_SIZE.
-			// Note that if the return value is INVALID_FILE_SIZE (0xffffffff),
-			// an application must call GetLastError to determine whether the function has succeeded or failed.
-			t.setErrno(e1)
-			return math.MaxUint32
-		} else {
-			// If the function fails and lpFileSizeHigh is non-NULL, the return value is INVALID_FILE_SIZE
-			// and GetLastError will return a value other than NO_ERROR.
-			t.setErrno(e1)
-			return math.MaxUint32
-		}
+	if r1 == INVALID_FILE_SIZE {
+		t.setLastError(e1)
 	}
 	return uint32(r1)
 }
@@ -3742,15 +3692,8 @@ func XGetProcAddress(t *TLS, hModule, lpProcName uintptr) uintptr {
 		trc("t=%v lpProcName=%v, (%v:)", t, lpProcName, origin(2))
 	}
 
+	t.setLastError(windows.ERROR_PROC_NOT_FOUND)
 	return 0
-
-	//panic(todo(GoString(lpProcName)))
-	//
-	//r0, _, err := procGetProcAddress.Call(hModule, lpProcName, 0)
-	//if r0 == 0 {
-	//	t.setErrno(err)
-	//}
-	//return r0
 }
 
 // NTSYSAPI NTSTATUS RtlGetVersion( // ntdll.dll
@@ -3847,7 +3790,7 @@ func XGetVersionExA(t *TLS, lpVersionInformation uintptr) int32 {
 	}
 	r0, _, err := procGetVersionExA.Call(lpVersionInformation, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -3991,12 +3934,7 @@ func XLockFile(t *TLS, hFile uintptr, dwFileOffsetLow, dwFileOffsetHigh, nNumber
 
 	r1, _, e1 := procLockFile.Call(hFile, uintptr(dwFileOffsetLow), uintptr(dwFileOffsetHigh), uintptr(nNumberOfBytesToLockLow), uintptr(nNumberOfBytesToLockHigh), 0)
 	if r1 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
-		return 0
+		t.setLastError(e1)
 	}
 	return int32(r1)
 
@@ -4018,12 +3956,7 @@ func XLockFileEx(t *TLS, hFile uintptr, dwFlags, dwReserved, nNumberOfBytesToLoc
 	}
 	r1, _, e1 := procLockFileEx.Call(hFile, uintptr(dwFlags), uintptr(dwReserved), uintptr(nNumberOfBytesToLockLow), uintptr(nNumberOfBytesToLockHigh), lpOverlapped)
 	if r1 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
-		return 0
+		t.setLastError(e1)
 	}
 	return int32(r1)
 }
@@ -4044,11 +3977,7 @@ func XMapViewOfFile(t *TLS, hFileMappingObject uintptr, dwDesiredAccess, dwFileO
 	h, _, e1 := procMapViewOfFile.Call(hFileMappingObject, uintptr(dwDesiredAccess),
 		uintptr(dwFileOffsetHigh), uintptr(dwFileOffsetLow), uintptr(dwNumberOfBytesToMap), 0)
 	if h == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return h
 }
@@ -4062,7 +3991,10 @@ func XQueryPerformanceCounter(t *TLS, lpPerformanceCount uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v lpPerformanceCount=%v, (%v:)", t, lpPerformanceCount, origin(2))
 	}
-	r0, _, _ := procQueryPerformanceCounter.Call(lpPerformanceCount, 0, 0)
+	r0, _, err := procQueryPerformanceCounter.Call(lpPerformanceCount, 0, 0)
+	if r0 == 0 {
+		t.setLastError(err)
+	}
 	return int32(r0)
 }
 
@@ -4083,7 +4015,10 @@ func XSystemTimeToFileTime(t *TLS, lpSystemTime, lpFileTime uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v lpFileTime=%v, (%v:)", t, lpFileTime, origin(2))
 	}
-	r0, _, _ := procSystemTimeToFileTime.Call(lpSystemTime, lpFileTime, 0)
+	r0, _, err := procSystemTimeToFileTime.Call(lpSystemTime, lpFileTime, 0)
+	if r0 == 0 {
+		t.setLastError(err)
+	}
 	return int32(r0)
 }
 
@@ -4102,12 +4037,7 @@ func XUnlockFile(t *TLS, hFile uintptr, dwFileOffsetLow, dwFileOffsetHigh, nNumb
 	}
 	r1, _, e1 := procUnlockFile.Call(hFile, uintptr(dwFileOffsetLow), uintptr(dwFileOffsetHigh), uintptr(nNumberOfBytesToUnlockLow), uintptr(nNumberOfBytesToUnlockHigh), 0)
 	if r1 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
-		return 0
+		t.setLastError(e1)
 	}
 	return int32(r1)
 }
@@ -4127,12 +4057,7 @@ func XUnlockFileEx(t *TLS, hFile uintptr, dwReserved, nNumberOfBytesToUnlockLow,
 	}
 	r1, _, e1 := procUnlockFileEx.Call(hFile, uintptr(dwReserved), uintptr(nNumberOfBytesToUnlockLow), uintptr(nNumberOfBytesToUnlockHigh), lpOverlapped, 0)
 	if r1 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
-		return 0
+		t.setLastError(e1)
 	}
 	return int32(r1)
 }
@@ -4170,9 +4095,12 @@ func XWideCharToMultiByte(t *TLS, CodePage uint32, dwFlags uint32, lpWideCharStr
 	if __ccgo_strace {
 		trc("t=%v CodePage=%v dwFlags=%v lpWideCharStr=%v cchWideChar=%v lpMultiByteStr=%v cbMultiByte=%v lpUsedDefaultChar=%v, (%v:)", t, CodePage, dwFlags, lpWideCharStr, cchWideChar, lpMultiByteStr, cbMultiByte, lpUsedDefaultChar, origin(2))
 	}
-	r1, _, _ := procWideCharToMultiByte.Call(uintptr(CodePage), uintptr(dwFlags), lpWideCharStr,
+	r1, _, err := procWideCharToMultiByte.Call(uintptr(CodePage), uintptr(dwFlags), lpWideCharStr,
 		uintptr(cchWideChar), lpMultiByteStr, uintptr(cbMultiByte),
 		lpDefaultChar, lpUsedDefaultChar, 0)
+	if r1 == 0 {
+		t.setLastError(err)
+	}
 	return (int32(r1))
 }
 
@@ -4242,11 +4170,7 @@ func X_stat64(t *TLS, path, buffer uintptr) int32 {
 	var fa windows.Win32FileAttributeData
 	r1, _, e1 := procGetFileAttributesExA.Call(path, windows.GetFileExInfoStandard, (uintptr)(unsafe.Pointer(&fa)))
 	if r1 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 		return -1
 	}
 
@@ -4440,11 +4364,7 @@ func XGetEnvironmentVariableA(t *TLS, lpName, lpBuffer uintptr, nSize uint32) ui
 	r0, _, e1 := procGetEnvironmentVariableA.Call(lpName, lpBuffer, uintptr(nSize))
 	n := uint32(r0)
 	if n == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return n
 }
@@ -4573,7 +4493,6 @@ func XGetCurrentThreadId(t *TLS) uint32 {
 	}
 	r0, _, _ := procGetCurrentThreadId.Call(0, 0, 0)
 	return uint32(r0)
-	//return uint32(t.ID)
 }
 
 // BOOL GetExitCodeThread(
@@ -4586,7 +4505,10 @@ func XGetExitCodeThread(t *TLS, hThread, lpExitCode uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v lpExitCode=%v, (%v:)", t, lpExitCode, origin(2))
 	}
-	r0, _, _ := procGetExitCodeThread.Call(hThread, lpExitCode, 0)
+	r0, _, err := procGetExitCodeThread.Call(hThread, lpExitCode, 0)
+	if r0 == 0 {
+		t.setLastError(err)
+	}
 	return int32(r0)
 }
 
@@ -4601,7 +4523,10 @@ func XWaitForSingleObjectEx(t *TLS, hHandle uintptr, dwMilliseconds uint32, bAle
 	if __ccgo_strace {
 		trc("t=%v hHandle=%v dwMilliseconds=%v bAlertable=%v, (%v:)", t, hHandle, dwMilliseconds, bAlertable, origin(2))
 	}
-	rv, _, _ := procWaitForSingleObjectEx.Call(hHandle, uintptr(dwMilliseconds), uintptr(bAlertable))
+	rv, _, err := procWaitForSingleObjectEx.Call(hHandle, uintptr(dwMilliseconds), uintptr(bAlertable))
+	if uint32(rv) == windows.WAIT_FAILED {
+		t.setLastError(err)
+	}
 	return uint32(rv)
 }
 
@@ -4625,8 +4550,8 @@ func XMsgWaitForMultipleObjectsEx(t *TLS, nCount uint32, pHandles uintptr, dwMil
 		uintptr(dwFlags),
 		0,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if uint32(r0) == windows.WAIT_FAILED {
+		t.setLastError(err)
 	}
 	return uint32(r0)
 }
@@ -4648,7 +4573,7 @@ func XGetModuleFileNameW(t *TLS, hModule, lpFileName uintptr, nSize uint32) uint
 	}
 	r0, _, err := procGetModuleFileNameW.Call(hModule, lpFileName, uintptr(nSize))
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return uint32(r0)
 }
@@ -4664,10 +4589,7 @@ func XNetGetDCName(t *TLS, ServerName, DomainName, Buffer uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v Buffer=%v, (%v:)", t, Buffer, origin(2))
 	}
-	r0, _, err := procNetGetDCName.Call(ServerName, DomainName, Buffer)
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
+	r0, _, _ := procNetGetDCName.Call(ServerName, DomainName, Buffer)
 	return int32(r0)
 }
 
@@ -4683,16 +4605,13 @@ func XNetUserGetInfo(t *TLS, servername, username uintptr, level uint32, bufptr 
 	if __ccgo_strace {
 		trc("t=%v username=%v level=%v bufptr=%v, (%v:)", t, username, level, bufptr, origin(2))
 	}
-	r0, _, err := procNetUserGetInfo.Call(servername,
+	r0, _, _ := procNetUserGetInfo.Call(servername,
 		username,
 		uintptr(level),
 		bufptr,
 		0,
 		0,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
 	return uint32(r0)
 }
 
@@ -4711,8 +4630,8 @@ func XGetProfilesDirectoryW(t *TLS, lpProfileDir, lpcchSize uintptr) int32 {
 		trc("t=%v lpcchSize=%v, (%v:)", t, lpcchSize, origin(2))
 	}
 	r0, _, err := procGetProfilesDirectoryW.Call(lpProfileDir, lpcchSize, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -4742,8 +4661,8 @@ func XGetPrivateProfileStringA(t *TLS, lpAppName, lpKeyName, lpDefault, lpReturn
 		uintptr(nSize),
 		lpFileName,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(0x02)
+	if err == windows.ERROR_FILE_NOT_FOUND {
+		t.setErrno(err)
 	}
 	return uint32(r0)
 }
@@ -4766,8 +4685,8 @@ func XGetFileSecurityW(t *TLS, lpFileName uintptr, RequestedInformation uint32, 
 		trc("t=%v lpFileName=%v RequestedInformation=%v pSecurityDescriptor=%v nLength=%v lpnLengthNeeded=%v, (%v:)", t, lpFileName, RequestedInformation, pSecurityDescriptor, nLength, lpnLengthNeeded, origin(2))
 	}
 	r0, _, err := procGetFileSecurityW.Call(lpFileName, uintptr(RequestedInformation), pSecurityDescriptor, uintptr(nLength), lpnLengthNeeded, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -4784,8 +4703,8 @@ func XGetSecurityDescriptorOwner(t *TLS, pSecurityDescriptor, pOwner, lpbOwnerDe
 		trc("t=%v lpbOwnerDefaulted=%v, (%v:)", t, lpbOwnerDefaulted, origin(2))
 	}
 	r0, _, err := procGetSecurityDescriptorOwner.Call(pSecurityDescriptor, pOwner, lpbOwnerDefaulted)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 
@@ -4800,10 +4719,7 @@ func XGetSidIdentifierAuthority(t *TLS, pSid uintptr) uintptr {
 	if __ccgo_strace {
 		trc("t=%v pSid=%v, (%v:)", t, pSid, origin(2))
 	}
-	r0, _, err := procGetSidIdentifierAuthority.Call(pSid, 0, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
+	r0, _, _ := procGetSidIdentifierAuthority.Call(pSid, 0, 0)
 	return r0
 }
 
@@ -4817,8 +4733,8 @@ func XImpersonateSelf(t *TLS, ImpersonationLevel int32) int32 {
 		trc("t=%v ImpersonationLevel=%v, (%v:)", t, ImpersonationLevel, origin(2))
 	}
 	r0, _, err := procImpersonateSelf.Call(uintptr(ImpersonationLevel), 0, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -4836,8 +4752,8 @@ func XOpenThreadToken(t *TLS, ThreadHandle uintptr, DesiredAccess uint32, OpenAs
 		trc("t=%v ThreadHandle=%v DesiredAccess=%v OpenAsSelf=%v TokenHandle=%v, (%v:)", t, ThreadHandle, DesiredAccess, OpenAsSelf, TokenHandle, origin(2))
 	}
 	r0, _, err := procOpenThreadToken.Call(ThreadHandle, uintptr(DesiredAccess), uintptr(OpenAsSelf), TokenHandle, 0, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -4857,8 +4773,8 @@ func XRevertToSelf(t *TLS) int32 {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
 	r0, _, err := procRevertToSelf.Call(0, 0, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -4889,8 +4805,8 @@ func XAccessCheck(t *TLS, pSecurityDescriptor, ClientToken uintptr, DesiredAcces
 		AccessStatus,
 		0,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -4956,11 +4872,7 @@ func XGetFileInformationByHandle(t *TLS, hFile, lpFileInformation uintptr) int32
 	}
 	r1, _, e1 := procGetFileInformationByHandle.Call(hFile, lpFileInformation, 0)
 	if r1 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return int32(r1)
 }
@@ -4991,8 +4903,8 @@ func XGetVolumeInformationW(t *TLS, lpRootPathName, lpVolumeNameBuffer uintptr, 
 		uintptr(nFileSystemNameSize),
 		0,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5035,12 +4947,9 @@ func XSetFileTime(t *TLS, _hFile uintptr, _lpCreationTime, _lpLastAccessTime, _l
 		trc("hFile=%+v lpCreationTime=%+v lpLastAccessTime=%+v lpLastWriteTime=%+v", _hFile, _lpCreationTime, _lpLastAccessTime, _lpLastWriteTime)
 		defer func() { trc(`XSetFileTime->%+v`, r) }()
 	}
-	r0, r1, err := procSetFileTime.Call(_hFile, _lpCreationTime, _lpLastAccessTime, _lpLastWriteTime)
-	if err != windows.NOERROR {
-		if __ccgo_strace {
-			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
-		}
-		t.SetLastError(uint32(err.(windows.Errno)))
+	r0, _, err := procSetFileTime.Call(_hFile, _lpCreationTime, _lpLastAccessTime, _lpLastWriteTime)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5051,13 +4960,7 @@ func XGetNamedSecurityInfoW(tls *TLS, _pObjectName uintptr, _ObjectType int32, _
 		trc("pObjectName=%+v ObjectType=%+v SecurityInfo=%+v ppsidOwner=%+v ppsidGroup=%+v ppDacl=%+v ppSacl=%+v ppSecurityDescriptor=%+v", _pObjectName, _ObjectType, _SecurityInfo, _ppsidOwner, _ppsidGroup, _ppDacl, _ppSacl, _ppSecurityDescriptor)
 		defer func() { trc(`XGetNamedSecurityInfoW->%+v`, r) }()
 	}
-	r0, r1, err := procGetNamedSecurityInfoW.Call(_pObjectName, uintptr(_ObjectType), uintptr(_SecurityInfo), _ppsidOwner, _ppsidGroup, _ppDacl, _ppSacl, _ppSecurityDescriptor)
-	if err != windows.NOERROR {
-		if __ccgo_strace {
-			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
-		}
-		tls.SetLastError(uint32(err.(windows.Errno)))
-	}
+	r0, _, _ := procGetNamedSecurityInfoW.Call(_pObjectName, uintptr(_ObjectType), uintptr(_SecurityInfo), _ppsidOwner, _ppsidGroup, _ppDacl, _ppSacl, _ppSecurityDescriptor)
 	return uint32(r0)
 }
 
@@ -5067,12 +4970,9 @@ func XOpenProcessToken(tls *TLS, _ProcessHandle uintptr, _DesiredAccess uint32, 
 		trc("ProcessHandle=%+v DesiredAccess=%+v TokenHandle=%+v", _ProcessHandle, _DesiredAccess, _TokenHandle)
 		defer func() { trc(`XOpenProcessToken->%+v`, r) }()
 	}
-	r0, r1, err := procOpenProcessToken.Call(_ProcessHandle, uintptr(_DesiredAccess), _TokenHandle)
-	if err != windows.NOERROR {
-		if __ccgo_strace {
-			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
-		}
-		tls.SetLastError(uint32(err.(windows.Errno)))
+	r0, _, err := procOpenProcessToken.Call(_ProcessHandle, uintptr(_DesiredAccess), _TokenHandle)
+	if r0 == 0 {
+		tls.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5083,12 +4983,9 @@ func XGetTokenInformation(tls *TLS, _TokenHandle uintptr, _TokenInformationClass
 		trc("TokenHandle=%+v TokenInformationClass=%+v TokenInformation=%+v TokenInformationLength=%+v ReturnLength=%+v", _TokenHandle, _TokenInformationClass, _TokenInformation, _TokenInformationLength, _ReturnLength)
 		defer func() { trc(`XGetTokenInformation->%+v`, r) }()
 	}
-	r0, r1, err := procGetTokenInformation.Call(_TokenHandle, uintptr(_TokenInformationClass), _TokenInformation, uintptr(_TokenInformationLength), _ReturnLength)
-	if err != windows.NOERROR {
-		if __ccgo_strace {
-			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
-		}
-		tls.SetLastError(uint32(err.(windows.Errno)))
+	r0, _, err := procGetTokenInformation.Call(_TokenHandle, uintptr(_TokenInformationClass), _TokenInformation, uintptr(_TokenInformationLength), _ReturnLength)
+	if r0 == 0 {
+		tls.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5099,13 +4996,7 @@ func XEqualSid(tls *TLS, _pSid1 uintptr, _pSid2 uintptr) (r int32) {
 		trc("pSid1=%+v pSid2=%+v", _pSid1, _pSid2)
 		defer func() { trc(`XEqualSid->%+v`, r) }()
 	}
-	r0, r1, err := procEqualSid.Call(_pSid1, _pSid2)
-	if err != windows.NOERROR {
-		if __ccgo_strace {
-			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
-		}
-		tls.SetLastError(uint32(err.(windows.Errno)))
-	}
+	r0, _, _ := procEqualSid.Call(_pSid1, _pSid2)
 	return int32(r0)
 }
 
@@ -5120,9 +5011,6 @@ func XWSAStartup(t *TLS, wVersionRequired uint16, lpWSAData uintptr) int32 {
 		trc("t=%v wVersionRequired=%v lpWSAData=%v, (%v:)", t, wVersionRequired, lpWSAData, origin(2))
 	}
 	r0, _, _ := procWSAStartup.Call(uintptr(wVersionRequired), lpWSAData, 0)
-	if r0 != 0 {
-		t.setErrno(r0)
-	}
 	return int32(r0)
 }
 
@@ -5133,7 +5021,7 @@ func XGetModuleHandleA(t *TLS, lpModuleName uintptr) uintptr {
 	}
 	r0, _, err := procGetModuleHandleA.Call(lpModuleName, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return r0
 }
@@ -5149,7 +5037,7 @@ func XGetModuleHandleW(t *TLS, lpModuleName uintptr) uintptr {
 	}
 	r0, _, err := procGetModuleHandleW.Call(lpModuleName, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return r0
 }
@@ -5168,11 +5056,7 @@ func XGetEnvironmentVariableW(t *TLS, lpName, lpBuffer uintptr, nSize uint32) ui
 	r0, _, e1 := procGetEnvironmentVariableW.Call(lpName, lpBuffer, uintptr(nSize))
 	n := uint32(r0)
 	if n == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return n
 }
@@ -5290,7 +5174,7 @@ func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 	}
 	r0, _, err := procRegisterClassW.Call(lpWndClass, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5315,7 +5199,7 @@ func XUnregisterClassW(t *TLS, lpClassName, hInstance uintptr) int32 {
 	}
 	r0, _, err := procUnregisterClassW.Call(lpClassName, hInstance, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5362,8 +5246,8 @@ func XCreateWindowExW(t *TLS, dwExStyle uint32, lpClassName, lpWindowName uintpt
 		hInstance,
 		lpParam,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return r0
 }
@@ -5381,16 +5265,13 @@ func XPeekMessageW(t *TLS, lpMsg, hWnd uintptr, wMsgFilterMin, wMsgFilterMax, wR
 	if __ccgo_strace {
 		trc("t=%v hWnd=%v wRemoveMsg=%v, (%v:)", t, hWnd, wRemoveMsg, origin(2))
 	}
-	r0, _, err := procPeekMessageW.Call(lpMsg,
+	r0, _, _ := procPeekMessageW.Call(lpMsg,
 		hWnd,
 		uintptr(wMsgFilterMin),
 		uintptr(wMsgFilterMax),
 		uintptr(wRemoveMsg),
 		0,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
 	return int32(r0)
 }
 
@@ -5499,7 +5380,7 @@ func XSearchPathW(t *TLS, lpPath, lpFileName, lpExtension uintptr, nBufferLength
 	}
 	r0, _, err := procSearchPathW.Call(lpPath, lpFileName, lpExtension, uintptr(nBufferLength), lpBuffer, lpFilePart)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5520,7 +5401,7 @@ func XGetExitCodeProcess(t *TLS, hProcess, lpExitCode uintptr) int32 {
 	}
 	r0, _, err := procGetExitCodeProcess.Call(hProcess, lpExitCode, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5541,7 +5422,7 @@ func XPeekNamedPipe(t *TLS, hNamedPipe, lpBuffer uintptr, nBufferSize uint32, lp
 	}
 	r0, _, err := procPeekNamedPipe.Call(hNamedPipe, lpBuffer, uintptr(nBufferSize), lpBytesRead, lpTotalBytesAvail, lpBytesLeftThisMessage)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5571,8 +5452,8 @@ func XTerminateThread(t *TLS, hThread uintptr, dwExitCode uint32) int32 {
 		trc("t=%v hThread=%v dwExitCode=%v, (%v:)", t, hThread, dwExitCode, origin(2))
 	}
 	r0, _, err := procTerminateThread.Call(hThread, uintptr(dwExitCode), 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5666,8 +5547,7 @@ func XQueryPerformanceFrequency(t *TLS, lpFrequency uintptr) int32 {
 
 	r1, _, err := procQueryPerformanceFrequency.Call(lpFrequency, 0, 0)
 	if r1 == 0 {
-		t.setErrno(err)
-		return 0
+		t.setLastError(err)
 	}
 	return int32(r1)
 }
@@ -6046,22 +5926,7 @@ func XSetConsoleCtrlHandler(t *TLS, HandlerRoutine uintptr, Add int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v HandlerRoutine=%v Add=%v, (%v:)", t, HandlerRoutine, Add, origin(2))
 	}
-
-	//var fcc = &struct {
-	//	f func(*TLS, uint32) int32
-	//}{}
-	//fcc = (*struct{ f func(*TLS, uint32) int32 })(unsafe.Pointer(HandlerRoutine))
-	//var hdlr = fcc.f
-	//
-	//_, _, err := procSetConsoleCtrlHandler.Call(
-	//windows.NewCallback(func(controlType uint) uint {
-	//		return uint( hdlr(t, uint32(controlType)) )
-	//	}), 1)
-	//
-	//if err != nil {
-	//	panic("failed: SetConsoleCtrlHandler")
-	//}
-
+	// Ignored
 	return 0
 }
 
@@ -6111,7 +5976,10 @@ func XSetConsoleTextAttribute(t *TLS, hConsoleOutput uintptr, wAttributes uint16
 	if __ccgo_strace {
 		trc("t=%v hConsoleOutput=%v wAttributes=%v, (%v:)", t, hConsoleOutput, wAttributes, origin(2))
 	}
-	r1, _, _ := procSetConsoleTextAttribute.Call(hConsoleOutput, uintptr(wAttributes), 0)
+	r1, _, err := procSetConsoleTextAttribute.Call(hConsoleOutput, uintptr(wAttributes), 0)
+	if r1 == 0 {
+		t.setLastError(err)
+	}
 	return int32(r1)
 }
 
@@ -6388,12 +6256,9 @@ func XAddAce(tls *TLS, _pAcl uintptr, _dwAceRevision uint32, _dwStartingAceIndex
 		trc("pAcl=%+v dwAceRevision=%+v dwStartingAceIndex=%+v pAceList=%+v nAceListLength=%+v", _pAcl, _dwAceRevision, _dwStartingAceIndex, _pAceList, _nAceListLength)
 		defer func() { trc(`XAddAce->%+v`, r) }()
 	}
-	r0, r1, err := procAddAce.Call(_pAcl, uintptr(_dwAceRevision), uintptr(_dwStartingAceIndex), _pAceList, uintptr(_nAceListLength))
-	if err != windows.NOERROR {
-		if __ccgo_strace {
-			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
-		}
-		tls.SetLastError(uint32(err.(windows.Errno)))
+	r0, _, err := procAddAce.Call(_pAcl, uintptr(_dwAceRevision), uintptr(_dwStartingAceIndex), _pAceList, uintptr(_nAceListLength))
+	if r0 == 0 {
+		tls.setLastError(err)
 	}
 	return uint32(r0)
 }
@@ -6404,12 +6269,9 @@ func XGetAce(tls *TLS, _pAcl uintptr, _dwAceIndex uint32, _pAce uintptr) (r int3
 		trc("pAcl=%+v dwAceIndex=%+v pAce=%+v", _pAcl, _dwAceIndex, _pAce)
 		defer func() { trc(`XGetAce->%+v`, r) }()
 	}
-	r0, r1, err := procGetAce.Call(_pAcl, uintptr(_dwAceIndex), _pAce)
-	if err != windows.NOERROR {
-		if __ccgo_strace {
-			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
-		}
-		tls.SetLastError(uint32(err.(windows.Errno)))
+	r0, _, err := procGetAce.Call(_pAcl, uintptr(_dwAceIndex), _pAce)
+	if r0 == 0 {
+		tls.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -6433,8 +6295,8 @@ func XGetAclInformation(t *TLS, pAcl, pAclInformation uintptr, nAclInformationLe
 		0,
 		0,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -6459,8 +6321,8 @@ func XGetFileSecurityA(t *TLS, lpFileName uintptr, RequestedInformation uint32, 
 		lpnLengthNeeded,
 		0,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -6471,13 +6333,7 @@ func XGetLengthSid(tls *TLS, _pSid uintptr) (r uint32) {
 		trc("pSid=%+v", _pSid)
 		defer func() { trc(`XGetLengthSid->%+v`, r) }()
 	}
-	r0, r1, err := procGetLengthSid.Call(_pSid)
-	if err != windows.NOERROR {
-		if __ccgo_strace {
-			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
-		}
-		tls.SetLastError(uint32(err.(windows.Errno)))
-	}
+	r0, _, _ := procGetLengthSid.Call(_pSid)
 	return uint32(r0)
 }
 
@@ -6500,8 +6356,8 @@ func XGetSecurityDescriptorDacl(t *TLS, pSecurityDescriptor, lpbDaclPresent, pDa
 		0,
 		0,
 	)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -6515,10 +6371,7 @@ func XGetSidLengthRequired(t *TLS, nSubAuthorityCount uint8) int32 {
 	if __ccgo_strace {
 		trc("t=%v nSubAuthorityCount=%v, (%v:)", t, nSubAuthorityCount, origin(2))
 	}
-	r0, _, err := procGetSidLengthRequired.Call(uintptr(nSubAuthorityCount), 0, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
+	r0, _, _ := procGetSidLengthRequired.Call(uintptr(nSubAuthorityCount), 0, 0)
 	return int32(r0)
 }
 
@@ -6532,10 +6385,7 @@ func XGetSidSubAuthority(t *TLS, pSid uintptr, nSubAuthority uint32) uintptr {
 	if __ccgo_strace {
 		trc("t=%v pSid=%v nSubAuthority=%v, (%v:)", t, pSid, nSubAuthority, origin(2))
 	}
-	r0, _, err := procGetSidSubAuthority.Call(pSid, uintptr(nSubAuthority), 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
+	r0, _, _ := procGetSidSubAuthority.Call(pSid, uintptr(nSubAuthority), 0)
 	return r0
 }
 
@@ -6545,12 +6395,9 @@ func XInitializeAcl(tls *TLS, _pAcl uintptr, _nAclLength uint32, _dwAclRevision 
 		trc("pAcl=%+v nAclLength=%+v dwAclRevision=%+v", _pAcl, _nAclLength, _dwAclRevision)
 		defer func() { trc(`XInitializeAcl->%+v`, r) }()
 	}
-	r0, r1, err := procInitializeAcl.Call(_pAcl, uintptr(_nAclLength), uintptr(_dwAclRevision))
-	if err != windows.NOERROR {
-		if __ccgo_strace {
-			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
-		}
-		tls.SetLastError(uint32(err.(windows.Errno)))
+	r0, _, err := procInitializeAcl.Call(_pAcl, uintptr(_nAclLength), uintptr(_dwAclRevision))
+	if r0 == 0 {
+		tls.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -6567,8 +6414,8 @@ func XInitializeSid(t *TLS, Sid, pIdentifierAuthority uintptr, nSubAuthorityCoun
 		trc("t=%v pIdentifierAuthority=%v nSubAuthorityCount=%v, (%v:)", t, pIdentifierAuthority, nSubAuthorityCount, origin(2))
 	}
 	r0, _, err := procInitializeSid.Call(Sid, pIdentifierAuthority, uintptr(nSubAuthorityCount))
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -6665,7 +6512,7 @@ func XOpenEventA(t *TLS, dwDesiredAccess uint32, bInheritHandle uint32, lpName u
 	}
 	r0, _, err := procOpenEventA.Call(uintptr(dwDesiredAccess), uintptr(bInheritHandle), lpName)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return r0
 }
