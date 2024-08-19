@@ -77,38 +77,39 @@ type (
 	ulong        = uint32
 )
 
+// xx: error handling audited
 var (
 	modkernel32 = windows.NewLazySystemDLL("kernel32.dll")
 	//--
-	procAreFileApisANSI            = modkernel32.NewProc("AreFileApisANSI")
-	procCopyFileW                  = modkernel32.NewProc("CopyFileW")
-	procCreateEventA               = modkernel32.NewProc("CreateEventA")
-	procCreateEventW               = modkernel32.NewProc("CreateEventW")
-	procCreateFileA                = modkernel32.NewProc("CreateFileA")
-	procCreateFileMappingW         = modkernel32.NewProc("CreateFileMappingW")
-	procCreateFileW                = modkernel32.NewProc("CreateFileW")
-	procCreateHardLinkW            = modkernel32.NewProc("CreateHardLinkW")
-	procCreatePipe                 = modkernel32.NewProc("CreatePipe")
-	procCreateProcessA             = modkernel32.NewProc("CreateProcessA")
-	procCreateProcessW             = modkernel32.NewProc("CreateProcessW")
-	procCreateThread               = modkernel32.NewProc("CreateThread")
-	procDeleteCriticalSection      = modkernel32.NewProc("DeleteCriticalSection")
-	procDeviceIoControl            = modkernel32.NewProc("DeviceIoControl")
-	procDuplicateHandle            = modkernel32.NewProc("DuplicateHandle")
-	procEnterCriticalSection       = modkernel32.NewProc("EnterCriticalSection")
-	procFindClose                  = modkernel32.NewProc("FindClose")
-	procFindFirstFileExW           = modkernel32.NewProc("FindFirstFileExW")
-	procFindFirstFileW             = modkernel32.NewProc("FindFirstFileW")
-	procFindNextFileW              = modkernel32.NewProc("FindNextFileW")
-	procFormatMessageW             = modkernel32.NewProc("FormatMessageW")
-	procGetACP                     = modkernel32.NewProc("GetACP")
-	procGetCommState               = modkernel32.NewProc("GetCommState")
-	procGetComputerNameExW         = modkernel32.NewProc("GetComputerNameExW")
-	procGetConsoleCP               = modkernel32.NewProc("GetConsoleCP")
-	procGetConsoleScreenBufferInfo = modkernel32.NewProc("GetConsoleScreenBufferInfo")
-	procGetCurrentProcess          = modkernel32.NewProc("GetCurrentProcess")
-	procGetCurrentProcessId        = modkernel32.NewProc("GetCurrentProcessId")
-	procGetCurrentThread           = modkernel32.NewProc("GetCurrentThread")
+	procAreFileApisANSI            = modkernel32.NewProc("AreFileApisANSI")            // xx
+	procCopyFileW                  = modkernel32.NewProc("CopyFileW")                  // xx
+	procCreateEventA               = modkernel32.NewProc("CreateEventA")               // xx
+	procCreateEventW               = modkernel32.NewProc("CreateEventW")               // xx
+	procCreateFileA                = modkernel32.NewProc("CreateFileA")                // xx
+	procCreateFileMappingW         = modkernel32.NewProc("CreateFileMappingW")         // xx
+	procCreateFileW                = modkernel32.NewProc("CreateFileW")                // xx
+	procCreateHardLinkW            = modkernel32.NewProc("CreateHardLinkW")            // xx
+	procCreatePipe                 = modkernel32.NewProc("CreatePipe")                 // xx
+	procCreateProcessA             = modkernel32.NewProc("CreateProcessA")             // xx
+	procCreateProcessW             = modkernel32.NewProc("CreateProcessW")             // xx
+	procCreateThread               = modkernel32.NewProc("CreateThread")               // xx
+	procDeleteCriticalSection      = modkernel32.NewProc("DeleteCriticalSection")      // xx
+	procDeviceIoControl            = modkernel32.NewProc("DeviceIoControl")            // xx
+	procDuplicateHandle            = modkernel32.NewProc("DuplicateHandle")            // xx
+	procEnterCriticalSection       = modkernel32.NewProc("EnterCriticalSection")       // xx
+	procFindClose                  = modkernel32.NewProc("FindClose")                  // xx
+	procFindFirstFileExW           = modkernel32.NewProc("FindFirstFileExW")           // xx
+	procFindFirstFileW             = modkernel32.NewProc("FindFirstFileW")             // xx
+	procFindNextFileW              = modkernel32.NewProc("FindNextFileW")              // xx
+	procFormatMessageW             = modkernel32.NewProc("FormatMessageW")             // xx
+	procGetACP                     = modkernel32.NewProc("GetACP")                     // xx
+	procGetCommState               = modkernel32.NewProc("GetCommState")               // xx
+	procGetComputerNameExW         = modkernel32.NewProc("GetComputerNameExW")         // xx
+	procGetConsoleCP               = modkernel32.NewProc("GetConsoleCP")               // xx
+	procGetConsoleScreenBufferInfo = modkernel32.NewProc("GetConsoleScreenBufferInfo") // xx
+	procGetCurrentProcess          = modkernel32.NewProc("GetCurrentProcess")          // xx
+	procGetCurrentProcessId        = modkernel32.NewProc("GetCurrentProcessId")        // xx
+	procGetCurrentThread           = modkernel32.NewProc("GetCurrentThread")           // xx
 	procGetCurrentThreadId         = modkernel32.NewProc("GetCurrentThreadId")
 	procGetEnvironmentVariableA    = modkernel32.NewProc("GetEnvironmentVariableA")
 	procGetEnvironmentVariableW    = modkernel32.NewProc("GetEnvironmentVariableW")
@@ -226,25 +227,25 @@ var (
 	userenvapi                = windows.NewLazySystemDLL("userenv.dll")
 	procGetProfilesDirectoryW = userenvapi.NewProc("GetProfilesDirectoryW")
 
-	modcrt        = windows.NewLazySystemDLL("msvcrt.dll")
-	procAccess    = modcrt.NewProc("_access")
-	procChmod     = modcrt.NewProc("_chmod")
-	procCtime64   = modcrt.NewProc("ctime64")
-	procGmtime    = modcrt.NewProc("gmtime")
-	procGmtime32  = modcrt.NewProc("_gmtime32")
-	procGmtime64  = modcrt.NewProc("_gmtime64")
-	procStat64i32 = modcrt.NewProc("_stat64i32")
-	procStati64   = modcrt.NewProc("_stati64")
-	procStrftime  = modcrt.NewProc("strftime")
-	procStrnicmp  = modcrt.NewProc("_strnicmp")
-	procStrtod    = modcrt.NewProc("strtod")
-	procTime64    = modcrt.NewProc("time64")
-	procWcsncpy   = modcrt.NewProc("wcsncpy")
-	procWcsrchr   = modcrt.NewProc("wcsrchr")
+	modcrt       = windows.NewLazySystemDLL("msvcrt.dll")
+	crtAccess    = modcrt.NewProc("_access")
+	crtChmod     = modcrt.NewProc("_chmod")
+	crtCtime64   = modcrt.NewProc("ctime64")
+	crtGmtime    = modcrt.NewProc("gmtime")
+	crtGmtime32  = modcrt.NewProc("_gmtime32")
+	crtGmtime64  = modcrt.NewProc("_gmtime64")
+	crtStat64i32 = modcrt.NewProc("_stat64i32")
+	crtStati64   = modcrt.NewProc("_stati64")
+	crtStrftime  = modcrt.NewProc("strftime")
+	crtStrnicmp  = modcrt.NewProc("_strnicmp")
+	crtStrtod    = modcrt.NewProc("strtod")
+	crtTime64    = modcrt.NewProc("time64")
+	crtWcsncpy   = modcrt.NewProc("wcsncpy")
+	crtWcsrchr   = modcrt.NewProc("wcsrchr")
 
-	moducrt         = windows.NewLazySystemDLL("ucrtbase.dll")
-	procFindfirst32 = moducrt.NewProc("_findfirst32")
-	procFindnext32  = moducrt.NewProc("_findnext32")
+	moducrt        = windows.NewLazySystemDLL("ucrtbase.dll")
+	crtFindfirst32 = moducrt.NewProc("_findfirst32")
+	crtFindnext32  = moducrt.NewProc("_findnext32")
 )
 
 var (
@@ -312,6 +313,10 @@ func (f *file) err() bool {
 
 func (f *file) setErr() {
 	f.hadErr = true
+}
+
+func (tls *TLS) setLastError(err error) {
+	tls.SetLastError(uint32(err.(syscallErrno)))
 }
 
 func (tls *TLS) SetLastError(_dwErrCode uint32) {
@@ -2225,7 +2230,7 @@ func XSetEvent(t *TLS, hEvent uintptr) int32 {
 	}
 	r0, _, err := procSetEvent.Call(hEvent, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -2428,11 +2433,8 @@ func XGetLastError(t *TLS) uint32 {
 	if __ccgo_strace {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
-	var rv = *(*int32)(unsafe.Pointer(t.errnop))
-	return uint32(rv)
 
-	//r1, _, _ := procGetLastError.Call(0, 0, 0)
-	//return uint32(r1)
+	return t.GetLastError()
 }
 
 // DWORD SetFilePointer(
@@ -2566,11 +2568,7 @@ func XCreateFileW(t *TLS, lpFileName uintptr, dwDesiredAccess, dwShareMode uint3
 		uintptr(dwCreationDisposition), uintptr(dwFlagsAndAttributes), hTemplateFile, 0, 0)
 	h := windows.Handle(r0)
 	if h == windows.InvalidHandle {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 		return r0
 	}
 	return uintptr(h)
@@ -2594,7 +2592,7 @@ func XDuplicateHandle(t *TLS, hSourceProcessHandle, hSourceHandle, hTargetProces
 	r0, _, err := procDuplicateHandle.Call(hSourceProcessHandle, hSourceHandle, hTargetProcessHandle,
 		lpTargetHandle, uintptr(dwDesiredAccess), uintptr(bInheritHandle), uintptr(dwOptions), 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -2606,11 +2604,7 @@ func XGetCurrentProcess(t *TLS) uintptr {
 	}
 	r0, _, e1 := procGetCurrentProcess.Call(0, 0, 0)
 	if r0 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return r0
 }
@@ -2679,8 +2673,7 @@ func XGetCommState(t *TLS, hFile, lpDCB uintptr) int32 {
 	}
 	r1, _, err := procGetCommState.Call(hFile, lpDCB, 0)
 	if r1 == 0 {
-		t.setErrno(err)
-		return 0
+		t.setLastError(err)
 	}
 	return int32(r1)
 }
@@ -2835,7 +2828,7 @@ func XGetConsoleCP(t *TLS) uint32 {
 	}
 	r0, _, err := procGetConsoleCP.Call(0, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return uint32(r0)
 }
@@ -2865,7 +2858,7 @@ func XCreateEventW(t *TLS, lpEventAttributes uintptr, bManualReset, bInitialStat
 	r0, _, err := procCreateEventW.Call(lpEventAttributes, uintptr(bManualReset),
 		uintptr(bInitialState), lpName, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return r0
 }
@@ -2913,7 +2906,7 @@ func XCreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t,
 	r0, _, err := procCreateThread.Call(lpThreadAttributes, uintptr(dwStackSize),
 		threadCallback, tAdp.token, uintptr(dwCreationFlags), lpThreadId)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return r0
 }
@@ -3181,7 +3174,7 @@ func XCopyFileW(t *TLS, lpExistingFileName, lpNewFileName uintptr, bFailIfExists
 	}
 	r0, _, e1 := procCopyFileW.Call(lpExistingFileName, lpNewFileName, uintptr(bFailIfExists))
 	if r0 == 0 {
-		t.setErrno(e1)
+		t.setLastError(e1)
 	}
 	return int32(r0)
 }
@@ -3228,11 +3221,7 @@ func XFindFirstFileW(t *TLS, lpFileName, lpFindFileData uintptr) uintptr {
 	r0, _, e1 := procFindFirstFileW.Call(lpFileName, lpFindFileData, 0)
 	handle := windows.Handle(r0)
 	if handle == windows.InvalidHandle {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return r0
 }
@@ -3254,11 +3243,7 @@ func XFindFirstFileExW(t *TLS, lpFileName uintptr, fInfoLevelId int32, lpFindFil
 	r0, _, e1 := procFindFirstFileExW.Call(lpFileName, uintptr(fInfoLevelId), lpFindFileData, uintptr(fSearchOp), lpSearchFilter, uintptr(dwAdditionalFlags))
 	handle := windows.Handle(r0)
 	if handle == windows.InvalidHandle {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return r0
 }
@@ -3270,11 +3255,7 @@ func XFindClose(t *TLS, hFindFile uintptr) int32 {
 	}
 	r0, _, e1 := procFindClose.Call(hFindFile, 0, 0)
 	if r0 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return int32(r0)
 }
@@ -3291,11 +3272,7 @@ func XFindNextFileW(t *TLS, hFindFile, lpFindFileData uintptr) int32 {
 	}
 	r0, _, e1 := procFindNextFileW.Call(hFindFile, lpFindFileData, 0)
 	if r0 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return int32(r0)
 }
@@ -3361,8 +3338,8 @@ func XCreateHardLinkW(t *TLS, lpFileName, lpExistingFileName, lpSecurityAttribut
 		trc("t=%v lpSecurityAttributes=%v, (%v:)", t, lpSecurityAttributes, origin(2))
 	}
 	r0, _, err := procCreateHardLinkW.Call(lpFileName, lpExistingFileName, lpSecurityAttributes)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -3386,7 +3363,7 @@ func XDeviceIoControl(t *TLS, hDevice uintptr, dwIoControlCode uint32, lpInBuffe
 	r0, _, err := procDeviceIoControl.Call(hDevice, uintptr(dwIoControlCode), lpInBuffer,
 		uintptr(nInBufferSize), lpOutBuffer, uintptr(nOutBufferSize), lpBytesReturned, lpOverlapped, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -3514,11 +3491,7 @@ func XCreateFileA(t *TLS, lpFileName uintptr, dwDesiredAccess, dwShareMode uint3
 		uintptr(dwCreationDisposition), uintptr(dwFlagsAndAttributes), hTemplateFile, 0, 0)
 	h := windows.Handle(r0)
 	if h == windows.InvalidHandle {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 		return r0
 	}
 	return uintptr(h)
@@ -3559,11 +3532,7 @@ func XCreateFileMappingW(t *TLS, hFile, lpFileMappingAttributes uintptr, flProte
 	h, _, e1 := procCreateFileMappingW.Call(hFile, lpFileMappingAttributes, uintptr(flProtect),
 		uintptr(dwMaximumSizeHigh), uintptr(dwMaximumSizeLow), lpName)
 	if h == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return h
 }
@@ -3631,11 +3600,7 @@ func XFormatMessageW(t *TLS, dwFlags uint32, lpSource uintptr, dwMessageId, dwLa
 		lpBuffer, uintptr(nSize), Arguments, 0, 0)
 	n := uint32(r0)
 	if n == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 	return n
 }
@@ -3654,8 +3619,7 @@ func XGetCurrentProcessId(t *TLS) uint32 {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
 	r0, _, _ := procGetCurrentProcessId.Call(0, 0, 0)
-	pid := uint32(r0)
-	return pid
+	return uint32(r0)
 }
 
 // BOOL GetDiskFreeSpaceA(
@@ -4538,7 +4502,7 @@ func XCreateEventA(t *TLS, lpEventAttributes uintptr, bManualReset, bInitialStat
 	r0, _, err := procCreateEventA.Call(lpEventAttributes, uintptr(bManualReset),
 		uintptr(bInitialState), lpName, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return r0
 }
@@ -4574,7 +4538,7 @@ func X_beginthread(t *TLS, procAddr uintptr, stack_sz uint32, args uintptr) int3
 	r0, _, err := procCreateThread.Call(0, uintptr(stack_sz),
 		threadCallback, tAdp.token, 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -4597,7 +4561,7 @@ func X_beginthreadex(t *TLS, _ uintptr, stack_sz uint32, procAddr uintptr, args 
 	r0, _, err := procCreateThread.Call(0, uintptr(stack_sz),
 		threadCallback, tAdp.token, uintptr(initf), thAddr)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -4883,10 +4847,7 @@ func XGetCurrentThread(t *TLS) uintptr {
 	if __ccgo_strace {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
-	r0, _, err := procGetCurrentThread.Call(0, 0, 0)
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
+	r0, _, _ := procGetCurrentThread.Call(0, 0, 0)
 	return r0
 }
 
@@ -5477,7 +5438,7 @@ func XCreatePipe(t *TLS, hReadPipe, hWritePipe, lpPipeAttributes uintptr, nSize 
 	}
 	r0, _, err := procCreatePipe.Call(hReadPipe, hWritePipe, lpPipeAttributes, uintptr(nSize), 0, 0)
 	if r0 == 0 {
-		t.setErrno(err)
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -5502,11 +5463,7 @@ func XCreateProcessW(t *TLS, lpApplicationName, lpCommandLine, lpProcessAttribut
 	r1, _, e1 := procCreateProcessW.Call(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes,
 		uintptr(bInheritHandles), uintptr(dwCreationFlags), lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation, 0, 0)
 	if r1 == 0 {
-		if e1 != windows.NOERROR {
-			t.setErrno(e1)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(e1)
 	}
 
 	return int32(r1)
@@ -6168,7 +6125,10 @@ func XGetConsoleScreenBufferInfo(t *TLS, hConsoleOutput, lpConsoleScreenBufferIn
 	if __ccgo_strace {
 		trc("t=%v lpConsoleScreenBufferInfo=%v, (%v:)", t, lpConsoleScreenBufferInfo, origin(2))
 	}
-	r1, _, _ := procGetConsoleScreenBufferInfo.Call(hConsoleOutput, lpConsoleScreenBufferInfo, 0)
+	r1, _, err := procGetConsoleScreenBufferInfo.Call(hConsoleOutput, lpConsoleScreenBufferInfo, 0)
+	if r1 == 0 {
+		t.setLastError(err)
+	}
 	return int32(r1)
 }
 
@@ -6677,11 +6637,7 @@ func XCreateProcessA(t *TLS, lpApplicationName, lpCommandLine, lpProcessAttribut
 	r1, _, err := procCreateProcessA.Call(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes,
 		uintptr(bInheritHandles), uintptr(dwCreationFlags), lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation, 0, 0)
 	if r1 == 0 {
-		if err != windows.NOERROR {
-			t.setErrno(err)
-		} else {
-			t.setErrno(errno.EINVAL)
-		}
+		t.setLastError(err)
 	}
 	return int32(r1)
 }
@@ -6764,7 +6720,7 @@ func X_stati64(t *TLS, path, buffer uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v path=%v buffer=%v, (%v:)", t, path, buffer, origin(2))
 	}
-	r0, _, err := procStati64.Call(uintptr(path), uintptr(buffer))
+	r0, _, err := crtStati64.Call(uintptr(path), uintptr(buffer))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -6786,7 +6742,7 @@ func X_findnext32(t *TLS, handle types.Intptr_t, buffer uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v handle=%v buffer=%v, (%v:)", t, handle, buffer, origin(2))
 	}
-	r0, _, err := procFindnext32.Call(uintptr(handle), buffer)
+	r0, _, err := crtFindnext32.Call(uintptr(handle), buffer)
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -6803,7 +6759,7 @@ func X_findfirst32(t *TLS, filespec, fileinfo uintptr) types.Intptr_t {
 	if __ccgo_strace {
 		trc("t=%v fileinfo=%v, (%v:)", t, fileinfo, origin(2))
 	}
-	r0, _, err := procFindfirst32.Call(filespec, fileinfo)
+	r0, _, err := crtFindfirst32.Call(filespec, fileinfo)
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -7139,7 +7095,7 @@ func X_gmtime64(t *TLS, sourceTime uintptr) uintptr {
 	if __ccgo_strace {
 		trc("t=%v sourceTime=%v, (%v:)", t, sourceTime, origin(2))
 	}
-	r0, _, err := procGmtime64.Call(uintptr(sourceTime))
+	r0, _, err := crtGmtime64.Call(uintptr(sourceTime))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -7214,7 +7170,7 @@ func X__ccgo_pthreadMutexattrGettype(tls *TLS, a uintptr) int32 { /* pthread_att
 }
 
 func Xchmod(t *TLS, pathname uintptr, mode int32) int32 {
-	r0, _, err := procChmod.Call(pathname, uintptr(mode))
+	r0, _, err := crtChmod.Call(pathname, uintptr(mode))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -7245,8 +7201,8 @@ func XGetComputerNameExW(t *TLS, nameType int32, lpBuffer, nSize uintptr) int32 
 		trc("t=%v nameType=%v nSize=%v, (%v:)", t, nameType, nSize, origin(2))
 	}
 	r0, _, err := procGetComputerNameExW.Call(uintptr(nameType), lpBuffer, nSize)
-	if err != windows.NOERROR {
-		t.setErrno(err)
+	if r0 == 0 {
+		t.setLastError(err)
 	}
 	return int32(r0)
 }
@@ -7438,7 +7394,7 @@ func Xaccess(t *TLS, pathname uintptr, mode int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v pathname=%v mode=%v, (%v:)", t, pathname, mode, origin(2))
 	}
-	r0, _, err := procAccess.Call(uintptr(pathname), uintptr(mode))
+	r0, _, err := crtAccess.Call(uintptr(pathname), uintptr(mode))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -7459,7 +7415,7 @@ func X_stat64i32(t *TLS, path uintptr, buffer uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v path=%v buffer=%v, (%v:)", t, path, buffer, origin(2))
 	}
-	r0, _, err := procStat64i32.Call(uintptr(path), uintptr(buffer))
+	r0, _, err := crtStat64i32.Call(uintptr(path), uintptr(buffer))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -7475,7 +7431,7 @@ func Xgmtime(t *TLS, sourceTime uintptr) uintptr {
 	if __ccgo_strace {
 		trc("t=%v sourceTime=%v, (%v:)", t, sourceTime, origin(2))
 	}
-	r0, _, err := procGmtime.Call(uintptr(sourceTime))
+	r0, _, err := crtGmtime.Call(uintptr(sourceTime))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -7529,7 +7485,7 @@ func Xstrtod(t *TLS, s uintptr, p uintptr) float64 {
 	if __ccgo_strace {
 		trc("tls=%v s=%v p=%v, (%v:)", t, s, p, origin(2))
 	}
-	r0, _, err := procStrtod.Call(uintptr(s), uintptr(p))
+	r0, _, err := crtStrtod.Call(uintptr(s), uintptr(p))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -7555,7 +7511,7 @@ func CreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t, 
 
 // wchar_t *wcsncpy(wchar_t *strDest, const wchar_t *strSource, size_t count);
 func Xwcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
-	r0, _, err := procWcsncpy.Call(strDest, strSource, uintptr(count))
+	r0, _, err := crtWcsncpy.Call(strDest, strSource, uintptr(count))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -7564,7 +7520,7 @@ func Xwcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
 
 // wchar_t *wcsrchr(const wchar_t *str, wchar_t c);
 func Xwcsrchr(t *TLS, str uintptr, c types.Wchar_t) uintptr {
-	r0, _, err := procWcsrchr.Call(str, uintptr(c))
+	r0, _, err := crtWcsrchr.Call(str, uintptr(c))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -7577,7 +7533,7 @@ func X_ctime64(tls *TLS, __Time uintptr) (r uintptr) {
 		trc("_Time=%+v", __Time)
 		defer func() { trc(`X_ctime64->%+v`, r) }()
 	}
-	r0, _, err := procCtime64.Call(__Time)
+	r0, _, err := crtCtime64.Call(__Time)
 	if err != windows.NOERROR {
 		tls.setErrno(int32(err.(windows.Errno)))
 	}
@@ -7590,7 +7546,7 @@ func X_time64(tls *TLS, __Time uintptr) (r int64) {
 		trc("_Time=%+v", __Time)
 		defer func() { trc(`X_time64->%+v`, r) }()
 	}
-	r0, _, err := procTime64.Call(__Time)
+	r0, _, err := crtTime64.Call(__Time)
 	if err != windows.NOERROR {
 		tls.setErrno(int32(err.(windows.Errno)))
 	}
@@ -7603,7 +7559,7 @@ func X_strnicmp(tls *TLS, __Str1 uintptr, __Str2 uintptr, __MaxCount types.Size_
 		trc("_Str1=%+v _Str2=%+v _MaxCount=%+v", __Str1, __Str2, __MaxCount)
 		defer func() { trc(`X_strnicmp->%+v`, r) }()
 	}
-	r0, _, err := procStrnicmp.Call(__Str1, __Str2, uintptr(__MaxCount))
+	r0, _, err := crtStrnicmp.Call(__Str1, __Str2, uintptr(__MaxCount))
 	if err != windows.NOERROR {
 		tls.setErrno(int32(err.(windows.Errno)))
 	}
