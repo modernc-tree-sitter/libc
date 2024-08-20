@@ -10,10 +10,10 @@ import (
 	"golang.org/x/sys/windows"
 	"math"
 	"os"
-	"os/exec"
+	// 	"os/exec"
 	"os/user"
-	"path/filepath"
-	"runtime/debug"
+	// 	"path/filepath"
+	// 	"runtime/debug"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -21,21 +21,23 @@ import (
 	"unicode"
 	"unicode/utf16"
 	"unsafe"
-
-	"github.com/ncruces/go-strftime"
+	//
+	// 	"github.com/ncruces/go-strftime"
 	"modernc.org/libc/errno"
 	"modernc.org/libc/fcntl"
-	"modernc.org/libc/limits"
+	// 	"modernc.org/libc/limits"
 	"modernc.org/libc/stdio"
-	"modernc.org/libc/sys/stat"
+	// 	"modernc.org/libc/sys/stat"
 	"modernc.org/libc/sys/types"
 	"modernc.org/libc/time"
 	"modernc.org/libc/unistd"
 )
 
-const (
-	INVALID_FILE_SIZE = 0xffffffff
-)
+// const (
+//
+//	INVALID_FILE_SIZE = 0xffffffff
+//
+// )
 
 // Keep these outside of the var block otherwise go generate will miss them.
 var X__imp__environ = EnvironP()
@@ -43,9 +45,9 @@ var X__imp__wenviron = uintptr(unsafe.Pointer(&wenviron))
 var X_imp___environ = EnvironP()
 var X_imp___wenviron = uintptr(unsafe.Pointer(&wenviron))
 var X_iob [stdio.X_IOB_ENTRIES]stdio.FILE
+
 var Xin6addr_any [16]byte
 var Xtimezone long // extern long timezone;
-
 var (
 	iobMap     = map[uintptr]int32{} // &_iob[fd] -> fd
 	wenvValid  bool
@@ -59,12 +61,12 @@ func init() {
 	}
 }
 
-func X__p__wenviron(t *TLS) uintptr {
-	if !wenvValid {
-		bootWinEnviron(t)
-	}
-	return uintptr(unsafe.Pointer(&wenviron))
-}
+// func X__p__wenviron(t *TLS) uintptr {
+// 	if !wenvValid {
+// 		bootWinEnviron(t)
+// 	}
+// 	return uintptr(unsafe.Pointer(&wenviron))
+// }
 
 func winGetObject(stream uintptr) interface{} {
 	if fd, ok := iobMap[stream]; ok {
@@ -81,168 +83,176 @@ type (
 	ulong        = uint32
 )
 
-// xx: error handling audited
+// // xx: error handling audited
 var (
 	modkernel32 = windows.NewLazySystemDLL("kernel32.dll")
 	//--
-	procAreFileApisANSI            = modkernel32.NewProc("AreFileApisANSI")            // xx
-	procCopyFileW                  = modkernel32.NewProc("CopyFileW")                  // xx
-	procCreateEventA               = modkernel32.NewProc("CreateEventA")               // xx
-	procCreateEventW               = modkernel32.NewProc("CreateEventW")               // xx
-	procCreateFileA                = modkernel32.NewProc("CreateFileA")                // xx
-	procCreateFileMappingW         = modkernel32.NewProc("CreateFileMappingW")         // xx
-	procCreateFileW                = modkernel32.NewProc("CreateFileW")                // xx
-	procCreateHardLinkW            = modkernel32.NewProc("CreateHardLinkW")            // xx
-	procCreatePipe                 = modkernel32.NewProc("CreatePipe")                 // xx
-	procCreateProcessA             = modkernel32.NewProc("CreateProcessA")             // xx
-	procCreateProcessW             = modkernel32.NewProc("CreateProcessW")             // xx
-	procCreateThread               = modkernel32.NewProc("CreateThread")               // xx
-	procDeleteCriticalSection      = modkernel32.NewProc("DeleteCriticalSection")      // xx
-	procDeviceIoControl            = modkernel32.NewProc("DeviceIoControl")            // xx
-	procDuplicateHandle            = modkernel32.NewProc("DuplicateHandle")            // xx
-	procEnterCriticalSection       = modkernel32.NewProc("EnterCriticalSection")       // xx
-	procFindClose                  = modkernel32.NewProc("FindClose")                  // xx
-	procFindFirstFileExW           = modkernel32.NewProc("FindFirstFileExW")           // xx
-	procFindFirstFileW             = modkernel32.NewProc("FindFirstFileW")             // xx
-	procFindNextFileW              = modkernel32.NewProc("FindNextFileW")              // xx
-	procFormatMessageW             = modkernel32.NewProc("FormatMessageW")             // xx
-	procGetACP                     = modkernel32.NewProc("GetACP")                     // xx
-	procGetCommState               = modkernel32.NewProc("GetCommState")               // xx
-	procGetComputerNameExW         = modkernel32.NewProc("GetComputerNameExW")         // xx
-	procGetConsoleCP               = modkernel32.NewProc("GetConsoleCP")               // xx
-	procGetConsoleScreenBufferInfo = modkernel32.NewProc("GetConsoleScreenBufferInfo") // xx
-	procGetCurrentProcess          = modkernel32.NewProc("GetCurrentProcess")          // xx
-	procGetCurrentProcessId        = modkernel32.NewProc("GetCurrentProcessId")        // xx
-	procGetCurrentThread           = modkernel32.NewProc("GetCurrentThread")           // xx
-	procGetCurrentThreadId         = modkernel32.NewProc("GetCurrentThreadId")         // xx
-	procGetEnvironmentVariableA    = modkernel32.NewProc("GetEnvironmentVariableA")    // xx
-	procGetEnvironmentVariableW    = modkernel32.NewProc("GetEnvironmentVariableW")    // xx
-	procGetExitCodeProcess         = modkernel32.NewProc("GetExitCodeProcess")         // xx
-	procGetExitCodeThread          = modkernel32.NewProc("GetExitCodeThread")          // xx
-	procGetFileAttributesA         = modkernel32.NewProc("GetFileAttributesA")         // xx
-	procGetFileAttributesExA       = modkernel32.NewProc("GetFileAttributesExA")       // xx
-	procGetFileAttributesExW       = modkernel32.NewProc("GetFileAttributesExW")       // xx
-	procGetFileInformationByHandle = modkernel32.NewProc("GetFileInformationByHandle") // xx
-	procGetFileSize                = modkernel32.NewProc("GetFileSize")                // xx
-	procGetFullPathNameW           = modkernel32.NewProc("GetFullPathNameW")           // xx
-	procGetLogicalDriveStringsA    = modkernel32.NewProc("GetLogicalDriveStringsA")    // xx
-	procGetModuleFileNameW         = modkernel32.NewProc("GetModuleFileNameW")         // xx
-	procGetModuleHandleA           = modkernel32.NewProc("GetModuleHandleA")           // xx
-	procGetModuleHandleW           = modkernel32.NewProc("GetModuleHandleW")           // xx
-	procGetPrivateProfileStringA   = modkernel32.NewProc("GetPrivateProfileStringA")   // xx
-	procGetProcessHeap             = modkernel32.NewProc("GetProcessHeap")             // xx
-	procGetSystemInfo              = modkernel32.NewProc("GetSystemInfo")              // xx
-	procGetSystemTime              = modkernel32.NewProc("GetSystemTime")              // xx
-	procGetSystemTimeAsFileTime    = modkernel32.NewProc("GetSystemTimeAsFileTime")    // xx
-	procGetTempFileNameW           = modkernel32.NewProc("GetTempFileNameW")           // xx
-	procGetTickCount               = modkernel32.NewProc("GetTickCount")               // xx
-	procGetVersionExA              = modkernel32.NewProc("GetVersionExA")              // xx
-	procGetVersionExW              = modkernel32.NewProc("GetVersionExW")              // xx
-	procGetVolumeInformationA      = modkernel32.NewProc("GetVolumeInformationA")      // xx
-	procGetVolumeInformationW      = modkernel32.NewProc("GetVolumeInformationW")      // xx
-	procHeapAlloc                  = modkernel32.NewProc("HeapAlloc")                  // xx
-	procHeapFree                   = modkernel32.NewProc("HeapFree")                   // xx
-	procInitializeCriticalSection  = modkernel32.NewProc("InitializeCriticalSection")  // xx
-	procLeaveCriticalSection       = modkernel32.NewProc("LeaveCriticalSection")       // xx
-	procLockFile                   = modkernel32.NewProc("LockFile")                   // xx
-	procLockFileEx                 = modkernel32.NewProc("LockFileEx")                 // xx
-	procLstrlenW                   = modkernel32.NewProc("lstrlenW")                   // xx
-	procMapViewOfFile              = modkernel32.NewProc("MapViewOfFile")              // xx
-	procMoveFileW                  = modkernel32.NewProc("MoveFileW")                  // xx
-	procMultiByteToWideChar        = modkernel32.NewProc("MultiByteToWideChar")        // xx
-	procOpenEventA                 = modkernel32.NewProc("OpenEventA")                 // xx
-	procOpenProcessToken           = modkernel32.NewProc("OpenProcessToken")           // xx
-	procPeekConsoleInputW          = modkernel32.NewProc("PeekConsoleInputW")          // xx
-	procPeekNamedPipe              = modkernel32.NewProc("PeekNamedPipe")              // xx
-	procQueryPerformanceCounter    = modkernel32.NewProc("QueryPerformanceCounter")    // xx
-	procQueryPerformanceFrequency  = modkernel32.NewProc("QueryPerformanceFrequency")  // xx
-	procReadConsoleW               = modkernel32.NewProc("ReadConsoleW")               // xx
-	procReadFile                   = modkernel32.NewProc("ReadFile")                   // xx
-	procResetEvent                 = modkernel32.NewProc("ResetEvent")                 // xx
-	procSearchPathW                = modkernel32.NewProc("SearchPathW")                // xx
-	procSetConsoleMode             = modkernel32.NewProc("SetConsoleMode")             // xx
-	procSetConsoleTextAttribute    = modkernel32.NewProc("SetConsoleTextAttribute")    // xx
-	procSetEvent                   = modkernel32.NewProc("SetEvent")                   // xx
-	procSetFilePointer             = modkernel32.NewProc("SetFilePointer")             // xx
-	procSetFileTime                = modkernel32.NewProc("SetFileTime")                // xx
-	procSleepEx                    = modkernel32.NewProc("SleepEx")                    // xx
-	procSystemTimeToFileTime       = modkernel32.NewProc("SystemTimeToFileTime")       // xx
-	procTerminateThread            = modkernel32.NewProc("TerminateThread")            // xx
-	procTryEnterCriticalSection    = modkernel32.NewProc("TryEnterCriticalSection")    // xx
-	procUnlockFile                 = modkernel32.NewProc("UnlockFile")                 // xx
-	procUnlockFileEx               = modkernel32.NewProc("UnlockFileEx")               // xx
-	procWaitForSingleObjectEx      = modkernel32.NewProc("WaitForSingleObjectEx")      // xx
-	procWideCharToMultiByte        = modkernel32.NewProc("WideCharToMultiByte")        // xx
-	procWriteConsoleW              = modkernel32.NewProc("WriteConsoleW")              // xx
-	procWriteFile                  = modkernel32.NewProc("WriteFile")                  // xx
-	//--
+	//	procAreFileApisANSI            = modkernel32.NewProc("AreFileApisANSI")
+	procCopyFileW = modkernel32.NewProc("CopyFileW")
+	//	procCreateEventA               = modkernel32.NewProc("CreateEventA")
+	procCreateEventW = modkernel32.NewProc("CreateEventW")
+	//	procCreateFileA                = modkernel32.NewProc("CreateFileA")
+	//	procCreateFileMappingW         = modkernel32.NewProc("CreateFileMappingW")
+	procCreateFileW     = modkernel32.NewProc("CreateFileW")
+	procCreateHardLinkW = modkernel32.NewProc("CreateHardLinkW")
+	procCreatePipe                 = modkernel32.NewProc("CreatePipe")
+	//	procCreateProcessA             = modkernel32.NewProc("CreateProcessA")
+	procCreateProcessW             = modkernel32.NewProc("CreateProcessW")
+	procCreateThread          = modkernel32.NewProc("CreateThread")
+	procDeleteCriticalSection = modkernel32.NewProc("DeleteCriticalSection")
+	procDeviceIoControl       = modkernel32.NewProc("DeviceIoControl")
+	procDuplicateHandle       = modkernel32.NewProc("DuplicateHandle")
+	procEnterCriticalSection  = modkernel32.NewProc("EnterCriticalSection")
+	procFindClose             = modkernel32.NewProc("FindClose")
+	procFindFirstFileExW      = modkernel32.NewProc("FindFirstFileExW")
+	procFindFirstFileW        = modkernel32.NewProc("FindFirstFileW")
+	procFindNextFileW         = modkernel32.NewProc("FindNextFileW")
+	procFormatMessageW             = modkernel32.NewProc("FormatMessageW")
+	procGetACP       = modkernel32.NewProc("GetACP")
+	procGetCommState = modkernel32.NewProc("GetCommState")
+	procGetComputerNameExW         = modkernel32.NewProc("GetComputerNameExW")
+	procGetConsoleCP = modkernel32.NewProc("GetConsoleCP")
+	//	procGetConsoleScreenBufferInfo = modkernel32.NewProc("GetConsoleScreenBufferInfo")
+	procGetCurrentProcess       = modkernel32.NewProc("GetCurrentProcess")
+	procGetCurrentProcessId     = modkernel32.NewProc("GetCurrentProcessId")
+	procGetCurrentThread        = modkernel32.NewProc("GetCurrentThread")
+	procGetCurrentThreadId      = modkernel32.NewProc("GetCurrentThreadId")
+	procGetEnvironmentVariableA = modkernel32.NewProc("GetEnvironmentVariableA")
+	procGetEnvironmentVariableW = modkernel32.NewProc("GetEnvironmentVariableW")
+	procGetExitCodeProcess         = modkernel32.NewProc("GetExitCodeProcess")
+	procGetExitCodeThread          = modkernel32.NewProc("GetExitCodeThread")
+	procGetFileAttributesA         = modkernel32.NewProc("GetFileAttributesA")
+	//	procGetFileAttributesExA       = modkernel32.NewProc("GetFileAttributesExA")
+	procGetFileAttributesExW       = modkernel32.NewProc("GetFileAttributesExW")
+	procGetFileInformationByHandle = modkernel32.NewProc("GetFileInformationByHandle")
+	//	procGetFileSize                = modkernel32.NewProc("GetFileSize")
+	procGetFullPathNameW = modkernel32.NewProc("GetFullPathNameW")
+	//	procGetLastError               = modkernel32.NewProc("GetLastError")
+	procGetLogicalDriveStringsA  = modkernel32.NewProc("GetLogicalDriveStringsA")
+	procGetModuleFileNameW       = modkernel32.NewProc("GetModuleFileNameW")
+	procGetModuleHandleA         = modkernel32.NewProc("GetModuleHandleA")
+	procGetModuleHandleW         = modkernel32.NewProc("GetModuleHandleW")
+	procGetPrivateProfileStringA = modkernel32.NewProc("GetPrivateProfileStringA")
+	//	procGetProcAddress             = modkernel32.NewProc("GetProcAddress")
+	procGetProcessHeap = modkernel32.NewProc("GetProcessHeap")
+	procGetSystemInfo  = modkernel32.NewProc("GetSystemInfo")
+	//	procGetSystemTime              = modkernel32.NewProc("GetSystemTime")
+	procGetSystemTimeAsFileTime    = modkernel32.NewProc("GetSystemTimeAsFileTime")
+	procGetTempFileNameW = modkernel32.NewProc("GetTempFileNameW")
+	//	procGetTickCount               = modkernel32.NewProc("GetTickCount")
+	//	procGetVersionExA              = modkernel32.NewProc("GetVersionExA")
+	procGetVersionExW             = modkernel32.NewProc("GetVersionExW")
+	procGetVolumeInformationA     = modkernel32.NewProc("GetVolumeInformationA")
+	procGetVolumeInformationW     = modkernel32.NewProc("GetVolumeInformationW")
+	procHeapAlloc                 = modkernel32.NewProc("HeapAlloc")
+	procHeapFree                  = modkernel32.NewProc("HeapFree")
+	procInitializeCriticalSection = modkernel32.NewProc("InitializeCriticalSection")
+	procLeaveCriticalSection      = modkernel32.NewProc("LeaveCriticalSection")
+	//	procLockFile                   = modkernel32.NewProc("LockFile")
+	//	procLockFileEx                 = modkernel32.NewProc("LockFileEx")
+	procLstrlenW = modkernel32.NewProc("lstrlenW")
+	//	procMapViewOfFile              = modkernel32.NewProc("MapViewOfFile")
+	procMoveFileW           = modkernel32.NewProc("MoveFileW")
+	procMultiByteToWideChar = modkernel32.NewProc("MultiByteToWideChar")
+	//	procOpenEventA                 = modkernel32.NewProc("OpenEventA")
+	procOpenProcessToken  = modkernel32.NewProc("OpenProcessToken")
+	procPeekConsoleInputW = modkernel32.NewProc("PeekConsoleInputW")
+	procPeekNamedPipe              = modkernel32.NewProc("PeekNamedPipe")
+	procQueryPerformanceCounter    = modkernel32.NewProc("QueryPerformanceCounter")
+	procQueryPerformanceFrequency  = modkernel32.NewProc("QueryPerformanceFrequency")
+	procReadConsoleW = modkernel32.NewProc("ReadConsoleW")
+	procReadFile     = modkernel32.NewProc("ReadFile")
+	procResetEvent   = modkernel32.NewProc("ResetEvent")
+	procSearchPathW                = modkernel32.NewProc("SearchPathW")
+	//	procSetConsoleCtrlHandler      = modkernel32.NewProc("SetConsoleCtrlHandler")
+	procSetConsoleMode = modkernel32.NewProc("SetConsoleMode")
+	//	procSetConsoleTextAttribute    = modkernel32.NewProc("SetConsoleTextAttribute")
+	procSetEvent       = modkernel32.NewProc("SetEvent")
+	procSetFilePointer = modkernel32.NewProc("SetFilePointer")
+	procSetFileTime    = modkernel32.NewProc("SetFileTime")
+	procSleepEx                    = modkernel32.NewProc("SleepEx")
+	//	procSystemTimeToFileTime       = modkernel32.NewProc("SystemTimeToFileTime")
+	procTerminateThread            = modkernel32.NewProc("TerminateThread")
+	//	procTryEnterCriticalSection    = modkernel32.NewProc("TryEnterCriticalSection")
+	//	procUnlockFile                 = modkernel32.NewProc("UnlockFile")
+	//	procUnlockFileEx               = modkernel32.NewProc("UnlockFileEx")
+	procWaitForSingleObjectEx      = modkernel32.NewProc("WaitForSingleObjectEx")
+	procWideCharToMultiByte = modkernel32.NewProc("WideCharToMultiByte")
+	//	procWriteConsoleA              = modkernel32.NewProc("WriteConsoleA")
+	procWriteConsoleW = modkernel32.NewProc("WriteConsoleW")
+	procWriteFile     = modkernel32.NewProc("WriteFile")
+	//
+	//	//	procSetConsoleCP               = modkernel32.NewProc("SetConsoleCP")
+	//	//	procSetThreadPriority          = modkernel32.NewProc("SetThreadPriority")
+	//	//--
 
 	modadvapi = windows.NewLazySystemDLL("advapi32.dll")
 	//--
-	procAccessCheck                = modadvapi.NewProc("AccessCheck")                // xx
-	procAddAce                     = modadvapi.NewProc("AddAce")                     // xx
-	procEqualSid                   = modadvapi.NewProc("EqualSid")                   // xx
-	procGetAce                     = modadvapi.NewProc("GetAce")                     // xx
-	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")          // xx
-	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")           // xx
-	procGetFileSecurityW           = modadvapi.NewProc("GetFileSecurityW")           // xx
-	procGetLengthSid               = modadvapi.NewProc("GetLengthSid")               // xx
-	procGetNamedSecurityInfoW      = modadvapi.NewProc("GetNamedSecurityInfoW")      // xx
-	procGetSecurityDescriptorDacl  = modadvapi.NewProc("GetSecurityDescriptorDacl")  // xx
-	procGetSecurityDescriptorOwner = modadvapi.NewProc("GetSecurityDescriptorOwner") // xx
-	procGetSidIdentifierAuthority  = modadvapi.NewProc("GetSidIdentifierAuthority")  // xx
-	procGetSidLengthRequired       = modadvapi.NewProc("GetSidLengthRequired")       // xx
-	procGetSidSubAuthority         = modadvapi.NewProc("GetSidSubAuthority")         // xx
-	procGetTokenInformation        = modadvapi.NewProc("GetTokenInformation")        // xx
-	procImpersonateSelf            = modadvapi.NewProc("ImpersonateSelf")            // xx
-	procInitializeAcl              = modadvapi.NewProc("InitializeAcl")              // xx
-	procInitializeSid              = modadvapi.NewProc("InitializeSid")              // xx
-	procOpenThreadToken            = modadvapi.NewProc("OpenThreadToken")            // xx
-	procRevertToSelf               = modadvapi.NewProc("RevertToSelf")               // xx
+	procAccessCheck = modadvapi.NewProc("AccessCheck")
+	procAddAce                     = modadvapi.NewProc("AddAce")
+	procEqualSid = modadvapi.NewProc("EqualSid")
+	procGetAce                     = modadvapi.NewProc("GetAce")
+	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")
+	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")
+	procGetFileSecurityW = modadvapi.NewProc("GetFileSecurityW")
+	procGetLengthSid               = modadvapi.NewProc("GetLengthSid")
+	procGetNamedSecurityInfoW = modadvapi.NewProc("GetNamedSecurityInfoW")
+	procGetSecurityDescriptorDacl  = modadvapi.NewProc("GetSecurityDescriptorDacl")
+	procGetSecurityDescriptorOwner = modadvapi.NewProc("GetSecurityDescriptorOwner")
+	procGetSidIdentifierAuthority  = modadvapi.NewProc("GetSidIdentifierAuthority")
+	procGetSidLengthRequired       = modadvapi.NewProc("GetSidLengthRequired")
+	procGetSidSubAuthority         = modadvapi.NewProc("GetSidSubAuthority")
+	procGetTokenInformation = modadvapi.NewProc("GetTokenInformation")
+	procImpersonateSelf     = modadvapi.NewProc("ImpersonateSelf")
+	procInitializeAcl              = modadvapi.NewProc("InitializeAcl")
+	procInitializeSid              = modadvapi.NewProc("InitializeSid")
+	procOpenThreadToken = modadvapi.NewProc("OpenThreadToken")
+	procRevertToSelf    = modadvapi.NewProc("RevertToSelf")
 	//--
 
 	modws2_32 = windows.NewLazySystemDLL("ws2_32.dll")
 	//--
-	procWSAStartup = modws2_32.NewProc("WSAStartup") // xx
+	procWSAStartup = modws2_32.NewProc("WSAStartup")
 	//--
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
-	procCharLowerW                  = moduser32.NewProc("CharLowerW")                  // xx
-	procCreateWindowExW             = moduser32.NewProc("CreateWindowExW")             // xx
-	procMsgWaitForMultipleObjectsEx = moduser32.NewProc("MsgWaitForMultipleObjectsEx") // xx
-	procPeekMessageW                = moduser32.NewProc("PeekMessageW")                // xx
-	procRegisterClassW              = moduser32.NewProc("RegisterClassW")              // xx
-	procUnregisterClassW            = moduser32.NewProc("UnregisterClassW")            // xx
-	procWaitForInputIdle            = moduser32.NewProc("WaitForInputIdle")            // xx
-	//--
+	procCharLowerW                  = moduser32.NewProc("CharLowerW")
+	procCreateWindowExW             = moduser32.NewProc("CreateWindowExW")
+	procMsgWaitForMultipleObjectsEx = moduser32.NewProc("MsgWaitForMultipleObjectsEx")
+	procPeekMessageW                = moduser32.NewProc("PeekMessageW")
+	procRegisterClassW              = moduser32.NewProc("RegisterClassW")
+	procUnregisterClassW            = moduser32.NewProc("UnregisterClassW")
+	procWaitForInputIdle            = moduser32.NewProc("WaitForInputIdle")
+	//	//--
 
 	netapi             = windows.NewLazySystemDLL("netapi32.dll")
-	procNetGetDCName   = netapi.NewProc("NetGetDCName")   // xx
-	procNetUserGetInfo = netapi.NewProc("NetUserGetInfo") // xx
+	procNetGetDCName   = netapi.NewProc("NetGetDCName")
+	procNetUserGetInfo = netapi.NewProc("NetUserGetInfo")
 
 	userenvapi                = windows.NewLazySystemDLL("userenv.dll")
-	procGetProfilesDirectoryW = userenvapi.NewProc("GetProfilesDirectoryW") // xx
+	procGetProfilesDirectoryW = userenvapi.NewProc("GetProfilesDirectoryW")
 
-	modcrt       = windows.NewLazySystemDLL("msvcrt.dll")
-	crtAccess    = modcrt.NewProc("_access")
-	crtChmod     = modcrt.NewProc("_chmod")
-	crtCtime64   = modcrt.NewProc("ctime64")
-	crtGmtime    = modcrt.NewProc("gmtime")
-	crtGmtime32  = modcrt.NewProc("_gmtime32")
-	crtGmtime64  = modcrt.NewProc("_gmtime64")
-	crtStat64i32 = modcrt.NewProc("_stat64i32")
-	crtStati64   = modcrt.NewProc("_stati64")
-	crtStrftime  = modcrt.NewProc("strftime")
-	crtStrnicmp  = modcrt.NewProc("_strnicmp")
-	crtStrtod    = modcrt.NewProc("strtod")
-	crtTime64    = modcrt.NewProc("time64")
-	crtWcsncpy   = modcrt.NewProc("wcsncpy")
-	crtWcsrchr   = modcrt.NewProc("wcsrchr")
-
-	moducrt        = windows.NewLazySystemDLL("ucrtbase.dll")
-	crtFindfirst32 = moducrt.NewProc("_findfirst32")
-	crtFindnext32  = moducrt.NewProc("_findnext32")
+	modcrt = windows.NewLazySystemDLL("msvcrt.dll")
+	//	procAccess    = modcrt.NewProc("_access")
+	procChmod     = modcrt.NewProc("_chmod")
+	//	procCtime64   = modcrt.NewProc("ctime64")
+	procGmtime = modcrt.NewProc("gmtime")
+	//	procGmtime32  = modcrt.NewProc("_gmtime32")
+	procGmtime64  = modcrt.NewProc("_gmtime64")
+	//	procStat64i32 = modcrt.NewProc("_stat64i32")
+	//	procStati64   = modcrt.NewProc("_stati64")
+	//	procStrftime  = modcrt.NewProc("strftime")
+	procStrnicmp = modcrt.NewProc("_strnicmp")
+	procStrtod   = modcrt.NewProc("strtod")
+	//	procTime64    = modcrt.NewProc("time64")
+	//	procWcsncpy   = modcrt.NewProc("wcsncpy")
+	//	procWcsrchr   = modcrt.NewProc("wcsrchr")
+	//
+	//	moducrt         = windows.NewLazySystemDLL("ucrtbase.dll")
+	//	procFindfirst32 = moducrt.NewProc("_findfirst32")
+	//	procFindnext32  = moducrt.NewProc("_findnext32")
+	//
 )
 
 var (
@@ -312,25 +322,21 @@ func (f *file) setErr() {
 	f.hadErr = true
 }
 
-func (tls *TLS) setLastError(err error) {
-	tls.SetLastError(uint32(err.(syscallErrno)))
-}
-
 func (tls *TLS) SetLastError(_dwErrCode uint32) {
 	if tls != nil {
 		tls.lastError = _dwErrCode
 	}
 }
 
-// https://github.com/golang/go/issues/41220
-
-func (tls *TLS) GetLastError() (r uint32) {
-	if tls == nil {
-		return 0
-	}
-
-	return tls.lastError
-}
+// // https://github.com/golang/go/issues/41220
+//
+// func (tls *TLS) GetLastError() (r uint32) {
+// 	if tls == nil {
+// 		return 0
+// 	}
+//
+// 	return tls.lastError
+// }
 
 // -----------------------------------
 // On windows we have to fetch these
@@ -417,61 +423,61 @@ func Xfprintf(t *TLS, stream, format, args uintptr) int32 {
 	return int32(n)
 }
 
-// int usleep(useconds_t usec);
-func Xusleep(t *TLS, usec types.Useconds_t) int32 {
-	if __ccgo_strace {
-		trc("t=%v usec=%v, (%v:)", t, usec, origin(2))
-	}
-	gotime.Sleep(gotime.Microsecond * gotime.Duration(usec))
-	return 0
-}
-
-// int getrusage(int who, struct rusage *usage);
-func Xgetrusage(t *TLS, who int32, usage uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v who=%v usage=%v, (%v:)", t, who, usage, origin(2))
-	}
-	panic(todo(""))
-	// if _, _, err := unix.Syscall(unix.SYS_GETRUSAGE, uintptr(who), usage, 0); err != 0 {
-	// 	t.setErrno(err)
-	// 	return -1
-	// }
-
-	// return 0
-}
-
-// int lstat(const char *pathname, struct stat *statbuf);
-func Xlstat(t *TLS, pathname, statbuf uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v statbuf=%v, (%v:)", t, statbuf, origin(2))
-	}
-	return Xlstat64(t, pathname, statbuf)
-}
-
-// int stat(const char *pathname, struct stat *statbuf);
-func Xstat(t *TLS, pathname, statbuf uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v statbuf=%v, (%v:)", t, statbuf, origin(2))
-	}
-	return Xstat64(t, pathname, statbuf)
-}
-
-// int chdir(const char *path);
-func Xchdir(t *TLS, path uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v path=%v, (%v:)", t, path, origin(2))
-	}
-	err := windows.Chdir(GoString(path))
-	if err != nil {
-		t.setErrno(err)
-		return -1
-	}
-
-	if dmesgs {
-		dmesg("%v: %q: ok", origin(1), GoString(path))
-	}
-	return 0
-}
+// // int usleep(useconds_t usec);
+// func Xusleep(t *TLS, usec types.Useconds_t) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v usec=%v, (%v:)", t, usec, origin(2))
+// 	}
+// 	gotime.Sleep(gotime.Microsecond * gotime.Duration(usec))
+// 	return 0
+// }
+//
+// // int getrusage(int who, struct rusage *usage);
+// func Xgetrusage(t *TLS, who int32, usage uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v who=%v usage=%v, (%v:)", t, who, usage, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// if _, _, err := unix.Syscall(unix.SYS_GETRUSAGE, uintptr(who), usage, 0); err != 0 {
+// 	// 	t.setErrno(err)
+// 	// 	return -1
+// 	// }
+//
+// 	// return 0
+// }
+//
+// // int lstat(const char *pathname, struct stat *statbuf);
+// func Xlstat(t *TLS, pathname, statbuf uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v statbuf=%v, (%v:)", t, statbuf, origin(2))
+// 	}
+// 	return Xlstat64(t, pathname, statbuf)
+// }
+//
+// // int stat(const char *pathname, struct stat *statbuf);
+// func Xstat(t *TLS, pathname, statbuf uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v statbuf=%v, (%v:)", t, statbuf, origin(2))
+// 	}
+// 	return Xstat64(t, pathname, statbuf)
+// }
+//
+// // int chdir(const char *path);
+// func Xchdir(t *TLS, path uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v path=%v, (%v:)", t, path, origin(2))
+// 	}
+// 	err := windows.Chdir(GoString(path))
+// 	if err != nil {
+// 		t.setErrno(err)
+// 		return -1
+// 	}
+//
+// 	if dmesgs {
+// 		dmesg("%v: %q: ok", origin(1), GoString(path))
+// 	}
+// 	return 0
+// }
 
 var localtime time.Tm
 
@@ -497,23 +503,23 @@ func X_localtime64(_ *TLS, timep uintptr) uintptr {
 	return Xlocaltime(nil, timep)
 }
 
-// struct tm *localtime_r(const time_t *timep, struct tm *result);
-func Xlocaltime_r(_ *TLS, timep, result uintptr) uintptr {
-	panic(todo(""))
-	// loc := getLocalLocation()
-	// ut := *(*unix.Time_t)(unsafe.Pointer(timep))
-	// t := gotime.Unix(int64(ut), 0).In(loc)
-	// (*time.Tm)(unsafe.Pointer(result)).Ftm_sec = int32(t.Second())
-	// (*time.Tm)(unsafe.Pointer(result)).Ftm_min = int32(t.Minute())
-	// (*time.Tm)(unsafe.Pointer(result)).Ftm_hour = int32(t.Hour())
-	// (*time.Tm)(unsafe.Pointer(result)).Ftm_mday = int32(t.Day())
-	// (*time.Tm)(unsafe.Pointer(result)).Ftm_mon = int32(t.Month() - 1)
-	// (*time.Tm)(unsafe.Pointer(result)).Ftm_year = int32(t.Year() - 1900)
-	// (*time.Tm)(unsafe.Pointer(result)).Ftm_wday = int32(t.Weekday())
-	// (*time.Tm)(unsafe.Pointer(result)).Ftm_yday = int32(t.YearDay())
-	// (*time.Tm)(unsafe.Pointer(result)).Ftm_isdst = Bool32(isTimeDST(t))
-	// return result
-}
+// // struct tm *localtime_r(const time_t *timep, struct tm *result);
+// func Xlocaltime_r(_ *TLS, timep, result uintptr) uintptr {
+// 	panic(todo(""))
+// 	// loc := getLocalLocation()
+// 	// ut := *(*unix.Time_t)(unsafe.Pointer(timep))
+// 	// t := gotime.Unix(int64(ut), 0).In(loc)
+// 	// (*time.Tm)(unsafe.Pointer(result)).Ftm_sec = int32(t.Second())
+// 	// (*time.Tm)(unsafe.Pointer(result)).Ftm_min = int32(t.Minute())
+// 	// (*time.Tm)(unsafe.Pointer(result)).Ftm_hour = int32(t.Hour())
+// 	// (*time.Tm)(unsafe.Pointer(result)).Ftm_mday = int32(t.Day())
+// 	// (*time.Tm)(unsafe.Pointer(result)).Ftm_mon = int32(t.Month() - 1)
+// 	// (*time.Tm)(unsafe.Pointer(result)).Ftm_year = int32(t.Year() - 1900)
+// 	// (*time.Tm)(unsafe.Pointer(result)).Ftm_wday = int32(t.Weekday())
+// 	// (*time.Tm)(unsafe.Pointer(result)).Ftm_yday = int32(t.YearDay())
+// 	// (*time.Tm)(unsafe.Pointer(result)).Ftm_isdst = Bool32(isTimeDST(t))
+// 	// return result
+// }
 
 // int _wopen(
 //
@@ -585,13 +591,13 @@ func Xopen64(t *TLS, pathname uintptr, flags int32, cmode uintptr) int32 {
 	return n
 }
 
-// off_t lseek(int fd, off_t offset, int whence);
-func Xlseek(t *TLS, fd int32, offset types.Off_t, whence int32) types.Off_t {
-	if __ccgo_strace {
-		trc("t=%v fd=%v offset=%v whence=%v, (%v:)", t, fd, offset, whence, origin(2))
-	}
-	return types.Off_t(Xlseek64(t, fd, offset, whence))
-}
+// // off_t lseek(int fd, off_t offset, int whence);
+// func Xlseek(t *TLS, fd int32, offset types.Off_t, whence int32) types.Off_t {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v offset=%v whence=%v, (%v:)", t, fd, offset, whence, origin(2))
+// 	}
+// 	return types.Off_t(Xlseek64(t, fd, offset, whence))
+// }
 
 func whenceStr(whence int32) string {
 	switch whence {
@@ -606,44 +612,44 @@ func whenceStr(whence int32) string {
 	}
 }
 
-var fsyncStatbuf stat.Stat
-
-// int fsync(int fd);
-func Xfsync(t *TLS, fd int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v, (%v:)", t, fd, origin(2))
-	}
-
-	f, ok := fdToFile(fd)
-	if !ok {
-		t.setErrno(errno.EBADF)
-		return -1
-	}
-	err := windows.FlushFileBuffers(f.Handle)
-	if err != nil {
-		t.setErrno(err)
-		return -1
-	}
-
-	if dmesgs {
-		dmesg("%v: %d: ok", origin(1), fd)
-	}
-	return 0
-}
-
-// long sysconf(int name);
-func Xsysconf(t *TLS, name int32) long {
-	if __ccgo_strace {
-		trc("t=%v name=%v, (%v:)", t, name, origin(2))
-	}
-	panic(todo(""))
-	// switch name {
-	// case unistd.X_SC_PAGESIZE:
-	// 	return long(unix.Getpagesize())
-	// }
-
-	// panic(todo(""))
-}
+// var fsyncStatbuf stat.Stat
+//
+// // int fsync(int fd);
+// func Xfsync(t *TLS, fd int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v, (%v:)", t, fd, origin(2))
+// 	}
+//
+// 	f, ok := fdToFile(fd)
+// 	if !ok {
+// 		t.setErrno(errno.EBADF)
+// 		return -1
+// 	}
+// 	err := windows.FlushFileBuffers(f.Handle)
+// 	if err != nil {
+// 		t.setErrno(err)
+// 		return -1
+// 	}
+//
+// 	if dmesgs {
+// 		dmesg("%v: %d: ok", origin(1), fd)
+// 	}
+// 	return 0
+// }
+//
+// // long sysconf(int name);
+// func Xsysconf(t *TLS, name int32) long {
+// 	if __ccgo_strace {
+// 		trc("t=%v name=%v, (%v:)", t, name, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// switch name {
+// 	// case unistd.X_SC_PAGESIZE:
+// 	// 	return long(unix.Getpagesize())
+// 	// }
+//
+// 	// panic(todo(""))
+// }
 
 // int close(int fd);
 func Xclose(t *TLS, fd int32) int32 {
@@ -669,57 +675,57 @@ func Xclose(t *TLS, fd int32) int32 {
 	return 0
 }
 
-// char *getcwd(char *buf, size_t size);
-func Xgetcwd(t *TLS, buf uintptr, size types.Size_t) uintptr {
-	if __ccgo_strace {
-		trc("t=%v buf=%v size=%v, (%v:)", t, buf, size, origin(2))
-	}
-
-	b := make([]uint16, size)
-	n, err := windows.GetCurrentDirectory(uint32(len(b)), &b[0])
-	if err != nil {
-		t.setErrno(err)
-		return 0
-	}
-	// to bytes
-	var wd = []byte(string(utf16.Decode(b[0:n])))
-	if types.Size_t(len(wd)) > size {
-		t.setErrno(errno.ERANGE)
-		return 0
-	}
-
-	copy((*RawMem)(unsafe.Pointer(buf))[:], wd)
-	(*RawMem)(unsafe.Pointer(buf))[len(wd)] = 0
-
-	if dmesgs {
-		dmesg("%v: %q: ok", origin(1), GoString(buf))
-	}
-	return buf
-}
-
-// int fstat(int fd, struct stat *statbuf);
-func Xfstat(t *TLS, fd int32, statbuf uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v statbuf=%v, (%v:)", t, fd, statbuf, origin(2))
-	}
-	return Xfstat64(t, fd, statbuf)
-}
-
-// int ftruncate(int fd, off_t length);
-func Xftruncate(t *TLS, fd int32, length types.Off_t) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v length=%v, (%v:)", t, fd, length, origin(2))
-	}
-	return Xftruncate64(t, fd, length)
-}
-
-// int fcntl(int fd, int cmd, ... /* arg */ );
-func Xfcntl(t *TLS, fd, cmd int32, args uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v cmd=%v args=%v, (%v:)", t, cmd, args, origin(2))
-	}
-	return Xfcntl64(t, fd, cmd, args)
-}
+// // char *getcwd(char *buf, size_t size);
+// func Xgetcwd(t *TLS, buf uintptr, size types.Size_t) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v buf=%v size=%v, (%v:)", t, buf, size, origin(2))
+// 	}
+//
+// 	b := make([]uint16, size)
+// 	n, err := windows.GetCurrentDirectory(uint32(len(b)), &b[0])
+// 	if err != nil {
+// 		t.setErrno(err)
+// 		return 0
+// 	}
+// 	// to bytes
+// 	var wd = []byte(string(utf16.Decode(b[0:n])))
+// 	if types.Size_t(len(wd)) > size {
+// 		t.setErrno(errno.ERANGE)
+// 		return 0
+// 	}
+//
+// 	copy((*RawMem)(unsafe.Pointer(buf))[:], wd)
+// 	(*RawMem)(unsafe.Pointer(buf))[len(wd)] = 0
+//
+// 	if dmesgs {
+// 		dmesg("%v: %q: ok", origin(1), GoString(buf))
+// 	}
+// 	return buf
+// }
+//
+// // int fstat(int fd, struct stat *statbuf);
+// func Xfstat(t *TLS, fd int32, statbuf uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v statbuf=%v, (%v:)", t, fd, statbuf, origin(2))
+// 	}
+// 	return Xfstat64(t, fd, statbuf)
+// }
+//
+// // int ftruncate(int fd, off_t length);
+// func Xftruncate(t *TLS, fd int32, length types.Off_t) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v length=%v, (%v:)", t, fd, length, origin(2))
+// 	}
+// 	return Xftruncate64(t, fd, length)
+// }
+//
+// // int fcntl(int fd, int cmd, ... /* arg */ );
+// func Xfcntl(t *TLS, fd, cmd int32, args uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v cmd=%v args=%v, (%v:)", t, cmd, args, origin(2))
+// 	}
+// 	return Xfcntl64(t, fd, cmd, args)
+// }
 
 // int _read( // https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/read?view=msvc-160
 //
@@ -752,12 +758,12 @@ func Xread(t *TLS, fd int32, buf uintptr, count uint32) int32 {
 	return int32(n)
 }
 
-func X_read(t *TLS, fd int32, buf uintptr, count uint32) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v buf=%v count=%v, (%v:)", t, fd, buf, count, origin(2))
-	}
-	return Xread(t, fd, buf, count)
-}
+// func X_read(t *TLS, fd int32, buf uintptr, count uint32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v buf=%v count=%v, (%v:)", t, fd, buf, count, origin(2))
+// 	}
+// 	return Xread(t, fd, buf, count)
+// }
 
 // int _write( // https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/write?view=msvc-160
 //
@@ -793,80 +799,80 @@ func Xwrite(t *TLS, fd int32, buf uintptr, count uint32) int32 {
 	return int32(n)
 }
 
-func X_write(t *TLS, fd int32, buf uintptr, count uint32) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v buf=%v count=%v, (%v:)", t, fd, buf, count, origin(2))
-	}
-	return Xwrite(t, fd, buf, count)
-}
-
-// int fchmod(int fd, mode_t mode);
-func Xfchmod(t *TLS, fd int32, mode types.Mode_t) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v mode=%v, (%v:)", t, fd, mode, origin(2))
-	}
-	panic(todo(""))
-	// if _, _, err := unix.Syscall(unix.SYS_FCHMOD, uintptr(fd), uintptr(mode), 0); err != 0 {
-	// 	t.setErrno(err)
-	// 	return -1
-	// }
-
-	// if dmesgs {
-	// 	dmesg("%v: %d %#o: ok", origin(1), fd, mode)
-	// }
-	// return 0
-}
-
-// // int fchown(int fd, uid_t owner, gid_t group);
-// func Xfchown(t *TLS, fd int32, owner types.Uid_t, group types.Gid_t) int32 {
-// 	if _, _, err := unix.Syscall(unix.SYS_FCHOWN, uintptr(fd), uintptr(owner), uintptr(group)); err != 0 {
-// 		t.setErrno(err)
-// 		return -1
+// func X_write(t *TLS, fd int32, buf uintptr, count uint32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v buf=%v count=%v, (%v:)", t, fd, buf, count, origin(2))
 // 	}
+// 	return Xwrite(t, fd, buf, count)
+// }
 //
-// 	return 0
+// // int fchmod(int fd, mode_t mode);
+// func Xfchmod(t *TLS, fd int32, mode types.Mode_t) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v mode=%v, (%v:)", t, fd, mode, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// if _, _, err := unix.Syscall(unix.SYS_FCHMOD, uintptr(fd), uintptr(mode), 0); err != 0 {
+// 	// 	t.setErrno(err)
+// 	// 	return -1
+// 	// }
+//
+// 	// if dmesgs {
+// 	// 	dmesg("%v: %d %#o: ok", origin(1), fd, mode)
+// 	// }
+// 	// return 0
 // }
-
-// // uid_t geteuid(void);
-// func Xgeteuid(t *TLS) types.Uid_t {
-// 	n, _, _ := unix.Syscall(unix.SYS_GETEUID, 0, 0, 0)
-// 	return types.Uid_t(n)
+//
+// // // int fchown(int fd, uid_t owner, gid_t group);
+// // func Xfchown(t *TLS, fd int32, owner types.Uid_t, group types.Gid_t) int32 {
+// // 	if _, _, err := unix.Syscall(unix.SYS_FCHOWN, uintptr(fd), uintptr(owner), uintptr(group)); err != 0 {
+// // 		t.setErrno(err)
+// // 		return -1
+// // 	}
+// //
+// // 	return 0
+// // }
+//
+// // // uid_t geteuid(void);
+// // func Xgeteuid(t *TLS) types.Uid_t {
+// // 	n, _, _ := unix.Syscall(unix.SYS_GETEUID, 0, 0, 0)
+// // 	return types.Uid_t(n)
+// // }
+//
+// // int munmap(void *addr, size_t length);
+// func Xmunmap(t *TLS, addr uintptr, length types.Size_t) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v addr=%v length=%v, (%v:)", t, addr, length, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// if _, _, err := unix.Syscall(unix.SYS_MUNMAP, addr, uintptr(length), 0); err != 0 {
+// 	// 	t.setErrno(err)
+// 	// 	return -1
+// 	// }
+//
+// 	// return 0
 // }
-
-// int munmap(void *addr, size_t length);
-func Xmunmap(t *TLS, addr uintptr, length types.Size_t) int32 {
-	if __ccgo_strace {
-		trc("t=%v addr=%v length=%v, (%v:)", t, addr, length, origin(2))
-	}
-	panic(todo(""))
-	// if _, _, err := unix.Syscall(unix.SYS_MUNMAP, addr, uintptr(length), 0); err != 0 {
-	// 	t.setErrno(err)
-	// 	return -1
-	// }
-
-	// return 0
-}
-
-// int gettimeofday(struct timeval *tv, struct timezone *tz);
-func Xgettimeofday(t *TLS, tv, tz uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v tz=%v, (%v:)", t, tz, origin(2))
-	}
-	panic(todo(""))
-	// if tz != 0 {
-	// 	panic(todo(""))
-	// }
-
-	// var tvs unix.Timeval
-	// err := unix.Gettimeofday(&tvs)
-	// if err != nil {
-	// 	t.setErrno(err)
-	// 	return -1
-	// }
-
-	// *(*unix.Timeval)(unsafe.Pointer(tv)) = tvs
-	// return 0
-}
+//
+// // int gettimeofday(struct timeval *tv, struct timezone *tz);
+// func Xgettimeofday(t *TLS, tv, tz uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v tz=%v, (%v:)", t, tz, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// if tz != 0 {
+// 	// 	panic(todo(""))
+// 	// }
+//
+// 	// var tvs unix.Timeval
+// 	// err := unix.Gettimeofday(&tvs)
+// 	// if err != nil {
+// 	// 	t.setErrno(err)
+// 	// 	return -1
+// 	// }
+//
+// 	// *(*unix.Timeval)(unsafe.Pointer(tv)) = tvs
+// 	// return 0
+// }
 
 // int getsockopt(int sockfd, int level, int optname, void *optval, socklen_t *optlen);
 func Xgetsockopt(t *TLS, _ ...interface{}) int32 {
@@ -884,24 +890,24 @@ func Xsetsockopt(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-// int ioctl(int fd, unsigned long request, ...);
-func Xioctl(t *TLS, fd int32, request ulong, va uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v request=%v va=%v, (%v:)", t, fd, request, va, origin(2))
-	}
-	panic(todo(""))
-	// var argp uintptr
-	// if va != 0 {
-	// 	argp = VaUintptr(&va)
-	// }
-	// n, _, err := unix.Syscall(unix.SYS_IOCTL, uintptr(fd), uintptr(request), argp)
-	// if err != 0 {
-	// 	t.setErrno(err)
-	// 	return -1
-	// }
-
-	// return int32(n)
-}
+// // int ioctl(int fd, unsigned long request, ...);
+// func Xioctl(t *TLS, fd int32, request ulong, va uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v request=%v va=%v, (%v:)", t, fd, request, va, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// var argp uintptr
+// 	// if va != 0 {
+// 	// 	argp = VaUintptr(&va)
+// 	// }
+// 	// n, _, err := unix.Syscall(unix.SYS_IOCTL, uintptr(fd), uintptr(request), argp)
+// 	// if err != 0 {
+// 	// 	t.setErrno(err)
+// 	// 	return -1
+// 	// }
+//
+// 	// return int32(n)
+// }
 
 // int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
 func Xselect(t *TLS, nfds int32, readfds, writefds, exceptfds, timeout uintptr) int32 {
@@ -924,107 +930,107 @@ func Xselect(t *TLS, nfds int32, readfds, writefds, exceptfds, timeout uintptr) 
 	// return int32(n)
 }
 
-// int mkfifo(const char *pathname, mode_t mode);
-func Xmkfifo(t *TLS, pathname uintptr, mode types.Mode_t) int32 {
-	if __ccgo_strace {
-		trc("t=%v pathname=%v mode=%v, (%v:)", t, pathname, mode, origin(2))
-	}
-	panic(todo(""))
-	// 	if err := unix.Mkfifo(GoString(pathname), mode); err != nil {
-	// 		t.setErrno(err)
-	// 		return -1
-	// 	}
-	//
-	// 	return 0
-}
-
-// mode_t umask(mode_t mask);
-func Xumask(t *TLS, mask types.Mode_t) types.Mode_t {
-	if __ccgo_strace {
-		trc("t=%v mask=%v, (%v:)", t, mask, origin(2))
-	}
-	panic(todo(""))
-	// 	n, _, _ := unix.Syscall(unix.SYS_UMASK, uintptr(mask), 0, 0)
-	// 	return types.Mode_t(n)
-}
-
-// int execvp(const char *file, char *const argv[]);
-func Xexecvp(t *TLS, file, argv uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v argv=%v, (%v:)", t, argv, origin(2))
-	}
-	panic(todo(""))
-	// 	if _, _, err := unix.Syscall(unix.SYS_EXECVE, file, argv, Environ()); err != 0 {
-	// 		t.setErrno(err)
-	// 		return -1
-	// 	}
-	//
-	// 	return 0
-}
-
-// pid_t waitpid(pid_t pid, int *wstatus, int options);
-func Xwaitpid(t *TLS, pid types.Pid_t, wstatus uintptr, optname int32) types.Pid_t {
-	if __ccgo_strace {
-		trc("t=%v pid=%v wstatus=%v optname=%v, (%v:)", t, pid, wstatus, optname, origin(2))
-	}
-	panic(todo(""))
-	// 	n, _, err := unix.Syscall6(unix.SYS_WAIT4, uintptr(pid), wstatus, uintptr(optname), 0, 0, 0)
-	// 	if err != 0 {
-	// 		t.setErrno(err)
-	// 		return -1
-	// 	}
-	//
-	// 	return types.Pid_t(n)
-}
-
-// int uname(struct utsname *buf);
-func Xuname(t *TLS, buf uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v buf=%v, (%v:)", t, buf, origin(2))
-	}
-	panic(todo(""))
-	// 	if _, _, err := unix.Syscall(unix.SYS_UNAME, buf, 0, 0); err != 0 {
-	// 		t.setErrno(err)
-	// 		return -1
-	// 	}
-	//
-	// 	return 0
-}
-
-// int getrlimit(int resource, struct rlimit *rlim);
-func Xgetrlimit(t *TLS, resource int32, rlim uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v resource=%v rlim=%v, (%v:)", t, resource, rlim, origin(2))
-	}
-	return Xgetrlimit64(t, resource, rlim)
-}
-
-// int setrlimit(int resource, const struct rlimit *rlim);
-func Xsetrlimit(t *TLS, resource int32, rlim uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v resource=%v rlim=%v, (%v:)", t, resource, rlim, origin(2))
-	}
-	return Xsetrlimit64(t, resource, rlim)
-}
-
-// int setrlimit(int resource, const struct rlimit *rlim);
-func Xsetrlimit64(t *TLS, resource int32, rlim uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v resource=%v rlim=%v, (%v:)", t, resource, rlim, origin(2))
-	}
-	panic(todo(""))
-	// 	if _, _, err := unix.Syscall(unix.SYS_SETRLIMIT, uintptr(resource), uintptr(rlim), 0); err != 0 {
-	// 		t.setErrno(err)
-	// 		return -1
-	// 	}
-	//
-	// 	return 0
-}
-
-// // uid_t getuid(void);
-// func Xgetuid(t *TLS) types.Uid_t {
-// 	return types.Uid_t(os.Getuid())
+// // int mkfifo(const char *pathname, mode_t mode);
+// func Xmkfifo(t *TLS, pathname uintptr, mode types.Mode_t) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v pathname=%v mode=%v, (%v:)", t, pathname, mode, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// 	if err := unix.Mkfifo(GoString(pathname), mode); err != nil {
+// 	// 		t.setErrno(err)
+// 	// 		return -1
+// 	// 	}
+// 	//
+// 	// 	return 0
 // }
+//
+// // mode_t umask(mode_t mask);
+// func Xumask(t *TLS, mask types.Mode_t) types.Mode_t {
+// 	if __ccgo_strace {
+// 		trc("t=%v mask=%v, (%v:)", t, mask, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// 	n, _, _ := unix.Syscall(unix.SYS_UMASK, uintptr(mask), 0, 0)
+// 	// 	return types.Mode_t(n)
+// }
+//
+// // int execvp(const char *file, char *const argv[]);
+// func Xexecvp(t *TLS, file, argv uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v argv=%v, (%v:)", t, argv, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// 	if _, _, err := unix.Syscall(unix.SYS_EXECVE, file, argv, Environ()); err != 0 {
+// 	// 		t.setErrno(err)
+// 	// 		return -1
+// 	// 	}
+// 	//
+// 	// 	return 0
+// }
+//
+// // pid_t waitpid(pid_t pid, int *wstatus, int options);
+// func Xwaitpid(t *TLS, pid types.Pid_t, wstatus uintptr, optname int32) types.Pid_t {
+// 	if __ccgo_strace {
+// 		trc("t=%v pid=%v wstatus=%v optname=%v, (%v:)", t, pid, wstatus, optname, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// 	n, _, err := unix.Syscall6(unix.SYS_WAIT4, uintptr(pid), wstatus, uintptr(optname), 0, 0, 0)
+// 	// 	if err != 0 {
+// 	// 		t.setErrno(err)
+// 	// 		return -1
+// 	// 	}
+// 	//
+// 	// 	return types.Pid_t(n)
+// }
+//
+// // int uname(struct utsname *buf);
+// func Xuname(t *TLS, buf uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v buf=%v, (%v:)", t, buf, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// 	if _, _, err := unix.Syscall(unix.SYS_UNAME, buf, 0, 0); err != 0 {
+// 	// 		t.setErrno(err)
+// 	// 		return -1
+// 	// 	}
+// 	//
+// 	// 	return 0
+// }
+//
+// // int getrlimit(int resource, struct rlimit *rlim);
+// func Xgetrlimit(t *TLS, resource int32, rlim uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v resource=%v rlim=%v, (%v:)", t, resource, rlim, origin(2))
+// 	}
+// 	return Xgetrlimit64(t, resource, rlim)
+// }
+//
+// // int setrlimit(int resource, const struct rlimit *rlim);
+// func Xsetrlimit(t *TLS, resource int32, rlim uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v resource=%v rlim=%v, (%v:)", t, resource, rlim, origin(2))
+// 	}
+// 	return Xsetrlimit64(t, resource, rlim)
+// }
+//
+// // int setrlimit(int resource, const struct rlimit *rlim);
+// func Xsetrlimit64(t *TLS, resource int32, rlim uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v resource=%v rlim=%v, (%v:)", t, resource, rlim, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// 	if _, _, err := unix.Syscall(unix.SYS_SETRLIMIT, uintptr(resource), uintptr(rlim), 0); err != 0 {
+// 	// 		t.setErrno(err)
+// 	// 		return -1
+// 	// 	}
+// 	//
+// 	// 	return 0
+// }
+//
+// // // uid_t getuid(void);
+// // func Xgetuid(t *TLS) types.Uid_t {
+// // 	return types.Uid_t(os.Getuid())
+// // }
 
 // pid_t getpid(void);
 func Xgetpid(t *TLS) int32 {
@@ -1034,135 +1040,135 @@ func Xgetpid(t *TLS) int32 {
 	return int32(os.Getpid())
 }
 
-// int system(const char *command);
-func Xsystem(t *TLS, command uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v command=%v, (%v:)", t, command, origin(2))
-	}
-	s := GoString(command)
-	if command == 0 {
-		panic(todo(""))
-	}
-
-	cmd := exec.Command("sh", "-c", s)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		ps := err.(*exec.ExitError)
-		return int32(ps.ExitCode())
-	}
-
-	return 0
-}
-
-// var staticGetpwuid pwd.Passwd
+// // int system(const char *command);
+// func Xsystem(t *TLS, command uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v command=%v, (%v:)", t, command, origin(2))
+// 	}
+// 	s := GoString(command)
+// 	if command == 0 {
+// 		panic(todo(""))
+// 	}
+//
+// 	cmd := exec.Command("sh", "-c", s)
+// 	cmd.Stdout = os.Stdout
+// 	cmd.Stderr = os.Stderr
+// 	err := cmd.Run()
+// 	if err != nil {
+// 		ps := err.(*exec.ExitError)
+// 		return int32(ps.ExitCode())
+// 	}
+//
+// 	return 0
+// }
+//
+// // var staticGetpwuid pwd.Passwd
 //
 // func init() {
 // 	atExit = append(atExit, func() { closePasswd(&staticGetpwuid) })
 // }
 //
-// func closePasswd(p *pwd.Passwd) {
-// 	Xfree(nil, p.Fpw_name)
-// 	Xfree(nil, p.Fpw_passwd)
-// 	Xfree(nil, p.Fpw_gecos)
-// 	Xfree(nil, p.Fpw_dir)
-// 	Xfree(nil, p.Fpw_shell)
-// 	*p = pwd.Passwd{}
+// // func closePasswd(p *pwd.Passwd) {
+// // 	Xfree(nil, p.Fpw_name)
+// // 	Xfree(nil, p.Fpw_passwd)
+// // 	Xfree(nil, p.Fpw_gecos)
+// // 	Xfree(nil, p.Fpw_dir)
+// // 	Xfree(nil, p.Fpw_shell)
+// // 	*p = pwd.Passwd{}
+// // }
+//
+// // struct passwd *getpwuid(uid_t uid);
+// func Xgetpwuid(t *TLS, uid uint32) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v uid=%v, (%v:)", t, uid, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// 	f, err := os.Open("/etc/passwd")
+// 	// 	if err != nil {
+// 	// 		panic(todo("", err))
+// 	// 	}
+// 	//
+// 	// 	defer f.Close()
+// 	//
+// 	// 	sid := strconv.Itoa(int(uid))
+// 	// 	sc := bufio.NewScanner(f)
+// 	// 	for sc.Scan() {
+// 	// 		// eg. "root:x:0:0:root:/root:/bin/bash"
+// 	// 		a := strings.Split(sc.Text(), ":")
+// 	// 		if len(a) < 7 {
+// 	// 			panic(todo(""))
+// 	// 		}
+// 	//
+// 	// 		if a[2] == sid {
+// 	// 			uid, err := strconv.Atoi(a[2])
+// 	// 			if err != nil {
+// 	// 				panic(todo(""))
+// 	// 			}
+// 	//
+// 	// 			gid, err := strconv.Atoi(a[3])
+// 	// 			if err != nil {
+// 	// 				panic(todo(""))
+// 	// 			}
+// 	//
+// 	// 			closePasswd(&staticGetpwuid)
+// 	// 			gecos := a[4]
+// 	// 			if strings.Contains(gecos, ",") {
+// 	// 				a := strings.Split(gecos, ",")
+// 	// 				gecos = a[0]
+// 	// 			}
+// 	// 			initPasswd(t, &staticGetpwuid, a[0], a[1], uint32(uid), uint32(gid), gecos, a[5], a[6])
+// 	// 			return uintptr(unsafe.Pointer(&staticGetpwuid))
+// 	// 		}
+// 	// 	}
+// 	//
+// 	// 	if sc.Err() != nil {
+// 	// 		panic(todo(""))
+// 	// 	}
+// 	//
+// 	// 	return 0
 // }
-
-// struct passwd *getpwuid(uid_t uid);
-func Xgetpwuid(t *TLS, uid uint32) uintptr {
-	if __ccgo_strace {
-		trc("t=%v uid=%v, (%v:)", t, uid, origin(2))
-	}
-	panic(todo(""))
-	// 	f, err := os.Open("/etc/passwd")
-	// 	if err != nil {
-	// 		panic(todo("", err))
-	// 	}
-	//
-	// 	defer f.Close()
-	//
-	// 	sid := strconv.Itoa(int(uid))
-	// 	sc := bufio.NewScanner(f)
-	// 	for sc.Scan() {
-	// 		// eg. "root:x:0:0:root:/root:/bin/bash"
-	// 		a := strings.Split(sc.Text(), ":")
-	// 		if len(a) < 7 {
-	// 			panic(todo(""))
-	// 		}
-	//
-	// 		if a[2] == sid {
-	// 			uid, err := strconv.Atoi(a[2])
-	// 			if err != nil {
-	// 				panic(todo(""))
-	// 			}
-	//
-	// 			gid, err := strconv.Atoi(a[3])
-	// 			if err != nil {
-	// 				panic(todo(""))
-	// 			}
-	//
-	// 			closePasswd(&staticGetpwuid)
-	// 			gecos := a[4]
-	// 			if strings.Contains(gecos, ",") {
-	// 				a := strings.Split(gecos, ",")
-	// 				gecos = a[0]
-	// 			}
-	// 			initPasswd(t, &staticGetpwuid, a[0], a[1], uint32(uid), uint32(gid), gecos, a[5], a[6])
-	// 			return uintptr(unsafe.Pointer(&staticGetpwuid))
-	// 		}
-	// 	}
-	//
-	// 	if sc.Err() != nil {
-	// 		panic(todo(""))
-	// 	}
-	//
-	// 	return 0
-}
-
-// func initPasswd(t *TLS, p *pwd.Passwd, name, pwd string, uid, gid uint32, gecos, dir, shell string) {
-// 	p.Fpw_name = cString(t, name)
-// 	p.Fpw_passwd = cString(t, pwd)
-// 	p.Fpw_uid = uid
-// 	p.Fpw_gid = gid
-// 	p.Fpw_gecos = cString(t, gecos)
-// 	p.Fpw_dir = cString(t, dir)
-// 	p.Fpw_shell = cString(t, shell)
+//
+// // func initPasswd(t *TLS, p *pwd.Passwd, name, pwd string, uid, gid uint32, gecos, dir, shell string) {
+// // 	p.Fpw_name = cString(t, name)
+// // 	p.Fpw_passwd = cString(t, pwd)
+// // 	p.Fpw_uid = uid
+// // 	p.Fpw_gid = gid
+// // 	p.Fpw_gecos = cString(t, gecos)
+// // 	p.Fpw_dir = cString(t, dir)
+// // 	p.Fpw_shell = cString(t, shell)
+// // }
+//
+// // int setvbuf(FILE *stream, char *buf, int mode, size_t size);
+// func Xsetvbuf(t *TLS, stream, buf uintptr, mode int32, size types.Size_t) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v buf=%v mode=%v size=%v, (%v:)", t, buf, mode, size, origin(2))
+// 	}
+// 	return 0 //TODO
 // }
-
-// int setvbuf(FILE *stream, char *buf, int mode, size_t size);
-func Xsetvbuf(t *TLS, stream, buf uintptr, mode int32, size types.Size_t) int32 {
-	if __ccgo_strace {
-		trc("t=%v buf=%v mode=%v size=%v, (%v:)", t, buf, mode, size, origin(2))
-	}
-	return 0 //TODO
-}
-
-// int raise(int sig);
-func Xraise(t *TLS, sig int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v sig=%v, (%v:)", t, sig, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int backtrace(void **buffer, int size);
-func Xbacktrace(t *TLS, buf uintptr, size int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v buf=%v size=%v, (%v:)", t, buf, size, origin(2))
-	}
-	panic(todo(""))
-}
-
-// void backtrace_symbols_fd(void *const *buffer, int size, int fd);
-func Xbacktrace_symbols_fd(t *TLS, buffer uintptr, size, fd int32) {
-	if __ccgo_strace {
-		trc("t=%v buffer=%v fd=%v, (%v:)", t, buffer, fd, origin(2))
-	}
-	panic(todo(""))
-}
+//
+// // int raise(int sig);
+// func Xraise(t *TLS, sig int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v sig=%v, (%v:)", t, sig, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int backtrace(void **buffer, int size);
+// func Xbacktrace(t *TLS, buf uintptr, size int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v buf=%v size=%v, (%v:)", t, buf, size, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // void backtrace_symbols_fd(void *const *buffer, int size, int fd);
+// func Xbacktrace_symbols_fd(t *TLS, buffer uintptr, size, fd int32) {
+// 	if __ccgo_strace {
+// 		trc("t=%v buffer=%v fd=%v, (%v:)", t, buffer, fd, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // int fileno(FILE *stream);
 func Xfileno(t *TLS, stream uintptr) int32 {
@@ -1182,419 +1188,419 @@ func Xfileno(t *TLS, stream uintptr) int32 {
 	return f._fd
 }
 
-// var staticGetpwnam pwd.Passwd
+// // var staticGetpwnam pwd.Passwd
+// //
+// // func init() {
+// // 	atExit = append(atExit, func() { closePasswd(&staticGetpwnam) })
+// // }
+// //
+// // // struct passwd *getpwnam(const char *name);
+// // func Xgetpwnam(t *TLS, name uintptr) uintptr {
+// // 	f, err := os.Open("/etc/passwd")
+// // 	if err != nil {
+// // 		panic(todo("", err))
+// // 	}
+// //
+// // 	defer f.Close()
+// //
+// // 	sname := GoString(name)
+// // 	sc := bufio.NewScanner(f)
+// // 	for sc.Scan() {
+// // 		// eg. "root:x:0:0:root:/root:/bin/bash"
+// // 		a := strings.Split(sc.Text(), ":")
+// // 		if len(a) < 7 {
+// // 			panic(todo(""))
+// // 		}
+// //
+// // 		if a[0] == sname {
+// // 			uid, err := strconv.Atoi(a[2])
+// // 			if err != nil {
+// // 				panic(todo(""))
+// // 			}
+// //
+// // 			gid, err := strconv.Atoi(a[3])
+// // 			if err != nil {
+// // 				panic(todo(""))
+// // 			}
+// //
+// // 			closePasswd(&staticGetpwnam)
+// // 			gecos := a[4]
+// // 			if strings.Contains(gecos, ",") {
+// // 				a := strings.Split(gecos, ",")
+// // 				gecos = a[0]
+// // 			}
+// // 			initPasswd(t, &staticGetpwnam, a[0], a[1], uint32(uid), uint32(gid), gecos, a[5], a[6])
+// // 			return uintptr(unsafe.Pointer(&staticGetpwnam))
+// // 		}
+// // 	}
+// //
+// // 	if sc.Err() != nil {
+// // 		panic(todo(""))
+// // 	}
+// //
+// // 	return 0
+// // }
+// //
+// // var staticGetgrnam grp.Group
+// //
+// // func init() {
+// // 	atExit = append(atExit, func() { closeGroup(&staticGetgrnam) })
+// // }
+// //
+// // // struct group *getgrnam(const char *name);
+// // func Xgetgrnam(t *TLS, name uintptr) uintptr {
+// // 	f, err := os.Open("/etc/group")
+// // 	if err != nil {
+// // 		panic(todo(""))
+// // 	}
+// //
+// // 	defer f.Close()
+// //
+// // 	sname := GoString(name)
+// // 	sc := bufio.NewScanner(f)
+// // 	for sc.Scan() {
+// // 		// eg. "root:x:0:"
+// // 		a := strings.Split(sc.Text(), ":")
+// // 		if len(a) < 4 {
+// // 			panic(todo(""))
+// // 		}
+// //
+// // 		if a[0] == sname {
+// // 			closeGroup(&staticGetgrnam)
+// // 			gid, err := strconv.Atoi(a[2])
+// // 			if err != nil {
+// // 				panic(todo(""))
+// // 			}
+// //
+// // 			var names []string
+// // 			if a[3] != "" {
+// // 				names = strings.Split(a[3], ",")
+// // 			}
+// // 			initGroup(t, &staticGetgrnam, a[0], a[1], uint32(gid), names)
+// // 			return uintptr(unsafe.Pointer(&staticGetgrnam))
+// // 		}
+// // 	}
+// //
+// // 	if sc.Err() != nil {
+// // 		panic(todo(""))
+// // 	}
+// //
+// // 	return 0
+// // }
+// //
+// // func closeGroup(p *grp.Group) {
+// // 	Xfree(nil, p.Fgr_name)
+// // 	Xfree(nil, p.Fgr_passwd)
+// // 	if p.Fgr_mem != 0 {
+// // 		panic(todo(""))
+// // 	}
+// //
+// // 	*p = grp.Group{}
+// // }
+// //
+// // func initGroup(t *TLS, p *grp.Group, name, pwd string, gid uint32, names []string) {
+// // 	p.Fgr_name = cString(t, name)
+// // 	p.Fgr_passwd = cString(t, pwd)
+// // 	p.Fgr_gid = gid
+// // 	p.Fgr_mem = 0
+// // 	if len(names) != 0 {
+// // 		panic(todo("%q %q %v %q %v", name, pwd, gid, names, len(names)))
+// // 	}
+// // }
+// //
+// // func init() {
+// // 	atExit = append(atExit, func() { closeGroup(&staticGetgrgid) })
+// // }
+// //
+// // var staticGetgrgid grp.Group
+// //
+// // // struct group *getgrgid(gid_t gid);
+// // func Xgetgrgid(t *TLS, gid uint32) uintptr {
+// // 	f, err := os.Open("/etc/group")
+// // 	if err != nil {
+// // 		panic(todo(""))
+// // 	}
+// //
+// // 	defer f.Close()
+// //
+// // 	sid := strconv.Itoa(int(gid))
+// // 	sc := bufio.NewScanner(f)
+// // 	for sc.Scan() {
+// // 		// eg. "root:x:0:"
+// // 		a := strings.Split(sc.Text(), ":")
+// // 		if len(a) < 4 {
+// // 			panic(todo(""))
+// // 		}
+// //
+// // 		if a[2] == sid {
+// // 			closeGroup(&staticGetgrgid)
+// // 			var names []string
+// // 			if a[3] != "" {
+// // 				names = strings.Split(a[3], ",")
+// // 			}
+// // 			initGroup(t, &staticGetgrgid, a[0], a[1], gid, names)
+// // 			return uintptr(unsafe.Pointer(&staticGetgrgid))
+// // 		}
+// // 	}
+// //
+// // 	if sc.Err() != nil {
+// // 		panic(todo(""))
+// // 	}
+// //
+// // 	return 0
+// // }
 //
-// func init() {
-// 	atExit = append(atExit, func() { closePasswd(&staticGetpwnam) })
+// // int mkstemps(char *template, int suffixlen);
+// func Xmkstemps(t *TLS, template uintptr, suffixlen int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v template=%v suffixlen=%v, (%v:)", t, template, suffixlen, origin(2))
+// 	}
+// 	return Xmkstemps64(t, template, suffixlen)
 // }
 //
-// // struct passwd *getpwnam(const char *name);
-// func Xgetpwnam(t *TLS, name uintptr) uintptr {
-// 	f, err := os.Open("/etc/passwd")
-// 	if err != nil {
-// 		panic(todo("", err))
+// // int mkstemps(char *template, int suffixlen);
+// func Xmkstemps64(t *TLS, template uintptr, suffixlen int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v template=%v suffixlen=%v, (%v:)", t, template, suffixlen, origin(2))
 // 	}
-//
-// 	defer f.Close()
-//
-// 	sname := GoString(name)
-// 	sc := bufio.NewScanner(f)
-// 	for sc.Scan() {
-// 		// eg. "root:x:0:0:root:/root:/bin/bash"
-// 		a := strings.Split(sc.Text(), ":")
-// 		if len(a) < 7 {
-// 			panic(todo(""))
-// 		}
-//
-// 		if a[0] == sname {
-// 			uid, err := strconv.Atoi(a[2])
-// 			if err != nil {
-// 				panic(todo(""))
-// 			}
-//
-// 			gid, err := strconv.Atoi(a[3])
-// 			if err != nil {
-// 				panic(todo(""))
-// 			}
-//
-// 			closePasswd(&staticGetpwnam)
-// 			gecos := a[4]
-// 			if strings.Contains(gecos, ",") {
-// 				a := strings.Split(gecos, ",")
-// 				gecos = a[0]
-// 			}
-// 			initPasswd(t, &staticGetpwnam, a[0], a[1], uint32(uid), uint32(gid), gecos, a[5], a[6])
-// 			return uintptr(unsafe.Pointer(&staticGetpwnam))
-// 		}
-// 	}
-//
-// 	if sc.Err() != nil {
-// 		panic(todo(""))
-// 	}
-//
-// 	return 0
+// 	panic(todo(""))
+// 	// 	len := uintptr(Xstrlen(t, template))
+// 	// 	x := template + uintptr(len-6) - uintptr(suffixlen)
+// 	// 	for i := uintptr(0); i < 6; i++ {
+// 	// 		if *(*byte)(unsafe.Pointer(x + i)) != 'X' {
+// 	// 			t.setErrno(errno.EINVAL)
+// 	// 			return -1
+// 	// 		}
+// 	// 	}
+// 	//
+// 	// 	fd, err := tempFile(template, x)
+// 	// 	if err != 0 {
+// 	// 		t.setErrno(err)
+// 	// 		return -1
+// 	// 	}
+// 	//
+// 	// 	return int32(fd)
 // }
 //
-// var staticGetgrnam grp.Group
-//
-// func init() {
-// 	atExit = append(atExit, func() { closeGroup(&staticGetgrnam) })
+// // int mkstemp(char *template);
+// func Xmkstemp64(t *TLS, template uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v template=%v, (%v:)", t, template, origin(2))
+// 	}
+// 	return Xmkstemps64(t, template, 0)
 // }
 //
-// // struct group *getgrnam(const char *name);
-// func Xgetgrnam(t *TLS, name uintptr) uintptr {
-// 	f, err := os.Open("/etc/group")
-// 	if err != nil {
-// 		panic(todo(""))
-// 	}
+// // func newFtsent(t *TLS, info int, path string, stat *unix.Stat_t, err windows.Errno) (r *fts.FTSENT) {
+// // 	var statp uintptr
+// // 	if stat != nil {
+// // 		statp = Xmalloc(t, types.Size_t(unsafe.Sizeof(unix.Stat_t{})))
+// // 		if statp == 0 {
+// // 			panic("OOM")
+// // 		}
+// //
+// // 		*(*unix.Stat_t)(unsafe.Pointer(statp)) = *stat
+// // 	}
+// // 	csp := CString(path)
+// // 	if csp == 0 {
+// // 		panic("OOM")
+// // 	}
+// //
+// // 	return &fts.FTSENT{
+// // 		Ffts_info:    uint16(info),
+// // 		Ffts_path:    csp,
+// // 		Ffts_pathlen: uint16(len(path)),
+// // 		Ffts_statp:   statp,
+// // 		Ffts_errno:   int32(err),
+// // 	}
+// // }
+// //
+// // func newCFtsent(t *TLS, info int, path string, stat *unix.Stat_t, err windows.Errno) uintptr {
+// // 	p := Xcalloc(t, types.Size_t(unsafe.Sizeof(fts.FTSENT{})))
+// // 	if p == 0 {
+// // 		panic("OOM")
+// // 	}
+// //
+// // 	*(*fts.FTSENT)(unsafe.Pointer(p)) = *newFtsent(t, info, path, stat, err)
+// // 	return p
+// // }
+// //
+// // func ftsentClose(t *TLS, p uintptr) {
+// // 	Xfree(t, (*fts.FTSENT)(unsafe.Pointer(p)).Ffts_path)
+// // 	Xfree(t, (*fts.FTSENT)(unsafe.Pointer(p)).Ffts_statp)
+// // }
 //
-// 	defer f.Close()
-//
-// 	sname := GoString(name)
-// 	sc := bufio.NewScanner(f)
-// 	for sc.Scan() {
-// 		// eg. "root:x:0:"
-// 		a := strings.Split(sc.Text(), ":")
-// 		if len(a) < 4 {
-// 			panic(todo(""))
-// 		}
-//
-// 		if a[0] == sname {
-// 			closeGroup(&staticGetgrnam)
-// 			gid, err := strconv.Atoi(a[2])
-// 			if err != nil {
-// 				panic(todo(""))
-// 			}
-//
-// 			var names []string
-// 			if a[3] != "" {
-// 				names = strings.Split(a[3], ",")
-// 			}
-// 			initGroup(t, &staticGetgrnam, a[0], a[1], uint32(gid), names)
-// 			return uintptr(unsafe.Pointer(&staticGetgrnam))
-// 		}
-// 	}
-//
-// 	if sc.Err() != nil {
-// 		panic(todo(""))
-// 	}
-//
-// 	return 0
+// type ftstream struct {
+// 	s []uintptr
+// 	x int
 // }
 //
-// func closeGroup(p *grp.Group) {
-// 	Xfree(nil, p.Fgr_name)
-// 	Xfree(nil, p.Fgr_passwd)
-// 	if p.Fgr_mem != 0 {
-// 		panic(todo(""))
-// 	}
-//
-// 	*p = grp.Group{}
-// }
-//
-// func initGroup(t *TLS, p *grp.Group, name, pwd string, gid uint32, names []string) {
-// 	p.Fgr_name = cString(t, name)
-// 	p.Fgr_passwd = cString(t, pwd)
-// 	p.Fgr_gid = gid
-// 	p.Fgr_mem = 0
-// 	if len(names) != 0 {
-// 		panic(todo("%q %q %v %q %v", name, pwd, gid, names, len(names)))
-// 	}
-// }
-//
-// func init() {
-// 	atExit = append(atExit, func() { closeGroup(&staticGetgrgid) })
-// }
-//
-// var staticGetgrgid grp.Group
-//
-// // struct group *getgrgid(gid_t gid);
-// func Xgetgrgid(t *TLS, gid uint32) uintptr {
-// 	f, err := os.Open("/etc/group")
-// 	if err != nil {
-// 		panic(todo(""))
-// 	}
-//
-// 	defer f.Close()
-//
-// 	sid := strconv.Itoa(int(gid))
-// 	sc := bufio.NewScanner(f)
-// 	for sc.Scan() {
-// 		// eg. "root:x:0:"
-// 		a := strings.Split(sc.Text(), ":")
-// 		if len(a) < 4 {
-// 			panic(todo(""))
-// 		}
-//
-// 		if a[2] == sid {
-// 			closeGroup(&staticGetgrgid)
-// 			var names []string
-// 			if a[3] != "" {
-// 				names = strings.Split(a[3], ",")
-// 			}
-// 			initGroup(t, &staticGetgrgid, a[0], a[1], gid, names)
-// 			return uintptr(unsafe.Pointer(&staticGetgrgid))
-// 		}
-// 	}
-//
-// 	if sc.Err() != nil {
-// 		panic(todo(""))
-// 	}
-//
-// 	return 0
-// }
-
-// int mkstemps(char *template, int suffixlen);
-func Xmkstemps(t *TLS, template uintptr, suffixlen int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v template=%v suffixlen=%v, (%v:)", t, template, suffixlen, origin(2))
-	}
-	return Xmkstemps64(t, template, suffixlen)
-}
-
-// int mkstemps(char *template, int suffixlen);
-func Xmkstemps64(t *TLS, template uintptr, suffixlen int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v template=%v suffixlen=%v, (%v:)", t, template, suffixlen, origin(2))
-	}
-	panic(todo(""))
-	// 	len := uintptr(Xstrlen(t, template))
-	// 	x := template + uintptr(len-6) - uintptr(suffixlen)
-	// 	for i := uintptr(0); i < 6; i++ {
-	// 		if *(*byte)(unsafe.Pointer(x + i)) != 'X' {
-	// 			t.setErrno(errno.EINVAL)
-	// 			return -1
-	// 		}
-	// 	}
-	//
-	// 	fd, err := tempFile(template, x)
-	// 	if err != 0 {
-	// 		t.setErrno(err)
-	// 		return -1
-	// 	}
-	//
-	// 	return int32(fd)
-}
-
-// int mkstemp(char *template);
-func Xmkstemp64(t *TLS, template uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v template=%v, (%v:)", t, template, origin(2))
-	}
-	return Xmkstemps64(t, template, 0)
-}
-
-// func newFtsent(t *TLS, info int, path string, stat *unix.Stat_t, err windows.Errno) (r *fts.FTSENT) {
-// 	var statp uintptr
-// 	if stat != nil {
-// 		statp = Xmalloc(t, types.Size_t(unsafe.Sizeof(unix.Stat_t{})))
-// 		if statp == 0 {
-// 			panic("OOM")
-// 		}
-//
-// 		*(*unix.Stat_t)(unsafe.Pointer(statp)) = *stat
-// 	}
-// 	csp := CString(path)
-// 	if csp == 0 {
-// 		panic("OOM")
-// 	}
-//
-// 	return &fts.FTSENT{
-// 		Ffts_info:    uint16(info),
-// 		Ffts_path:    csp,
-// 		Ffts_pathlen: uint16(len(path)),
-// 		Ffts_statp:   statp,
-// 		Ffts_errno:   int32(err),
-// 	}
-// }
-//
-// func newCFtsent(t *TLS, info int, path string, stat *unix.Stat_t, err windows.Errno) uintptr {
-// 	p := Xcalloc(t, types.Size_t(unsafe.Sizeof(fts.FTSENT{})))
-// 	if p == 0 {
-// 		panic("OOM")
-// 	}
-//
-// 	*(*fts.FTSENT)(unsafe.Pointer(p)) = *newFtsent(t, info, path, stat, err)
-// 	return p
-// }
-//
-// func ftsentClose(t *TLS, p uintptr) {
-// 	Xfree(t, (*fts.FTSENT)(unsafe.Pointer(p)).Ffts_path)
-// 	Xfree(t, (*fts.FTSENT)(unsafe.Pointer(p)).Ffts_statp)
-// }
-
-type ftstream struct {
-	s []uintptr
-	x int
-}
-
-// func (f *ftstream) close(t *TLS) {
-// 	for _, p := range f.s {
-// 		ftsentClose(t, p)
-// 		Xfree(t, p)
-// 	}
-// 	*f = ftstream{}
-// }
+// // func (f *ftstream) close(t *TLS) {
+// // 	for _, p := range f.s {
+// // 		ftsentClose(t, p)
+// // 		Xfree(t, p)
+// // 	}
+// // 	*f = ftstream{}
+// // }
+// //
+// // // FTS *fts_open(char * const *path_argv, int options, int (*compar)(const FTSENT **, const FTSENT **));
+// // func Xfts_open(t *TLS, path_argv uintptr, options int32, compar uintptr) uintptr {
+// // 	return Xfts64_open(t, path_argv, options, compar)
+// // }
 //
 // // FTS *fts_open(char * const *path_argv, int options, int (*compar)(const FTSENT **, const FTSENT **));
-// func Xfts_open(t *TLS, path_argv uintptr, options int32, compar uintptr) uintptr {
-// 	return Xfts64_open(t, path_argv, options, compar)
+// func Xfts64_open(t *TLS, path_argv uintptr, options int32, compar uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v path_argv=%v options=%v compar=%v, (%v:)", t, path_argv, options, compar, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// 	f := &ftstream{}
+// 	//
+// 	// 	var walk func(string)
+// 	// 	walk = func(path string) {
+// 	// 		var fi os.FileInfo
+// 	// 		var err error
+// 	// 		switch {
+// 	// 		case options&fts.FTS_LOGICAL != 0:
+// 	// 			fi, err = os.Stat(path)
+// 	// 		case options&fts.FTS_PHYSICAL != 0:
+// 	// 			fi, err = os.Lstat(path)
+// 	// 		default:
+// 	// 			panic(todo(""))
+// 	// 		}
+// 	//
+// 	// 		if err != nil {
+// 	// 			panic(todo(""))
+// 	// 		}
+// 	//
+// 	// 		var statp *unix.Stat_t
+// 	// 		if options&fts.FTS_NOSTAT == 0 {
+// 	// 			var stat unix.Stat_t
+// 	// 			switch {
+// 	// 			case options&fts.FTS_LOGICAL != 0:
+// 	// 				if err := unix.Stat(path, &stat); err != nil {
+// 	// 					panic(todo(""))
+// 	// 				}
+// 	// 			case options&fts.FTS_PHYSICAL != 0:
+// 	// 				if err := unix.Lstat(path, &stat); err != nil {
+// 	// 					panic(todo(""))
+// 	// 				}
+// 	// 			default:
+// 	// 				panic(todo(""))
+// 	// 			}
+// 	//
+// 	// 			statp = &stat
+// 	// 		}
+// 	//
+// 	// 	out:
+// 	// 		switch {
+// 	// 		case fi.IsDir():
+// 	// 			f.s = append(f.s, newCFtsent(t, fts.FTS_D, path, statp, 0))
+// 	// 			g, err := os.Open(path)
+// 	// 			switch x := err.(type) {
+// 	// 			case nil:
+// 	// 				// ok
+// 	// 			case *os.PathError:
+// 	// 				f.s = append(f.s, newCFtsent(t, fts.FTS_DNR, path, statp, errno.EACCES))
+// 	// 				break out
+// 	// 			default:
+// 	// 				panic(todo("%q: %v %T", path, x, x))
+// 	// 			}
+// 	//
+// 	// 			names, err := g.Readdirnames(-1)
+// 	// 			g.Close()
+// 	// 			if err != nil {
+// 	// 				panic(todo(""))
+// 	// 			}
+// 	//
+// 	// 			for _, name := range names {
+// 	// 				walk(path + "/" + name)
+// 	// 				if f == nil {
+// 	// 					break out
+// 	// 				}
+// 	// 			}
+// 	//
+// 	// 			f.s = append(f.s, newCFtsent(t, fts.FTS_DP, path, statp, 0))
+// 	// 		default:
+// 	// 			info := fts.FTS_F
+// 	// 			if fi.Mode()&os.ModeSymlink != 0 {
+// 	// 				info = fts.FTS_SL
+// 	// 			}
+// 	// 			switch {
+// 	// 			case statp != nil:
+// 	// 				f.s = append(f.s, newCFtsent(t, info, path, statp, 0))
+// 	// 			case options&fts.FTS_NOSTAT != 0:
+// 	// 				f.s = append(f.s, newCFtsent(t, fts.FTS_NSOK, path, nil, 0))
+// 	// 			default:
+// 	// 				panic(todo(""))
+// 	// 			}
+// 	// 		}
+// 	// 	}
+// 	//
+// 	// 	for {
+// 	// 		p := *(*uintptr)(unsafe.Pointer(path_argv))
+// 	// 		if p == 0 {
+// 	// 			if f == nil {
+// 	// 				return 0
+// 	// 			}
+// 	//
+// 	// 			if compar != 0 {
+// 	// 				panic(todo(""))
+// 	// 			}
+// 	//
+// 	// 			return addObject(f)
+// 	// 		}
+// 	//
+// 	// 		walk(GoString(p))
+// 	// 		path_argv += unsafe.Sizeof(uintptr(0))
+// 	// 	}
 // }
-
-// FTS *fts_open(char * const *path_argv, int options, int (*compar)(const FTSENT **, const FTSENT **));
-func Xfts64_open(t *TLS, path_argv uintptr, options int32, compar uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v path_argv=%v options=%v compar=%v, (%v:)", t, path_argv, options, compar, origin(2))
-	}
-	panic(todo(""))
-	// 	f := &ftstream{}
-	//
-	// 	var walk func(string)
-	// 	walk = func(path string) {
-	// 		var fi os.FileInfo
-	// 		var err error
-	// 		switch {
-	// 		case options&fts.FTS_LOGICAL != 0:
-	// 			fi, err = os.Stat(path)
-	// 		case options&fts.FTS_PHYSICAL != 0:
-	// 			fi, err = os.Lstat(path)
-	// 		default:
-	// 			panic(todo(""))
-	// 		}
-	//
-	// 		if err != nil {
-	// 			panic(todo(""))
-	// 		}
-	//
-	// 		var statp *unix.Stat_t
-	// 		if options&fts.FTS_NOSTAT == 0 {
-	// 			var stat unix.Stat_t
-	// 			switch {
-	// 			case options&fts.FTS_LOGICAL != 0:
-	// 				if err := unix.Stat(path, &stat); err != nil {
-	// 					panic(todo(""))
-	// 				}
-	// 			case options&fts.FTS_PHYSICAL != 0:
-	// 				if err := unix.Lstat(path, &stat); err != nil {
-	// 					panic(todo(""))
-	// 				}
-	// 			default:
-	// 				panic(todo(""))
-	// 			}
-	//
-	// 			statp = &stat
-	// 		}
-	//
-	// 	out:
-	// 		switch {
-	// 		case fi.IsDir():
-	// 			f.s = append(f.s, newCFtsent(t, fts.FTS_D, path, statp, 0))
-	// 			g, err := os.Open(path)
-	// 			switch x := err.(type) {
-	// 			case nil:
-	// 				// ok
-	// 			case *os.PathError:
-	// 				f.s = append(f.s, newCFtsent(t, fts.FTS_DNR, path, statp, errno.EACCES))
-	// 				break out
-	// 			default:
-	// 				panic(todo("%q: %v %T", path, x, x))
-	// 			}
-	//
-	// 			names, err := g.Readdirnames(-1)
-	// 			g.Close()
-	// 			if err != nil {
-	// 				panic(todo(""))
-	// 			}
-	//
-	// 			for _, name := range names {
-	// 				walk(path + "/" + name)
-	// 				if f == nil {
-	// 					break out
-	// 				}
-	// 			}
-	//
-	// 			f.s = append(f.s, newCFtsent(t, fts.FTS_DP, path, statp, 0))
-	// 		default:
-	// 			info := fts.FTS_F
-	// 			if fi.Mode()&os.ModeSymlink != 0 {
-	// 				info = fts.FTS_SL
-	// 			}
-	// 			switch {
-	// 			case statp != nil:
-	// 				f.s = append(f.s, newCFtsent(t, info, path, statp, 0))
-	// 			case options&fts.FTS_NOSTAT != 0:
-	// 				f.s = append(f.s, newCFtsent(t, fts.FTS_NSOK, path, nil, 0))
-	// 			default:
-	// 				panic(todo(""))
-	// 			}
-	// 		}
-	// 	}
-	//
-	// 	for {
-	// 		p := *(*uintptr)(unsafe.Pointer(path_argv))
-	// 		if p == 0 {
-	// 			if f == nil {
-	// 				return 0
-	// 			}
-	//
-	// 			if compar != 0 {
-	// 				panic(todo(""))
-	// 			}
-	//
-	// 			return addObject(f)
-	// 		}
-	//
-	// 		walk(GoString(p))
-	// 		path_argv += unsafe.Sizeof(uintptr(0))
-	// 	}
-}
-
-// FTSENT *fts_read(FTS *ftsp);
-func Xfts_read(t *TLS, ftsp uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v ftsp=%v, (%v:)", t, ftsp, origin(2))
-	}
-	return Xfts64_read(t, ftsp)
-}
-
-// FTSENT *fts_read(FTS *ftsp);
-func Xfts64_read(t *TLS, ftsp uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v ftsp=%v, (%v:)", t, ftsp, origin(2))
-	}
-	panic(todo(""))
-	// 	f := winGetObject(ftsp).(*ftstream)
-	// 	if f.x == len(f.s) {
-	// 		t.setErrno(0)
-	// 		return 0
-	// 	}
-	//
-	// 	r := f.s[f.x]
-	// 	if e := (*fts.FTSENT)(unsafe.Pointer(r)).Ffts_errno; e != 0 {
-	// 		t.setErrno(e)
-	// 	}
-	// 	f.x++
-	// 	return r
-}
-
-// int fts_close(FTS *ftsp);
-func Xfts_close(t *TLS, ftsp uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ftsp=%v, (%v:)", t, ftsp, origin(2))
-	}
-	return Xfts64_close(t, ftsp)
-}
-
-// int fts_close(FTS *ftsp);
-func Xfts64_close(t *TLS, ftsp uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ftsp=%v, (%v:)", t, ftsp, origin(2))
-	}
-	panic(todo(""))
-	// 	winGetObject(ftsp).(*ftstream).close(t)
-	// 	removeObject(ftsp)
-	// 	return 0
-}
+//
+// // FTSENT *fts_read(FTS *ftsp);
+// func Xfts_read(t *TLS, ftsp uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v ftsp=%v, (%v:)", t, ftsp, origin(2))
+// 	}
+// 	return Xfts64_read(t, ftsp)
+// }
+//
+// // FTSENT *fts_read(FTS *ftsp);
+// func Xfts64_read(t *TLS, ftsp uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v ftsp=%v, (%v:)", t, ftsp, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// 	f := winGetObject(ftsp).(*ftstream)
+// 	// 	if f.x == len(f.s) {
+// 	// 		t.setErrno(0)
+// 	// 		return 0
+// 	// 	}
+// 	//
+// 	// 	r := f.s[f.x]
+// 	// 	if e := (*fts.FTSENT)(unsafe.Pointer(r)).Ffts_errno; e != 0 {
+// 	// 		t.setErrno(e)
+// 	// 	}
+// 	// 	f.x++
+// 	// 	return r
+// }
+//
+// // int fts_close(FTS *ftsp);
+// func Xfts_close(t *TLS, ftsp uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ftsp=%v, (%v:)", t, ftsp, origin(2))
+// 	}
+// 	return Xfts64_close(t, ftsp)
+// }
+//
+// // int fts_close(FTS *ftsp);
+// func Xfts64_close(t *TLS, ftsp uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ftsp=%v, (%v:)", t, ftsp, origin(2))
+// 	}
+// 	panic(todo(""))
+// 	// 	winGetObject(ftsp).(*ftstream).close(t)
+// 	// 	removeObject(ftsp)
+// 	// 	return 0
+// }
 
 // void tzset (void);
 func Xtzset(t *TLS) {
@@ -1615,37 +1621,37 @@ func Xstrerror(t *TLS, errnum int32) uintptr {
 	return uintptr(unsafe.Pointer(&strerrorBuf[0]))
 }
 
-// void *dlopen(const char *filename, int flags);
-func Xdlopen(t *TLS, filename uintptr, flags int32) uintptr {
-	if __ccgo_strace {
-		trc("t=%v filename=%v flags=%v, (%v:)", t, filename, flags, origin(2))
-	}
-	panic(todo(""))
-}
-
-// char *dlerror(void);
-func Xdlerror(t *TLS) uintptr {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int dlclose(void *handle);
-func Xdlclose(t *TLS, handle uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v handle=%v, (%v:)", t, handle, origin(2))
-	}
-	panic(todo(""))
-}
-
-// void *dlsym(void *handle, const char *symbol);
-func Xdlsym(t *TLS, handle, symbol uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v symbol=%v, (%v:)", t, symbol, origin(2))
-	}
-	panic(todo(""))
-}
+// // void *dlopen(const char *filename, int flags);
+// func Xdlopen(t *TLS, filename uintptr, flags int32) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v filename=%v flags=%v, (%v:)", t, filename, flags, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // char *dlerror(void);
+// func Xdlerror(t *TLS) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v, (%v:)", t, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int dlclose(void *handle);
+// func Xdlclose(t *TLS, handle uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v handle=%v, (%v:)", t, handle, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // void *dlsym(void *handle, const char *symbol);
+// func Xdlsym(t *TLS, handle, symbol uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v symbol=%v, (%v:)", t, symbol, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // void perror(const char *s);
 func Xperror(t *TLS, s uintptr) {
@@ -1655,70 +1661,70 @@ func Xperror(t *TLS, s uintptr) {
 	panic(todo(""))
 }
 
-// int pclose(FILE *stream);
-func Xpclose(t *TLS, stream uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
-	}
-	panic(todo(""))
-}
-
-var gai_strerrorBuf [100]byte
-
-// const char *gai_strerror(int errcode);
-func Xgai_strerror(t *TLS, errcode int32) uintptr {
-	if __ccgo_strace {
-		trc("t=%v errcode=%v, (%v:)", t, errcode, origin(2))
-	}
-	copy(gai_strerrorBuf[:], fmt.Sprintf("gai error %d\x00", errcode))
-	return uintptr(unsafe.Pointer(&gai_strerrorBuf))
-}
-
-// int tcgetattr(int fd, struct termios *termios_p);
-func Xtcgetattr(t *TLS, fd int32, termios_p uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v termios_p=%v, (%v:)", t, fd, termios_p, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
-func Xtcsetattr(t *TLS, fd, optional_actions int32, termios_p uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v optional_actions=%v termios_p=%v, (%v:)", t, optional_actions, termios_p, origin(2))
-	}
-	panic(todo(""))
-}
-
-// // speed_t cfgetospeed(const struct termios *termios_p);
-// func Xcfgetospeed(t *TLS, termios_p uintptr) termios.Speed_t {
+// // int pclose(FILE *stream);
+// func Xpclose(t *TLS, stream uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
+// 	}
 // 	panic(todo(""))
 // }
-
-// int cfsetospeed(struct termios *termios_p, speed_t speed);
-func Xcfsetospeed(t *TLS, termios_p uintptr, speed uint32) int32 {
-	if __ccgo_strace {
-		trc("t=%v termios_p=%v speed=%v, (%v:)", t, termios_p, speed, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int cfsetispeed(struct termios *termios_p, speed_t speed);
-func Xcfsetispeed(t *TLS, termios_p uintptr, speed uint32) int32 {
-	if __ccgo_strace {
-		trc("t=%v termios_p=%v speed=%v, (%v:)", t, termios_p, speed, origin(2))
-	}
-	panic(todo(""))
-}
-
-// pid_t fork(void);
-func Xfork(t *TLS) int32 {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	t.setErrno(errno.ENOSYS)
-	return -1
-}
+//
+// var gai_strerrorBuf [100]byte
+//
+// // const char *gai_strerror(int errcode);
+// func Xgai_strerror(t *TLS, errcode int32) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v errcode=%v, (%v:)", t, errcode, origin(2))
+// 	}
+// 	copy(gai_strerrorBuf[:], fmt.Sprintf("gai error %d\x00", errcode))
+// 	return uintptr(unsafe.Pointer(&gai_strerrorBuf))
+// }
+//
+// // int tcgetattr(int fd, struct termios *termios_p);
+// func Xtcgetattr(t *TLS, fd int32, termios_p uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v termios_p=%v, (%v:)", t, fd, termios_p, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
+// func Xtcsetattr(t *TLS, fd, optional_actions int32, termios_p uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v optional_actions=%v termios_p=%v, (%v:)", t, optional_actions, termios_p, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // // speed_t cfgetospeed(const struct termios *termios_p);
+// // func Xcfgetospeed(t *TLS, termios_p uintptr) termios.Speed_t {
+// // 	panic(todo(""))
+// // }
+//
+// // int cfsetospeed(struct termios *termios_p, speed_t speed);
+// func Xcfsetospeed(t *TLS, termios_p uintptr, speed uint32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v termios_p=%v speed=%v, (%v:)", t, termios_p, speed, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int cfsetispeed(struct termios *termios_p, speed_t speed);
+// func Xcfsetispeed(t *TLS, termios_p uintptr, speed uint32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v termios_p=%v speed=%v, (%v:)", t, termios_p, speed, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // pid_t fork(void);
+// func Xfork(t *TLS) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v, (%v:)", t, origin(2))
+// 	}
+// 	t.setErrno(errno.ENOSYS)
+// 	return -1
+// }
 
 // char *setlocale(int category, const char *locale);
 func Xsetlocale(t *TLS, category int32, locale uintptr) uintptr {
@@ -1728,66 +1734,66 @@ func Xsetlocale(t *TLS, category int32, locale uintptr) uintptr {
 	return 0 //TODO
 }
 
-// // char *nl_langinfo(nl_item item);
-// func Xnl_langinfo(t *TLS, item langinfo.Nl_item) uintptr {
+// // // char *nl_langinfo(nl_item item);
+// // func Xnl_langinfo(t *TLS, item langinfo.Nl_item) uintptr {
+// // 	panic(todo(""))
+// // }
+//
+// // FILE *popen(const char *command, const char *type);
+// func Xpopen(t *TLS, command, type1 uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v type1=%v, (%v:)", t, type1, origin(2))
+// 	}
 // 	panic(todo(""))
 // }
-
-// FILE *popen(const char *command, const char *type);
-func Xpopen(t *TLS, command, type1 uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v type1=%v, (%v:)", t, type1, origin(2))
-	}
-	panic(todo(""))
-}
-
-// char *realpath(const char *path, char *resolved_path);
-func Xrealpath(t *TLS, path, resolved_path uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v resolved_path=%v, (%v:)", t, resolved_path, origin(2))
-	}
-	s, err := filepath.EvalSymlinks(GoString(path))
-	if err != nil {
-		if os.IsNotExist(err) {
-			if dmesgs {
-				dmesg("%v: %q: %v", origin(1), GoString(path), err)
-			}
-			t.setErrno(errno.ENOENT)
-			return 0
-		}
-
-		panic(todo("", err))
-	}
-
-	if resolved_path == 0 {
-		panic(todo(""))
-	}
-
-	if len(s) >= limits.PATH_MAX {
-		s = s[:limits.PATH_MAX-1]
-	}
-
-	copy((*RawMem)(unsafe.Pointer(resolved_path))[:len(s):len(s)], s)
-	(*RawMem)(unsafe.Pointer(resolved_path))[len(s)] = 0
-	return resolved_path
-}
-
-// struct tm *gmtime_r(const time_t *timep, struct tm *result);
-func Xgmtime_r(t *TLS, timep, result uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v result=%v, (%v:)", t, result, origin(2))
-	}
-	panic(todo(""))
-}
-
-// // char *inet_ntoa(struct in_addr in);
-// func Xinet_ntoa(t *TLS, in1 in.In_addr) uintptr {
+//
+// // char *realpath(const char *path, char *resolved_path);
+// func Xrealpath(t *TLS, path, resolved_path uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v resolved_path=%v, (%v:)", t, resolved_path, origin(2))
+// 	}
+// 	s, err := filepath.EvalSymlinks(GoString(path))
+// 	if err != nil {
+// 		if os.IsNotExist(err) {
+// 			if dmesgs {
+// 				dmesg("%v: %q: %v", origin(1), GoString(path), err)
+// 			}
+// 			t.setErrno(errno.ENOENT)
+// 			return 0
+// 		}
+//
+// 		panic(todo("", err))
+// 	}
+//
+// 	if resolved_path == 0 {
+// 		panic(todo(""))
+// 	}
+//
+// 	if len(s) >= limits.PATH_MAX {
+// 		s = s[:limits.PATH_MAX-1]
+// 	}
+//
+// 	copy((*RawMem)(unsafe.Pointer(resolved_path))[:len(s):len(s)], s)
+// 	(*RawMem)(unsafe.Pointer(resolved_path))[len(s)] = 0
+// 	return resolved_path
+// }
+//
+// // struct tm *gmtime_r(const time_t *timep, struct tm *result);
+// func Xgmtime_r(t *TLS, timep, result uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v result=%v, (%v:)", t, result, origin(2))
+// 	}
 // 	panic(todo(""))
 // }
-
-// func X__ccgo_in6addr_anyp(t *TLS) uintptr {
-// 	return uintptr(unsafe.Pointer(&in6_addr_any))
-// }
+//
+// // // char *inet_ntoa(struct in_addr in);
+// // func Xinet_ntoa(t *TLS, in1 in.In_addr) uintptr {
+// // 	panic(todo(""))
+// // }
+//
+// // func X__ccgo_in6addr_anyp(t *TLS) uintptr {
+// // 	return uintptr(unsafe.Pointer(&in6_addr_any))
+// // }
 
 func Xabort(t *TLS) {
 	if __ccgo_strace {
@@ -1916,52 +1922,52 @@ func Xfputc(t *TLS, c int32, stream uintptr) int32 {
 	return int32(byte(c))
 }
 
-// int fseek(FILE *stream, long offset, int whence);
-func Xfseek(t *TLS, stream uintptr, offset long, whence int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v stream=%v offset=%v whence=%v, (%v:)", t, stream, offset, whence, origin(2))
-	}
-	f, ok := winGetObject(stream).(*file)
-	if !ok {
-		t.setErrno(errno.EBADF)
-		return -1
-	}
-	if n := Xlseek(t, f._fd, types.Off_t(offset), whence); n < 0 {
-		if dmesgs {
-			dmesg("%v: fd %v, off %#x, whence %v: %v", origin(1), f._fd, offset, whenceStr(whence), n)
-		}
-		f.setErr()
-		return -1
-	}
-
-	if dmesgs {
-		dmesg("%v: fd %v, off %#x, whence %v: ok", origin(1), f._fd, offset, whenceStr(whence))
-	}
-	return 0
-}
-
-// long ftell(FILE *stream);
-func Xftell(t *TLS, stream uintptr) long {
-	if __ccgo_strace {
-		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
-	}
-	f, ok := winGetObject(stream).(*file)
-	if !ok {
-		t.setErrno(errno.EBADF)
-		return -1
-	}
-
-	n := Xlseek(t, f._fd, 0, windows.FILE_CURRENT)
-	if n < 0 {
-		f.setErr()
-		return -1
-	}
-
-	if dmesgs {
-		dmesg("%v: fd %v, n %#x: ok %#x", origin(1), f._fd, n, long(n))
-	}
-	return long(n)
-}
+// // int fseek(FILE *stream, long offset, int whence);
+// func Xfseek(t *TLS, stream uintptr, offset long, whence int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v offset=%v whence=%v, (%v:)", t, stream, offset, whence, origin(2))
+// 	}
+// 	f, ok := winGetObject(stream).(*file)
+// 	if !ok {
+// 		t.setErrno(errno.EBADF)
+// 		return -1
+// 	}
+// 	if n := Xlseek(t, f._fd, types.Off_t(offset), whence); n < 0 {
+// 		if dmesgs {
+// 			dmesg("%v: fd %v, off %#x, whence %v: %v", origin(1), f._fd, offset, whenceStr(whence), n)
+// 		}
+// 		f.setErr()
+// 		return -1
+// 	}
+//
+// 	if dmesgs {
+// 		dmesg("%v: fd %v, off %#x, whence %v: ok", origin(1), f._fd, offset, whenceStr(whence))
+// 	}
+// 	return 0
+// }
+//
+// // long ftell(FILE *stream);
+// func Xftell(t *TLS, stream uintptr) long {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
+// 	}
+// 	f, ok := winGetObject(stream).(*file)
+// 	if !ok {
+// 		t.setErrno(errno.EBADF)
+// 		return -1
+// 	}
+//
+// 	n := Xlseek(t, f._fd, 0, windows.FILE_CURRENT)
+// 	if n < 0 {
+// 		f.setErr()
+// 		return -1
+// 	}
+//
+// 	if dmesgs {
+// 		dmesg("%v: fd %v, n %#x: ok %#x", origin(1), f._fd, n, long(n))
+// 	}
+// 	return long(n)
+// }
 
 // int ferror(FILE *stream);
 func Xferror(t *TLS, stream uintptr) int32 {
@@ -1996,139 +2002,139 @@ func Xfgetc(t *TLS, stream uintptr) int32 {
 	return stdio.EOF
 }
 
-// int ungetc(int c, FILE *stream);
-func Xungetc(t *TLS, c int32, stream uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v c=%v stream=%v, (%v:)", t, c, stream, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int fscanf(FILE *stream, const char *format, ...);
-func Xfscanf(t *TLS, stream, format, va uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v va=%v, (%v:)", t, va, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int fputs(const char *s, FILE *stream);
-func Xfputs(t *TLS, s, stream uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
-	}
-	f, ok := winGetObject(stream).(*file)
-	if !ok {
-		t.setErrno(errno.EBADF)
-		return -1
-	}
-	gS := GoString(s)
-	if _, err := fwrite(f._fd, []byte(gS)); err != nil {
-		return -1
-	}
-	return 0
-}
-
-// var getservbynameStaticResult netdb.Servent
-//
-// // struct servent *getservbyname(const char *name, const char *proto);
-// func Xgetservbyname(t *TLS, name, proto uintptr) uintptr {
-// 	var protoent *gonetdb.Protoent
-// 	if proto != 0 {
-// 		protoent = gonetdb.GetProtoByName(GoString(proto))
+// // int ungetc(int c, FILE *stream);
+// func Xungetc(t *TLS, c int32, stream uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v c=%v stream=%v, (%v:)", t, c, stream, origin(2))
 // 	}
-// 	servent := gonetdb.GetServByName(GoString(name), protoent)
-// 	if servent == nil {
-// 		if dmesgs {
-// 			dmesg("%q %q: nil (protoent %+v)", GoString(name), GoString(proto), protoent)
-// 		}
-// 		return 0
-// 	}
-//
-// 	Xfree(t, (*netdb.Servent)(unsafe.Pointer(&getservbynameStaticResult)).Fs_name)
-// 	if v := (*netdb.Servent)(unsafe.Pointer(&getservbynameStaticResult)).Fs_aliases; v != 0 {
-// 		for {
-// 			p := *(*uintptr)(unsafe.Pointer(v))
-// 			if p == 0 {
-// 				break
-// 			}
-//
-// 			Xfree(t, p)
-// 			v += unsafe.Sizeof(uintptr(0))
-// 		}
-// 		Xfree(t, v)
-// 	}
-// 	Xfree(t, (*netdb.Servent)(unsafe.Pointer(&getservbynameStaticResult)).Fs_proto)
-// 	cname, err := CString(servent.Name)
-// 	if err != nil {
-// 		getservbynameStaticResult = netdb.Servent{}
-// 		return 0
-// 	}
-//
-// 	var protoname uintptr
-// 	if protoent != nil {
-// 		if protoname, err = CString(protoent.Name); err != nil {
-// 			Xfree(t, cname)
-// 			getservbynameStaticResult = netdb.Servent{}
-// 			return 0
-// 		}
-// 	}
-// 	var a []uintptr
-// 	for _, v := range servent.Aliases {
-// 		cs, err := CString(v)
-// 		if err != nil {
-// 			for _, v := range a {
-// 				Xfree(t, v)
-// 			}
-// 			return 0
-// 		}
-//
-// 		a = append(a, cs)
-// 	}
-// 	v := Xcalloc(t, types.Size_t(len(a)+1), types.Size_t(unsafe.Sizeof(uintptr(0))))
-// 	if v == 0 {
-// 		Xfree(t, cname)
-// 		Xfree(t, protoname)
-// 		for _, v := range a {
-// 			Xfree(t, v)
-// 		}
-// 		getservbynameStaticResult = netdb.Servent{}
-// 		return 0
-// 	}
-// 	for _, p := range a {
-// 		*(*uintptr)(unsafe.Pointer(v)) = p
-// 		v += unsafe.Sizeof(uintptr(0))
-// 	}
-//
-// 	getservbynameStaticResult = netdb.Servent{
-// 		Fs_name:    cname,
-// 		Fs_aliases: v,
-// 		Fs_port:    int32(servent.Port),
-// 		Fs_proto:   protoname,
-// 	}
-// 	return uintptr(unsafe.Pointer(&getservbynameStaticResult))
+// 	panic(todo(""))
 // }
-
-// func Xreaddir64(t *TLS, dir uintptr) uintptr {
-// 	return Xreaddir(t, dir)
-// }
-
-// func fcntlCmdStr(cmd int32) string {
-// 	switch cmd {
-// 	case fcntl.F_GETOWN:
-// 		return "F_GETOWN"
-// 	case fcntl.F_SETLK:
-// 		return "F_SETLK"
-// 	case fcntl.F_GETLK:
-// 		return "F_GETLK"
-// 	case fcntl.F_SETFD:
-// 		return "F_SETFD"
-// 	case fcntl.F_GETFD:
-// 		return "F_GETFD"
-// 	default:
-// 		return fmt.Sprintf("cmd(%d)", cmd)
+//
+// // int fscanf(FILE *stream, const char *format, ...);
+// func Xfscanf(t *TLS, stream, format, va uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v va=%v, (%v:)", t, va, origin(2))
 // 	}
+// 	panic(todo(""))
 // }
+//
+// // int fputs(const char *s, FILE *stream);
+// func Xfputs(t *TLS, s, stream uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
+// 	}
+// 	f, ok := winGetObject(stream).(*file)
+// 	if !ok {
+// 		t.setErrno(errno.EBADF)
+// 		return -1
+// 	}
+// 	gS := GoString(s)
+// 	if _, err := fwrite(f._fd, []byte(gS)); err != nil {
+// 		return -1
+// 	}
+// 	return 0
+// }
+//
+// // var getservbynameStaticResult netdb.Servent
+// //
+// // // struct servent *getservbyname(const char *name, const char *proto);
+// // func Xgetservbyname(t *TLS, name, proto uintptr) uintptr {
+// // 	var protoent *gonetdb.Protoent
+// // 	if proto != 0 {
+// // 		protoent = gonetdb.GetProtoByName(GoString(proto))
+// // 	}
+// // 	servent := gonetdb.GetServByName(GoString(name), protoent)
+// // 	if servent == nil {
+// // 		if dmesgs {
+// // 			dmesg("%q %q: nil (protoent %+v)", GoString(name), GoString(proto), protoent)
+// // 		}
+// // 		return 0
+// // 	}
+// //
+// // 	Xfree(t, (*netdb.Servent)(unsafe.Pointer(&getservbynameStaticResult)).Fs_name)
+// // 	if v := (*netdb.Servent)(unsafe.Pointer(&getservbynameStaticResult)).Fs_aliases; v != 0 {
+// // 		for {
+// // 			p := *(*uintptr)(unsafe.Pointer(v))
+// // 			if p == 0 {
+// // 				break
+// // 			}
+// //
+// // 			Xfree(t, p)
+// // 			v += unsafe.Sizeof(uintptr(0))
+// // 		}
+// // 		Xfree(t, v)
+// // 	}
+// // 	Xfree(t, (*netdb.Servent)(unsafe.Pointer(&getservbynameStaticResult)).Fs_proto)
+// // 	cname, err := CString(servent.Name)
+// // 	if err != nil {
+// // 		getservbynameStaticResult = netdb.Servent{}
+// // 		return 0
+// // 	}
+// //
+// // 	var protoname uintptr
+// // 	if protoent != nil {
+// // 		if protoname, err = CString(protoent.Name); err != nil {
+// // 			Xfree(t, cname)
+// // 			getservbynameStaticResult = netdb.Servent{}
+// // 			return 0
+// // 		}
+// // 	}
+// // 	var a []uintptr
+// // 	for _, v := range servent.Aliases {
+// // 		cs, err := CString(v)
+// // 		if err != nil {
+// // 			for _, v := range a {
+// // 				Xfree(t, v)
+// // 			}
+// // 			return 0
+// // 		}
+// //
+// // 		a = append(a, cs)
+// // 	}
+// // 	v := Xcalloc(t, types.Size_t(len(a)+1), types.Size_t(unsafe.Sizeof(uintptr(0))))
+// // 	if v == 0 {
+// // 		Xfree(t, cname)
+// // 		Xfree(t, protoname)
+// // 		for _, v := range a {
+// // 			Xfree(t, v)
+// // 		}
+// // 		getservbynameStaticResult = netdb.Servent{}
+// // 		return 0
+// // 	}
+// // 	for _, p := range a {
+// // 		*(*uintptr)(unsafe.Pointer(v)) = p
+// // 		v += unsafe.Sizeof(uintptr(0))
+// // 	}
+// //
+// // 	getservbynameStaticResult = netdb.Servent{
+// // 		Fs_name:    cname,
+// // 		Fs_aliases: v,
+// // 		Fs_port:    int32(servent.Port),
+// // 		Fs_proto:   protoname,
+// // 	}
+// // 	return uintptr(unsafe.Pointer(&getservbynameStaticResult))
+// // }
+//
+// // func Xreaddir64(t *TLS, dir uintptr) uintptr {
+// // 	return Xreaddir(t, dir)
+// // }
+//
+// // func fcntlCmdStr(cmd int32) string {
+// // 	switch cmd {
+// // 	case fcntl.F_GETOWN:
+// // 		return "F_GETOWN"
+// // 	case fcntl.F_SETLK:
+// // 		return "F_SETLK"
+// // 	case fcntl.F_GETLK:
+// // 		return "F_GETLK"
+// // 	case fcntl.F_SETFD:
+// // 		return "F_SETFD"
+// // 	case fcntl.F_GETFD:
+// // 		return "F_GETFD"
+// // 	default:
+// // 		return fmt.Sprintf("cmd(%d)", cmd)
+// // 	}
+// // }
 
 // _CRTIMP extern int *__cdecl _errno(void); // /usr/share/mingw-w64/include/errno.h:17:
 func X_errno(t *TLS) uintptr {
@@ -2138,29 +2144,29 @@ func X_errno(t *TLS) uintptr {
 	return t.errnop
 }
 
-// int vfscanf(FILE * restrict stream, const char * restrict format, va_list arg);
-func X__ms_vfscanf(t *TLS, stream, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int vsscanf(const char *str, const char *format, va_list ap);
-func X__ms_vsscanf(t *TLS, str, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int vscanf(const char *format, va_list ap);
-func X__ms_vscanf(t *TLS, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
-	}
-	panic(todo(""))
-}
+// // int vfscanf(FILE * restrict stream, const char * restrict format, va_list arg);
+// func X__ms_vfscanf(t *TLS, stream, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int vsscanf(const char *str, const char *format, va_list ap);
+// func X__ms_vsscanf(t *TLS, str, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int vscanf(const char *format, va_list ap);
+// func X__ms_vscanf(t *TLS, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // int vsnprintf(char *str, size_t size, const char *format, va_list ap);
 func X__ms_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int32 {
@@ -2170,37 +2176,37 @@ func X__ms_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr)
 	return Xvsnprintf(t, str, size, format, ap)
 }
 
-// int vfwscanf(FILE *stream, const wchar_t *format, va_list argptr;);
-func X__ms_vfwscanf(t *TLS, stream uintptr, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v stream=%v ap=%v, (%v:)", t, stream, ap, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int vwscanf(const wchar_t * restrict format, va_list arg);
-func X__ms_vwscanf(t *TLS, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int _vsnwprintf(wchar_t *buffer, size_t count, const wchar_t *format, va_list argptr);
-func X_vsnwprintf(t *TLS, buffer uintptr, count types.Size_t, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v buffer=%v count=%v ap=%v, (%v:)", t, buffer, count, ap, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int vswscanf(const wchar_t *buffer, const wchar_t *format, va_list arglist);
-func X__ms_vswscanf(t *TLS, stream uintptr, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v stream=%v ap=%v, (%v:)", t, stream, ap, origin(2))
-	}
-	panic(todo(""))
-}
+// // int vfwscanf(FILE *stream, const wchar_t *format, va_list argptr;);
+// func X__ms_vfwscanf(t *TLS, stream uintptr, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v ap=%v, (%v:)", t, stream, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int vwscanf(const wchar_t * restrict format, va_list arg);
+// func X__ms_vwscanf(t *TLS, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int _vsnwprintf(wchar_t *buffer, size_t count, const wchar_t *format, va_list argptr);
+// func X_vsnwprintf(t *TLS, buffer uintptr, count types.Size_t, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v buffer=%v count=%v ap=%v, (%v:)", t, buffer, count, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int vswscanf(const wchar_t *buffer, const wchar_t *format, va_list arglist);
+// func X__ms_vswscanf(t *TLS, stream uintptr, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v ap=%v, (%v:)", t, stream, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // __acrt_iob_func
 func X__acrt_iob_func(t *TLS, fd uint32) uintptr {
@@ -2225,9 +2231,9 @@ func XSetEvent(t *TLS, hEvent uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v hEvent=%v, (%v:)", t, hEvent, origin(2))
 	}
-	r0, _, err := procSetEvent.Call(hEvent)
+	r0, _, err := procSetEvent.Call(hEvent, 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -2259,8 +2265,8 @@ func XHeapFree(t *TLS, hHeap uintptr, dwFlags uint32, lpMem uintptr) int32 {
 		trc("t=%v hHeap=%v dwFlags=%v lpMem=%v, (%v:)", t, hHeap, dwFlags, lpMem, origin(2))
 	}
 	r0, _, err := procHeapFree.Call(hHeap, uintptr(dwFlags), lpMem)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -2272,7 +2278,7 @@ func XGetProcessHeap(t *TLS) uintptr {
 	}
 	r0, _, err := procGetProcessHeap.Call(0, 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return r0
 }
@@ -2288,7 +2294,10 @@ func XHeapAlloc(t *TLS, hHeap uintptr, dwFlags uint32, dwBytes types.Size_t) uin
 	if __ccgo_strace {
 		trc("t=%v hHeap=%v dwFlags=%v dwBytes=%v, (%v:)", t, hHeap, dwFlags, dwBytes, origin(2))
 	}
-	r0, _, _ := procHeapAlloc.Call(hHeap, uintptr(dwFlags), uintptr(dwBytes))
+	r0, _, err := procHeapAlloc.Call(hHeap, uintptr(dwFlags), uintptr(dwBytes))
+	if r0 == 0 {
+		t.setErrno(err)
+	}
 	return r0
 }
 
@@ -2361,7 +2370,7 @@ func XGetVersionExW(t *TLS, lpVersionInformation uintptr) int32 {
 	}
 	r0, _, err := procGetVersionExW.Call(lpVersionInformation, 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -2427,8 +2436,8 @@ func XGetLastError(t *TLS) uint32 {
 	if __ccgo_strace {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
-
-	return t.GetLastError()
+	var rv = *(*int32)(unsafe.Pointer(t.errnop))
+	return uint32(rv)
 }
 
 // DWORD SetFilePointer(
@@ -2444,8 +2453,13 @@ func XSetFilePointer(t *TLS, hFile uintptr, lDistanceToMove long, lpDistanceToMo
 		trc("t=%v hFile=%v lDistanceToMove=%v lpDistanceToMoveHigh=%v dwMoveMethod=%v, (%v:)", t, hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod, origin(2))
 	}
 	r0, _, e1 := procSetFilePointer.Call(hFile, uintptr(lDistanceToMove), lpDistanceToMoveHigh, uintptr(dwMoveMethod), 0, 0)
-	if uint32(r0) == INVALID_FILE_SIZE {
-		t.setLastError(e1)
+	var uOff = uint32(r0)
+	if uOff == 0xffffffff {
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 	return uint32(r0)
 }
@@ -2482,7 +2496,12 @@ func XReadFile(t *TLS, hFile, lpBuffer uintptr, nNumberOfBytesToRead uint32, lpN
 	}
 	r1, _, e1 := procReadFile.Call(hFile, lpBuffer, uintptr(nNumberOfBytesToRead), uintptr(lpNumberOfBytesRead), uintptr(lpOverlapped), 0)
 	if r1 == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
+		return 0
 	}
 	return int32(r1)
 }
@@ -2502,7 +2521,12 @@ func XWriteFile(t *TLS, hFile, lpBuffer uintptr, nNumberOfBytesToWrite uint32, l
 	}
 	r1, _, e1 := procWriteFile.Call(hFile, lpBuffer, uintptr(nNumberOfBytesToWrite), lpNumberOfBytesWritten, lpOverlapped, 0)
 	if r1 == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
+		return 0
 	}
 	return int32(r1)
 }
@@ -2547,7 +2571,11 @@ func XCreateFileW(t *TLS, lpFileName uintptr, dwDesiredAccess, dwShareMode uint3
 		uintptr(dwCreationDisposition), uintptr(dwFlagsAndAttributes), hTemplateFile, 0, 0)
 	h := windows.Handle(r0)
 	if h == windows.InvalidHandle {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 		return r0
 	}
 	return uintptr(h)
@@ -2571,7 +2599,7 @@ func XDuplicateHandle(t *TLS, hSourceProcessHandle, hSourceHandle, hTargetProces
 	r0, _, err := procDuplicateHandle.Call(hSourceProcessHandle, hSourceHandle, hTargetProcessHandle,
 		lpTargetHandle, uintptr(dwDesiredAccess), uintptr(bInheritHandle), uintptr(dwOptions), 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -2583,7 +2611,11 @@ func XGetCurrentProcess(t *TLS) uintptr {
 	}
 	r0, _, e1 := procGetCurrentProcess.Call(0, 0, 0)
 	if r0 == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 	return r0
 }
@@ -2652,7 +2684,8 @@ func XGetCommState(t *TLS, hFile, lpDCB uintptr) int32 {
 	}
 	r1, _, err := procGetCommState.Call(hFile, lpDCB, 0)
 	if r1 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
+		return 0
 	}
 	return int32(r1)
 }
@@ -2704,10 +2737,12 @@ func XReadConsoleW(t *TLS, hConsoleInput, lpBuffer uintptr, nNumberOfCharsToRead
 		trc("t=%v lpBuffer=%v nNumberOfCharsToRead=%v pInputControl=%v, (%v:)", t, lpBuffer, nNumberOfCharsToRead, pInputControl, origin(2))
 	}
 
-	rv, _, err := procReadConsoleW.Call(hConsoleInput, lpBuffer, uintptr(nNumberOfCharsToRead), lpNumberOfCharsRead, pInputControl, 0)
+	rv, _, err := procReadConsoleW.Call(hConsoleInput,
+		lpBuffer, uintptr(nNumberOfCharsToRead), lpNumberOfCharsRead, pInputControl, 0)
 	if rv == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
+
 	return int32(rv)
 }
 
@@ -2727,7 +2762,7 @@ func XWriteConsoleW(t *TLS, hConsoleOutput, lpBuffer uintptr, nNumberOfCharsToWr
 	rv, _, err := procWriteConsoleW.Call(hConsoleOutput,
 		lpBuffer, uintptr(nNumberOfCharsToWrite), lpNumberOfCharsWritten, lpReserved, 0)
 	if rv == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(rv)
 }
@@ -2760,7 +2795,7 @@ func XResetEvent(t *TLS, hEvent uintptr) int32 {
 	}
 	rv, _, err := procResetEvent.Call(hEvent, 0, 0)
 	if rv == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(rv)
 }
@@ -2779,7 +2814,7 @@ func XPeekConsoleInputW(t *TLS, hConsoleInput, lpBuffer uintptr, nLength uint32,
 	}
 	r0, _, err := procPeekConsoleInputW.Call(hConsoleInput, lpBuffer, uintptr(nLength), lpNumberOfEventsRead, 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -2805,21 +2840,21 @@ func XGetConsoleCP(t *TLS) uint32 {
 	}
 	r0, _, err := procGetConsoleCP.Call(0, 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return uint32(r0)
 }
 
-// UINT WINAPI SetConsoleCP(UNIT);
-//func setConsoleCP(cp uint32) uint32 {
+// // UINT WINAPI SetConsoleCP(UNIT);
+// //func setConsoleCP(cp uint32) uint32 {
+// //
+// //	r0, _, _ := procSetConsoleCP.Call(uintptr(cp), 0, 0)
+// //	if r0 == 0 {
+// //		panic("setcp failed")
+// //	}
+// //	return uint32(r0)
+// //}
 //
-//	r0, _, _ := procSetConsoleCP.Call(uintptr(cp), 0, 0)
-//	if r0 == 0 {
-//		panic("setcp failed")
-//	}
-//	return uint32(r0)
-//}
-
 // HANDLE CreateEventW(
 //
 //	LPSECURITY_ATTRIBUTES lpEventAttributes,
@@ -2835,7 +2870,7 @@ func XCreateEventW(t *TLS, lpEventAttributes uintptr, bManualReset, bInitialStat
 	r0, _, err := procCreateEventW.Call(lpEventAttributes, uintptr(bManualReset),
 		uintptr(bInitialState), lpName, 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return r0
 }
@@ -2883,7 +2918,7 @@ func XCreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t,
 	r0, _, err := procCreateThread.Call(lpThreadAttributes, uintptr(dwStackSize),
 		threadCallback, tAdp.token, uintptr(dwCreationFlags), lpThreadId)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return r0
 }
@@ -2919,7 +2954,7 @@ func XSetConsoleMode(t *TLS, hConsoleHandle uintptr, dwMode uint32) int32 {
 	}
 	rv, _, err := procSetConsoleMode.Call(hConsoleHandle, uintptr(dwMode), 0)
 	if rv == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(rv)
 }
@@ -2956,18 +2991,21 @@ func XEnterCriticalSection(t *TLS, lpCriticalSection uintptr) {
 	procEnterCriticalSection.Call(lpCriticalSection, 0, 0)
 }
 
-// BOOL TryEnterCriticalSection(
-//
-//	LPCRITICAL_SECTION lpCriticalSection
-//
-// );
-func XTryEnterCriticalSection(t *TLS, lpCriticalSection uintptr) (r int32) {
-	if __ccgo_strace {
-		trc("t=%v lpCriticalSection=%v, (%v:)", t, lpCriticalSection, origin(2))
-	}
-	r0, _, _ := procTryEnterCriticalSection.Call(lpCriticalSection)
-	return int32(r0)
-}
+// // BOOL TryEnterCriticalSection(
+// //
+// //	LPCRITICAL_SECTION lpCriticalSection
+// //
+// // );
+// func XTryEnterCriticalSection(t *TLS, lpCriticalSection uintptr) (r int32) {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpCriticalSection=%v, (%v:)", t, lpCriticalSection, origin(2))
+// 	}
+// 	r0, _, err := procTryEnterCriticalSection.Call(lpCriticalSection)
+// 	if err != windows.NOERROR {
+// 		t.setErrno(err)
+// 	}
+// 	return int32(r0)
+// }
 
 // void LeaveCriticalSection(
 //
@@ -3033,8 +3071,8 @@ func XMoveFileW(t *TLS, lpExistingFileName, lpNewFileName uintptr) int32 {
 		trc("t=%v lpNewFileName=%v, (%v:)", t, lpNewFileName, origin(2))
 	}
 	r0, _, err := procMoveFileW.Call(lpExistingFileName, lpNewFileName, 0)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -3052,10 +3090,15 @@ func XGetFullPathNameW(t *TLS, lpFileName uintptr, nBufferLength uint32, lpBuffe
 		trc("t=%v lpFileName=%v nBufferLength=%v lpFilePart=%v, (%v:)", t, lpFileName, nBufferLength, lpFilePart, origin(2))
 	}
 	r0, _, e1 := procGetFullPathNameW.Call(lpFileName, uintptr(nBufferLength), uintptr(lpBuffer), uintptr(lpFilePart), 0, 0)
-	if r0 == 0 {
-		t.setLastError(e1)
+	n := uint32(r0)
+	if n == 0 {
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
-	return uint32(r0)
+	return n
 }
 
 // __attribute__((dllimport)) LPWSTR CharLowerW(LPWSTR lpsz);
@@ -3064,7 +3107,13 @@ func XCharLowerW(tls *TLS, _lpsz uintptr) (r uintptr) {
 		trc("lpsz=%+v", _lpsz)
 		defer func() { trc(`XCharLowerW->%+v`, r) }()
 	}
-	r0, _, _ := procCharLowerW.Call(_lpsz)
+	r0, r1, err := procCharLowerW.Call(_lpsz)
+	if err != windows.NOERROR {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err.(windows.Errno)))
+	}
 	return r0
 }
 
@@ -3119,7 +3168,7 @@ func XGetTempFileNameW(t *TLS, lpPathName, lpPrefixString uintptr, uUnique uint3
 	}
 	r0, _, e1 := procGetTempFileNameW.Call(lpPathName, lpPrefixString, uintptr(uUnique), lpTempFileName, 0, 0)
 	if r0 == 0 {
-		t.setLastError(e1)
+		t.setErrno(e1)
 	}
 	return uint32(r0)
 }
@@ -3137,7 +3186,7 @@ func XCopyFileW(t *TLS, lpExistingFileName, lpNewFileName uintptr, bFailIfExists
 	}
 	r0, _, e1 := procCopyFileW.Call(lpExistingFileName, lpNewFileName, uintptr(bFailIfExists))
 	if r0 == 0 {
-		t.setLastError(e1)
+		t.setErrno(e1)
 	}
 	return int32(r0)
 }
@@ -3184,7 +3233,11 @@ func XFindFirstFileW(t *TLS, lpFileName, lpFindFileData uintptr) uintptr {
 	r0, _, e1 := procFindFirstFileW.Call(lpFileName, lpFindFileData, 0)
 	handle := windows.Handle(r0)
 	if handle == windows.InvalidHandle {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 	return r0
 }
@@ -3206,7 +3259,11 @@ func XFindFirstFileExW(t *TLS, lpFileName uintptr, fInfoLevelId int32, lpFindFil
 	r0, _, e1 := procFindFirstFileExW.Call(lpFileName, uintptr(fInfoLevelId), lpFindFileData, uintptr(fSearchOp), lpSearchFilter, uintptr(dwAdditionalFlags))
 	handle := windows.Handle(r0)
 	if handle == windows.InvalidHandle {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 	return r0
 }
@@ -3218,7 +3275,11 @@ func XFindClose(t *TLS, hFindFile uintptr) int32 {
 	}
 	r0, _, e1 := procFindClose.Call(hFindFile, 0, 0)
 	if r0 == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 	return int32(r0)
 }
@@ -3235,7 +3296,11 @@ func XFindNextFileW(t *TLS, hFindFile, lpFindFileData uintptr) int32 {
 	}
 	r0, _, e1 := procFindNextFileW.Call(hFindFile, lpFindFileData, 0)
 	if r0 == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 	return int32(r0)
 }
@@ -3251,8 +3316,8 @@ func XGetLogicalDriveStringsA(t *TLS, nBufferLength uint32, lpBuffer uintptr) ui
 		trc("t=%v nBufferLength=%v lpBuffer=%v, (%v:)", t, nBufferLength, lpBuffer, origin(2))
 	}
 	r0, _, err := procGetLogicalDriveStringsA.Call(uintptr(nBufferLength), lpBuffer, 0)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return uint32(r0)
 }
@@ -3283,8 +3348,8 @@ func XGetVolumeInformationA(t *TLS, lpRootPathName, lpVolumeNameBuffer uintptr, 
 		uintptr(nFileSystemNameSize),
 		0,
 	)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -3301,8 +3366,8 @@ func XCreateHardLinkW(t *TLS, lpFileName, lpExistingFileName, lpSecurityAttribut
 		trc("t=%v lpSecurityAttributes=%v, (%v:)", t, lpSecurityAttributes, origin(2))
 	}
 	r0, _, err := procCreateHardLinkW.Call(lpFileName, lpExistingFileName, lpSecurityAttributes)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -3326,7 +3391,7 @@ func XDeviceIoControl(t *TLS, hDevice uintptr, dwIoControlCode uint32, lpInBuffe
 	r0, _, err := procDeviceIoControl.Call(hDevice, uintptr(dwIoControlCode), lpInBuffer,
 		uintptr(nInBufferSize), lpOutBuffer, uintptr(nOutBufferSize), lpBytesReturned, lpOverlapped, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -3377,12 +3442,9 @@ func XMultiByteToWideChar(t *TLS, CodePage uint32, dwFlags uint32, lpMultiByteSt
 	if __ccgo_strace {
 		trc("t=%v CodePage=%v dwFlags=%v lpMultiByteStr=%v cbMultiByte=%v lpWideCharStr=%v cchWideChar=%v, (%v:)", t, CodePage, dwFlags, lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar, origin(2))
 	}
-	r1, _, err := procMultiByteToWideChar.Call(uintptr(CodePage), uintptr(dwFlags), uintptr(lpMultiByteStr),
+	r1, _, _ := procMultiByteToWideChar.Call(uintptr(CodePage), uintptr(dwFlags), uintptr(lpMultiByteStr),
 		uintptr(cbMultiByte), uintptr(lpWideCharStr), uintptr(cchWideChar))
-	if r1 == 0 {
-		t.setLastError(err)
-	}
-	return int32(r1)
+	return (int32(r1))
 }
 
 // void OutputDebugStringW(
@@ -3421,131 +3483,139 @@ func X_InterlockedCompareExchange(t *TLS, Destination uintptr, Exchange, Compara
 	return long(v)
 }
 
-// int rename(const char *oldpath, const char *newpath);
-func Xrename(t *TLS, oldpath, newpath uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v newpath=%v, (%v:)", t, newpath, origin(2))
-	}
-	panic(todo(""))
-}
-
-// BOOL AreFileApisANSI();
-func XAreFileApisANSI(t *TLS) int32 {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-
-	r0, _, _ := procAreFileApisANSI.Call(0, 0, 0)
-	return int32(r0)
-}
-
-// HANDLE CreateFileA(
+// // int rename(const char *oldpath, const char *newpath);
+// func Xrename(t *TLS, oldpath, newpath uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v newpath=%v, (%v:)", t, newpath, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	LPCSTR                lpFileName,
-//	DWORD                 dwDesiredAccess,
-//	DWORD                 dwShareMode,
-//	LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-//	DWORD                 dwCreationDisposition,
-//	DWORD                 dwFlagsAndAttributes,
-//	HANDLE                hTemplateFile
+// // BOOL AreFileApisANSI();
+// func XAreFileApisANSI(t *TLS) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v, (%v:)", t, origin(2))
+// 	}
 //
-// );
-func XCreateFileA(t *TLS, lpFileName uintptr, dwDesiredAccess, dwShareMode uint32,
-	lpSecurityAttributes uintptr, dwCreationDisposition, dwFlagsAndAttributes uint32, hTemplateFile uintptr) uintptr {
-
-	r0, _, e1 := procCreateFileA.Call(lpFileName, uintptr(dwDesiredAccess), uintptr(dwShareMode), lpSecurityAttributes,
-		uintptr(dwCreationDisposition), uintptr(dwFlagsAndAttributes), hTemplateFile, 0, 0)
-	h := windows.Handle(r0)
-	if h == windows.InvalidHandle {
-		t.setLastError(e1)
-		return r0
-	}
-	return uintptr(h)
-
-}
-
-// HANDLE CreateFileMappingA(
+// 	r0, _, _ := procAreFileApisANSI.Call(0, 0, 0)
+// 	return int32(r0)
+// }
 //
-//	HANDLE                hFile,
-//	LPSECURITY_ATTRIBUTES lpFileMappingAttributes,
-//	DWORD                 flProtect,
-//	DWORD                 dwMaximumSizeHigh,
-//	DWORD                 dwMaximumSizeLow,
-//	LPCSTR                lpName
+// // HANDLE CreateFileA(
+// //
+// //	LPCSTR                lpFileName,
+// //	DWORD                 dwDesiredAccess,
+// //	DWORD                 dwShareMode,
+// //	LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+// //	DWORD                 dwCreationDisposition,
+// //	DWORD                 dwFlagsAndAttributes,
+// //	HANDLE                hTemplateFile
+// //
+// // );
+// func XCreateFileA(t *TLS, lpFileName uintptr, dwDesiredAccess, dwShareMode uint32,
+// 	lpSecurityAttributes uintptr, dwCreationDisposition, dwFlagsAndAttributes uint32, hTemplateFile uintptr) uintptr {
 //
-// );
-func XCreateFileMappingA(t *TLS, hFile, lpFileMappingAttributes uintptr, flProtect, dwMaximumSizeHigh, dwMaximumSizeLow uint32, lpName uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v lpFileMappingAttributes=%v dwMaximumSizeLow=%v lpName=%v, (%v:)", t, lpFileMappingAttributes, dwMaximumSizeLow, lpName, origin(2))
-	}
-	panic(todo(""))
-}
-
-// HANDLE CreateFileMappingW(
+// 	r0, _, e1 := procCreateFileA.Call(lpFileName, uintptr(dwDesiredAccess), uintptr(dwShareMode), lpSecurityAttributes,
+// 		uintptr(dwCreationDisposition), uintptr(dwFlagsAndAttributes), hTemplateFile, 0, 0)
+// 	h := windows.Handle(r0)
+// 	if h == windows.InvalidHandle {
+// 		if e1 != windows.NOERROR {
+// 			t.setErrno(e1)
+// 		} else {
+// 			t.setErrno(errno.EINVAL)
+// 		}
+// 		return r0
+// 	}
+// 	return uintptr(h)
 //
-//	HANDLE                hFile,
-//	LPSECURITY_ATTRIBUTES lpFileMappingAttributes,
-//	DWORD                 flProtect,
-//	DWORD                 dwMaximumSizeHigh,
-//	DWORD                 dwMaximumSizeLow,
-//	LPCWSTR               lpName
+// }
 //
-// );
-func XCreateFileMappingW(t *TLS, hFile, lpFileMappingAttributes uintptr, flProtect, dwMaximumSizeHigh, dwMaximumSizeLow uint32, lpName uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v lpFileMappingAttributes=%v dwMaximumSizeLow=%v lpName=%v, (%v:)", t, lpFileMappingAttributes, dwMaximumSizeLow, lpName, origin(2))
-	}
-	h, _, e1 := procCreateFileMappingW.Call(hFile, lpFileMappingAttributes, uintptr(flProtect),
-		uintptr(dwMaximumSizeHigh), uintptr(dwMaximumSizeLow), lpName)
-	if h == 0 {
-		t.setLastError(e1)
-	}
-	return h
-}
-
-// HANDLE CreateMutexW(
+// // HANDLE CreateFileMappingA(
+// //
+// //	HANDLE                hFile,
+// //	LPSECURITY_ATTRIBUTES lpFileMappingAttributes,
+// //	DWORD                 flProtect,
+// //	DWORD                 dwMaximumSizeHigh,
+// //	DWORD                 dwMaximumSizeLow,
+// //	LPCSTR                lpName
+// //
+// // );
+// func XCreateFileMappingA(t *TLS, hFile, lpFileMappingAttributes uintptr, flProtect, dwMaximumSizeHigh, dwMaximumSizeLow uint32, lpName uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpFileMappingAttributes=%v dwMaximumSizeLow=%v lpName=%v, (%v:)", t, lpFileMappingAttributes, dwMaximumSizeLow, lpName, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	LPSECURITY_ATTRIBUTES lpMutexAttributes,
-//	BOOL                  bInitialOwner,
-//	LPCWSTR               lpName
+// // HANDLE CreateFileMappingW(
+// //
+// //	HANDLE                hFile,
+// //	LPSECURITY_ATTRIBUTES lpFileMappingAttributes,
+// //	DWORD                 flProtect,
+// //	DWORD                 dwMaximumSizeHigh,
+// //	DWORD                 dwMaximumSizeLow,
+// //	LPCWSTR               lpName
+// //
+// // );
+// func XCreateFileMappingW(t *TLS, hFile, lpFileMappingAttributes uintptr, flProtect, dwMaximumSizeHigh, dwMaximumSizeLow uint32, lpName uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpFileMappingAttributes=%v dwMaximumSizeLow=%v lpName=%v, (%v:)", t, lpFileMappingAttributes, dwMaximumSizeLow, lpName, origin(2))
+// 	}
+// 	h, _, e1 := procCreateFileMappingW.Call(hFile, lpFileMappingAttributes, uintptr(flProtect),
+// 		uintptr(dwMaximumSizeHigh), uintptr(dwMaximumSizeLow), lpName)
+// 	if h == 0 {
+// 		if e1 != windows.NOERROR {
+// 			t.setErrno(e1)
+// 		} else {
+// 			t.setErrno(errno.EINVAL)
+// 		}
+// 	}
+// 	return h
+// }
 //
-// );
-func XCreateMutexW(t *TLS, lpMutexAttributes uintptr, bInitialOwner int32, lpName uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v lpMutexAttributes=%v bInitialOwner=%v lpName=%v, (%v:)", t, lpMutexAttributes, bInitialOwner, lpName, origin(2))
-	}
-	panic(todo(""))
-}
-
-// BOOL DeleteFileA(
+// // HANDLE CreateMutexW(
+// //
+// //	LPSECURITY_ATTRIBUTES lpMutexAttributes,
+// //	BOOL                  bInitialOwner,
+// //	LPCWSTR               lpName
+// //
+// // );
+// func XCreateMutexW(t *TLS, lpMutexAttributes uintptr, bInitialOwner int32, lpName uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpMutexAttributes=%v bInitialOwner=%v lpName=%v, (%v:)", t, lpMutexAttributes, bInitialOwner, lpName, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	LPCSTR lpFileName
+// // BOOL DeleteFileA(
+// //
+// //	LPCSTR lpFileName
+// //
+// // );
+// func XDeleteFileA(t *TLS, lpFileName uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpFileName=%v, (%v:)", t, lpFileName, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-// );
-func XDeleteFileA(t *TLS, lpFileName uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v lpFileName=%v, (%v:)", t, lpFileName, origin(2))
-	}
-	panic(todo(""))
-}
-
-// DWORD FormatMessageA(
-//
-//	DWORD   dwFlags,
-//	LPCVOID lpSource,
-//	DWORD   dwMessageId,
-//	DWORD   dwLanguageId,
-//	LPSTR   lpBuffer,
-//	DWORD   nSize,
-//	va_list *Arguments
-//
-// );
-func XFormatMessageA(t *TLS, dwFlagsAndAttributes uint32, lpSource uintptr, dwMessageId, dwLanguageId uint32, lpBuffer uintptr, nSize uint32, Arguments uintptr) uint32 {
-	if __ccgo_strace {
-		trc("t=%v dwFlagsAndAttributes=%v lpSource=%v dwLanguageId=%v lpBuffer=%v nSize=%v Arguments=%v, (%v:)", t, dwFlagsAndAttributes, lpSource, dwLanguageId, lpBuffer, nSize, Arguments, origin(2))
-	}
-	panic(todo(""))
-}
+// // DWORD FormatMessageA(
+// //
+// //	DWORD   dwFlags,
+// //	LPCVOID lpSource,
+// //	DWORD   dwMessageId,
+// //	DWORD   dwLanguageId,
+// //	LPSTR   lpBuffer,
+// //	DWORD   nSize,
+// //	va_list *Arguments
+// //
+// // );
+// func XFormatMessageA(t *TLS, dwFlagsAndAttributes uint32, lpSource uintptr, dwMessageId, dwLanguageId uint32, lpBuffer uintptr, nSize uint32, Arguments uintptr) uint32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v dwFlagsAndAttributes=%v lpSource=%v dwLanguageId=%v lpBuffer=%v nSize=%v Arguments=%v, (%v:)", t, dwFlagsAndAttributes, lpSource, dwLanguageId, lpBuffer, nSize, Arguments, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // DWORD FormatMessageW(
 //
@@ -3566,7 +3636,11 @@ func XFormatMessageW(t *TLS, dwFlags uint32, lpSource uintptr, dwMessageId, dwLa
 		lpBuffer, uintptr(nSize), Arguments, 0, 0)
 	n := uint32(r0)
 	if n == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 	return n
 }
@@ -3585,40 +3659,41 @@ func XGetCurrentProcessId(t *TLS) uint32 {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
 	r0, _, _ := procGetCurrentProcessId.Call(0, 0, 0)
-	return uint32(r0)
+	pid := uint32(r0)
+	return pid
 }
 
-// BOOL GetDiskFreeSpaceA(
+// // BOOL GetDiskFreeSpaceA(
+// //
+// //	LPCSTR  lpRootPathName,
+// //	LPDWORD lpSectorsPerCluster,
+// //	LPDWORD lpBytesPerSector,
+// //	LPDWORD lpNumberOfFreeClusters,
+// //	LPDWORD lpTotalNumberOfClusters
+// //
+// // );
+// func XGetDiskFreeSpaceA(t *TLS, lpRootPathName, lpSectorsPerCluster, lpBytesPerSector, lpNumberOfFreeClusters, lpTotalNumberOfClusters uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpTotalNumberOfClusters=%v, (%v:)", t, lpTotalNumberOfClusters, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	LPCSTR  lpRootPathName,
-//	LPDWORD lpSectorsPerCluster,
-//	LPDWORD lpBytesPerSector,
-//	LPDWORD lpNumberOfFreeClusters,
-//	LPDWORD lpTotalNumberOfClusters
-//
-// );
-func XGetDiskFreeSpaceA(t *TLS, lpRootPathName, lpSectorsPerCluster, lpBytesPerSector, lpNumberOfFreeClusters, lpTotalNumberOfClusters uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v lpTotalNumberOfClusters=%v, (%v:)", t, lpTotalNumberOfClusters, origin(2))
-	}
-	panic(todo(""))
-}
-
-// BOOL GetDiskFreeSpaceW(
-//
-//	LPCWSTR lpRootPathName,
-//	LPDWORD lpSectorsPerCluster,
-//	LPDWORD lpBytesPerSector,
-//	LPDWORD lpNumberOfFreeClusters,
-//	LPDWORD lpTotalNumberOfClusters
-//
-// );
-func XGetDiskFreeSpaceW(t *TLS, lpRootPathName, lpSectorsPerCluster, lpBytesPerSector, lpNumberOfFreeClusters, lpTotalNumberOfClusters uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v lpTotalNumberOfClusters=%v, (%v:)", t, lpTotalNumberOfClusters, origin(2))
-	}
-	panic(todo(""))
-}
+// // BOOL GetDiskFreeSpaceW(
+// //
+// //	LPCWSTR lpRootPathName,
+// //	LPDWORD lpSectorsPerCluster,
+// //	LPDWORD lpBytesPerSector,
+// //	LPDWORD lpNumberOfFreeClusters,
+// //	LPDWORD lpTotalNumberOfClusters
+// //
+// // );
+// func XGetDiskFreeSpaceW(t *TLS, lpRootPathName, lpSectorsPerCluster, lpBytesPerSector, lpNumberOfFreeClusters, lpTotalNumberOfClusters uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpTotalNumberOfClusters=%v, (%v:)", t, lpTotalNumberOfClusters, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // DWORD GetFileAttributesA(
 //
@@ -3630,8 +3705,8 @@ func XGetFileAttributesA(t *TLS, lpFileName uintptr) uint32 {
 		trc("t=%v lpFileName=%v, (%v:)", t, lpFileName, origin(2))
 	}
 	r0, _, err := procGetFileAttributesA.Call(lpFileName, 0, 0)
-	if r0 == windows.INVALID_FILE_ATTRIBUTES {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return uint32(r0)
 }
@@ -3649,42 +3724,58 @@ func XGetFileAttributesExW(t *TLS, lpFileName uintptr, fInfoLevelId int32, lpFil
 	}
 	r1, _, e1 := procGetFileAttributesExW.Call(lpFileName, uintptr(fInfoLevelId), lpFileInformation)
 	if r1 == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
+		return 0
 	}
 	return int32(r1)
 }
 
-// DWORD GetFileSize(
+// // DWORD GetFileSize(
+// //
+// //	HANDLE  hFile,
+// //	LPDWORD lpFileSizeHigh
+// //
+// // );
+// func XGetFileSize(t *TLS, hFile, lpFileSizeHigh uintptr) uint32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpFileSizeHigh=%v, (%v:)", t, lpFileSizeHigh, origin(2))
+// 	}
+// 	r1, _, e1 := procGetFileSize.Call(hFile, lpFileSizeHigh, 0)
+// 	if r1 == math.MaxUint32 {
+// 		if lpFileSizeHigh == 0 {
+// 			// If the function fails and lpFileSizeHigh is NULL, the return value is INVALID_FILE_SIZE.
+// 			// Note that if the return value is INVALID_FILE_SIZE (0xffffffff),
+// 			// an application must call GetLastError to determine whether the function has succeeded or failed.
+// 			t.setErrno(e1)
+// 			return math.MaxUint32
+// 		} else {
+// 			// If the function fails and lpFileSizeHigh is non-NULL, the return value is INVALID_FILE_SIZE
+// 			// and GetLastError will return a value other than NO_ERROR.
+// 			t.setErrno(e1)
+// 			return math.MaxUint32
+// 		}
+// 	}
+// 	return uint32(r1)
+// }
 //
-//	HANDLE  hFile,
-//	LPDWORD lpFileSizeHigh
-//
-// );
-func XGetFileSize(t *TLS, hFile, lpFileSizeHigh uintptr) uint32 {
-	if __ccgo_strace {
-		trc("t=%v lpFileSizeHigh=%v, (%v:)", t, lpFileSizeHigh, origin(2))
-	}
-	r1, _, e1 := procGetFileSize.Call(hFile, lpFileSizeHigh, 0)
-	if r1 == INVALID_FILE_SIZE {
-		t.setLastError(e1)
-	}
-	return uint32(r1)
-}
-
-// DWORD GetFullPathNameA(
-//
-//	LPCSTR lpFileName,
-//	DWORD  nBufferLength,
-//	LPSTR  lpBuffer,
-//	LPSTR  *lpFilePart
-//
-// );
-func XGetFullPathNameA(t *TLS, lpFileName uintptr, nBufferLength uint32, lpBuffer, lpFilePart uintptr) uint32 {
-	if __ccgo_strace {
-		trc("t=%v lpFileName=%v nBufferLength=%v lpFilePart=%v, (%v:)", t, lpFileName, nBufferLength, lpFilePart, origin(2))
-	}
-	panic(todo(""))
-}
+// // DWORD GetFullPathNameA(
+// //
+// //	LPCSTR lpFileName,
+// //	DWORD  nBufferLength,
+// //	LPSTR  lpBuffer,
+// //	LPSTR  *lpFilePart
+// //
+// // );
+// func XGetFullPathNameA(t *TLS, lpFileName uintptr, nBufferLength uint32, lpBuffer, lpFilePart uintptr) uint32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpFileName=%v nBufferLength=%v lpFilePart=%v, (%v:)", t, lpFileName, nBufferLength, lpFilePart, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // FARPROC GetProcAddress(HMODULE hModule, LPCSTR  lpProcName);
 func XGetProcAddress(t *TLS, hModule, lpProcName uintptr) uintptr {
@@ -3692,21 +3783,28 @@ func XGetProcAddress(t *TLS, hModule, lpProcName uintptr) uintptr {
 		trc("t=%v lpProcName=%v, (%v:)", t, lpProcName, origin(2))
 	}
 
-	t.setLastError(windows.ERROR_PROC_NOT_FOUND)
 	return 0
+
+	//panic(todo(GoString(lpProcName)))
+	//
+	//r0, _, err := procGetProcAddress.Call(hModule, lpProcName, 0)
+	//if r0 == 0 {
+	//	t.setErrno(err)
+	//}
+	//return r0
 }
 
-// NTSYSAPI NTSTATUS RtlGetVersion( // ntdll.dll
-//
-//	PRTL_OSVERSIONINFOW lpVersionInformation
-//
-// );
-func XRtlGetVersion(t *TLS, lpVersionInformation uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v lpVersionInformation=%v, (%v:)", t, lpVersionInformation, origin(2))
-	}
-	panic(todo(""))
-}
+// // NTSYSAPI NTSTATUS RtlGetVersion( // ntdll.dll
+// //
+// //	PRTL_OSVERSIONINFOW lpVersionInformation
+// //
+// // );
+// func XRtlGetVersion(t *TLS, lpVersionInformation uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpVersionInformation=%v, (%v:)", t, lpVersionInformation, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // void GetSystemInfo(
 //
@@ -3720,13 +3818,13 @@ func XGetSystemInfo(t *TLS, lpSystemInfo uintptr) {
 	procGetSystemInfo.Call(lpSystemInfo, 0, 0)
 }
 
-// void GetSystemTime(LPSYSTEMTIME lpSystemTime);
-func XGetSystemTime(t *TLS, lpSystemTime uintptr) {
-	if __ccgo_strace {
-		trc("t=%v lpSystemTime=%v, (%v:)", t, lpSystemTime, origin(2))
-	}
-	procGetSystemTime.Call(lpSystemTime, 0, 0)
-}
+// // void GetSystemTime(LPSYSTEMTIME lpSystemTime);
+// func XGetSystemTime(t *TLS, lpSystemTime uintptr) {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpSystemTime=%v, (%v:)", t, lpSystemTime, origin(2))
+// 	}
+// 	procGetSystemTime.Call(lpSystemTime, 0, 0)
+// }
 
 // void GetSystemTimeAsFileTime(
 //
@@ -3740,18 +3838,18 @@ func XGetSystemTimeAsFileTime(t *TLS, lpSystemTimeAsFileTime uintptr) {
 	procGetSystemTimeAsFileTime.Call(lpSystemTimeAsFileTime, 0, 0)
 }
 
-// DWORD GetTempPathA(
-//
-//	DWORD nBufferLength,
-//	LPSTR lpBuffer
-//
-// );
-func XGetTempPathA(t *TLS, nBufferLength uint32, lpBuffer uintptr) uint32 {
-	if __ccgo_strace {
-		trc("t=%v nBufferLength=%v lpBuffer=%v, (%v:)", t, nBufferLength, lpBuffer, origin(2))
-	}
-	panic(todo(""))
-}
+// // DWORD GetTempPathA(
+// //
+// //	DWORD nBufferLength,
+// //	LPSTR lpBuffer
+// //
+// // );
+// func XGetTempPathA(t *TLS, nBufferLength uint32, lpBuffer uintptr) uint32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v nBufferLength=%v lpBuffer=%v, (%v:)", t, nBufferLength, lpBuffer, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // DWORD GetTempPathW(
 //
@@ -3770,132 +3868,132 @@ func XGetTempPathW(t *TLS, nBufferLength uint32, lpBuffer uintptr) uint32 {
 	return rv
 }
 
-// DWORD GetTickCount();
-func XGetTickCount(t *TLS) uint32 {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	r0, _, _ := procGetTickCount.Call(0, 0, 0)
-	return uint32(r0)
-}
-
-// BOOL GetVersionExA(
+// // DWORD GetTickCount();
+// func XGetTickCount(t *TLS) uint32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v, (%v:)", t, origin(2))
+// 	}
+// 	r0, _, _ := procGetTickCount.Call(0, 0, 0)
+// 	return uint32(r0)
+// }
 //
-//	LPOSVERSIONINFOA lpVersionInformation
+// // BOOL GetVersionExA(
+// //
+// //	LPOSVERSIONINFOA lpVersionInformation
+// //
+// // );
+// func XGetVersionExA(t *TLS, lpVersionInformation uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpVersionInformation=%v, (%v:)", t, lpVersionInformation, origin(2))
+// 	}
+// 	r0, _, err := procGetVersionExA.Call(lpVersionInformation, 0, 0)
+// 	if r0 == 0 {
+// 		t.setErrno(err)
+// 	}
+// 	return int32(r0)
+// }
 //
-// );
-func XGetVersionExA(t *TLS, lpVersionInformation uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v lpVersionInformation=%v, (%v:)", t, lpVersionInformation, origin(2))
-	}
-	r0, _, err := procGetVersionExA.Call(lpVersionInformation, 0, 0)
-	if r0 == 0 {
-		t.setLastError(err)
-	}
-	return int32(r0)
-}
-
-// HANDLE HeapCreate(
+// // HANDLE HeapCreate(
+// //
+// //	DWORD  flOptions,
+// //	SIZE_T dwInitialSize,
+// //	SIZE_T dwMaximumSize
+// //
+// // );
+// func XHeapCreate(t *TLS, flOptions uint32, dwInitialSize, dwMaximumSize types.Size_t) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v flOptions=%v dwMaximumSize=%v, (%v:)", t, flOptions, dwMaximumSize, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	DWORD  flOptions,
-//	SIZE_T dwInitialSize,
-//	SIZE_T dwMaximumSize
+// // BOOL HeapDestroy(
+// //
+// //	HANDLE hHeap
+// //
+// // );
+// func XHeapDestroy(t *TLS, hHeap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v hHeap=%v, (%v:)", t, hHeap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-// );
-func XHeapCreate(t *TLS, flOptions uint32, dwInitialSize, dwMaximumSize types.Size_t) uintptr {
-	if __ccgo_strace {
-		trc("t=%v flOptions=%v dwMaximumSize=%v, (%v:)", t, flOptions, dwMaximumSize, origin(2))
-	}
-	panic(todo(""))
-}
-
-// BOOL HeapDestroy(
+// // LPVOID HeapReAlloc(
+// //
+// //	HANDLE                 hHeap,
+// //	DWORD                  dwFlags,
+// //	_Frees_ptr_opt_ LPVOID lpMem,
+// //	SIZE_T                 dwBytes
+// //
+// // );
+// func XHeapReAlloc(t *TLS, hHeap uintptr, dwFlags uint32, lpMem uintptr, dwBytes types.Size_t) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v hHeap=%v dwFlags=%v lpMem=%v dwBytes=%v, (%v:)", t, hHeap, dwFlags, lpMem, dwBytes, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	HANDLE hHeap
+// // SIZE_T HeapSize(
+// //
+// //	HANDLE  hHeap,
+// //	DWORD   dwFlags,
+// //	LPCVOID lpMem
+// //
+// // );
+// func XHeapSize(t *TLS, hHeap uintptr, dwFlags uint32, lpMem uintptr) types.Size_t {
+// 	if __ccgo_strace {
+// 		trc("t=%v hHeap=%v dwFlags=%v lpMem=%v, (%v:)", t, hHeap, dwFlags, lpMem, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-// );
-func XHeapDestroy(t *TLS, hHeap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v hHeap=%v, (%v:)", t, hHeap, origin(2))
-	}
-	panic(todo(""))
-}
-
-// LPVOID HeapReAlloc(
+// // BOOL HeapValidate(
+// //
+// //	HANDLE  hHeap,
+// //	DWORD   dwFlags,
+// //	LPCVOID lpMem
+// //
+// // );
+// func XHeapValidate(t *TLS, hHeap uintptr, dwFlags uint32, lpMem uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v hHeap=%v dwFlags=%v lpMem=%v, (%v:)", t, hHeap, dwFlags, lpMem, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	HANDLE                 hHeap,
-//	DWORD                  dwFlags,
-//	_Frees_ptr_opt_ LPVOID lpMem,
-//	SIZE_T                 dwBytes
+// // SIZE_T HeapCompact(
+// //
+// //	HANDLE hHeap,
+// //	DWORD  dwFlags
+// //
+// // );
+// func XHeapCompact(t *TLS, hHeap uintptr, dwFlags uint32) types.Size_t {
+// 	if __ccgo_strace {
+// 		trc("t=%v hHeap=%v dwFlags=%v, (%v:)", t, hHeap, dwFlags, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-// );
-func XHeapReAlloc(t *TLS, hHeap uintptr, dwFlags uint32, lpMem uintptr, dwBytes types.Size_t) uintptr {
-	if __ccgo_strace {
-		trc("t=%v hHeap=%v dwFlags=%v lpMem=%v dwBytes=%v, (%v:)", t, hHeap, dwFlags, lpMem, dwBytes, origin(2))
-	}
-	panic(todo(""))
-}
-
-// SIZE_T HeapSize(
+// // HMODULE LoadLibraryA(LPCSTR lpLibFileName);
+// func XLoadLibraryA(t *TLS, lpLibFileName uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpLibFileName=%v, (%v:)", t, lpLibFileName, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	HANDLE  hHeap,
-//	DWORD   dwFlags,
-//	LPCVOID lpMem
-//
-// );
-func XHeapSize(t *TLS, hHeap uintptr, dwFlags uint32, lpMem uintptr) types.Size_t {
-	if __ccgo_strace {
-		trc("t=%v hHeap=%v dwFlags=%v lpMem=%v, (%v:)", t, hHeap, dwFlags, lpMem, origin(2))
-	}
-	panic(todo(""))
-}
-
-// BOOL HeapValidate(
-//
-//	HANDLE  hHeap,
-//	DWORD   dwFlags,
-//	LPCVOID lpMem
-//
-// );
-func XHeapValidate(t *TLS, hHeap uintptr, dwFlags uint32, lpMem uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v hHeap=%v dwFlags=%v lpMem=%v, (%v:)", t, hHeap, dwFlags, lpMem, origin(2))
-	}
-	panic(todo(""))
-}
-
-// SIZE_T HeapCompact(
-//
-//	HANDLE hHeap,
-//	DWORD  dwFlags
-//
-// );
-func XHeapCompact(t *TLS, hHeap uintptr, dwFlags uint32) types.Size_t {
-	if __ccgo_strace {
-		trc("t=%v hHeap=%v dwFlags=%v, (%v:)", t, hHeap, dwFlags, origin(2))
-	}
-	panic(todo(""))
-}
-
-// HMODULE LoadLibraryA(LPCSTR lpLibFileName);
-func XLoadLibraryA(t *TLS, lpLibFileName uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v lpLibFileName=%v, (%v:)", t, lpLibFileName, origin(2))
-	}
-	panic(todo(""))
-}
-
-// HMODULE LoadLibraryW(
-//
-//	LPCWSTR lpLibFileName
-//
-// );
-func XLoadLibraryW(t *TLS, lpLibFileName uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v lpLibFileName=%v, (%v:)", t, lpLibFileName, origin(2))
-	}
-	panic(todo(""))
-}
+// // HMODULE LoadLibraryW(
+// //
+// //	LPCWSTR lpLibFileName
+// //
+// // );
+// func XLoadLibraryW(t *TLS, lpLibFileName uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpLibFileName=%v, (%v:)", t, lpLibFileName, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // HLOCAL LocalFree(
 //
@@ -3918,69 +4016,83 @@ func XLocalFree(t *TLS, hMem uintptr) uintptr {
 	return 0
 }
 
-// BOOL LockFile(
+// // BOOL LockFile(
+// //
+// //	HANDLE hFile,
+// //	DWORD  dwFileOffsetLow,
+// //	DWORD  dwFileOffsetHigh,
+// //	DWORD  nNumberOfBytesToLockLow,
+// //	DWORD  nNumberOfBytesToLockHigh
+// //
+// // );
+// func XLockFile(t *TLS, hFile uintptr, dwFileOffsetLow, dwFileOffsetHigh, nNumberOfBytesToLockLow, nNumberOfBytesToLockHigh uint32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v hFile=%v nNumberOfBytesToLockHigh=%v, (%v:)", t, hFile, nNumberOfBytesToLockHigh, origin(2))
+// 	}
 //
-//	HANDLE hFile,
-//	DWORD  dwFileOffsetLow,
-//	DWORD  dwFileOffsetHigh,
-//	DWORD  nNumberOfBytesToLockLow,
-//	DWORD  nNumberOfBytesToLockHigh
+// 	r1, _, e1 := procLockFile.Call(hFile, uintptr(dwFileOffsetLow), uintptr(dwFileOffsetHigh), uintptr(nNumberOfBytesToLockLow), uintptr(nNumberOfBytesToLockHigh), 0)
+// 	if r1 == 0 {
+// 		if e1 != windows.NOERROR {
+// 			t.setErrno(e1)
+// 		} else {
+// 			t.setErrno(errno.EINVAL)
+// 		}
+// 		return 0
+// 	}
+// 	return int32(r1)
 //
-// );
-func XLockFile(t *TLS, hFile uintptr, dwFileOffsetLow, dwFileOffsetHigh, nNumberOfBytesToLockLow, nNumberOfBytesToLockHigh uint32) int32 {
-	if __ccgo_strace {
-		trc("t=%v hFile=%v nNumberOfBytesToLockHigh=%v, (%v:)", t, hFile, nNumberOfBytesToLockHigh, origin(2))
-	}
-
-	r1, _, e1 := procLockFile.Call(hFile, uintptr(dwFileOffsetLow), uintptr(dwFileOffsetHigh), uintptr(nNumberOfBytesToLockLow), uintptr(nNumberOfBytesToLockHigh), 0)
-	if r1 == 0 {
-		t.setLastError(e1)
-	}
-	return int32(r1)
-
-}
-
-// BOOL LockFileEx(
+// }
 //
-//	HANDLE       hFile,
-//	DWORD        dwFlags,
-//	DWORD        dwReserved,
-//	DWORD        nNumberOfBytesToLockLow,
-//	DWORD        nNumberOfBytesToLockHigh,
-//	LPOVERLAPPED lpOverlapped
+// // BOOL LockFileEx(
+// //
+// //	HANDLE       hFile,
+// //	DWORD        dwFlags,
+// //	DWORD        dwReserved,
+// //	DWORD        nNumberOfBytesToLockLow,
+// //	DWORD        nNumberOfBytesToLockHigh,
+// //	LPOVERLAPPED lpOverlapped
+// //
+// // );
+// func XLockFileEx(t *TLS, hFile uintptr, dwFlags, dwReserved, nNumberOfBytesToLockLow, nNumberOfBytesToLockHigh uint32, lpOverlapped uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v hFile=%v nNumberOfBytesToLockHigh=%v lpOverlapped=%v, (%v:)", t, hFile, nNumberOfBytesToLockHigh, lpOverlapped, origin(2))
+// 	}
+// 	r1, _, e1 := procLockFileEx.Call(hFile, uintptr(dwFlags), uintptr(dwReserved), uintptr(nNumberOfBytesToLockLow), uintptr(nNumberOfBytesToLockHigh), lpOverlapped)
+// 	if r1 == 0 {
+// 		if e1 != windows.NOERROR {
+// 			t.setErrno(e1)
+// 		} else {
+// 			t.setErrno(errno.EINVAL)
+// 		}
+// 		return 0
+// 	}
+// 	return int32(r1)
+// }
 //
-// );
-func XLockFileEx(t *TLS, hFile uintptr, dwFlags, dwReserved, nNumberOfBytesToLockLow, nNumberOfBytesToLockHigh uint32, lpOverlapped uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v hFile=%v nNumberOfBytesToLockHigh=%v lpOverlapped=%v, (%v:)", t, hFile, nNumberOfBytesToLockHigh, lpOverlapped, origin(2))
-	}
-	r1, _, e1 := procLockFileEx.Call(hFile, uintptr(dwFlags), uintptr(dwReserved), uintptr(nNumberOfBytesToLockLow), uintptr(nNumberOfBytesToLockHigh), lpOverlapped)
-	if r1 == 0 {
-		t.setLastError(e1)
-	}
-	return int32(r1)
-}
-
-// LPVOID MapViewOfFile(
-//
-//	HANDLE hFileMappingObject,
-//	DWORD  dwDesiredAccess,
-//	DWORD  dwFileOffsetHigh,
-//	DWORD  dwFileOffsetLow,
-//	SIZE_T dwNumberOfBytesToMap
-//
-// );
-func XMapViewOfFile(t *TLS, hFileMappingObject uintptr, dwDesiredAccess, dwFileOffsetHigh, dwFileOffsetLow uint32, dwNumberOfBytesToMap types.Size_t) uintptr {
-	if __ccgo_strace {
-		trc("t=%v hFileMappingObject=%v dwFileOffsetLow=%v dwNumberOfBytesToMap=%v, (%v:)", t, hFileMappingObject, dwFileOffsetLow, dwNumberOfBytesToMap, origin(2))
-	}
-	h, _, e1 := procMapViewOfFile.Call(hFileMappingObject, uintptr(dwDesiredAccess),
-		uintptr(dwFileOffsetHigh), uintptr(dwFileOffsetLow), uintptr(dwNumberOfBytesToMap), 0)
-	if h == 0 {
-		t.setLastError(e1)
-	}
-	return h
-}
+// // LPVOID MapViewOfFile(
+// //
+// //	HANDLE hFileMappingObject,
+// //	DWORD  dwDesiredAccess,
+// //	DWORD  dwFileOffsetHigh,
+// //	DWORD  dwFileOffsetLow,
+// //	SIZE_T dwNumberOfBytesToMap
+// //
+// // );
+// func XMapViewOfFile(t *TLS, hFileMappingObject uintptr, dwDesiredAccess, dwFileOffsetHigh, dwFileOffsetLow uint32, dwNumberOfBytesToMap types.Size_t) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v hFileMappingObject=%v dwFileOffsetLow=%v dwNumberOfBytesToMap=%v, (%v:)", t, hFileMappingObject, dwFileOffsetLow, dwNumberOfBytesToMap, origin(2))
+// 	}
+// 	h, _, e1 := procMapViewOfFile.Call(hFileMappingObject, uintptr(dwDesiredAccess),
+// 		uintptr(dwFileOffsetHigh), uintptr(dwFileOffsetLow), uintptr(dwNumberOfBytesToMap), 0)
+// 	if h == 0 {
+// 		if e1 != windows.NOERROR {
+// 			t.setErrno(e1)
+// 		} else {
+// 			t.setErrno(errno.EINVAL)
+// 		}
+// 	}
+// 	return h
+// }
 
 // BOOL QueryPerformanceCounter(
 //
@@ -3991,10 +4103,7 @@ func XQueryPerformanceCounter(t *TLS, lpPerformanceCount uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v lpPerformanceCount=%v, (%v:)", t, lpPerformanceCount, origin(2))
 	}
-	r0, _, err := procQueryPerformanceCounter.Call(lpPerformanceCount, 0, 0)
-	if r0 == 0 {
-		t.setLastError(err)
-	}
+	r0, _, _ := procQueryPerformanceCounter.Call(lpPerformanceCount, 0, 0)
 	return int32(r0)
 }
 
@@ -4010,74 +4119,81 @@ func XSleep(t *TLS, dwMilliseconds uint32) {
 	gotime.Sleep(gotime.Duration(dwMilliseconds) * gotime.Millisecond)
 }
 
-// BOOL SystemTimeToFileTime(const SYSTEMTIME *lpSystemTime, LPFILETIME lpFileTime);
-func XSystemTimeToFileTime(t *TLS, lpSystemTime, lpFileTime uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v lpFileTime=%v, (%v:)", t, lpFileTime, origin(2))
-	}
-	r0, _, err := procSystemTimeToFileTime.Call(lpSystemTime, lpFileTime, 0)
-	if r0 == 0 {
-		t.setLastError(err)
-	}
-	return int32(r0)
-}
-
-// BOOL UnlockFile(
+// // BOOL SystemTimeToFileTime(const SYSTEMTIME *lpSystemTime, LPFILETIME lpFileTime);
+// func XSystemTimeToFileTime(t *TLS, lpSystemTime, lpFileTime uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpFileTime=%v, (%v:)", t, lpFileTime, origin(2))
+// 	}
+// 	r0, _, _ := procSystemTimeToFileTime.Call(lpSystemTime, lpFileTime, 0)
+// 	return int32(r0)
+// }
 //
-//	HANDLE hFile,
-//	DWORD  dwFileOffsetLow,
-//	DWORD  dwFileOffsetHigh,
-//	DWORD  nNumberOfBytesToUnlockLow,
-//	DWORD  nNumberOfBytesToUnlockHigh
+// // BOOL UnlockFile(
+// //
+// //	HANDLE hFile,
+// //	DWORD  dwFileOffsetLow,
+// //	DWORD  dwFileOffsetHigh,
+// //	DWORD  nNumberOfBytesToUnlockLow,
+// //	DWORD  nNumberOfBytesToUnlockHigh
+// //
+// // );
+// func XUnlockFile(t *TLS, hFile uintptr, dwFileOffsetLow, dwFileOffsetHigh, nNumberOfBytesToUnlockLow, nNumberOfBytesToUnlockHigh uint32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v hFile=%v nNumberOfBytesToUnlockHigh=%v, (%v:)", t, hFile, nNumberOfBytesToUnlockHigh, origin(2))
+// 	}
+// 	r1, _, e1 := procUnlockFile.Call(hFile, uintptr(dwFileOffsetLow), uintptr(dwFileOffsetHigh), uintptr(nNumberOfBytesToUnlockLow), uintptr(nNumberOfBytesToUnlockHigh), 0)
+// 	if r1 == 0 {
+// 		if e1 != windows.NOERROR {
+// 			t.setErrno(e1)
+// 		} else {
+// 			t.setErrno(errno.EINVAL)
+// 		}
+// 		return 0
+// 	}
+// 	return int32(r1)
+// }
 //
-// );
-func XUnlockFile(t *TLS, hFile uintptr, dwFileOffsetLow, dwFileOffsetHigh, nNumberOfBytesToUnlockLow, nNumberOfBytesToUnlockHigh uint32) int32 {
-	if __ccgo_strace {
-		trc("t=%v hFile=%v nNumberOfBytesToUnlockHigh=%v, (%v:)", t, hFile, nNumberOfBytesToUnlockHigh, origin(2))
-	}
-	r1, _, e1 := procUnlockFile.Call(hFile, uintptr(dwFileOffsetLow), uintptr(dwFileOffsetHigh), uintptr(nNumberOfBytesToUnlockLow), uintptr(nNumberOfBytesToUnlockHigh), 0)
-	if r1 == 0 {
-		t.setLastError(e1)
-	}
-	return int32(r1)
-}
-
-// BOOL UnlockFileEx(
+// // BOOL UnlockFileEx(
+// //
+// //	HANDLE       hFile,
+// //	DWORD        dwReserved,
+// //	DWORD        nNumberOfBytesToUnlockLow,
+// //	DWORD        nNumberOfBytesToUnlockHigh,
+// //	LPOVERLAPPED lpOverlapped
+// //
+// // );
+// func XUnlockFileEx(t *TLS, hFile uintptr, dwReserved, nNumberOfBytesToUnlockLow, nNumberOfBytesToUnlockHigh uint32, lpOverlapped uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v hFile=%v nNumberOfBytesToUnlockHigh=%v lpOverlapped=%v, (%v:)", t, hFile, nNumberOfBytesToUnlockHigh, lpOverlapped, origin(2))
+// 	}
+// 	r1, _, e1 := procUnlockFileEx.Call(hFile, uintptr(dwReserved), uintptr(nNumberOfBytesToUnlockLow), uintptr(nNumberOfBytesToUnlockHigh), lpOverlapped, 0)
+// 	if r1 == 0 {
+// 		if e1 != windows.NOERROR {
+// 			t.setErrno(e1)
+// 		} else {
+// 			t.setErrno(errno.EINVAL)
+// 		}
+// 		return 0
+// 	}
+// 	return int32(r1)
+// }
 //
-//	HANDLE       hFile,
-//	DWORD        dwReserved,
-//	DWORD        nNumberOfBytesToUnlockLow,
-//	DWORD        nNumberOfBytesToUnlockHigh,
-//	LPOVERLAPPED lpOverlapped
-//
-// );
-func XUnlockFileEx(t *TLS, hFile uintptr, dwReserved, nNumberOfBytesToUnlockLow, nNumberOfBytesToUnlockHigh uint32, lpOverlapped uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v hFile=%v nNumberOfBytesToUnlockHigh=%v lpOverlapped=%v, (%v:)", t, hFile, nNumberOfBytesToUnlockHigh, lpOverlapped, origin(2))
-	}
-	r1, _, e1 := procUnlockFileEx.Call(hFile, uintptr(dwReserved), uintptr(nNumberOfBytesToUnlockLow), uintptr(nNumberOfBytesToUnlockHigh), lpOverlapped, 0)
-	if r1 == 0 {
-		t.setLastError(e1)
-	}
-	return int32(r1)
-}
-
-// BOOL UnmapViewOfFile(
-//
-//	LPCVOID lpBaseAddress
-//
-// );
-func XUnmapViewOfFile(t *TLS, lpBaseAddress uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v lpBaseAddress=%v, (%v:)", t, lpBaseAddress, origin(2))
-	}
-	err := windows.UnmapViewOfFile(lpBaseAddress)
-	if err != nil {
-		t.setErrno(err)
-		return 0
-	}
-	return 1
-}
+// // BOOL UnmapViewOfFile(
+// //
+// //	LPCVOID lpBaseAddress
+// //
+// // );
+// func XUnmapViewOfFile(t *TLS, lpBaseAddress uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpBaseAddress=%v, (%v:)", t, lpBaseAddress, origin(2))
+// 	}
+// 	err := windows.UnmapViewOfFile(lpBaseAddress)
+// 	if err != nil {
+// 		t.setErrno(err)
+// 		return 0
+// 	}
+// 	return 1
+// }
 
 // int WideCharToMultiByte(
 //
@@ -4095,260 +4211,261 @@ func XWideCharToMultiByte(t *TLS, CodePage uint32, dwFlags uint32, lpWideCharStr
 	if __ccgo_strace {
 		trc("t=%v CodePage=%v dwFlags=%v lpWideCharStr=%v cchWideChar=%v lpMultiByteStr=%v cbMultiByte=%v lpUsedDefaultChar=%v, (%v:)", t, CodePage, dwFlags, lpWideCharStr, cchWideChar, lpMultiByteStr, cbMultiByte, lpUsedDefaultChar, origin(2))
 	}
-	r1, _, err := procWideCharToMultiByte.Call(uintptr(CodePage), uintptr(dwFlags), lpWideCharStr,
+	r1, _, _ := procWideCharToMultiByte.Call(uintptr(CodePage), uintptr(dwFlags), lpWideCharStr,
 		uintptr(cchWideChar), lpMultiByteStr, uintptr(cbMultiByte),
 		lpDefaultChar, lpUsedDefaultChar, 0)
-	if r1 == 0 {
-		t.setLastError(err)
-	}
 	return (int32(r1))
 }
 
-// void OutputDebugStringA(
+// // void OutputDebugStringA(
+// //
+// //	LPCSTR lpOutputString
+// //
+// // )
+// func XOutputDebugStringA(t *TLS, lpOutputString uintptr) {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpOutputString=%v, (%v:)", t, lpOutputString, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	LPCSTR lpOutputString
+// // BOOL FlushViewOfFile(
+// //
+// //	LPCVOID lpBaseAddress,
+// //	SIZE_T  dwNumberOfBytesToFlush
+// //
+// // );
+// func XFlushViewOfFile(t *TLS, lpBaseAddress uintptr, dwNumberOfBytesToFlush types.Size_t) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpBaseAddress=%v dwNumberOfBytesToFlush=%v, (%v:)", t, lpBaseAddress, dwNumberOfBytesToFlush, origin(2))
+// 	}
+// 	err := windows.FlushViewOfFile(lpBaseAddress, uintptr(dwNumberOfBytesToFlush))
+// 	if err != nil {
+// 		t.setErrno(err)
+// 		return 0
+// 	}
+// 	return 1
+// }
 //
+// type _ino_t = uint16 /* types.h:43:24 */
+// type _dev_t = uint32 /* types.h:51:22 */
+// type _stat64 = struct {
+// 	Fst_dev   _dev_t
+// 	Fst_ino   _ino_t
+// 	Fst_mode  uint16
+// 	Fst_nlink int16
+// 	Fst_uid   int16
+// 	Fst_gid   int16
+// 	_         [2]byte
+// 	Fst_rdev  _dev_t
+// 	_         [4]byte
+// 	Fst_size  int64
+// 	Fst_atime int64
+// 	Fst_mtime int64
+// 	Fst_ctime int64
+// } /* _mingw_stat64.h:83:3 */
+//
+// var (
+// 	Windows_Tick   int64 = 10000000
+// 	SecToUnixEpoch int64 = 11644473600
 // )
-func XOutputDebugStringA(t *TLS, lpOutputString uintptr) {
-	if __ccgo_strace {
-		trc("t=%v lpOutputString=%v, (%v:)", t, lpOutputString, origin(2))
-	}
-	panic(todo(""))
-}
-
-// BOOL FlushViewOfFile(
 //
-//	LPCVOID lpBaseAddress,
-//	SIZE_T  dwNumberOfBytesToFlush
+// func WindowsTickToUnixSeconds(windowsTicks int64) int64 {
+// 	return (windowsTicks/Windows_Tick - SecToUnixEpoch)
+// }
 //
-// );
-func XFlushViewOfFile(t *TLS, lpBaseAddress uintptr, dwNumberOfBytesToFlush types.Size_t) int32 {
-	if __ccgo_strace {
-		trc("t=%v lpBaseAddress=%v dwNumberOfBytesToFlush=%v, (%v:)", t, lpBaseAddress, dwNumberOfBytesToFlush, origin(2))
-	}
-	err := windows.FlushViewOfFile(lpBaseAddress, uintptr(dwNumberOfBytesToFlush))
-	if err != nil {
-		t.setErrno(err)
-		return 0
-	}
-	return 1
-}
-
-type _ino_t = uint16 /* types.h:43:24 */
-type _dev_t = uint32 /* types.h:51:22 */
-type _stat64 = struct {
-	Fst_dev   _dev_t
-	Fst_ino   _ino_t
-	Fst_mode  uint16
-	Fst_nlink int16
-	Fst_uid   int16
-	Fst_gid   int16
-	_         [2]byte
-	Fst_rdev  _dev_t
-	_         [4]byte
-	Fst_size  int64
-	Fst_atime int64
-	Fst_mtime int64
-	Fst_ctime int64
-} /* _mingw_stat64.h:83:3 */
-
-var (
-	Windows_Tick   int64 = 10000000
-	SecToUnixEpoch int64 = 11644473600
-)
-
-func WindowsTickToUnixSeconds(windowsTicks int64) int64 {
-	return (windowsTicks/Windows_Tick - SecToUnixEpoch)
-}
-
-// int _stat64(const char *path, struct __stat64 *buffer);
-func X_stat64(t *TLS, path, buffer uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v buffer=%v, (%v:)", t, buffer, origin(2))
-	}
-
-	var fa windows.Win32FileAttributeData
-	r1, _, e1 := procGetFileAttributesExA.Call(path, windows.GetFileExInfoStandard, (uintptr)(unsafe.Pointer(&fa)))
-	if r1 == 0 {
-		t.setLastError(e1)
-		return -1
-	}
-
-	var bStat64 = (*_stat64)(unsafe.Pointer(buffer))
-	var accessTime = int64(fa.LastAccessTime.HighDateTime)<<32 + int64(fa.LastAccessTime.LowDateTime)
-	bStat64.Fst_atime = WindowsTickToUnixSeconds(accessTime)
-	var modTime = int64(fa.LastWriteTime.HighDateTime)<<32 + int64(fa.LastWriteTime.LowDateTime)
-	bStat64.Fst_mtime = WindowsTickToUnixSeconds(modTime)
-	var crTime = int64(fa.CreationTime.HighDateTime)<<32 + int64(fa.CreationTime.LowDateTime)
-	bStat64.Fst_ctime = WindowsTickToUnixSeconds(crTime)
-	var fSz = int64(fa.FileSizeHigh)<<32 + int64(fa.FileSizeLow)
-	bStat64.Fst_size = fSz
-	bStat64.Fst_mode = WindowsAttrbiutesToStat(fa.FileAttributes)
-
-	return 0
-}
-
-func WindowsAttrbiutesToStat(fa uint32) uint16 {
-	var src_mode = fa & 0xff
-	var st_mode uint16
-	if (src_mode & windows.FILE_ATTRIBUTE_DIRECTORY) != 0 {
-		st_mode = windows.S_IFDIR
-	} else {
-		st_mode = windows.S_IFREG
-	}
-
-	if src_mode&windows.FILE_ATTRIBUTE_READONLY != 0 {
-		st_mode = st_mode | windows.S_IRUSR
-	} else {
-		st_mode = st_mode | windows.S_IRUSR | windows.S_IWUSR
-	}
-	// fill group fields
-	st_mode = st_mode | (st_mode&0x700)>>3
-	st_mode = st_mode | (st_mode&0x700)>>6
-	return st_mode
-}
-
-// int _chsize(
+// // int _stat64(const char *path, struct __stat64 *buffer);
+// func X_stat64(t *TLS, path, buffer uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v buffer=%v, (%v:)", t, buffer, origin(2))
+// 	}
 //
-//	int fd,
-//	long size
+// 	var fa windows.Win32FileAttributeData
+// 	r1, _, e1 := procGetFileAttributesExA.Call(path, windows.GetFileExInfoStandard, (uintptr)(unsafe.Pointer(&fa)))
+// 	if r1 == 0 {
+// 		if e1 != windows.NOERROR {
+// 			t.setErrno(e1)
+// 		} else {
+// 			t.setErrno(errno.EINVAL)
+// 		}
+// 		return -1
+// 	}
 //
-// );
-func X_chsize(t *TLS, fd int32, size long) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v size=%v, (%v:)", t, fd, size, origin(2))
-	}
-
-	f, ok := fdToFile(fd)
-	if !ok {
-		t.setErrno(EBADF)
-		return -1
-	}
-
-	err := windows.Ftruncate(f.Handle, int64(size))
-	if err != nil {
-		t.setErrno(err)
-		return -1
-	}
-
-	return 0
-}
-
-// int _snprintf(char *str, size_t size, const char *format, ...);
-func X_snprintf(t *TLS, str uintptr, size types.Size_t, format, args uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v str=%v size=%v args=%v, (%v:)", t, str, size, args, origin(2))
-	}
-	return Xsnprintf(t, str, size, format, args)
-}
-
-const wErr_ERROR_INSUFFICIENT_BUFFER = 122
-
-func win32FindDataToFileInfo(t *TLS, fdata *stat.X_finddata64i32_t, wfd *windows.Win32finddata) int32 {
-	// t64 = 64-bit time value
-	var accessTime = int64(wfd.LastAccessTime.HighDateTime)<<32 + int64(wfd.LastAccessTime.LowDateTime)
-	fdata.Ftime_access = WindowsTickToUnixSeconds(accessTime)
-	var modTime = int64(wfd.LastWriteTime.HighDateTime)<<32 + int64(wfd.LastWriteTime.LowDateTime)
-	fdata.Ftime_write = WindowsTickToUnixSeconds(modTime)
-	var crTime = int64(wfd.CreationTime.HighDateTime)<<32 + int64(wfd.CreationTime.LowDateTime)
-	fdata.Ftime_create = WindowsTickToUnixSeconds(crTime)
-	// i32 = 32-bit size
-	fdata.Fsize = wfd.FileSizeLow
-	fdata.Fattrib = wfd.FileAttributes
-
-	var cp = XGetConsoleCP(t)
-	var wcFn = (uintptr)(unsafe.Pointer(&wfd.FileName[0]))
-	var mbcsFn = (uintptr)(unsafe.Pointer(&fdata.Fname[0]))
-	rv := XWideCharToMultiByte(t, cp, 0, wcFn, -1, mbcsFn, 260, 0, 0)
-	if rv == wErr_ERROR_INSUFFICIENT_BUFFER {
-		t.setErrno(errno.ENOMEM)
-		return -1
-	}
-	return 0
-}
-
-// intptr_t _findfirst64i32(
+// 	var bStat64 = (*_stat64)(unsafe.Pointer(buffer))
+// 	var accessTime = int64(fa.LastAccessTime.HighDateTime)<<32 + int64(fa.LastAccessTime.LowDateTime)
+// 	bStat64.Fst_atime = WindowsTickToUnixSeconds(accessTime)
+// 	var modTime = int64(fa.LastWriteTime.HighDateTime)<<32 + int64(fa.LastWriteTime.LowDateTime)
+// 	bStat64.Fst_mtime = WindowsTickToUnixSeconds(modTime)
+// 	var crTime = int64(fa.CreationTime.HighDateTime)<<32 + int64(fa.CreationTime.LowDateTime)
+// 	bStat64.Fst_ctime = WindowsTickToUnixSeconds(crTime)
+// 	var fSz = int64(fa.FileSizeHigh)<<32 + int64(fa.FileSizeLow)
+// 	bStat64.Fst_size = fSz
+// 	bStat64.Fst_mode = WindowsAttrbiutesToStat(fa.FileAttributes)
 //
-//	const char *filespec,
-//	struct _finddata64i32_t *fileinfo
+// 	return 0
+// }
 //
-// );
-func X_findfirst64i32(t *TLS, filespec, fileinfo uintptr) types.Intptr_t {
-	if __ccgo_strace {
-		trc("t=%v fileinfo=%v, (%v:)", t, fileinfo, origin(2))
-	}
-
-	// Note: this is the 'narrow' character findfirst -- expects output
-	// as mbcs -- conversion below -- via ToFileInfo
-
-	var gsFileSpec = GoString(filespec)
-	namep, err := windows.UTF16PtrFromString(gsFileSpec)
-	if err != nil {
-		t.setErrno(err)
-		return types.Intptr_t(-1)
-	}
-
-	var fdata = (*stat.X_finddata64i32_t)(unsafe.Pointer(fileinfo))
-	var wfd windows.Win32finddata
-	h, err := windows.FindFirstFile((*uint16)(unsafe.Pointer(namep)), &wfd)
-	if err != nil {
-		t.setErrno(err)
-		return types.Intptr_t(-1)
-	}
-	rv := win32FindDataToFileInfo(t, fdata, &wfd)
-	if rv != 0 {
-		if h != 0 {
-			windows.FindClose(h)
-		}
-		return types.Intptr_t(-1)
-	}
-	return types.Intptr_t(h)
-}
-
-// int _findnext64i32(
+// func WindowsAttrbiutesToStat(fa uint32) uint16 {
+// 	var src_mode = fa & 0xff
+// 	var st_mode uint16
+// 	if (src_mode & windows.FILE_ATTRIBUTE_DIRECTORY) != 0 {
+// 		st_mode = windows.S_IFDIR
+// 	} else {
+// 		st_mode = windows.S_IFREG
+// 	}
 //
-//	intptr_t handle,
-//	struct _finddata64i32_t *fileinfo
+// 	if src_mode&windows.FILE_ATTRIBUTE_READONLY != 0 {
+// 		st_mode = st_mode | windows.S_IRUSR
+// 	} else {
+// 		st_mode = st_mode | windows.S_IRUSR | windows.S_IWUSR
+// 	}
+// 	// fill group fields
+// 	st_mode = st_mode | (st_mode&0x700)>>3
+// 	st_mode = st_mode | (st_mode&0x700)>>6
+// 	return st_mode
+// }
 //
-// );
-func X_findnext64i32(t *TLS, handle types.Intptr_t, fileinfo uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v handle=%v fileinfo=%v, (%v:)", t, handle, fileinfo, origin(2))
-	}
-
-	var fdata = (*stat.X_finddata64i32_t)(unsafe.Pointer(fileinfo))
-	var wfd windows.Win32finddata
-
-	err := windows.FindNextFile(windows.Handle(handle), &wfd)
-	if err != nil {
-		t.setErrno(err)
-		return -1
-	}
-
-	rv := win32FindDataToFileInfo(t, fdata, &wfd)
-	if rv != 0 {
-		return -1
-	}
-	return 0
-}
-
-// int _findclose(
+// // int _chsize(
+// //
+// //	int fd,
+// //	long size
+// //
+// // );
+// func X_chsize(t *TLS, fd int32, size long) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v size=%v, (%v:)", t, fd, size, origin(2))
+// 	}
 //
-//	intptr_t handle
+// 	f, ok := fdToFile(fd)
+// 	if !ok {
+// 		t.setErrno(EBADF)
+// 		return -1
+// 	}
 //
-// );
-func X_findclose(t *TLS, handle types.Intptr_t) int32 {
-	if __ccgo_strace {
-		trc("t=%v handle=%v, (%v:)", t, handle, origin(2))
-	}
-
-	err := windows.FindClose(windows.Handle(handle))
-	if err != nil {
-		t.setErrno(err)
-		return -1
-	}
-	return 0
-}
+// 	err := windows.Ftruncate(f.Handle, int64(size))
+// 	if err != nil {
+// 		t.setErrno(err)
+// 		return -1
+// 	}
+//
+// 	return 0
+// }
+//
+// // int _snprintf(char *str, size_t size, const char *format, ...);
+// func X_snprintf(t *TLS, str uintptr, size types.Size_t, format, args uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v str=%v size=%v args=%v, (%v:)", t, str, size, args, origin(2))
+// 	}
+// 	return Xsnprintf(t, str, size, format, args)
+// }
+//
+// const wErr_ERROR_INSUFFICIENT_BUFFER = 122
+//
+// func win32FindDataToFileInfo(t *TLS, fdata *stat.X_finddata64i32_t, wfd *windows.Win32finddata) int32 {
+// 	// t64 = 64-bit time value
+// 	var accessTime = int64(wfd.LastAccessTime.HighDateTime)<<32 + int64(wfd.LastAccessTime.LowDateTime)
+// 	fdata.Ftime_access = WindowsTickToUnixSeconds(accessTime)
+// 	var modTime = int64(wfd.LastWriteTime.HighDateTime)<<32 + int64(wfd.LastWriteTime.LowDateTime)
+// 	fdata.Ftime_write = WindowsTickToUnixSeconds(modTime)
+// 	var crTime = int64(wfd.CreationTime.HighDateTime)<<32 + int64(wfd.CreationTime.LowDateTime)
+// 	fdata.Ftime_create = WindowsTickToUnixSeconds(crTime)
+// 	// i32 = 32-bit size
+// 	fdata.Fsize = wfd.FileSizeLow
+// 	fdata.Fattrib = wfd.FileAttributes
+//
+// 	var cp = XGetConsoleCP(t)
+// 	var wcFn = (uintptr)(unsafe.Pointer(&wfd.FileName[0]))
+// 	var mbcsFn = (uintptr)(unsafe.Pointer(&fdata.Fname[0]))
+// 	rv := XWideCharToMultiByte(t, cp, 0, wcFn, -1, mbcsFn, 260, 0, 0)
+// 	if rv == wErr_ERROR_INSUFFICIENT_BUFFER {
+// 		t.setErrno(errno.ENOMEM)
+// 		return -1
+// 	}
+// 	return 0
+// }
+//
+// // intptr_t _findfirst64i32(
+// //
+// //	const char *filespec,
+// //	struct _finddata64i32_t *fileinfo
+// //
+// // );
+// func X_findfirst64i32(t *TLS, filespec, fileinfo uintptr) types.Intptr_t {
+// 	if __ccgo_strace {
+// 		trc("t=%v fileinfo=%v, (%v:)", t, fileinfo, origin(2))
+// 	}
+//
+// 	// Note: this is the 'narrow' character findfirst -- expects output
+// 	// as mbcs -- conversion below -- via ToFileInfo
+//
+// 	var gsFileSpec = GoString(filespec)
+// 	namep, err := windows.UTF16PtrFromString(gsFileSpec)
+// 	if err != nil {
+// 		t.setErrno(err)
+// 		return types.Intptr_t(-1)
+// 	}
+//
+// 	var fdata = (*stat.X_finddata64i32_t)(unsafe.Pointer(fileinfo))
+// 	var wfd windows.Win32finddata
+// 	h, err := windows.FindFirstFile((*uint16)(unsafe.Pointer(namep)), &wfd)
+// 	if err != nil {
+// 		t.setErrno(err)
+// 		return types.Intptr_t(-1)
+// 	}
+// 	rv := win32FindDataToFileInfo(t, fdata, &wfd)
+// 	if rv != 0 {
+// 		if h != 0 {
+// 			windows.FindClose(h)
+// 		}
+// 		return types.Intptr_t(-1)
+// 	}
+// 	return types.Intptr_t(h)
+// }
+//
+// // int _findnext64i32(
+// //
+// //	intptr_t handle,
+// //	struct _finddata64i32_t *fileinfo
+// //
+// // );
+// func X_findnext64i32(t *TLS, handle types.Intptr_t, fileinfo uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v handle=%v fileinfo=%v, (%v:)", t, handle, fileinfo, origin(2))
+// 	}
+//
+// 	var fdata = (*stat.X_finddata64i32_t)(unsafe.Pointer(fileinfo))
+// 	var wfd windows.Win32finddata
+//
+// 	err := windows.FindNextFile(windows.Handle(handle), &wfd)
+// 	if err != nil {
+// 		t.setErrno(err)
+// 		return -1
+// 	}
+//
+// 	rv := win32FindDataToFileInfo(t, fdata, &wfd)
+// 	if rv != 0 {
+// 		return -1
+// 	}
+// 	return 0
+// }
+//
+// // int _findclose(
+// //
+// //	intptr_t handle
+// //
+// // );
+// func X_findclose(t *TLS, handle types.Intptr_t) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v handle=%v, (%v:)", t, handle, origin(2))
+// 	}
+//
+// 	err := windows.FindClose(windows.Handle(handle))
+// 	if err != nil {
+// 		t.setErrno(err)
+// 		return -1
+// 	}
+// 	return 0
+// }
 
 // DWORD GetEnvironmentVariableA(
 //
@@ -4364,104 +4481,108 @@ func XGetEnvironmentVariableA(t *TLS, lpName, lpBuffer uintptr, nSize uint32) ui
 	r0, _, e1 := procGetEnvironmentVariableA.Call(lpName, lpBuffer, uintptr(nSize))
 	n := uint32(r0)
 	if n == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 	return n
 }
 
-// int _fstat64(
+// // int _fstat64(
+// //
+// //	int fd,
+// //	struct __stat64 *buffer
+// //
+// // );
+// func X_fstat64(t *TLS, fd int32, buffer uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v buffer=%v, (%v:)", t, fd, buffer, origin(2))
+// 	}
 //
-//	int fd,
-//	struct __stat64 *buffer
+// 	f, ok := fdToFile(fd)
+// 	if !ok {
+// 		t.setErrno(EBADF)
+// 		return -1
+// 	}
 //
-// );
-func X_fstat64(t *TLS, fd int32, buffer uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v buffer=%v, (%v:)", t, fd, buffer, origin(2))
-	}
-
-	f, ok := fdToFile(fd)
-	if !ok {
-		t.setErrno(EBADF)
-		return -1
-	}
-
-	var d windows.ByHandleFileInformation
-	err := windows.GetFileInformationByHandle(f.Handle, &d)
-	if err != nil {
-		t.setErrno(EBADF)
-		return -1
-	}
-
-	var bStat64 = (*_stat64)(unsafe.Pointer(buffer))
-	var accessTime = int64(d.LastAccessTime.HighDateTime)<<32 + int64(d.LastAccessTime.LowDateTime)
-	bStat64.Fst_atime = WindowsTickToUnixSeconds(accessTime)
-	var modTime = int64(d.LastWriteTime.HighDateTime)<<32 + int64(d.LastWriteTime.LowDateTime)
-	bStat64.Fst_mtime = WindowsTickToUnixSeconds(modTime)
-	var crTime = int64(d.CreationTime.HighDateTime)<<32 + int64(d.CreationTime.LowDateTime)
-	bStat64.Fst_ctime = WindowsTickToUnixSeconds(crTime)
-	var fSz = int64(d.FileSizeHigh)<<32 + int64(d.FileSizeLow)
-	bStat64.Fst_size = fSz
-	bStat64.Fst_mode = WindowsAttrbiutesToStat(d.FileAttributes)
-
-	return 0
-}
-
-// HANDLE CreateEventA(
+// 	var d windows.ByHandleFileInformation
+// 	err := windows.GetFileInformationByHandle(f.Handle, &d)
+// 	if err != nil {
+// 		t.setErrno(EBADF)
+// 		return -1
+// 	}
 //
-//	LPSECURITY_ATTRIBUTES lpEventAttributes,
-//	BOOL                  bManualReset,
-//	BOOL                  bInitialState,
-//	LPCSTR                lpName
+// 	var bStat64 = (*_stat64)(unsafe.Pointer(buffer))
+// 	var accessTime = int64(d.LastAccessTime.HighDateTime)<<32 + int64(d.LastAccessTime.LowDateTime)
+// 	bStat64.Fst_atime = WindowsTickToUnixSeconds(accessTime)
+// 	var modTime = int64(d.LastWriteTime.HighDateTime)<<32 + int64(d.LastWriteTime.LowDateTime)
+// 	bStat64.Fst_mtime = WindowsTickToUnixSeconds(modTime)
+// 	var crTime = int64(d.CreationTime.HighDateTime)<<32 + int64(d.CreationTime.LowDateTime)
+// 	bStat64.Fst_ctime = WindowsTickToUnixSeconds(crTime)
+// 	var fSz = int64(d.FileSizeHigh)<<32 + int64(d.FileSizeLow)
+// 	bStat64.Fst_size = fSz
+// 	bStat64.Fst_mode = WindowsAttrbiutesToStat(d.FileAttributes)
 //
-// );
-func XCreateEventA(t *TLS, lpEventAttributes uintptr, bManualReset, bInitialState int32, lpName uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v lpEventAttributes=%v bInitialState=%v lpName=%v, (%v:)", t, lpEventAttributes, bInitialState, lpName, origin(2))
-	}
-	r0, _, err := procCreateEventA.Call(lpEventAttributes, uintptr(bManualReset),
-		uintptr(bInitialState), lpName, 0, 0)
-	if r0 == 0 {
-		t.setLastError(err)
-	}
-	return r0
-}
-
-// BOOL WINAPI CancelSynchronousIo(
+// 	return 0
+// }
 //
-//	_In_ HANDLE hThread
+// // HANDLE CreateEventA(
+// //
+// //	LPSECURITY_ATTRIBUTES lpEventAttributes,
+// //	BOOL                  bManualReset,
+// //	BOOL                  bInitialState,
+// //	LPCSTR                lpName
+// //
+// // );
+// func XCreateEventA(t *TLS, lpEventAttributes uintptr, bManualReset, bInitialState int32, lpName uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpEventAttributes=%v bInitialState=%v lpName=%v, (%v:)", t, lpEventAttributes, bInitialState, lpName, origin(2))
+// 	}
+// 	r0, _, err := procCreateEventA.Call(lpEventAttributes, uintptr(bManualReset),
+// 		uintptr(bInitialState), lpName, 0, 0)
+// 	if r0 == 0 {
+// 		t.setErrno(err)
+// 	}
+// 	return r0
+// }
 //
-// );
-func XCancelSynchronousIo(t *TLS, hThread uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v hThread=%v, (%v:)", t, hThread, origin(2))
-	}
-	panic(todo(""))
-}
+// // BOOL WINAPI CancelSynchronousIo(
+// //
+// //	_In_ HANDLE hThread
+// //
+// // );
+// func XCancelSynchronousIo(t *TLS, hThread uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v hThread=%v, (%v:)", t, hThread, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 func X_endthreadex(t *TLS, _ ...interface{}) {
 	// NOOP
 }
 
-// The calling convention for beginthread is cdecl -- but in this
-// case we're just intercepting it and sending it through CreateThread which expects stdcall
-// and gets that via the go callback. This is safe because the thread is calling into go
-// not a cdecl function which would expect the stack setup of cdecl.
-func X_beginthread(t *TLS, procAddr uintptr, stack_sz uint32, args uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v procAddr=%v stack_sz=%v args=%v, (%v:)", t, procAddr, stack_sz, args, origin(2))
-	}
-	f := (*struct{ f func(*TLS, uintptr) uint32 })(unsafe.Pointer(&struct{ uintptr }{procAddr})).f
-	var tAdp = ThreadAdapter{threadFunc: f, tls: NewTLS(), param: args}
-	tAdp.token = addObject(&tAdp)
-
-	r0, _, err := procCreateThread.Call(0, uintptr(stack_sz),
-		threadCallback, tAdp.token, 0, 0)
-	if r0 == 0 {
-		t.setLastError(err)
-	}
-	return int32(r0)
-}
+// // The calling convention for beginthread is cdecl -- but in this
+// // case we're just intercepting it and sending it through CreateThread which expects stdcall
+// // and gets that via the go callback. This is safe because the thread is calling into go
+// // not a cdecl function which would expect the stack setup of cdecl.
+// func X_beginthread(t *TLS, procAddr uintptr, stack_sz uint32, args uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v procAddr=%v stack_sz=%v args=%v, (%v:)", t, procAddr, stack_sz, args, origin(2))
+// 	}
+// 	f := (*struct{ f func(*TLS, uintptr) uint32 })(unsafe.Pointer(&struct{ uintptr }{procAddr})).f
+// 	var tAdp = ThreadAdapter{threadFunc: f, tls: NewTLS(), param: args}
+// 	tAdp.token = addObject(&tAdp)
+//
+// 	r0, _, err := procCreateThread.Call(0, uintptr(stack_sz),
+// 		threadCallback, tAdp.token, 0, 0)
+// 	if r0 == 0 {
+// 		t.setErrno(err)
+// 	}
+// 	return int32(r0)
+// }
 
 // uintptr_t _beginthreadex( // NATIVE CODE
 //
@@ -4481,7 +4602,7 @@ func X_beginthreadex(t *TLS, _ uintptr, stack_sz uint32, procAddr uintptr, args 
 	r0, _, err := procCreateThread.Call(0, uintptr(stack_sz),
 		threadCallback, tAdp.token, uintptr(initf), thAddr)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -4493,6 +4614,7 @@ func XGetCurrentThreadId(t *TLS) uint32 {
 	}
 	r0, _, _ := procGetCurrentThreadId.Call(0, 0, 0)
 	return uint32(r0)
+	//return uint32(t.ID)
 }
 
 // BOOL GetExitCodeThread(
@@ -4505,10 +4627,7 @@ func XGetExitCodeThread(t *TLS, hThread, lpExitCode uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v lpExitCode=%v, (%v:)", t, lpExitCode, origin(2))
 	}
-	r0, _, err := procGetExitCodeThread.Call(hThread, lpExitCode, 0)
-	if r0 == 0 {
-		t.setLastError(err)
-	}
+	r0, _, _ := procGetExitCodeThread.Call(hThread, lpExitCode, 0)
 	return int32(r0)
 }
 
@@ -4523,10 +4642,7 @@ func XWaitForSingleObjectEx(t *TLS, hHandle uintptr, dwMilliseconds uint32, bAle
 	if __ccgo_strace {
 		trc("t=%v hHandle=%v dwMilliseconds=%v bAlertable=%v, (%v:)", t, hHandle, dwMilliseconds, bAlertable, origin(2))
 	}
-	rv, _, err := procWaitForSingleObjectEx.Call(hHandle, uintptr(dwMilliseconds), uintptr(bAlertable))
-	if uint32(rv) == windows.WAIT_FAILED {
-		t.setLastError(err)
-	}
+	rv, _, _ := procWaitForSingleObjectEx.Call(hHandle, uintptr(dwMilliseconds), uintptr(bAlertable))
 	return uint32(rv)
 }
 
@@ -4550,8 +4666,8 @@ func XMsgWaitForMultipleObjectsEx(t *TLS, nCount uint32, pHandles uintptr, dwMil
 		uintptr(dwFlags),
 		0,
 	)
-	if uint32(r0) == windows.WAIT_FAILED {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return uint32(r0)
 }
@@ -4573,7 +4689,7 @@ func XGetModuleFileNameW(t *TLS, hModule, lpFileName uintptr, nSize uint32) uint
 	}
 	r0, _, err := procGetModuleFileNameW.Call(hModule, lpFileName, uintptr(nSize))
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return uint32(r0)
 }
@@ -4589,7 +4705,10 @@ func XNetGetDCName(t *TLS, ServerName, DomainName, Buffer uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v Buffer=%v, (%v:)", t, Buffer, origin(2))
 	}
-	r0, _, _ := procNetGetDCName.Call(ServerName, DomainName, Buffer)
+	r0, _, err := procNetGetDCName.Call(ServerName, DomainName, Buffer)
+	if err != windows.NOERROR {
+		t.setErrno(err)
+	}
 	return int32(r0)
 }
 
@@ -4605,13 +4724,16 @@ func XNetUserGetInfo(t *TLS, servername, username uintptr, level uint32, bufptr 
 	if __ccgo_strace {
 		trc("t=%v username=%v level=%v bufptr=%v, (%v:)", t, username, level, bufptr, origin(2))
 	}
-	r0, _, _ := procNetUserGetInfo.Call(servername,
+	r0, _, err := procNetUserGetInfo.Call(servername,
 		username,
 		uintptr(level),
 		bufptr,
 		0,
 		0,
 	)
+	if err != windows.NOERROR {
+		t.setErrno(err)
+	}
 	return uint32(r0)
 }
 
@@ -4630,8 +4752,8 @@ func XGetProfilesDirectoryW(t *TLS, lpProfileDir, lpcchSize uintptr) int32 {
 		trc("t=%v lpcchSize=%v, (%v:)", t, lpcchSize, origin(2))
 	}
 	r0, _, err := procGetProfilesDirectoryW.Call(lpProfileDir, lpcchSize, 0)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -4661,8 +4783,8 @@ func XGetPrivateProfileStringA(t *TLS, lpAppName, lpKeyName, lpDefault, lpReturn
 		uintptr(nSize),
 		lpFileName,
 	)
-	if err == windows.ERROR_FILE_NOT_FOUND {
-		t.setErrno(err)
+	if err != windows.NOERROR {
+		t.setErrno(0x02)
 	}
 	return uint32(r0)
 }
@@ -4685,8 +4807,8 @@ func XGetFileSecurityW(t *TLS, lpFileName uintptr, RequestedInformation uint32, 
 		trc("t=%v lpFileName=%v RequestedInformation=%v pSecurityDescriptor=%v nLength=%v lpnLengthNeeded=%v, (%v:)", t, lpFileName, RequestedInformation, pSecurityDescriptor, nLength, lpnLengthNeeded, origin(2))
 	}
 	r0, _, err := procGetFileSecurityW.Call(lpFileName, uintptr(RequestedInformation), pSecurityDescriptor, uintptr(nLength), lpnLengthNeeded, 0)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -4703,8 +4825,8 @@ func XGetSecurityDescriptorOwner(t *TLS, pSecurityDescriptor, pOwner, lpbOwnerDe
 		trc("t=%v lpbOwnerDefaulted=%v, (%v:)", t, lpbOwnerDefaulted, origin(2))
 	}
 	r0, _, err := procGetSecurityDescriptorOwner.Call(pSecurityDescriptor, pOwner, lpbOwnerDefaulted)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 
@@ -4719,7 +4841,10 @@ func XGetSidIdentifierAuthority(t *TLS, pSid uintptr) uintptr {
 	if __ccgo_strace {
 		trc("t=%v pSid=%v, (%v:)", t, pSid, origin(2))
 	}
-	r0, _, _ := procGetSidIdentifierAuthority.Call(pSid, 0, 0)
+	r0, _, err := procGetSidIdentifierAuthority.Call(pSid, 0, 0)
+	if err != windows.NOERROR {
+		t.setErrno(err)
+	}
 	return r0
 }
 
@@ -4733,8 +4858,8 @@ func XImpersonateSelf(t *TLS, ImpersonationLevel int32) int32 {
 		trc("t=%v ImpersonationLevel=%v, (%v:)", t, ImpersonationLevel, origin(2))
 	}
 	r0, _, err := procImpersonateSelf.Call(uintptr(ImpersonationLevel), 0, 0)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -4752,8 +4877,8 @@ func XOpenThreadToken(t *TLS, ThreadHandle uintptr, DesiredAccess uint32, OpenAs
 		trc("t=%v ThreadHandle=%v DesiredAccess=%v OpenAsSelf=%v TokenHandle=%v, (%v:)", t, ThreadHandle, DesiredAccess, OpenAsSelf, TokenHandle, origin(2))
 	}
 	r0, _, err := procOpenThreadToken.Call(ThreadHandle, uintptr(DesiredAccess), uintptr(OpenAsSelf), TokenHandle, 0, 0)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -4763,7 +4888,10 @@ func XGetCurrentThread(t *TLS) uintptr {
 	if __ccgo_strace {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
-	r0, _, _ := procGetCurrentThread.Call(0, 0, 0)
+	r0, _, err := procGetCurrentThread.Call(0, 0, 0)
+	if err != windows.NOERROR {
+		t.setErrno(err)
+	}
 	return r0
 }
 
@@ -4773,8 +4901,8 @@ func XRevertToSelf(t *TLS) int32 {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
 	r0, _, err := procRevertToSelf.Call(0, 0, 0)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -4805,8 +4933,8 @@ func XAccessCheck(t *TLS, pSecurityDescriptor, ClientToken uintptr, DesiredAcces
 		AccessStatus,
 		0,
 	)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -4872,7 +5000,11 @@ func XGetFileInformationByHandle(t *TLS, hFile, lpFileInformation uintptr) int32
 	}
 	r1, _, e1 := procGetFileInformationByHandle.Call(hFile, lpFileInformation, 0)
 	if r1 == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 	return int32(r1)
 }
@@ -4903,8 +5035,8 @@ func XGetVolumeInformationW(t *TLS, lpRootPathName, lpVolumeNameBuffer uintptr, 
 		uintptr(nFileSystemNameSize),
 		0,
 	)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -4947,9 +5079,12 @@ func XSetFileTime(t *TLS, _hFile uintptr, _lpCreationTime, _lpLastAccessTime, _l
 		trc("hFile=%+v lpCreationTime=%+v lpLastAccessTime=%+v lpLastWriteTime=%+v", _hFile, _lpCreationTime, _lpLastAccessTime, _lpLastWriteTime)
 		defer func() { trc(`XSetFileTime->%+v`, r) }()
 	}
-	r0, _, err := procSetFileTime.Call(_hFile, _lpCreationTime, _lpLastAccessTime, _lpLastWriteTime)
-	if r0 == 0 {
-		t.setLastError(err)
+	r0, r1, err := procSetFileTime.Call(_hFile, _lpCreationTime, _lpLastAccessTime, _lpLastWriteTime)
+	if err != windows.NOERROR {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		t.SetLastError(uint32(err.(windows.Errno)))
 	}
 	return int32(r0)
 }
@@ -4960,7 +5095,13 @@ func XGetNamedSecurityInfoW(tls *TLS, _pObjectName uintptr, _ObjectType int32, _
 		trc("pObjectName=%+v ObjectType=%+v SecurityInfo=%+v ppsidOwner=%+v ppsidGroup=%+v ppDacl=%+v ppSacl=%+v ppSecurityDescriptor=%+v", _pObjectName, _ObjectType, _SecurityInfo, _ppsidOwner, _ppsidGroup, _ppDacl, _ppSacl, _ppSecurityDescriptor)
 		defer func() { trc(`XGetNamedSecurityInfoW->%+v`, r) }()
 	}
-	r0, _, _ := procGetNamedSecurityInfoW.Call(_pObjectName, uintptr(_ObjectType), uintptr(_SecurityInfo), _ppsidOwner, _ppsidGroup, _ppDacl, _ppSacl, _ppSecurityDescriptor)
+	r0, r1, err := procGetNamedSecurityInfoW.Call(_pObjectName, uintptr(_ObjectType), uintptr(_SecurityInfo), _ppsidOwner, _ppsidGroup, _ppDacl, _ppSacl, _ppSecurityDescriptor)
+	if err != windows.NOERROR {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err.(windows.Errno)))
+	}
 	return uint32(r0)
 }
 
@@ -4970,9 +5111,12 @@ func XOpenProcessToken(tls *TLS, _ProcessHandle uintptr, _DesiredAccess uint32, 
 		trc("ProcessHandle=%+v DesiredAccess=%+v TokenHandle=%+v", _ProcessHandle, _DesiredAccess, _TokenHandle)
 		defer func() { trc(`XOpenProcessToken->%+v`, r) }()
 	}
-	r0, _, err := procOpenProcessToken.Call(_ProcessHandle, uintptr(_DesiredAccess), _TokenHandle)
-	if r0 == 0 {
-		tls.setLastError(err)
+	r0, r1, err := procOpenProcessToken.Call(_ProcessHandle, uintptr(_DesiredAccess), _TokenHandle)
+	if err != windows.NOERROR {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err.(windows.Errno)))
 	}
 	return int32(r0)
 }
@@ -4983,9 +5127,12 @@ func XGetTokenInformation(tls *TLS, _TokenHandle uintptr, _TokenInformationClass
 		trc("TokenHandle=%+v TokenInformationClass=%+v TokenInformation=%+v TokenInformationLength=%+v ReturnLength=%+v", _TokenHandle, _TokenInformationClass, _TokenInformation, _TokenInformationLength, _ReturnLength)
 		defer func() { trc(`XGetTokenInformation->%+v`, r) }()
 	}
-	r0, _, err := procGetTokenInformation.Call(_TokenHandle, uintptr(_TokenInformationClass), _TokenInformation, uintptr(_TokenInformationLength), _ReturnLength)
-	if r0 == 0 {
-		tls.setLastError(err)
+	r0, r1, err := procGetTokenInformation.Call(_TokenHandle, uintptr(_TokenInformationClass), _TokenInformation, uintptr(_TokenInformationLength), _ReturnLength)
+	if err != windows.NOERROR {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err.(windows.Errno)))
 	}
 	return int32(r0)
 }
@@ -4996,7 +5143,13 @@ func XEqualSid(tls *TLS, _pSid1 uintptr, _pSid2 uintptr) (r int32) {
 		trc("pSid1=%+v pSid2=%+v", _pSid1, _pSid2)
 		defer func() { trc(`XEqualSid->%+v`, r) }()
 	}
-	r0, _, _ := procEqualSid.Call(_pSid1, _pSid2)
+	r0, r1, err := procEqualSid.Call(_pSid1, _pSid2)
+	if err != windows.NOERROR {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err.(windows.Errno)))
+	}
 	return int32(r0)
 }
 
@@ -5011,6 +5164,9 @@ func XWSAStartup(t *TLS, wVersionRequired uint16, lpWSAData uintptr) int32 {
 		trc("t=%v wVersionRequired=%v lpWSAData=%v, (%v:)", t, wVersionRequired, lpWSAData, origin(2))
 	}
 	r0, _, _ := procWSAStartup.Call(uintptr(wVersionRequired), lpWSAData, 0)
+	if r0 != 0 {
+		t.setErrno(r0)
+	}
 	return int32(r0)
 }
 
@@ -5021,7 +5177,7 @@ func XGetModuleHandleA(t *TLS, lpModuleName uintptr) uintptr {
 	}
 	r0, _, err := procGetModuleHandleA.Call(lpModuleName, 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return r0
 }
@@ -5037,7 +5193,7 @@ func XGetModuleHandleW(t *TLS, lpModuleName uintptr) uintptr {
 	}
 	r0, _, err := procGetModuleHandleW.Call(lpModuleName, 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return r0
 }
@@ -5056,7 +5212,11 @@ func XGetEnvironmentVariableW(t *TLS, lpName, lpBuffer uintptr, nSize uint32) ui
 	r0, _, e1 := procGetEnvironmentVariableW.Call(lpName, lpBuffer, uintptr(nSize))
 	n := uint32(r0)
 	if n == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 	return n
 }
@@ -5174,7 +5334,7 @@ func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 	}
 	r0, _, err := procRegisterClassW.Call(lpWndClass, 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -5199,7 +5359,7 @@ func XUnregisterClassW(t *TLS, lpClassName, hInstance uintptr) int32 {
 	}
 	r0, _, err := procUnregisterClassW.Call(lpClassName, hInstance, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -5246,8 +5406,8 @@ func XCreateWindowExW(t *TLS, dwExStyle uint32, lpClassName, lpWindowName uintpt
 		hInstance,
 		lpParam,
 	)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return r0
 }
@@ -5265,13 +5425,16 @@ func XPeekMessageW(t *TLS, lpMsg, hWnd uintptr, wMsgFilterMin, wMsgFilterMax, wR
 	if __ccgo_strace {
 		trc("t=%v hWnd=%v wRemoveMsg=%v, (%v:)", t, hWnd, wRemoveMsg, origin(2))
 	}
-	r0, _, _ := procPeekMessageW.Call(lpMsg,
+	r0, _, err := procPeekMessageW.Call(lpMsg,
 		hWnd,
 		uintptr(wMsgFilterMin),
 		uintptr(wMsgFilterMax),
 		uintptr(wRemoveMsg),
 		0,
 	)
+	if err != windows.NOERROR {
+		t.setErrno(err)
+	}
 	return int32(r0)
 }
 
@@ -5319,7 +5482,7 @@ func XCreatePipe(t *TLS, hReadPipe, hWritePipe, lpPipeAttributes uintptr, nSize 
 	}
 	r0, _, err := procCreatePipe.Call(hReadPipe, hWritePipe, lpPipeAttributes, uintptr(nSize), 0, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -5344,7 +5507,11 @@ func XCreateProcessW(t *TLS, lpApplicationName, lpCommandLine, lpProcessAttribut
 	r1, _, e1 := procCreateProcessW.Call(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes,
 		uintptr(bInheritHandles), uintptr(dwCreationFlags), lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation, 0, 0)
 	if r1 == 0 {
-		t.setLastError(e1)
+		if e1 != windows.NOERROR {
+			t.setErrno(e1)
+		} else {
+			t.setErrno(errno.EINVAL)
+		}
 	}
 
 	return int32(r1)
@@ -5380,7 +5547,7 @@ func XSearchPathW(t *TLS, lpPath, lpFileName, lpExtension uintptr, nBufferLength
 	}
 	r0, _, err := procSearchPathW.Call(lpPath, lpFileName, lpExtension, uintptr(nBufferLength), lpBuffer, lpFilePart)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -5401,7 +5568,7 @@ func XGetExitCodeProcess(t *TLS, hProcess, lpExitCode uintptr) int32 {
 	}
 	r0, _, err := procGetExitCodeProcess.Call(hProcess, lpExitCode, 0)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -5422,7 +5589,7 @@ func XPeekNamedPipe(t *TLS, hNamedPipe, lpBuffer uintptr, nBufferSize uint32, lp
 	}
 	r0, _, err := procPeekNamedPipe.Call(hNamedPipe, lpBuffer, uintptr(nBufferSize), lpBytesRead, lpTotalBytesAvail, lpBytesLeftThisMessage)
 	if r0 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -5452,8 +5619,8 @@ func XTerminateThread(t *TLS, hThread uintptr, dwExitCode uint32) int32 {
 		trc("t=%v hThread=%v dwExitCode=%v, (%v:)", t, hThread, dwExitCode, origin(2))
 	}
 	r0, _, err := procTerminateThread.Call(hThread, uintptr(dwExitCode), 0)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -5495,17 +5662,17 @@ func XWspiapiGetNameInfo(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-func XIN6_ADDR_EQUAL(t *TLS, _ ...interface{}) int32 {
-	panic(todo(""))
-}
-
-func X__ccgo_in6addr_anyp(t *TLS, _ ...interface{}) int32 {
-	panic(todo(""))
-}
-
-func XIN6_IS_ADDR_V4MAPPED(t *TLS, _ ...interface{}) int32 {
-	panic(todo(""))
-}
+// func XIN6_ADDR_EQUAL(t *TLS, _ ...interface{}) int32 {
+// 	panic(todo(""))
+// }
+//
+// func X__ccgo_in6addr_anyp(t *TLS, _ ...interface{}) int32 {
+// 	panic(todo(""))
+// }
+//
+// func XIN6_IS_ADDR_V4MAPPED(t *TLS, _ ...interface{}) int32 {
+// 	panic(todo(""))
+// }
 
 func XSetHandleInformation(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
@@ -5547,36 +5714,37 @@ func XQueryPerformanceFrequency(t *TLS, lpFrequency uintptr) int32 {
 
 	r1, _, err := procQueryPerformanceFrequency.Call(lpFrequency, 0, 0)
 	if r1 == 0 {
-		t.setLastError(err)
+		t.setErrno(err)
+		return 0
 	}
 	return int32(r1)
 }
 
-func inDST(t gotime.Time) bool {
-
-	jan1st := gotime.Date(t.Year(), 1, 1, 0, 0, 0, 0, t.Location()) // January 1st is always outside DST window
-
-	_, off1 := t.Zone()
-	_, off2 := jan1st.Zone()
-
-	return off1 != off2
-}
-
-// void _ftime( struct _timeb *timeptr );
-func X_ftime(t *TLS, timeptr uintptr) {
-	if __ccgo_strace {
-		trc("t=%v timeptr=%v, (%v:)", t, timeptr, origin(2))
-	}
-	var tm = gotime.Now()
-	var tPtr = (*time.X__timeb64)(unsafe.Pointer(timeptr))
-	tPtr.Ftime = tm.Unix()
-	tPtr.Fmillitm = uint16(gotime.Duration(tm.Nanosecond()) / gotime.Millisecond)
-	if inDST(tm) {
-		tPtr.Fdstflag = 1
-	}
-	_, offset := tm.Zone()
-	tPtr.Ftimezone = int16(offset)
-}
+// func inDST(t gotime.Time) bool {
+//
+// 	jan1st := gotime.Date(t.Year(), 1, 1, 0, 0, 0, 0, t.Location()) // January 1st is always outside DST window
+//
+// 	_, off1 := t.Zone()
+// 	_, off2 := jan1st.Zone()
+//
+// 	return off1 != off2
+// }
+//
+// // void _ftime( struct _timeb *timeptr );
+// func X_ftime(t *TLS, timeptr uintptr) {
+// 	if __ccgo_strace {
+// 		trc("t=%v timeptr=%v, (%v:)", t, timeptr, origin(2))
+// 	}
+// 	var tm = gotime.Now()
+// 	var tPtr = (*time.X__timeb64)(unsafe.Pointer(timeptr))
+// 	tPtr.Ftime = tm.Unix()
+// 	tPtr.Fmillitm = uint16(gotime.Duration(tm.Nanosecond()) / gotime.Millisecond)
+// 	if inDST(tm) {
+// 		tPtr.Fdstflag = 1
+// 	}
+// 	_, offset := tm.Zone()
+// 	tPtr.Ftimezone = int16(offset)
+// }
 
 func XDdeInitializeW(t *TLS, _ ...interface{}) uint32 {
 	panic(todo(""))
@@ -5738,333 +5906,342 @@ func XRegSetValueExW(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-// int _vsnwprintf(
+// // int _vsnwprintf(
+// //
+// //	wchar_t *buffer,
+// //	size_t count,
+// //	const wchar_t *format,
+// //	va_list argptr
+// //
+// // );
+// func X__mingw_vsnwprintf(t *TLS, buffer uintptr, count types.Size_t, format, va uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v buffer=%v count=%v va=%v, (%v:)", t, buffer, count, va, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	wchar_t *buffer,
-//	size_t count,
-//	const wchar_t *format,
-//	va_list argptr
+// // int vprintf(const char *format, va_list ap);
 //
-// );
-func X__mingw_vsnwprintf(t *TLS, buffer uintptr, count types.Size_t, format, va uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v buffer=%v count=%v va=%v, (%v:)", t, buffer, count, va, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int vprintf(const char *format, va_list ap);
-
-func X__mingw_vprintf(t *TLS, s, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
-	}
-	return Xvprintf(t, s, ap)
-}
-
-// int vfscanf(FILE * restrict stream, const char * restrict format, va_list arg);
-func X__mingw_vfscanf(t *TLS, stream, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int vsscanf(const char *str, const char *format, va_list ap);
-func X__mingw_vsscanf(t *TLS, str, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
-	}
-	return Xsscanf(t, str, format, ap)
-}
-
-// int vfprintf(FILE * restrict stream, const char * restrict format, va_list arg);
-func X__mingw_vfprintf(t *TLS, f uintptr, format, va uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v f=%v va=%v, (%v:)", t, f, va, origin(2))
-	}
-	return Xvfprintf(t, f, format, va)
-}
-
-// int vsprintf(char * restrict s, const char * restrict format, va_list arg);
-func X__mingw_vsprintf(t *TLS, s, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
-	}
-	return Xvsprintf(t, s, format, ap)
-}
-
-// int vsnprintf(char *str, size_t size, const char *format, va_list ap);
-func X__mingw_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v str=%v size=%v ap=%v, (%v:)", t, str, size, ap, origin(2))
-	}
-	return Xvsnprintf(t, str, size, format, ap)
-}
-
-// int putchar(int char)
-func X_putchar(t *TLS, c int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v c=%v, (%v:)", t, c, origin(2))
-	}
-	if _, err := fwrite(unistd.STDOUT_FILENO, []byte{byte(c)}); err != nil {
-		return -1
-	}
-	return int32(byte(c))
-}
-
-// int vfwscanf(FILE *stream, const wchar_t *format, va_list argptr;);
-func X__mingw_vfwscanf(t *TLS, stream uintptr, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v stream=%v ap=%v, (%v:)", t, stream, ap, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int vswscanf(const wchar_t *buffer, const wchar_t *format, va_list arglist);
-func X__mingw_vswscanf(t *TLS, stream uintptr, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v stream=%v ap=%v, (%v:)", t, stream, ap, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int vfwprintf(FILE * restrict stream, const wchar_t * restrict format, va_list arg);
-func X__mingw_vfwprintf(t *TLS, stream, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int putchar(int c);
-func Xputchar(t *TLS, c int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v c=%v, (%v:)", t, c, origin(2))
-	}
-	panic(todo(""))
-}
-
-// void _assert(
+// func X__mingw_vprintf(t *TLS, s, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
+// 	}
+// 	return Xvprintf(t, s, ap)
+// }
 //
-//	char const* message,
-//	char const* filename,
-//	unsigned line
+// // int vfscanf(FILE * restrict stream, const char * restrict format, va_list arg);
+// func X__mingw_vfscanf(t *TLS, stream, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-// );
-func X_assert(t *TLS, message, filename uintptr, line uint32) {
-	if __ccgo_strace {
-		trc("t=%v filename=%v line=%v, (%v:)", t, filename, line, origin(2))
-	}
-	panic(todo(""))
-}
-
-// char *strdup(const char *s);
-func X_strdup(t *TLS, s uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v s=%v, (%v:)", t, s, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int _access(
+// // int vsscanf(const char *str, const char *format, va_list ap);
+// func X__mingw_vsscanf(t *TLS, str, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
+// 	}
+// 	return Xsscanf(t, str, format, ap)
+// }
 //
-//	const char *path,
-//	int mode
+// // int vfprintf(FILE * restrict stream, const char * restrict format, va_list arg);
+// func X__mingw_vfprintf(t *TLS, f uintptr, format, va uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v f=%v va=%v, (%v:)", t, f, va, origin(2))
+// 	}
+// 	return Xvfprintf(t, f, format, va)
+// }
 //
-// );
-func X_access(t *TLS, pathname uintptr, mode int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v pathname=%v mode=%v, (%v:)", t, pathname, mode, origin(2))
-	}
-
-	var path = GoString(pathname)
-
-	info, err := os.Stat(path)
-	if err != nil {
-		// doesn't exist
-		return errno.ENOENT
-	}
-
-	switch mode {
-	case 0:
-		// exists
-		return 0
-	case 2:
-		// write-only
-		// Check if the user bit is enabled in file permission
-		if info.Mode().Perm()&(1<<(uint(7))) == 1 {
-			// write-able
-			return 0
-		}
-	case 4:
-		// read-only
-		// Check if the user bit is enabled in file permission
-		if info.Mode().Perm()&(1<<(uint(7))) == 0 {
-			// not set, so read-only
-			return 0
-		}
-	case 6:
-		// r/w
-		if info.Mode().Perm()&(1<<(uint(7))) == 1 {
-			// write-able
-			return 0
-		}
-	}
-
-	return errno.EACCES
-
-}
-
-// BOOL WINAPI SetConsoleCtrlHandler(
+// // int vsprintf(char * restrict s, const char * restrict format, va_list arg);
+// func X__mingw_vsprintf(t *TLS, s, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
+// 	}
+// 	return Xvsprintf(t, s, format, ap)
+// }
 //
-//	_In_opt_ PHANDLER_ROUTINE HandlerRoutine,
-//	_In_     BOOL             Add
+// // int vsnprintf(char *str, size_t size, const char *format, va_list ap);
+// func X__mingw_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v str=%v size=%v ap=%v, (%v:)", t, str, size, ap, origin(2))
+// 	}
+// 	return Xvsnprintf(t, str, size, format, ap)
+// }
 //
-// );
-func XSetConsoleCtrlHandler(t *TLS, HandlerRoutine uintptr, Add int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v HandlerRoutine=%v Add=%v, (%v:)", t, HandlerRoutine, Add, origin(2))
-	}
-	// Ignored
-	return 0
-}
-
-// DebugBreak
-func XDebugBreak(t *TLS) {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int _isatty( int fd );
-func X_isatty(t *TLS, fd int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v, (%v:)", t, fd, origin(2))
-	}
-
-	f, ok := fdToFile(fd)
-	if !ok {
-		t.setErrno(errno.EBADF)
-		return 0
-	}
-
-	if fd == unistd.STDOUT_FILENO ||
-		fd == unistd.STDIN_FILENO ||
-		fd == unistd.STDERR_FILENO {
-		var mode uint32
-		err := windows.GetConsoleMode(f.Handle, &mode)
-		if err != nil {
-			t.setErrno(errno.EINVAL)
-			return 0
-		}
-		// is console
-		return 1
-	}
-
-	return 0
-}
-
-// BOOL WINAPI SetConsoleTextAttribute(
+// // int putchar(int char)
+// func X_putchar(t *TLS, c int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v c=%v, (%v:)", t, c, origin(2))
+// 	}
+// 	if _, err := fwrite(unistd.STDOUT_FILENO, []byte{byte(c)}); err != nil {
+// 		return -1
+// 	}
+// 	return int32(byte(c))
+// }
 //
-//	_In_ HANDLE hConsoleOutput,
-//	_In_ WORD   wAttributes
+// // int vfwscanf(FILE *stream, const wchar_t *format, va_list argptr;);
+// func X__mingw_vfwscanf(t *TLS, stream uintptr, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v ap=%v, (%v:)", t, stream, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-// );
-func XSetConsoleTextAttribute(t *TLS, hConsoleOutput uintptr, wAttributes uint16) int32 {
-	if __ccgo_strace {
-		trc("t=%v hConsoleOutput=%v wAttributes=%v, (%v:)", t, hConsoleOutput, wAttributes, origin(2))
-	}
-	r1, _, err := procSetConsoleTextAttribute.Call(hConsoleOutput, uintptr(wAttributes), 0)
-	if r1 == 0 {
-		t.setLastError(err)
-	}
-	return int32(r1)
-}
-
-// BOOL WINAPI GetConsoleScreenBufferInfo(
+// // int vswscanf(const wchar_t *buffer, const wchar_t *format, va_list arglist);
+// func X__mingw_vswscanf(t *TLS, stream uintptr, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v ap=%v, (%v:)", t, stream, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	_In_  HANDLE                      hConsoleOutput,
-//	_Out_ PCONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo
+// // int vfwprintf(FILE * restrict stream, const wchar_t * restrict format, va_list arg);
+// func X__mingw_vfwprintf(t *TLS, stream, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v ap=%v, (%v:)", t, ap, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-// );
-func XGetConsoleScreenBufferInfo(t *TLS, hConsoleOutput, lpConsoleScreenBufferInfo uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v lpConsoleScreenBufferInfo=%v, (%v:)", t, lpConsoleScreenBufferInfo, origin(2))
-	}
-	r1, _, err := procGetConsoleScreenBufferInfo.Call(hConsoleOutput, lpConsoleScreenBufferInfo, 0)
-	if r1 == 0 {
-		t.setLastError(err)
-	}
-	return int32(r1)
-}
-
-// FILE *_popen(
+// // int putchar(int c);
+// func Xputchar(t *TLS, c int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v c=%v, (%v:)", t, c, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	const char *command,
-//	const char *mode
+// // void _assert(
+// //
+// //	char const* message,
+// //	char const* filename,
+// //	unsigned line
+// //
+// // );
+// func X_assert(t *TLS, message, filename uintptr, line uint32) {
+// 	if __ccgo_strace {
+// 		trc("t=%v filename=%v line=%v, (%v:)", t, filename, line, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-// );
-func X_popen(t *TLS, command, mode uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v mode=%v, (%v:)", t, mode, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int _wunlink(
+// // char *strdup(const char *s);
+// func X_strdup(t *TLS, s uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v s=%v, (%v:)", t, s, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 //
-//	const wchar_t *filename
+// // int _access(
+// //
+// //	const char *path,
+// //	int mode
+// //
+// // );
+// func X_access(t *TLS, pathname uintptr, mode int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v pathname=%v mode=%v, (%v:)", t, pathname, mode, origin(2))
+// 	}
 //
-// );
-func X_wunlink(t *TLS, filename uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v filename=%v, (%v:)", t, filename, origin(2))
-	}
-	panic(todo(""))
-}
-
-func Xclosedir(tls *TLS, dir uintptr) int32 {
-	if __ccgo_strace {
-		trc("tls=%v dir=%v, (%v:)", tls, dir, origin(2))
-	}
-	panic(todo(""))
-}
-
-func Xopendir(tls *TLS, name uintptr) uintptr {
-	if __ccgo_strace {
-		trc("tls=%v name=%v, (%v:)", tls, name, origin(2))
-	}
-	panic(todo(""))
-}
-
-func Xreaddir(tls *TLS, dir uintptr) uintptr {
-	if __ccgo_strace {
-		trc("tls=%v dir=%v, (%v:)", tls, dir, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int _unlink(
+// 	var path = GoString(pathname)
 //
-//	const char *filename
+// 	info, err := os.Stat(path)
+// 	if err != nil {
+// 		// doesn't exist
+// 		return errno.ENOENT
+// 	}
 //
-// );
-func X_unlink(t *TLS, filename uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v filename=%v, (%v:)", t, filename, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int pclose(FILE *stream);
-func X_pclose(t *TLS, stream uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
-	}
-	panic(todo(""))
-}
+// 	switch mode {
+// 	case 0:
+// 		// exists
+// 		return 0
+// 	case 2:
+// 		// write-only
+// 		// Check if the user bit is enabled in file permission
+// 		if info.Mode().Perm()&(1<<(uint(7))) == 1 {
+// 			// write-able
+// 			return 0
+// 		}
+// 	case 4:
+// 		// read-only
+// 		// Check if the user bit is enabled in file permission
+// 		if info.Mode().Perm()&(1<<(uint(7))) == 0 {
+// 			// not set, so read-only
+// 			return 0
+// 		}
+// 	case 6:
+// 		// r/w
+// 		if info.Mode().Perm()&(1<<(uint(7))) == 1 {
+// 			// write-able
+// 			return 0
+// 		}
+// 	}
+//
+// 	return errno.EACCES
+//
+// }
+//
+// // BOOL WINAPI SetConsoleCtrlHandler(
+// //
+// //	_In_opt_ PHANDLER_ROUTINE HandlerRoutine,
+// //	_In_     BOOL             Add
+// //
+// // );
+// func XSetConsoleCtrlHandler(t *TLS, HandlerRoutine uintptr, Add int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v HandlerRoutine=%v Add=%v, (%v:)", t, HandlerRoutine, Add, origin(2))
+// 	}
+//
+// 	//var fcc = &struct {
+// 	//	f func(*TLS, uint32) int32
+// 	//}{}
+// 	//fcc = (*struct{ f func(*TLS, uint32) int32 })(unsafe.Pointer(HandlerRoutine))
+// 	//var hdlr = fcc.f
+// 	//
+// 	//_, _, err := procSetConsoleCtrlHandler.Call(
+// 	//windows.NewCallback(func(controlType uint) uint {
+// 	//		return uint( hdlr(t, uint32(controlType)) )
+// 	//	}), 1)
+// 	//
+// 	//if err != nil {
+// 	//	panic("failed: SetConsoleCtrlHandler")
+// 	//}
+//
+// 	return 0
+// }
+//
+// // DebugBreak
+// func XDebugBreak(t *TLS) {
+// 	if __ccgo_strace {
+// 		trc("t=%v, (%v:)", t, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int _isatty( int fd );
+// func X_isatty(t *TLS, fd int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v, (%v:)", t, fd, origin(2))
+// 	}
+//
+// 	f, ok := fdToFile(fd)
+// 	if !ok {
+// 		t.setErrno(errno.EBADF)
+// 		return 0
+// 	}
+//
+// 	if fd == unistd.STDOUT_FILENO ||
+// 		fd == unistd.STDIN_FILENO ||
+// 		fd == unistd.STDERR_FILENO {
+// 		var mode uint32
+// 		err := windows.GetConsoleMode(f.Handle, &mode)
+// 		if err != nil {
+// 			t.setErrno(errno.EINVAL)
+// 			return 0
+// 		}
+// 		// is console
+// 		return 1
+// 	}
+//
+// 	return 0
+// }
+//
+// // BOOL WINAPI SetConsoleTextAttribute(
+// //
+// //	_In_ HANDLE hConsoleOutput,
+// //	_In_ WORD   wAttributes
+// //
+// // );
+// func XSetConsoleTextAttribute(t *TLS, hConsoleOutput uintptr, wAttributes uint16) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v hConsoleOutput=%v wAttributes=%v, (%v:)", t, hConsoleOutput, wAttributes, origin(2))
+// 	}
+// 	r1, _, _ := procSetConsoleTextAttribute.Call(hConsoleOutput, uintptr(wAttributes), 0)
+// 	return int32(r1)
+// }
+//
+// // BOOL WINAPI GetConsoleScreenBufferInfo(
+// //
+// //	_In_  HANDLE                      hConsoleOutput,
+// //	_Out_ PCONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo
+// //
+// // );
+// func XGetConsoleScreenBufferInfo(t *TLS, hConsoleOutput, lpConsoleScreenBufferInfo uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v lpConsoleScreenBufferInfo=%v, (%v:)", t, lpConsoleScreenBufferInfo, origin(2))
+// 	}
+// 	r1, _, _ := procGetConsoleScreenBufferInfo.Call(hConsoleOutput, lpConsoleScreenBufferInfo, 0)
+// 	return int32(r1)
+// }
+//
+// // FILE *_popen(
+// //
+// //	const char *command,
+// //	const char *mode
+// //
+// // );
+// func X_popen(t *TLS, command, mode uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v mode=%v, (%v:)", t, mode, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int _wunlink(
+// //
+// //	const wchar_t *filename
+// //
+// // );
+// func X_wunlink(t *TLS, filename uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v filename=%v, (%v:)", t, filename, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// func Xclosedir(tls *TLS, dir uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("tls=%v dir=%v, (%v:)", tls, dir, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// func Xopendir(tls *TLS, name uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("tls=%v name=%v, (%v:)", tls, name, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// func Xreaddir(tls *TLS, dir uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("tls=%v dir=%v, (%v:)", tls, dir, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int _unlink(
+// //
+// //	const char *filename
+// //
+// // );
+// func X_unlink(t *TLS, filename uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v filename=%v, (%v:)", t, filename, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int pclose(FILE *stream);
+// func X_pclose(t *TLS, stream uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // int setmode (int fd, int mode);
 func Xsetmode(t *TLS, fd, mode int32) int32 {
@@ -6097,88 +6274,88 @@ func X_setmode(t *TLS, fd, mode int32) int32 {
 	}
 }
 
-// int _mkdir(const char *dirname);
-func X_mkdir(t *TLS, dirname uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v dirname=%v, (%v:)", t, dirname, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int _chmod( const char *filename, int pmode );
-func X_chmod(t *TLS, filename uintptr, pmode int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v filename=%v pmode=%v, (%v:)", t, filename, pmode, origin(2))
-	}
-	panic(todo(""))
-}
-
-// int _fileno(FILE *stream);
-func X_fileno(t *TLS, stream uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
-	}
-	f, ok := winGetObject(stream).(*file)
-	if !ok {
-		t.setErrno(errno.EBADF)
-		return -1
-	}
-	return f._fd
-}
-
-// void rewind(FILE *stream);
-func Xrewind(t *TLS, stream uintptr) {
-	if __ccgo_strace {
-		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
-	}
-	Xfseek(t, stream, 0, unistd.SEEK_SET)
-}
-
-// __atomic_load_n
-func X__atomic_load_n(t *TLS) {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	panic(todo(""))
-}
-
-// __atomic_store_n
-func X__atomic_store_n(t *TLS, _ ...interface{}) int32 {
-	panic(todo(""))
-}
-
-// __builtin_add_overflow
-func X__builtin_add_overflow(t *TLS) {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	panic(todo(""))
-}
-
-// __builtin_mul_overflow
-func X__builtin_mul_overflow(t *TLS) {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	panic(todo(""))
-}
-
-// __builtin_sub_overflow
-func X__builtin_sub_overflow(t *TLS) {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	panic(todo(""))
-}
-
-func goWideBytes(p uintptr, n int) []uint16 {
-	b := GoBytes(p, 2*n)
-	var w []uint16
-	for i := 0; i < len(b); i += 2 {
-		w = append(w, *(*uint16)(unsafe.Pointer(&b[i])))
-	}
-	return w
-}
+// // int _mkdir(const char *dirname);
+// func X_mkdir(t *TLS, dirname uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v dirname=%v, (%v:)", t, dirname, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int _chmod( const char *filename, int pmode );
+// func X_chmod(t *TLS, filename uintptr, pmode int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v filename=%v pmode=%v, (%v:)", t, filename, pmode, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // int _fileno(FILE *stream);
+// func X_fileno(t *TLS, stream uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
+// 	}
+// 	f, ok := winGetObject(stream).(*file)
+// 	if !ok {
+// 		t.setErrno(errno.EBADF)
+// 		return -1
+// 	}
+// 	return f._fd
+// }
+//
+// // void rewind(FILE *stream);
+// func Xrewind(t *TLS, stream uintptr) {
+// 	if __ccgo_strace {
+// 		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
+// 	}
+// 	Xfseek(t, stream, 0, unistd.SEEK_SET)
+// }
+//
+// // __atomic_load_n
+// func X__atomic_load_n(t *TLS) {
+// 	if __ccgo_strace {
+// 		trc("t=%v, (%v:)", t, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // __atomic_store_n
+// func X__atomic_store_n(t *TLS, _ ...interface{}) int32 {
+// 	panic(todo(""))
+// }
+//
+// // __builtin_add_overflow
+// func X__builtin_add_overflow(t *TLS) {
+// 	if __ccgo_strace {
+// 		trc("t=%v, (%v:)", t, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // __builtin_mul_overflow
+// func X__builtin_mul_overflow(t *TLS) {
+// 	if __ccgo_strace {
+// 		trc("t=%v, (%v:)", t, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// // __builtin_sub_overflow
+// func X__builtin_sub_overflow(t *TLS) {
+// 	if __ccgo_strace {
+// 		trc("t=%v, (%v:)", t, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
+//
+// func goWideBytes(p uintptr, n int) []uint16 {
+// 	b := GoBytes(p, 2*n)
+// 	var w []uint16
+// 	for i := 0; i < len(b); i += 2 {
+// 		w = append(w, *(*uint16)(unsafe.Pointer(&b[i])))
+// 	}
+// 	return w
+// }
 
 // This version does include the zero terminator in the returned Go string.
 func goWideString(p uintptr) string {
@@ -6201,9 +6378,9 @@ func goWideString(p uintptr) string {
 	return string(s)
 }
 
-func goWideStringN(p uintptr, n int) string {
-	panic(todo(""))
-}
+// func goWideStringN(p uintptr, n int) string {
+// 	panic(todo(""))
+// }
 
 // This version does not include the zero terminator in the returned Go string.
 func goWideStringNZ(p uintptr) string {
@@ -6256,9 +6433,12 @@ func XAddAce(tls *TLS, _pAcl uintptr, _dwAceRevision uint32, _dwStartingAceIndex
 		trc("pAcl=%+v dwAceRevision=%+v dwStartingAceIndex=%+v pAceList=%+v nAceListLength=%+v", _pAcl, _dwAceRevision, _dwStartingAceIndex, _pAceList, _nAceListLength)
 		defer func() { trc(`XAddAce->%+v`, r) }()
 	}
-	r0, _, err := procAddAce.Call(_pAcl, uintptr(_dwAceRevision), uintptr(_dwStartingAceIndex), _pAceList, uintptr(_nAceListLength))
-	if r0 == 0 {
-		tls.setLastError(err)
+	r0, r1, err := procAddAce.Call(_pAcl, uintptr(_dwAceRevision), uintptr(_dwStartingAceIndex), _pAceList, uintptr(_nAceListLength))
+	if err != windows.NOERROR {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err.(windows.Errno)))
 	}
 	return uint32(r0)
 }
@@ -6269,9 +6449,12 @@ func XGetAce(tls *TLS, _pAcl uintptr, _dwAceIndex uint32, _pAce uintptr) (r int3
 		trc("pAcl=%+v dwAceIndex=%+v pAce=%+v", _pAcl, _dwAceIndex, _pAce)
 		defer func() { trc(`XGetAce->%+v`, r) }()
 	}
-	r0, _, err := procGetAce.Call(_pAcl, uintptr(_dwAceIndex), _pAce)
-	if r0 == 0 {
-		tls.setLastError(err)
+	r0, r1, err := procGetAce.Call(_pAcl, uintptr(_dwAceIndex), _pAce)
+	if err != windows.NOERROR {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err.(windows.Errno)))
 	}
 	return int32(r0)
 }
@@ -6295,8 +6478,8 @@ func XGetAclInformation(t *TLS, pAcl, pAclInformation uintptr, nAclInformationLe
 		0,
 		0,
 	)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -6321,8 +6504,8 @@ func XGetFileSecurityA(t *TLS, lpFileName uintptr, RequestedInformation uint32, 
 		lpnLengthNeeded,
 		0,
 	)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -6333,7 +6516,13 @@ func XGetLengthSid(tls *TLS, _pSid uintptr) (r uint32) {
 		trc("pSid=%+v", _pSid)
 		defer func() { trc(`XGetLengthSid->%+v`, r) }()
 	}
-	r0, _, _ := procGetLengthSid.Call(_pSid)
+	r0, r1, err := procGetLengthSid.Call(_pSid)
+	if err != windows.NOERROR {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err.(windows.Errno)))
+	}
 	return uint32(r0)
 }
 
@@ -6356,8 +6545,8 @@ func XGetSecurityDescriptorDacl(t *TLS, pSecurityDescriptor, lpbDaclPresent, pDa
 		0,
 		0,
 	)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -6371,7 +6560,10 @@ func XGetSidLengthRequired(t *TLS, nSubAuthorityCount uint8) int32 {
 	if __ccgo_strace {
 		trc("t=%v nSubAuthorityCount=%v, (%v:)", t, nSubAuthorityCount, origin(2))
 	}
-	r0, _, _ := procGetSidLengthRequired.Call(uintptr(nSubAuthorityCount), 0, 0)
+	r0, _, err := procGetSidLengthRequired.Call(uintptr(nSubAuthorityCount), 0, 0)
+	if err != windows.NOERROR {
+		t.setErrno(err)
+	}
 	return int32(r0)
 }
 
@@ -6385,7 +6577,10 @@ func XGetSidSubAuthority(t *TLS, pSid uintptr, nSubAuthority uint32) uintptr {
 	if __ccgo_strace {
 		trc("t=%v pSid=%v nSubAuthority=%v, (%v:)", t, pSid, nSubAuthority, origin(2))
 	}
-	r0, _, _ := procGetSidSubAuthority.Call(pSid, uintptr(nSubAuthority), 0)
+	r0, _, err := procGetSidSubAuthority.Call(pSid, uintptr(nSubAuthority), 0)
+	if err != windows.NOERROR {
+		t.setErrno(err)
+	}
 	return r0
 }
 
@@ -6395,9 +6590,12 @@ func XInitializeAcl(tls *TLS, _pAcl uintptr, _nAclLength uint32, _dwAclRevision 
 		trc("pAcl=%+v nAclLength=%+v dwAclRevision=%+v", _pAcl, _nAclLength, _dwAclRevision)
 		defer func() { trc(`XInitializeAcl->%+v`, r) }()
 	}
-	r0, _, err := procInitializeAcl.Call(_pAcl, uintptr(_nAclLength), uintptr(_dwAclRevision))
-	if r0 == 0 {
-		tls.setLastError(err)
+	r0, r1, err := procInitializeAcl.Call(_pAcl, uintptr(_nAclLength), uintptr(_dwAclRevision))
+	if err != windows.NOERROR {
+		if __ccgo_strace {
+			trc(`r0=%v r1=%v err=%v`, r0, r1, err)
+		}
+		tls.SetLastError(uint32(err.(windows.Errno)))
 	}
 	return int32(r0)
 }
@@ -6414,8 +6612,8 @@ func XInitializeSid(t *TLS, Sid, pIdentifierAuthority uintptr, nSubAuthorityCoun
 		trc("t=%v pIdentifierAuthority=%v nSubAuthorityCount=%v, (%v:)", t, pIdentifierAuthority, nSubAuthorityCount, origin(2))
 	}
 	r0, _, err := procInitializeSid.Call(Sid, pIdentifierAuthority, uintptr(nSubAuthorityCount))
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -6465,153 +6663,157 @@ func XSetNamedSecurityInfoA(t *TLS, pObjectName uintptr, ObjectType int32, Secur
 	panic(todo(""))
 }
 
-// BOOL CreateProcessA(
+// // BOOL CreateProcessA(
+// //
+// //	LPCSTR                lpApplicationName,
+// //	LPSTR                 lpCommandLine,
+// //	LPSECURITY_ATTRIBUTES lpProcessAttributes,
+// //	LPSECURITY_ATTRIBUTES lpThreadAttributes,
+// //	BOOL                  bInheritHandles,
+// //	DWORD                 dwCreationFlags,
+// //	LPVOID                lpEnvironment,
+// //	LPCSTR                lpCurrentDirectory,
+// //	LPSTARTUPINFOA        lpStartupInfo,
+// //	LPPROCESS_INFORMATION lpProcessInformation
+// //
+// // );
+// func XCreateProcessA(t *TLS, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes uintptr, bInheritHandles int32,
+// 	dwCreationFlags uint32, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation uintptr) int32 {
+// 	r1, _, err := procCreateProcessA.Call(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes,
+// 		uintptr(bInheritHandles), uintptr(dwCreationFlags), lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation, 0, 0)
+// 	if r1 == 0 {
+// 		if err != windows.NOERROR {
+// 			t.setErrno(err)
+// 		} else {
+// 			t.setErrno(errno.EINVAL)
+// 		}
+// 	}
+// 	return int32(r1)
+// }
 //
-//	LPCSTR                lpApplicationName,
-//	LPSTR                 lpCommandLine,
-//	LPSECURITY_ATTRIBUTES lpProcessAttributes,
-//	LPSECURITY_ATTRIBUTES lpThreadAttributes,
-//	BOOL                  bInheritHandles,
-//	DWORD                 dwCreationFlags,
-//	LPVOID                lpEnvironment,
-//	LPCSTR                lpCurrentDirectory,
-//	LPSTARTUPINFOA        lpStartupInfo,
-//	LPPROCESS_INFORMATION lpProcessInformation
+// // unsigned int _set_abort_behavior(
+// //
+// //	unsigned int flags,
+// //	unsigned int mask
+// //
+// // );
+// func X_set_abort_behavior(t *TLS, _ ...interface{}) uint32 {
+// 	panic(todo(""))
+// }
 //
-// );
-func XCreateProcessA(t *TLS, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes uintptr, bInheritHandles int32,
-	dwCreationFlags uint32, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation uintptr) int32 {
-	r1, _, err := procCreateProcessA.Call(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes,
-		uintptr(bInheritHandles), uintptr(dwCreationFlags), lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation, 0, 0)
-	if r1 == 0 {
-		t.setLastError(err)
-	}
-	return int32(r1)
-}
-
-// unsigned int _set_abort_behavior(
+// // HANDLE OpenEventA(
+// //
+// //	DWORD  dwDesiredAccess,
+// //	BOOL   bInheritHandle,
+// //	LPCSTR lpName
+// //
+// // );
+// func XOpenEventA(t *TLS, dwDesiredAccess uint32, bInheritHandle uint32, lpName uintptr) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v dwDesiredAccess=%v bInheritHandle=%v lpName=%v, (%v:)", t, dwDesiredAccess, bInheritHandle, lpName, origin(2))
+// 	}
+// 	r0, _, err := procOpenEventA.Call(uintptr(dwDesiredAccess), uintptr(bInheritHandle), lpName)
+// 	if r0 == 0 {
+// 		t.setErrno(err)
+// 	}
+// 	return r0
+// }
 //
-//	unsigned int flags,
-//	unsigned int mask
+// // size_t _msize(
+// //
+// //	void *memblock
+// //
+// // );
+// func X_msize(t *TLS, memblock uintptr) types.Size_t {
+// 	if __ccgo_strace {
+// 		trc("t=%v memblock=%v, (%v:)", t, memblock, origin(2))
+// 	}
+// 	return types.Size_t(UsableSize(memblock))
+// }
 //
-// );
-func X_set_abort_behavior(t *TLS, _ ...interface{}) uint32 {
-	panic(todo(""))
-}
-
-// HANDLE OpenEventA(
+// // unsigned long _byteswap_ulong ( unsigned long val );
+// func X_byteswap_ulong(t *TLS, val ulong) ulong {
+// 	if __ccgo_strace {
+// 		trc("t=%v val=%v, (%v:)", t, val, origin(2))
+// 	}
+// 	return X__builtin_bswap32(t, val)
+// }
 //
-//	DWORD  dwDesiredAccess,
-//	BOOL   bInheritHandle,
-//	LPCSTR lpName
+// // unsigned __int64 _byteswap_uint64 ( unsigned __int64 val );
+// func X_byteswap_uint64(t *TLS, val uint64) uint64 {
+// 	if __ccgo_strace {
+// 		trc("t=%v val=%v, (%v:)", t, val, origin(2))
+// 	}
+// 	return X__builtin_bswap64(t, val)
+// }
 //
-// );
-func XOpenEventA(t *TLS, dwDesiredAccess uint32, bInheritHandle uint32, lpName uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v dwDesiredAccess=%v bInheritHandle=%v lpName=%v, (%v:)", t, dwDesiredAccess, bInheritHandle, lpName, origin(2))
-	}
-	r0, _, err := procOpenEventA.Call(uintptr(dwDesiredAccess), uintptr(bInheritHandle), lpName)
-	if r0 == 0 {
-		t.setLastError(err)
-	}
-	return r0
-}
-
-// size_t _msize(
+// // int _commit(
+// //
+// //	int fd
+// //
+// // );
+// func X_commit(t *TLS, fd int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v fd=%v, (%v:)", t, fd, origin(2))
+// 	}
+// 	return Xfsync(t, fd)
+// }
 //
-//	void *memblock
+// // int _stati64(
+// //
+// //	const char *path,
+// //	struct _stati64 *buffer
+// //
+// // );
+// func X_stati64(t *TLS, path, buffer uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v path=%v buffer=%v, (%v:)", t, path, buffer, origin(2))
+// 	}
+// 	r0, _, err := procStati64.Call(uintptr(path), uintptr(buffer))
+// 	if err != windows.NOERROR {
+// 		t.setErrno(err)
+// 	}
+// 	return int32(r0)
+// }
 //
-// );
-func X_msize(t *TLS, memblock uintptr) types.Size_t {
-	if __ccgo_strace {
-		trc("t=%v memblock=%v, (%v:)", t, memblock, origin(2))
-	}
-	return types.Size_t(UsableSize(memblock))
-}
-
-// unsigned long _byteswap_ulong ( unsigned long val );
-func X_byteswap_ulong(t *TLS, val ulong) ulong {
-	if __ccgo_strace {
-		trc("t=%v val=%v, (%v:)", t, val, origin(2))
-	}
-	return X__builtin_bswap32(t, val)
-}
-
-// unsigned __int64 _byteswap_uint64 ( unsigned __int64 val );
-func X_byteswap_uint64(t *TLS, val uint64) uint64 {
-	if __ccgo_strace {
-		trc("t=%v val=%v, (%v:)", t, val, origin(2))
-	}
-	return X__builtin_bswap64(t, val)
-}
-
-// int _commit(
+// // int _fstati64(int fd, struct _stati64 *buffer);
+// func X_fstati64(t *TLS, fd int32, buffer uintptr) int32 {
+// 	return X_fstat64(t, fd, buffer)
+// }
 //
-//	int fd
+// // int _findnext32(
+// //
+// //	intptr_t handle,
+// //	struct _finddata32_t *fileinfo
+// //
+// // );
+// func X_findnext32(t *TLS, handle types.Intptr_t, buffer uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v handle=%v buffer=%v, (%v:)", t, handle, buffer, origin(2))
+// 	}
+// 	r0, _, err := procFindnext32.Call(uintptr(handle), buffer)
+// 	if err != windows.NOERROR {
+// 		t.setErrno(err)
+// 	}
+// 	return int32(r0)
+// }
 //
-// );
-func X_commit(t *TLS, fd int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v fd=%v, (%v:)", t, fd, origin(2))
-	}
-	return Xfsync(t, fd)
-}
-
-// int _stati64(
-//
-//	const char *path,
-//	struct _stati64 *buffer
-//
-// );
-func X_stati64(t *TLS, path, buffer uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v path=%v buffer=%v, (%v:)", t, path, buffer, origin(2))
-	}
-	r0, _, err := crtStati64.Call(uintptr(path), uintptr(buffer))
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
-	return int32(r0)
-}
-
-// int _fstati64(int fd, struct _stati64 *buffer);
-func X_fstati64(t *TLS, fd int32, buffer uintptr) int32 {
-	return X_fstat64(t, fd, buffer)
-}
-
-// int _findnext32(
-//
-//	intptr_t handle,
-//	struct _finddata32_t *fileinfo
-//
-// );
-func X_findnext32(t *TLS, handle types.Intptr_t, buffer uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v handle=%v buffer=%v, (%v:)", t, handle, buffer, origin(2))
-	}
-	r0, _, err := crtFindnext32.Call(uintptr(handle), buffer)
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
-	return int32(r0)
-}
-
-// intptr_t _findfirst32(
-//
-//	const char *filespec,
-//	struct _finddata32_t *fileinfo
-//
-// );
-func X_findfirst32(t *TLS, filespec, fileinfo uintptr) types.Intptr_t {
-	if __ccgo_strace {
-		trc("t=%v fileinfo=%v, (%v:)", t, fileinfo, origin(2))
-	}
-	r0, _, err := crtFindfirst32.Call(filespec, fileinfo)
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
-	return types.Intptr_t(r0)
-}
+// // intptr_t _findfirst32(
+// //
+// //	const char *filespec,
+// //	struct _finddata32_t *fileinfo
+// //
+// // );
+// func X_findfirst32(t *TLS, filespec, fileinfo uintptr) types.Intptr_t {
+// 	if __ccgo_strace {
+// 		trc("t=%v fileinfo=%v, (%v:)", t, fileinfo, origin(2))
+// 	}
+// 	r0, _, err := procFindfirst32.Call(filespec, fileinfo)
+// 	if err != windows.NOERROR {
+// 		t.setErrno(err)
+// 	}
+// 	return types.Intptr_t(r0)
+// }
 
 /*-
  * Copyright (c) 1990 The Regents of the University of California.
@@ -6887,17 +7089,17 @@ func Xstrtoul(t *TLS, nptr, endptr uintptr, base int32) ulong {
 	return acc
 }
 
-// int __isoc99_sscanf(const char *str, const char *format, ...);
-func X__isoc99_sscanf(t *TLS, str, format, va uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v va=%v, (%v:)", t, va, origin(2))
-	}
-	r := scanf(strings.NewReader(GoString(str)), format, va)
-	// if dmesgs {
-	// 	dmesg("%v: %q %q: %d", origin(1), GoString(str), GoString(format), r)
-	// }
-	return r
-}
+// // int __isoc99_sscanf(const char *str, const char *format, ...);
+// func X__isoc99_sscanf(t *TLS, str, format, va uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v va=%v, (%v:)", t, va, origin(2))
+// 	}
+// 	r := scanf(strings.NewReader(GoString(str)), format, va)
+// 	// if dmesgs {
+// 	// 	dmesg("%v: %q %q: %d", origin(1), GoString(str), GoString(format), r)
+// 	// }
+// 	return r
+// }
 
 // int sscanf(const char *str, const char *format, ...);
 func Xsscanf(t *TLS, str, format, va uintptr) int32 {
@@ -6942,7 +7144,7 @@ func X_gmtime64(t *TLS, sourceTime uintptr) uintptr {
 	if __ccgo_strace {
 		trc("t=%v sourceTime=%v, (%v:)", t, sourceTime, origin(2))
 	}
-	r0, _, err := crtGmtime64.Call(uintptr(sourceTime))
+	r0, _, err := procGmtime64.Call(uintptr(sourceTime))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
@@ -6957,13 +7159,13 @@ func X_mktime64(t *TLS, timeptr uintptr) time.X__time64_t {
 	return time.X__time64_t(Xmktime(t, timeptr))
 }
 
-// char * gai_strerrorA(int ecode);
-func Xgai_strerrorA(t *TLS, ecode int32) uintptr {
-	if __ccgo_strace {
-		trc("t=%v ecode=%v, (%v:)", t, ecode, origin(2))
-	}
-	panic(todo(""))
-}
+// // char * gai_strerrorA(int ecode);
+// func Xgai_strerrorA(t *TLS, ecode int32) uintptr {
+// 	if __ccgo_strace {
+// 		trc("t=%v ecode=%v, (%v:)", t, ecode, origin(2))
+// 	}
+// 	panic(todo(""))
+// }
 
 // https://github.com/Alexpux/mingw-w64/blob/master/mingw-w64-headers/crt/sys/timeb.h#L69
 //
@@ -7017,24 +7219,24 @@ func X__ccgo_pthreadMutexattrGettype(tls *TLS, a uintptr) int32 { /* pthread_att
 }
 
 func Xchmod(t *TLS, pathname uintptr, mode int32) int32 {
-	r0, _, err := crtChmod.Call(pathname, uintptr(mode))
+	r0, _, err := procChmod.Call(pathname, uintptr(mode))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
 	return int32(r0)
 }
 
-// typedef enum _COMPUTER_NAME_FORMAT {
-//   ComputerNameNetBIOS,
-//   ComputerNameDnsHostname,
-//   ComputerNameDnsDomain,
-//   ComputerNameDnsFullyQualified,
-//   ComputerNamePhysicalNetBIOS,
-//   ComputerNamePhysicalDnsHostname,
-//   ComputerNamePhysicalDnsDomain,
-//   ComputerNamePhysicalDnsFullyQualified,
-//   ComputerNameMax
-// } COMPUTER_NAME_FORMAT;
+// // typedef enum _COMPUTER_NAME_FORMAT {
+// //   ComputerNameNetBIOS,
+// //   ComputerNameDnsHostname,
+// //   ComputerNameDnsDomain,
+// //   ComputerNameDnsFullyQualified,
+// //   ComputerNamePhysicalNetBIOS,
+// //   ComputerNamePhysicalDnsHostname,
+// //   ComputerNamePhysicalDnsDomain,
+// //   ComputerNamePhysicalDnsFullyQualified,
+// //   ComputerNameMax
+// // } COMPUTER_NAME_FORMAT;
 
 // BOOL GetComputerNameExW(
 //
@@ -7048,8 +7250,8 @@ func XGetComputerNameExW(t *TLS, nameType int32, lpBuffer, nSize uintptr) int32 
 		trc("t=%v nameType=%v nSize=%v, (%v:)", t, nameType, nSize, origin(2))
 	}
 	r0, _, err := procGetComputerNameExW.Call(uintptr(nameType), lpBuffer, nSize)
-	if r0 == 0 {
-		t.setLastError(err)
+	if err != windows.NOERROR {
+		t.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -7180,21 +7382,21 @@ func Xfabsl(t *TLS, x float64) float64 {
 	return math.Abs(x)
 }
 
-func X__stdio_common_vfprintf(t *TLS, args ...interface{}) int32     { panic("TODO") }
-func X__stdio_common_vfprintf_p(t *TLS, args ...interface{}) int32   { panic("TODO") }
-func X__stdio_common_vfprintf_s(t *TLS, args ...interface{}) int32   { panic("TODO") }
-func X__stdio_common_vfscanf(t *TLS, args ...interface{}) int32      { panic("TODO") }
-func X__stdio_common_vfwprintf_s(t *TLS, args ...interface{}) int32  { panic("TODO") }
-func X__stdio_common_vfwscanf(t *TLS, args ...interface{}) int32     { panic("TODO") }
-func X__stdio_common_vsnprintf_s(t *TLS, args ...interface{}) int32  { panic("TODO") }
-func X__stdio_common_vsnwprintf_s(t *TLS, args ...interface{}) int32 { panic("TODO") }
-func X__stdio_common_vsprintf(t *TLS, args ...interface{}) int32     { panic("TODO") }
-func X__stdio_common_vsprintf_p(t *TLS, args ...interface{}) int32   { panic("TODO") }
-func X__stdio_common_vsprintf_s(t *TLS, args ...interface{}) int32   { panic("TODO") }
-func X__stdio_common_vsscanf(t *TLS, args ...interface{}) int32      { panic("TODO") }
-func X__stdio_common_vswprintf(t *TLS, args ...interface{}) int32    { panic("TODO") }
-func X__stdio_common_vswprintf_s(t *TLS, args ...interface{}) int32  { panic("TODO") }
-func X__stdio_common_vswscanf(t *TLS, args ...interface{}) int32     { panic("TODO") }
+// func X__stdio_common_vfprintf(t *TLS, args ...interface{}) int32     { panic("TODO") }
+// func X__stdio_common_vfprintf_p(t *TLS, args ...interface{}) int32   { panic("TODO") }
+// func X__stdio_common_vfprintf_s(t *TLS, args ...interface{}) int32   { panic("TODO") }
+// func X__stdio_common_vfscanf(t *TLS, args ...interface{}) int32      { panic("TODO") }
+// func X__stdio_common_vfwprintf_s(t *TLS, args ...interface{}) int32  { panic("TODO") }
+// func X__stdio_common_vfwscanf(t *TLS, args ...interface{}) int32     { panic("TODO") }
+// func X__stdio_common_vsnprintf_s(t *TLS, args ...interface{}) int32  { panic("TODO") }
+// func X__stdio_common_vsnwprintf_s(t *TLS, args ...interface{}) int32 { panic("TODO") }
+// func X__stdio_common_vsprintf(t *TLS, args ...interface{}) int32     { panic("TODO") }
+// func X__stdio_common_vsprintf_p(t *TLS, args ...interface{}) int32   { panic("TODO") }
+// func X__stdio_common_vsprintf_s(t *TLS, args ...interface{}) int32   { panic("TODO") }
+// func X__stdio_common_vsscanf(t *TLS, args ...interface{}) int32      { panic("TODO") }
+// func X__stdio_common_vswprintf(t *TLS, args ...interface{}) int32    { panic("TODO") }
+// func X__stdio_common_vswprintf_s(t *TLS, args ...interface{}) int32  { panic("TODO") }
+// func X__stdio_common_vswscanf(t *TLS, args ...interface{}) int32     { panic("TODO") }
 
 func X_lseeki64(t *TLS, fd int32, offset int64, whence int32) int64 {
 	if __ccgo_strace {
@@ -7229,24 +7431,24 @@ func Xislower(tls *TLS, c int32) int32 { /* islower.c:4:5: */
 	return Bool32(uint32(c)-uint32('a') < uint32(26))
 }
 
-func Xisupper(tls *TLS, c int32) int32 { /* isupper.c:4:5: */
-	if __ccgo_strace {
-		trc("tls=%v c=%v, (%v:)", tls, c, origin(2))
-	}
-	return Bool32(uint32(c)-uint32('A') < uint32(26))
-}
-
-// int access(const char *pathname, int mode);
-func Xaccess(t *TLS, pathname uintptr, mode int32) int32 {
-	if __ccgo_strace {
-		trc("t=%v pathname=%v mode=%v, (%v:)", t, pathname, mode, origin(2))
-	}
-	r0, _, err := crtAccess.Call(uintptr(pathname), uintptr(mode))
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
-	return int32(r0)
-}
+// func Xisupper(tls *TLS, c int32) int32 { /* isupper.c:4:5: */
+// 	if __ccgo_strace {
+// 		trc("tls=%v c=%v, (%v:)", tls, c, origin(2))
+// 	}
+// 	return Bool32(uint32(c)-uint32('A') < uint32(26))
+// }
+//
+// // int access(const char *pathname, int mode);
+// func Xaccess(t *TLS, pathname uintptr, mode int32) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v pathname=%v mode=%v, (%v:)", t, pathname, mode, origin(2))
+// 	}
+// 	r0, _, err := procAccess.Call(uintptr(pathname), uintptr(mode))
+// 	if err != windows.NOERROR {
+// 		t.setErrno(err)
+// 	}
+// 	return int32(r0)
+// }
 
 // int _vscprintf(const char *format, va_list argptr);
 func X_vscprintf(t *TLS, format uintptr, argptr uintptr) int32 {
@@ -7257,148 +7459,148 @@ func X_vscprintf(t *TLS, format uintptr, argptr uintptr) int32 {
 	return int32(len(printf(format, argptr)))
 }
 
-// int _stat32i64(const char *path, struct _stat32i64 *buffer);
-func X_stat64i32(t *TLS, path uintptr, buffer uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v path=%v buffer=%v, (%v:)", t, path, buffer, origin(2))
-	}
-	r0, _, err := crtStat64i32.Call(uintptr(path), uintptr(buffer))
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
-	return int32(r0)
-}
-
-func AtomicLoadNUint8(ptr uintptr, memorder int32) uint8 {
-	return byte(a_load_8(ptr))
-}
+// // int _stat32i64(const char *path, struct _stat32i64 *buffer);
+// func X_stat64i32(t *TLS, path uintptr, buffer uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v path=%v buffer=%v, (%v:)", t, path, buffer, origin(2))
+// 	}
+// 	r0, _, err := procStat64i32.Call(uintptr(path), uintptr(buffer))
+// 	if err != windows.NOERROR {
+// 		t.setErrno(err)
+// 	}
+// 	return int32(r0)
+// }
+//
+// func AtomicLoadNUint8(ptr uintptr, memorder int32) uint8 {
+// 	return byte(a_load_8(ptr))
+// }
 
 // struct tm *gmtime( const time_t *sourceTime );
 func Xgmtime(t *TLS, sourceTime uintptr) uintptr {
 	if __ccgo_strace {
 		trc("t=%v sourceTime=%v, (%v:)", t, sourceTime, origin(2))
 	}
-	r0, _, err := crtGmtime.Call(uintptr(sourceTime))
+	r0, _, err := procGmtime.Call(uintptr(sourceTime))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
 	return uintptr(r0)
 }
 
-// size_t strftime(
+// // size_t strftime(
+// //
+// //	char *strDest,
+// //	size_t maxsize,
+// //	const char *format,
+// //	const struct tm *timeptr
+// //
+// // );
+// func Xstrftime(tls *TLS, s uintptr, n size_t, f uintptr, tm uintptr) (r size_t) {
+// 	if __ccgo_strace {
+// 		trc("tls=%v s=%v n=%v f=%v tm=%v, (%v:)", tls, s, n, f, tm, origin(2))
+// 		defer func() { trc("-> %v", r) }()
+// 	}
+// 	tt := gotime.Date(
+// 		int((*time.Tm)(unsafe.Pointer(tm)).Ftm_year+1900),
+// 		gotime.Month((*time.Tm)(unsafe.Pointer(tm)).Ftm_mon+1),
+// 		int((*time.Tm)(unsafe.Pointer(tm)).Ftm_mday),
+// 		int((*time.Tm)(unsafe.Pointer(tm)).Ftm_hour),
+// 		int((*time.Tm)(unsafe.Pointer(tm)).Ftm_min),
+// 		int((*time.Tm)(unsafe.Pointer(tm)).Ftm_sec),
+// 		0,
+// 		gotime.UTC,
+// 	)
+// 	fmt := GoString(f)
+// 	var result string
+// 	if fmt != "" {
+// 		result = strftime.Format(fmt, tt)
+// 	}
+// 	switch r = size_t(len(result)); {
+// 	case r > n:
+// 		r = 0
+// 	default:
+// 		copy((*RawMem)(unsafe.Pointer(s))[:r:r], result)
+// 		*(*byte)(unsafe.Pointer(s + uintptr(r))) = 0
+// 	}
+// 	return r
 //
-//	char *strDest,
-//	size_t maxsize,
-//	const char *format,
-//	const struct tm *timeptr
+// }
 //
-// );
-func Xstrftime(tls *TLS, s uintptr, n size_t, f uintptr, tm uintptr) (r size_t) {
-	if __ccgo_strace {
-		trc("tls=%v s=%v n=%v f=%v tm=%v, (%v:)", tls, s, n, f, tm, origin(2))
-		defer func() { trc("-> %v", r) }()
-	}
-	tt := gotime.Date(
-		int((*time.Tm)(unsafe.Pointer(tm)).Ftm_year+1900),
-		gotime.Month((*time.Tm)(unsafe.Pointer(tm)).Ftm_mon+1),
-		int((*time.Tm)(unsafe.Pointer(tm)).Ftm_mday),
-		int((*time.Tm)(unsafe.Pointer(tm)).Ftm_hour),
-		int((*time.Tm)(unsafe.Pointer(tm)).Ftm_min),
-		int((*time.Tm)(unsafe.Pointer(tm)).Ftm_sec),
-		0,
-		gotime.UTC,
-	)
-	fmt := GoString(f)
-	var result string
-	if fmt != "" {
-		result = strftime.Format(fmt, tt)
-	}
-	switch r = size_t(len(result)); {
-	case r > n:
-		r = 0
-	default:
-		copy((*RawMem)(unsafe.Pointer(s))[:r:r], result)
-		*(*byte)(unsafe.Pointer(s + uintptr(r))) = 0
-	}
-	return r
-
-}
-
-func X__mingw_strtod(t *TLS, s uintptr, p uintptr) float64 {
-	return Xstrtod(t, s, p)
-}
+// func X__mingw_strtod(t *TLS, s uintptr, p uintptr) float64 {
+// 	return Xstrtod(t, s, p)
+// }
 
 func Xstrtod(t *TLS, s uintptr, p uintptr) float64 {
 	if __ccgo_strace {
 		trc("tls=%v s=%v p=%v, (%v:)", t, s, p, origin(2))
 	}
-	r0, _, err := crtStrtod.Call(uintptr(s), uintptr(p))
+	r0, _, err := procStrtod.Call(uintptr(s), uintptr(p))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
 	return math.Float64frombits(uint64(r0))
 }
 
-// int vsnprintf(char *str, size_t size, const char *format, va_list ap);
-func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v str=%v size=%v ap=%v, (%v:)", t, str, size, ap, origin(2))
-	}
-	return Xvsnprintf(t, str, size, format, ap)
-}
-
-func X__ccgo_SyscallFP() {
-	s := fmt.Sprintf("%s\nTODO syscall: function pointer", debug.Stack())
-	panic(s)
-}
-
-func CreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t, lpStartAddress, lpParameter uintptr, dwCreationFlags uint32, lpThreadId uintptr) uintptr {
-	return XCreateThread(t, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
-}
-
-// wchar_t *wcsncpy(wchar_t *strDest, const wchar_t *strSource, size_t count);
-func Xwcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
-	r0, _, err := crtWcsncpy.Call(strDest, strSource, uintptr(count))
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
-	return r0
-}
-
-// wchar_t *wcsrchr(const wchar_t *str, wchar_t c);
-func Xwcsrchr(t *TLS, str uintptr, c types.Wchar_t) uintptr {
-	r0, _, err := crtWcsrchr.Call(str, uintptr(c))
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
-	return r0
-}
-
-// __attribute__ ((__dllimport__)) char * __attribute__((__cdecl__)) _ctime64(const __time64_t *_Time);
-func X_ctime64(tls *TLS, __Time uintptr) (r uintptr) {
-	if __ccgo_strace {
-		trc("_Time=%+v", __Time)
-		defer func() { trc(`X_ctime64->%+v`, r) }()
-	}
-	r0, _, err := crtCtime64.Call(__Time)
-	if err != windows.NOERROR {
-		tls.setErrno(int32(err.(windows.Errno)))
-	}
-	return uintptr(r0)
-}
-
-// __attribute__ ((__dllimport__)) __time64_t __attribute__((__cdecl__)) _time64(__time64_t *_Time);
-func X_time64(tls *TLS, __Time uintptr) (r int64) {
-	if __ccgo_strace {
-		trc("_Time=%+v", __Time)
-		defer func() { trc(`X_time64->%+v`, r) }()
-	}
-	r0, _, err := crtTime64.Call(__Time)
-	if err != windows.NOERROR {
-		tls.setErrno(int32(err.(windows.Errno)))
-	}
-	return int64(r0)
-}
+// // int vsnprintf(char *str, size_t size, const char *format, va_list ap);
+// func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v str=%v size=%v ap=%v, (%v:)", t, str, size, ap, origin(2))
+// 	}
+// 	return Xvsnprintf(t, str, size, format, ap)
+// }
+//
+// func X__ccgo_SyscallFP() {
+// 	s := fmt.Sprintf("%s\nTODO syscall: function pointer", debug.Stack())
+// 	panic(s)
+// }
+//
+// func CreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t, lpStartAddress, lpParameter uintptr, dwCreationFlags uint32, lpThreadId uintptr) uintptr {
+// 	return XCreateThread(t, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
+// }
+//
+// // wchar_t *wcsncpy(wchar_t *strDest, const wchar_t *strSource, size_t count);
+// func Xwcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
+// 	r0, _, err := procWcsncpy.Call(strDest, strSource, uintptr(count))
+// 	if err != windows.NOERROR {
+// 		t.setErrno(err)
+// 	}
+// 	return r0
+// }
+//
+// // wchar_t *wcsrchr(const wchar_t *str, wchar_t c);
+// func Xwcsrchr(t *TLS, str uintptr, c types.Wchar_t) uintptr {
+// 	r0, _, err := procWcsrchr.Call(str, uintptr(c))
+// 	if err != windows.NOERROR {
+// 		t.setErrno(err)
+// 	}
+// 	return r0
+// }
+//
+// // __attribute__ ((__dllimport__)) char * __attribute__((__cdecl__)) _ctime64(const __time64_t *_Time);
+// func X_ctime64(tls *TLS, __Time uintptr) (r uintptr) {
+// 	if __ccgo_strace {
+// 		trc("_Time=%+v", __Time)
+// 		defer func() { trc(`X_ctime64->%+v`, r) }()
+// 	}
+// 	r0, _, err := procCtime64.Call(__Time)
+// 	if err != windows.NOERROR {
+// 		tls.setErrno(int32(err.(windows.Errno)))
+// 	}
+// 	return uintptr(r0)
+// }
+//
+// // __attribute__ ((__dllimport__)) __time64_t __attribute__((__cdecl__)) _time64(__time64_t *_Time);
+// func X_time64(tls *TLS, __Time uintptr) (r int64) {
+// 	if __ccgo_strace {
+// 		trc("_Time=%+v", __Time)
+// 		defer func() { trc(`X_time64->%+v`, r) }()
+// 	}
+// 	r0, _, err := procTime64.Call(__Time)
+// 	if err != windows.NOERROR {
+// 		tls.setErrno(int32(err.(windows.Errno)))
+// 	}
+// 	return int64(r0)
+// }
 
 // __attribute__ ((__dllimport__)) int __attribute__((__cdecl__)) _strnicmp(const char *_Str1,const char *_Str2,size_t _MaxCount);
 func X_strnicmp(tls *TLS, __Str1 uintptr, __Str2 uintptr, __MaxCount types.Size_t) (r int32) {
@@ -7406,7 +7608,7 @@ func X_strnicmp(tls *TLS, __Str1 uintptr, __Str2 uintptr, __MaxCount types.Size_
 		trc("_Str1=%+v _Str2=%+v _MaxCount=%+v", __Str1, __Str2, __MaxCount)
 		defer func() { trc(`X_strnicmp->%+v`, r) }()
 	}
-	r0, _, err := crtStrnicmp.Call(__Str1, __Str2, uintptr(__MaxCount))
+	r0, _, err := procStrnicmp.Call(__Str1, __Str2, uintptr(__MaxCount))
 	if err != windows.NOERROR {
 		tls.setErrno(int32(err.(windows.Errno)))
 	}
