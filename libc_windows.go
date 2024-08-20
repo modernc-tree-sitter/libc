@@ -7614,3 +7614,7 @@ func X_strnicmp(tls *TLS, __Str1 uintptr, __Str2 uintptr, __MaxCount types.Size_
 	}
 	return int32(r0)
 }
+
+// windows/amd64 libtcl8.6
+//
+// 2024-08-10 14:42	all.tcl:	Total	32662	Passed	29316	Skipped	3346	Failed	0
