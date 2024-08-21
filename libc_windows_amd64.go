@@ -18,7 +18,7 @@ import (
 // 	if __ccgo_strace {
 // 		trc("t=%v signum=%v oldact=%v, (%v:)", t, signum, oldact, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// 	musl/arch/x86_64/ksigaction.h
 // 	//
 // 	//	struct k_sigaction {
@@ -46,7 +46,7 @@ import (
 // 	// 	Xmemcpy(t, kact+unsafe.Offsetof(k_sigaction{}.mask), act+unsafe.Offsetof(signal.Sigaction{}.Fsa_mask), types.Size_t(unsafe.Sizeof(k_sigaction{}.mask)))
 // 	// }
 // 	// if oldact != 0 {
-// 	// 	panic(todo(""))
+// 	// 	die("");panic(todo(""))
 // 	// }
 //
 // 	// if _, _, err := unix.Syscall6(unix.SYS_RT_SIGACTION, uintptr(signal.SIGABRT), kact, koldact, unsafe.Sizeof(k_sigaction{}.mask), 0, 0); err != 0 {
@@ -55,7 +55,7 @@ import (
 // 	// }
 //
 // 	// if oldact != 0 {
-// 	// 	panic(todo(""))
+// 	// 	die("");panic(todo(""))
 // 	// }
 //
 // 	// return 0
@@ -66,7 +66,7 @@ import (
 // 	if __ccgo_strace {
 // 		trc("t=%v cmd=%v args=%v, (%v:)", t, cmd, args, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// var arg uintptr
 // 	// if args != 0 {
 // 	// 	arg = *(*uintptr)(unsafe.Pointer(args))
@@ -91,7 +91,7 @@ import (
 // 	if __ccgo_strace {
 // 		trc("t=%v statbuf=%v, (%v:)", t, statbuf, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_LSTAT, pathname, statbuf, 0); err != 0 {
 // 	// 	if dmesgs {
 // 	// 		dmesg("%v: %q: %v", origin(1), GoString(pathname), err)
@@ -111,7 +111,7 @@ import (
 // 	if __ccgo_strace {
 // 		trc("t=%v statbuf=%v, (%v:)", t, statbuf, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_STAT, pathname, statbuf, 0); err != 0 {
 // 	// 	if dmesgs {
 // 	// 		dmesg("%v: %q: %v", origin(1), GoString(pathname), err)
@@ -131,7 +131,7 @@ import (
 // 	if __ccgo_strace {
 // 		trc("t=%v fd=%v statbuf=%v, (%v:)", t, fd, statbuf, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_FSTAT, uintptr(fd), statbuf, 0); err != 0 {
 // 	// 	if dmesgs {
 // 	// 		dmesg("%v: fd %d: %v", origin(1), fd, err)
@@ -158,6 +158,7 @@ func Xmmap64(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, o
 	if __ccgo_strace {
 		trc("t=%v addr=%v length=%v fd=%v offset=%v, (%v:)", t, addr, length, fd, offset, origin(2))
 	}
+	die("")
 	panic(todo(""))
 	// data, _, err := unix.Syscall6(unix.SYS_MMAP, addr, uintptr(length), uintptr(prot), uintptr(flags), uintptr(fd), uintptr(offset))
 	// if err != 0 {
@@ -179,7 +180,7 @@ func Xmmap64(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, o
 // 	if __ccgo_strace {
 // 		trc("t=%v old_address=%v new_size=%v flags=%v args=%v, (%v:)", t, old_address, new_size, flags, args, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// var arg uintptr
 // 	// if args != 0 {
 // 	// 	arg = *(*uintptr)(unsafe.Pointer(args))
@@ -204,7 +205,7 @@ func Xmmap64(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, o
 // 	if __ccgo_strace {
 // 		trc("t=%v fd=%v length=%v, (%v:)", t, fd, length, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_FTRUNCATE, uintptr(fd), uintptr(length), 0); err != 0 {
 // 	// 	if dmesgs {
 // 	// 		dmesg("%v: fd %d: %v", origin(1), fd, err)
@@ -251,7 +252,7 @@ func Xmmap64(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, o
 // 	if __ccgo_strace {
 // 		trc("t=%v times=%v, (%v:)", t, times, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_UTIME, filename, times, 0); err != 0 {
 // 	// 	t.setErrno(err)
 // 	// 	return -1
@@ -265,10 +266,10 @@ func Xmmap64(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, o
 // 	if __ccgo_strace {
 // 		trc("t=%v seconds=%v, (%v:)", t, seconds, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// n, _, err := unix.Syscall(unix.SYS_ALARM, uintptr(seconds), 0, 0)
 // 	// if err != 0 {
-// 	// 	panic(todo(""))
+// 	// 	die("");panic(todo(""))
 // 	// }
 //
 // 	// return uint32(n)
@@ -279,7 +280,7 @@ func Xmmap64(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, o
 // 	if __ccgo_strace {
 // 		trc("t=%v tloc=%v, (%v:)", t, tloc, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// n, _, err := unix.Syscall(unix.SYS_TIME, tloc, 0, 0)
 // 	// if err != 0 {
 // 	// 	t.setErrno(err)
@@ -297,7 +298,7 @@ func Xmmap64(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, o
 // 	if __ccgo_strace {
 // 		trc("t=%v resource=%v rlim=%v, (%v:)", t, resource, rlim, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_GETRLIMIT, uintptr(resource), uintptr(rlim), 0); err != 0 {
 // 	// 	t.setErrno(err)
 // 	// 	return -1
@@ -311,7 +312,7 @@ func Xmmap64(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, o
 // 	if __ccgo_strace {
 // 		trc("t=%v path=%v mode=%v, (%v:)", t, path, mode, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_MKDIR, path, uintptr(mode), 0); err != 0 {
 // 	// 	t.setErrno(err)
 // 	// 	return -1
@@ -328,7 +329,7 @@ func Xmmap64(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, o
 // 	if __ccgo_strace {
 // 		trc("t=%v linkpath=%v, (%v:)", t, linkpath, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_SYMLINK, target, linkpath, 0); err != 0 {
 // 	// 	t.setErrno(err)
 // 	// 	return -1
@@ -345,7 +346,7 @@ func Xmmap64(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, o
 // 	if __ccgo_strace {
 // 		trc("t=%v times=%v, (%v:)", t, times, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_UTIMES, filename, times, 0); err != 0 {
 // 	// 	t.setErrno(err)
 // 	// 	return -1
@@ -381,7 +382,7 @@ func Xunlink(t *TLS, pathname uintptr) int32 {
 // 	if __ccgo_strace {
 // 		trc("t=%v pathname=%v, (%v:)", t, pathname, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_RMDIR, pathname, 0, 0); err != 0 {
 // 	// 	t.setErrno(err)
 // 	// 	return -1
@@ -398,7 +399,7 @@ func Xunlink(t *TLS, pathname uintptr) int32 {
 // 	if __ccgo_strace {
 // 		trc("t=%v pathname=%v mode=%v dev=%v, (%v:)", t, pathname, mode, dev, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_MKNOD, pathname, uintptr(mode), uintptr(dev)); err != 0 {
 // 	// 	t.setErrno(err)
 // 	// 	return -1
@@ -409,7 +410,7 @@ func Xunlink(t *TLS, pathname uintptr) int32 {
 //
 // // // int chown(const char *pathname, uid_t owner, gid_t group);
 // // func Xchown(t *TLS, pathname uintptr, owner types.Uid_t, group types.Gid_t) int32 {
-// // 	panic(todo(""))
+// // 	die("");panic(todo(""))
 // // 	// if _, _, err := unix.Syscall(unix.SYS_CHOWN, pathname, uintptr(owner), uintptr(group)); err != 0 {
 // // 	// 	t.setErrno(err)
 // // 	// 	return -1
@@ -423,7 +424,7 @@ func Xunlink(t *TLS, pathname uintptr) int32 {
 // 	if __ccgo_strace {
 // 		trc("t=%v newpath=%v, (%v:)", t, newpath, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_LINK, oldpath, newpath, 0); err != 0 {
 // 	// 	t.setErrno(err)
 // 	// 	return -1
@@ -437,7 +438,7 @@ func Xunlink(t *TLS, pathname uintptr) int32 {
 // 	if __ccgo_strace {
 // 		trc("t=%v pipefd=%v, (%v:)", t, pipefd, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// if _, _, err := unix.Syscall(unix.SYS_PIPE, pipefd, 0, 0); err != 0 {
 // 	// 	t.setErrno(err)
 // 	// 	return -1
@@ -451,7 +452,7 @@ func Xunlink(t *TLS, pathname uintptr) int32 {
 // 	if __ccgo_strace {
 // 		trc("t=%v newfd=%v, (%v:)", t, newfd, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// n, _, err := unix.Syscall(unix.SYS_DUP2, uintptr(oldfd), uintptr(newfd), 0)
 // 	// if err != 0 {
 // 	// 	t.setErrno(err)
@@ -466,7 +467,7 @@ func Xunlink(t *TLS, pathname uintptr) int32 {
 // 	if __ccgo_strace {
 // 		trc("t=%v buf=%v bufsize=%v, (%v:)", t, buf, bufsize, origin(2))
 // 	}
-// 	panic(todo(""))
+// 	die("");panic(todo(""))
 // 	// n, _, err := unix.Syscall(unix.SYS_READLINK, path, buf, uintptr(bufsize))
 // 	// if err != 0 {
 // 	// 	t.setErrno(err)
@@ -498,6 +499,7 @@ func Xfopen64(t *TLS, pathname, mode uintptr) uintptr {
 	case "a+":
 		flags = os.O_RDWR | os.O_CREATE | os.O_APPEND
 	default:
+		die("")
 		panic(m)
 	}
 	//TODO- flags |= fcntl.O_LARGEFILE
@@ -520,6 +522,7 @@ func Xrecv(t *TLS, sockfd uint64, buf uintptr, len, flags int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v buf=%v flags=%v, (%v:)", t, sockfd, buf, flags, origin(2))
 	}
+	die("")
 	panic(todo(""))
 }
 
@@ -527,6 +530,7 @@ func Xsend(t *TLS, sockfd uint64, buf uintptr, len, flags int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v buf=%v flags=%v, (%v:)", t, sockfd, buf, flags, origin(2))
 	}
+	die("")
 	panic(todo(""))
 }
 
@@ -534,6 +538,7 @@ func Xshutdown(t *TLS, sockfd uint64, how int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v how=%v, (%v:)", t, sockfd, how, origin(2))
 	}
+	die("")
 	panic(todo(""))
 }
 
@@ -541,6 +546,7 @@ func Xgetpeername(t *TLS, sockfd uint64, addr uintptr, addrlen uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v addr=%v addrlen=%v, (%v:)", t, sockfd, addr, addrlen, origin(2))
 	}
+	die("")
 	panic(todo(""))
 }
 
@@ -548,6 +554,7 @@ func Xgetsockname(t *TLS, sockfd uint64, addr, addrlen uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v addrlen=%v, (%v:)", t, sockfd, addrlen, origin(2))
 	}
+	die("")
 	panic(todo(""))
 }
 
@@ -555,6 +562,7 @@ func Xsocket(t *TLS, domain, type1, protocol int32) uint64 {
 	if __ccgo_strace {
 		trc("t=%v protocol=%v, (%v:)", t, protocol, origin(2))
 	}
+	die("")
 	panic(todo(""))
 }
 
@@ -562,6 +570,7 @@ func Xbind(t *TLS, sockfd uint64, addr uintptr, addrlen int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v addr=%v addrlen=%v, (%v:)", t, sockfd, addr, addrlen, origin(2))
 	}
+	die("")
 	panic(todo(""))
 }
 
@@ -569,6 +578,7 @@ func Xconnect(t *TLS, sockfd uint64, addr uintptr, addrlen int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v addr=%v addrlen=%v, (%v:)", t, sockfd, addr, addrlen, origin(2))
 	}
+	die("")
 	panic(todo(""))
 }
 
@@ -576,6 +586,7 @@ func Xlisten(t *TLS, sockfd uint64, backlog int32) int32 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v backlog=%v, (%v:)", t, sockfd, backlog, origin(2))
 	}
+	die("")
 	panic(todo(""))
 }
 
@@ -583,6 +594,7 @@ func Xaccept(t *TLS, sockfd uint64, addr uintptr, addrlen uintptr) uint64 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v addr=%v addrlen=%v, (%v:)", t, sockfd, addr, addrlen, origin(2))
 	}
+	die("")
 	panic(todo(""))
 }
 
@@ -595,10 +607,12 @@ func Xaccept(t *TLS, sockfd uint64, addr uintptr, addrlen uintptr) uint64 {
 //
 // );
 func XDefWindowProcW(t *TLS, _ ...interface{}) int64 {
+	die("")
 	panic(todo(""))
 }
 
 func XSendMessageTimeoutW(t *TLS, _ ...interface{}) int64 {
+	die("")
 	panic(todo(""))
 }
 

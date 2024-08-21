@@ -40,7 +40,6 @@ type TLS struct {
 	allocaStack [][]uintptr
 	allocas     []uintptr
 	jumpBuffers []uintptr
-	lastError   uint32
 	pthreadData
 	stack stackHeader
 
