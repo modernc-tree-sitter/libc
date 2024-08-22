@@ -110,10 +110,30 @@ type (
 	ulong        = uint32
 )
 
-// // xx: error handling audited
 var (
+	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
+	//--
+	procGetNearestColor        = modgdi32.NewProc("GetNearestColor")
+	procDeleteObject           = modgdi32.NewProc("DeleteObject")
+	procCreatePalette          = modgdi32.NewProc("CreatePalette")
+	procResizePalette          = modgdi32.NewProc("ResizePalette")
+	procGetPaletteEntries      = modgdi32.NewProc("GetPaletteEntries")
+	procGetNearestPaletteIndex = modgdi32.NewProc("GetNearestPaletteIndex")
+	procGetDeviceCaps          = modgdi32.NewProc("GetDeviceCaps")
+	procStretchDIBits          = modgdi32.NewProc("StretchDIBits")
+	procSetTextColor           = modgdi32.NewProc("SetTextColor")
+	procSetBkColor             = modgdi32.NewProc("SetBkColor")
+	//--
+
 	modkernel32 = windows.NewLazySystemDLL("kernel32.dll")
 	//--
+	procGlobalAlloc       = modkernel32.NewProc("GlobalAlloc")
+	procGetClipboardOwner = modkernel32.NewProc("GetClipboardOwner")
+	procGetLocaleInfoA    = modkernel32.NewProc("GetLocaleInfoA")
+	procGlobalLock        = modkernel32.NewProc("GlobalLock")
+	procGlobalUnlock      = modkernel32.NewProc("GlobalUnlock")
+	procLoadResource      = modkernel32.NewProc("LoadResource")
+	procLockResource      = modkernel32.NewProc("LockResource")
 	//	procAreFileApisANSI            = modkernel32.NewProc("AreFileApisANSI")
 	procCopyFileW = modkernel32.NewProc("CopyFileW")
 	//	procCreateEventA               = modkernel32.NewProc("CreateEventA")
@@ -134,6 +154,7 @@ var (
 	procFindFirstFileExW      = modkernel32.NewProc("FindFirstFileExW")
 	procFindFirstFileW        = modkernel32.NewProc("FindFirstFileW")
 	procFindNextFileW         = modkernel32.NewProc("FindNextFileW")
+	procFindResourceW         = modkernel32.NewProc("FindResourceW")
 	procFormatMessageW        = modkernel32.NewProc("FormatMessageW")
 	procGetACP                = modkernel32.NewProc("GetACP")
 	procGetCommState          = modkernel32.NewProc("GetCommState")
@@ -245,6 +266,19 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procSetClipboardData            = moduser32.NewProc("SetClipboardData")
+	procGetDC                       = moduser32.NewProc("GetDC")
+	procEmptyClipboard              = moduser32.NewProc("EmptyClipboard")
+	procCloseClipboard              = moduser32.NewProc("CloseClipboard")
+	procGetClipboardData            = moduser32.NewProc("GetClipboardData")
+	procIsClipboardFormatAvailable  = moduser32.NewProc("IsClipboardFormatAvailable")
+	procOpenClipboard               = moduser32.NewProc("OpenClipboard")
+	procBeginPaint                  = moduser32.NewProc("BeginPaint")
+	procEndPaint                    = moduser32.NewProc("EndPaint")
+	procDrawFocusRect               = moduser32.NewProc("DrawFocusRect")
+	procGetSysColor                 = moduser32.NewProc("GetSysColor")
+	procGetSystemMetrics            = moduser32.NewProc("GetSystemMetrics")
+	procSetWindowPos                = moduser32.NewProc("SetWindowPos")
 	procCharLowerW                  = moduser32.NewProc("CharLowerW")
 	procCreateWindowExW             = moduser32.NewProc("CreateWindowExW")
 	procMsgWaitForMultipleObjectsEx = moduser32.NewProc("MsgWaitForMultipleObjectsEx")
@@ -7560,14 +7594,14 @@ func Xstrtod(t *TLS, s uintptr, p uintptr) float64 {
 	return math.Float64frombits(uint64(r0))
 }
 
-// // int vsnprintf(char *str, size_t size, const char *format, va_list ap);
-// func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int32 {
-// 	if __ccgo_strace {
-// 		trc("t=%v str=%v size=%v ap=%v, (%v:)", t, str, size, ap, origin(2))
-// 	}
-// 	return Xvsnprintf(t, str, size, format, ap)
-// }
-//
+// int vsnprintf(char *str, size_t size, const char *format, va_list ap);
+func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int32 {
+	if __ccgo_strace {
+		trc("t=%v str=%v size=%v ap=%v, (%v:)", t, str, size, ap, origin(2))
+	}
+	return Xvsnprintf(t, str, size, format, ap)
+}
+
 // func X__ccgo_SyscallFP() {
 // 	s := fmt.Sprintf("%s\nTODO syscall: function pointer", debug.Stack())
 // 	die("");panic(s)
@@ -7634,36 +7668,584 @@ func X_strnicmp(tls *TLS, __Str1 uintptr, __Str2 uintptr, __MaxCount types.Size_
 	return int32(r0)
 }
 
-// windows/amd64 libtcl8.6
-//
-// 202408201442	windows/amd64	all.tcl:	Total	32662	Passed	29316	Skipped	3346	Failed	0
-//	1601		        all.tcl:	Total	32001	Passed	28890	Skipped	3052	Failed	59
-//	1622		        all.tcl:	Total	32001	Passed	28890	Skipped	3052	Failed	59
-//	1639		        all.tcl:	Total	32001	Passed	28890	Skipped	3052	Failed	59
-//	1730		        all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-//	1816		        all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-//	1840 			all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-//	1902		        all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-// 20240821
-//	1458		        all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-//	1530			all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-//	1557		        all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-//	1615		        all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-//	1633		        all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-//	1652		        all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-//	1711		        all.tcl:	Total	32001	Passed	28890	Skipped	3066	Failed	45
-//	1735		        all.tcl:	Total	32042	Passed	28926	Skipped	3114	Failed	2
-//	1801		        all.tcl:	Total	32662	Passed	29324	Skipped	3337	Failed	1
-//	1815		        all.tcl:	Total	32662	Passed	29324	Skipped	3338	Failed	0
-// 202408201455	linux/amd64	all.tcl:	Total	34591	Passed	31172	Skipped	3419	Failed	0
+// __attribute__((dllimport)) HRSRC FindResourceW(HMODULE hModule, LPCWSTR lpName, LPCWSTR lpType);
+func XFindResourceW(tls *TLS, _hModule THMODULE, _lpName TLPCWSTR, _lpType TLPCWSTR) (r THRSRC) {
+	if __ccgo_strace {
+		trc("hModule=%+v lpName=%+v lpType=%+v", _hModule, _lpName, _lpType)
+		defer func() { trc(`XFindResourceW->%+v`, r) }()
+	}
+	r0, _, err := procFindResourceW.Call(_hModule, _lpName, _lpType)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THRSRC(r0)
+}
 
-/*
+type THGLOBAL = uintptr
 
-env vars
+// __attribute__((dllimport)) HGLOBAL LoadResource (HMODULE hModule, HRSRC hResInfo);
+func XLoadResource(tls *TLS, _hModule THMODULE, _hResInfo THRSRC) (r THGLOBAL) {
+	if __ccgo_strace {
+		trc("hModule=%+v hResInfo=%+v", _hModule, _hResInfo)
+		defer func() { trc(`XLoadResource->%+v`, r) }()
+	}
+	r0, _, err := procLoadResource.Call(_hModule, _hResInfo)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THGLOBAL(r0)
+}
 
-DWORD GetEnvironmentVariableA(LPCSTR lpName, LPSTR lpBuffer, DWORD nSize);
-DWORD GetEnvironmentVariableW(LPCWSTR lpName, LPWSTR lpBuffer, DWORD nSize);
-wchar_t *_wgetenv(wchar_t *varname);
-int _wputenv(const wchar_t *envstring);
+// __attribute__((dllimport)) LPVOID LockResource (HGLOBAL hResData);
+func XLockResource(tls *TLS, _hResData THGLOBAL) (r TLPVOID) {
+	if __ccgo_strace {
+		trc("hResData=%+v", _hResData)
+		defer func() { trc(`XLockResource->%+v`, r) }()
+	}
+	r0, _, _ := procLockResource.Call(_hResData)
+	return TLPVOID(r0)
+}
 
-*/
+// __attribute__((dllimport)) int GetSystemMetrics(int nIndex);
+func XGetSystemMetrics(tls *TLS, _nIndex int32) (r int32) {
+	if __ccgo_strace {
+		trc("nIndex=%+v", _nIndex)
+		defer func() { trc(`XGetSystemMetrics->%+v`, r) }()
+	}
+	r0, _, err := procGetSystemMetrics.Call(uintptr(_nIndex))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL SetWindowPos (HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, UINT uFlags);
+func XSetWindowPos(tls *TLS, _hWnd THWND, _hWndInsertAfter THWND, _X int32, _Y int32, _cx int32, _cy int32, _uFlags TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v hWndInsertAfter=%+v X=%+v Y=%+v cx=%+v cy=%+v uFlags=%+v", _hWnd, _hWndInsertAfter, _X, _Y, _cx, _cy, _uFlags)
+		defer func() { trc(`XSetWindowPos->%+v`, r) }()
+	}
+	r0, _, err := procSetWindowPos.Call(_hWnd, _hWndInsertAfter, uintptr(_X), uintptr(_Y), uintptr(_cx), uintptr(_cy), uintptr(_uFlags))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) DWORD GetSysColor(int nIndex);
+func XGetSysColor(tls *TLS, _nIndex int32) (r TDWORD) {
+	if __ccgo_strace {
+		trc("nIndex=%+v", _nIndex)
+		defer func() { trc(`XGetSysColor->%+v`, r) }()
+	}
+	r0, _, _ := procGetSysColor.Call(uintptr(_nIndex))
+	return TDWORD(r0)
+}
+
+// __attribute__((dllimport)) COLORREF SetTextColor(HDC hdc,COLORREF color);
+func XSetTextColor(tls *TLS, _hdc THDC, _color TCOLORREF) (r TCOLORREF) {
+	if __ccgo_strace {
+		trc("hdc=%+v color=%+v", _hdc, _color)
+		defer func() { trc(`XSetTextColor->%+v`, r) }()
+	}
+	r0, _, _ := procSetTextColor.Call(_hdc, uintptr(_color))
+	return TCOLORREF(r0)
+}
+
+// __attribute__((dllimport)) COLORREF SetBkColor(HDC hdc,COLORREF color);
+func XSetBkColor(tls *TLS, _hdc THDC, _color TCOLORREF) (r TCOLORREF) {
+	if __ccgo_strace {
+		trc("hdc=%+v color=%+v", _hdc, _color)
+		defer func() { trc(`XSetBkColor->%+v`, r) }()
+	}
+	r0, _, _ := procSetBkColor.Call(_hdc, uintptr(_color))
+	return TCOLORREF(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL DrawFocusRect(HDC hDC, const RECT *lprc);
+func XDrawFocusRect(tls *TLS, _hDC THDC, _lprc uintptr) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hDC=%+v lprc=%+v", _hDC, _lprc)
+		defer func() { trc(`XDrawFocusRect->%+v`, r) }()
+	}
+	r0, _, err := procDrawFocusRect.Call(_hDC, _lprc)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) int StretchDIBits(HDC hdc,int xDest,int yDest,int DestWidth,int DestHeight,int xSrc,int ySrc,int SrcWidth,int SrcHeight, const void *lpBits, const BITMAPINFO *lpbmi,UINT iUsage,DWORD rop);
+func XStretchDIBits(tls *TLS, _hdc THDC, _xDest int32, _yDest int32, _DestWidth int32, _DestHeight int32, _xSrc int32, _ySrc int32, _SrcWidth int32, _SrcHeight int32, _lpBits uintptr, _lpbmi uintptr, _iUsage TUINT, _rop TDWORD) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v xDest=%+v yDest=%+v DestWidth=%+v DestHeight=%+v xSrc=%+v ySrc=%+v SrcWidth=%+v SrcHeight=%+v lpBits=%+v lpbmi=%+v iUsage=%+v rop=%+v", _hdc, _xDest, _yDest, _DestWidth, _DestHeight, _xSrc, _ySrc, _SrcWidth, _SrcHeight, _lpBits, _lpbmi, _iUsage, _rop)
+		defer func() { trc(`XStretchDIBits->%+v`, r) }()
+	}
+	r0, _, _ := procStretchDIBits.Call(_hdc, uintptr(_xDest), uintptr(_yDest), uintptr(_DestWidth), uintptr(_DestHeight), uintptr(_xSrc), uintptr(_ySrc), uintptr(_SrcWidth), uintptr(_SrcHeight), _lpBits, _lpbmi, uintptr(_iUsage), uintptr(_rop))
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) HDC BeginPaint(HWND hWnd,LPPAINTSTRUCT lpPaint);
+func XBeginPaint(tls *TLS, _hWnd THWND, _lpPaint TLPPAINTSTRUCT) (r THDC) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpPaint=%+v", _hWnd, _lpPaint)
+		defer func() { trc(`XBeginPaint->%+v`, r) }()
+	}
+	r0, _, err := procBeginPaint.Call(_hWnd, _lpPaint)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THDC(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL EndPaint(HWND hWnd, const PAINTSTRUCT *lpPaint);
+func XEndPaint(tls *TLS, _hWnd THWND, _lpPaint uintptr) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpPaint=%+v", _hWnd, _lpPaint)
+		defer func() { trc(`XEndPaint->%+v`, r) }()
+	}
+	r0, _, _ := procEndPaint.Call(_hWnd, _lpPaint)
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL OpenClipboard(HWND hWndNewOwner);
+func XOpenClipboard(tls *TLS, _hWndNewOwner THWND) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWndNewOwner=%+v", _hWndNewOwner)
+		defer func() { trc(`XOpenClipboard->%+v`, r) }()
+	}
+	r0, _, err := procOpenClipboard.Call(_hWndNewOwner)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL IsClipboardFormatAvailable(UINT format);
+func XIsClipboardFormatAvailable(tls *TLS, _format TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("format=%+v", _format)
+		defer func() { trc(`XIsClipboardFormatAvailable->%+v`, r) }()
+	}
+	r0, _, err := procIsClipboardFormatAvailable.Call(uintptr(_format))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) HANDLE GetClipboardData(UINT uFormat);
+func XGetClipboardData(tls *TLS, _uFormat TUINT) (r THANDLE) {
+	if __ccgo_strace {
+		trc("uFormat=%+v", _uFormat)
+		defer func() { trc(`XGetClipboardData->%+v`, r) }()
+	}
+	r0, _, err := procGetClipboardData.Call(uintptr(_uFormat))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THANDLE(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL CloseClipboard( void);
+func XCloseClipboard(tls *TLS) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XCloseClipboard->%+v`, r) }()
+	}
+	r0, _, err := procCloseClipboard.Call()
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) LPVOID GlobalLock (HGLOBAL hMem);
+func XGlobalLock(tls *TLS, _hMem THGLOBAL) (r TLPVOID) {
+	if __ccgo_strace {
+		trc("hMem=%+v", _hMem)
+		defer func() { trc(`XGlobalLock->%+v`, r) }()
+	}
+	r0, _, err := procGlobalLock.Call(_hMem)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TLPVOID(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL GlobalUnlock (HGLOBAL hMem);
+func XGlobalUnlock(tls *TLS, _hMem THGLOBAL) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hMem=%+v", _hMem)
+		defer func() { trc(`XGlobalUnlock->%+v`, r) }()
+	}
+	r0, _, err := procGlobalUnlock.Call(_hMem)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) int GetLocaleInfoA (LCID Locale, LCTYPE LCType, LPSTR lpLCData, int cchData);
+func XGetLocaleInfoA(tls *TLS, _Locale TLCID, _LCType TLCTYPE, _lpLCData TLPSTR, _cchData int32) (r int32) {
+	if __ccgo_strace {
+		trc("Locale=%+v LCType=%+v lpLCData=%+v cchData=%+v", _Locale, _LCType, _lpLCData, _cchData)
+		defer func() { trc(`XGetLocaleInfoA->%+v`, r) }()
+	}
+	r0, _, err := procGetLocaleInfoA.Call(uintptr(_Locale), uintptr(_LCType), _lpLCData, uintptr(_cchData))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) HWND GetClipboardOwner( void);
+func XGetClipboardOwner(tls *TLS) (r THWND) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XGetClipboardOwner->%+v`, r) }()
+	}
+	r0, _, err := procGetClipboardOwner.Call()
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THWND(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL EmptyClipboard( void);
+func XEmptyClipboard(tls *TLS) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XEmptyClipboard->%+v`, r) }()
+	}
+	r0, _, err := procEmptyClipboard.Call()
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) HDC GetDC(HWND hWnd);
+func XGetDC(tls *TLS, _hWnd THWND) (r THDC) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XGetDC->%+v`, r) }()
+	}
+	r0, _, _ := procGetDC.Call(_hWnd)
+	return THDC(r0)
+}
+
+type TWINBOOL = int32
+type TUINT = uint32
+type THWND = uintptr
+type TDWORD = uint32
+type THRSRC = uintptr
+type THMODULE = uintptr
+type TLPCWSTR = uintptr
+type TLPVOID = uintptr
+type THDC = uintptr
+type TCOLORREF = uint32
+type TLPPAINTSTRUCT = uintptr
+type THANDLE = uintptr
+type TLCID = uint32
+type TLCTYPE = uint32
+type TLPSTR = uintptr
+
+// __attribute__((dllimport)) int GetDeviceCaps(HDC hdc,int index);
+func XGetDeviceCaps(tls *TLS, _hdc THDC, _index int32) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v index=%+v", _hdc, _index)
+		defer func() { trc(`XGetDeviceCaps->%+v`, r) }()
+	}
+	r0, _, _ := procGetDeviceCaps.Call(_hdc, uintptr(_index))
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) UINT GetNearestPaletteIndex(HPALETTE h,COLORREF color);
+func XGetNearestPaletteIndex(tls *TLS, _h THPALETTE, _color TCOLORREF) (r TUINT) {
+	if __ccgo_strace {
+		trc("h=%+v color=%+v", _h, _color)
+		defer func() { trc(`XGetNearestPaletteIndex->%+v`, r) }()
+	}
+	r0, _, _ := procGetNearestPaletteIndex.Call(_h, uintptr(_color))
+	return TUINT(r0)
+}
+
+// __attribute__((dllimport)) UINT GetPaletteEntries(HPALETTE hpal,UINT iStart,UINT cEntries,LPPALETTEENTRY pPalEntries);
+func XGetPaletteEntries(tls *TLS, _hpal THPALETTE, _iStart TUINT, _cEntries TUINT, _pPalEntries TLPPALETTEENTRY) (r TUINT) {
+	if __ccgo_strace {
+		trc("hpal=%+v iStart=%+v cEntries=%+v pPalEntries=%+v", _hpal, _iStart, _cEntries, _pPalEntries)
+		defer func() { trc(`XGetPaletteEntries->%+v`, r) }()
+	}
+	r0, _, _ := procGetPaletteEntries.Call(_hpal, uintptr(_iStart), uintptr(_cEntries), _pPalEntries)
+	return TUINT(r0)
+}
+
+// __attribute__((dllimport)) HGLOBAL GlobalAlloc (UINT uFlags, SIZE_T dwBytes);
+func XGlobalAlloc(tls *TLS, _uFlags TUINT, _dwBytes TSIZE_T) (r THGLOBAL) {
+	if __ccgo_strace {
+		trc("uFlags=%+v dwBytes=%+v", _uFlags, _dwBytes)
+		defer func() { trc(`XGlobalAlloc->%+v`, r) }()
+	}
+	r0, _, err := procGlobalAlloc.Call(uintptr(_uFlags), uintptr(_dwBytes))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THGLOBAL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL ResizePalette(HPALETTE hpal,UINT n);
+func XResizePalette(tls *TLS, _hpal THPALETTE, _n TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hpal=%+v n=%+v", _hpal, _n)
+		defer func() { trc(`XResizePalette->%+v`, r) }()
+	}
+	r0, _, _ := procResizePalette.Call(_hpal, uintptr(_n))
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) HANDLE SetClipboardData(UINT uFormat, HANDLE hMem);
+func XSetClipboardData(tls *TLS, _uFormat TUINT, _hMem THANDLE) (r THANDLE) {
+	if __ccgo_strace {
+		trc("uFormat=%+v hMem=%+v", _uFormat, _hMem)
+		defer func() { trc(`XSetClipboardData->%+v`, r) }()
+	}
+	r0, _, err := procSetClipboardData.Call(uintptr(_uFormat), _hMem)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THANDLE(r0)
+}
+
+type TSIZE_T = types.Size_t
+type THPALETTE = uintptr
+type TLPPALETTEENTRY = uintptr
+
+// __attribute__((dllimport)) HPALETTE CreatePalette( const LOGPALETTE *plpal);
+func XCreatePalette(tls *TLS, _plpal uintptr) (r THPALETTE) {
+	if __ccgo_strace {
+		trc("plpal=%+v", _plpal)
+		defer func() { trc(`XCreatePalette->%+v`, r) }()
+	}
+	r0, _, _ := procCreatePalette.Call(_plpal)
+	return THPALETTE(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL DeleteObject(HGDIOBJ ho);
+func XDeleteObject(tls *TLS, _ho THGDIOBJ) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("ho=%+v", _ho)
+		defer func() { trc(`XDeleteObject->%+v`, r) }()
+	}
+	r0, _, _ := procDeleteObject.Call(_ho)
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) COLORREF GetNearestColor(HDC hdc,COLORREF color);
+func XGetNearestColor(tls *TLS, _hdc THDC, _color TCOLORREF) (r TCOLORREF) {
+	if __ccgo_strace {
+		trc("hdc=%+v color=%+v", _hdc, _color)
+		defer func() { trc(`XGetNearestColor->%+v`, r) }()
+	}
+	r0, _, _ := procGetNearestColor.Call(_hdc, uintptr(_color))
+	return TCOLORREF(r0)
+}
+
+type THGDIOBJ = uintptr
+
+//TODO AdjustWindowRectEx
+//TODO Arc
+//TODO BeginPath
+//TODO BitBlt
+//TODO CallNextHookEx
+//TODO CallWindowProcW
+//TODO ChooseColorW
+//TODO ChooseFontW
+//TODO Chord
+//TODO ClientToScreen
+//TODO CloseFigure
+//TODO CoCreateInstance
+//TODO CoInitialize
+//TODO CoTaskMemAlloc
+//TODO CoTaskMemFree
+//TODO CombineRgn
+//TODO CommDlgExtendedError
+//TODO CreateBindCtx
+//TODO CreateBitmap
+//TODO CreateCaret
+//TODO CreateCompatibleBitmap
+//TODO CreateCompatibleDC
+//TODO CreateDCW
+//TODO CreateDIBSection
+//TODO CreateDIBitmap
+//TODO CreateErrorInfo
+//TODO CreateFileMoniker
+//TODO CreateFontIndirectW
+//TODO CreateIconFromResource
+//TODO CreateIconFromResourceEx
+//TODO CreateIconIndirect
+//TODO CreateMenu
+//TODO CreatePatternBrush
+//TODO CreatePen
+//TODO CreatePopupMenu
+//TODO CreateRectRgn
+//TODO CreateRectRgnIndirect
+//TODO CreateSolidBrush
+//TODO DPtoLP
+//TODO DeleteDC
+//TODO DestroyCaret
+//TODO DestroyIcon
+//TODO DestroyMenu
+//TODO DrawEdge
+//TODO DrawFrameControl
+//TODO DrawMenuBar
+//TODO EnableWindow
+//TODO EndDialog
+//TODO EndPath
+//TODO EnumFontFamiliesW
+//TODO ExtCreatePen
+//TODO ExtTextOutW
+//TODO FillRect
+//TODO GUID_NULL
+//TODO GetAsyncKeyState
+//TODO GetBkMode
+//TODO GetCapture
+//TODO GetCharWidthA
+//TODO GetCharWidthW
+//TODO GetClassLongPtrW
+//TODO GetClientRect
+//TODO GetCursorPos
+//TODO GetDIBits
+//TODO GetDesktopWindow
+//TODO GetDlgItem
+//TODO GetFocus
+//TODO GetFontData
+//TODO GetForegroundWindow
+//TODO GetKeyState
+//TODO GetKeyboardLayout
+//TODO GetLastInputInfo
+//TODO GetLocaleInfoW
+//TODO GetMapMode
+//TODO GetMenuItemCount
+//TODO GetMessageA
+//TODO GetMessagePos
+//TODO GetObjectA
+//TODO GetOpenFileNameW
+//TODO GetParent
+//TODO GetPixel
+//TODO GetRgnBox
+//TODO GetRunningObjectTable
+//TODO GetSaveFileNameW
+//TODO GetStockObject
+//TODO GetSysColorBrush
+//TODO GetSystemMenu
+//TODO GetTextCharset
+//TODO GetTextExtentPoint32A
+//TODO GetTextExtentPoint32W
+//TODO GetTextExtentPointA
+//TODO GetTextFaceA
+//TODO GetTextFaceW
+//TODO GetTextMetricsW
+//TODO GetTickCount
+//TODO GetWindow
+//TODO GetWindowPlacement
+//TODO GetWindowRect
+//TODO GetWindowTextW
+//TODO IID_IDispatch
+//TODO IID_IErrorInfo
+//TODO IID_ISupportErrorInfo
+//TODO IID_IUnknown
+//TODO ImmGetCompositionStringW
+//TODO ImmGetContext
+//TODO ImmReleaseContext
+//TODO ImmSetCompositionWindow
+//TODO InitCommonControlsEx
+//TODO InsertMenuW
+//TODO InvalidateRect
+//TODO IsDBCSLeadByte
+//TODO IsIconic
+//TODO IsWindowVisible
+//TODO IsZoomed
+//TODO LoadBitmapW
+//TODO LoadCursorA
+//TODO LoadCursorFromFileA
+//TODO LoadCursorW
+//TODO LoadIconW
+//TODO LoadLibraryW
+//TODO MapVirtualKeyW
+//TODO MoveWindow
+//TODO MulDiv
+//TODO OffsetClipRgn
+//TODO OutputDebugStringA
+//TODO PatBlt
+//TODO PeekMessageA
+//TODO Pie
+//TODO Polygon
+//TODO Polyline
+//TODO RealizePalette
+//TODO RectInRegion
+//TODO Rectangle
+//TODO ReleaseCapture
+//TODO ReleaseDC
+//TODO RemoveMenu
+//TODO SHBrowseForFolderW
+//TODO SHGetDesktopFolder
+//TODO SHGetFileInfoW
+//TODO SHGetMalloc
+//TODO SHGetPathFromIDListW
+//TODO ScreenToClient
+//TODO ScrollWindowEx
+//TODO SelectClipRgn
+//TODO SelectObject
+//TODO SelectPalette
+//TODO SendInput
+//TODO SetActiveWindow
+//TODO SetBkMode
+//TODO SetBrushOrgEx
+//TODO SetCapture
+//TODO SetCaretPos
+//TODO SetClassLongPtrW
+//TODO SetCursor
+//TODO SetCursorPos
+//TODO SetErrorInfo
+//TODO SetFocus
+//TODO SetForegroundWindow
+//TODO SetLayeredWindowAttributes
+//TODO SetMapMode
+//TODO SetMenu
+//TODO SetPaletteEntries
+//TODO SetParent
+//TODO SetPolyFillMode
+//TODO SetROP2
+//TODO SetRectRgn
+//TODO SetScrollInfo
+//TODO SetTextAlign
+//TODO SetWindowTextW
+//TODO SetWindowsHookExW
+//TODO ShowWindow
+//TODO StrokeAndFillPath
+//TODO StrokePath
+//TODO SysAllocString
+//TODO SysFreeString
+//TODO SysStringLen
+//TODO SystemParametersInfoW
+//TODO TextOutA
+//TODO TextOutW
+//TODO ToUnicode
+//TODO TrackPopupMenu
+//TODO TranslateCharsetInfo
+//TODO UnhookWindowsHookEx
+//TODO UpdateColors
+//TODO UpdateWindow
+//TODO VariantChangeType
+//TODO VariantClear
+//TODO VariantInit
+//TODO VkKeyScanW
+//TODO WindowFromPoint
+//TODO _InterlockedDecrement
+//TODO _InterlockedIncrement
+//TODO _ctime64
+//TODO _time64
+//TODO isupper
+//TODO wcsncpy
+//TODO wcsrchr
