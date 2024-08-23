@@ -159,6 +159,14 @@ var (
 
 	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
 	//--
+	procDeleteDC               = modgdi32.NewProc("DeleteDC")
+	procDPtoLP                 = modgdi32.NewProc("DPtoLP")
+	procCreateSolidBrush       = modgdi32.NewProc("CreateSolidBrush")
+	procCreateRectRgnIndirect  = modgdi32.NewProc("CreateRectRgnIndirect")
+	procCreateRectRgn          = modgdi32.NewProc("CreateRectRgn")
+	procCreatePen              = modgdi32.NewProc("CreatePen")
+	procCreatePatternBrush     = modgdi32.NewProc("CreatePatternBrush")
+	procCreateFontIndirectW    = modgdi32.NewProc("CreateFontIndirectW")
 	procTranslateCharsetInfo   = modgdi32.NewProc("TranslateCharsetInfo")
 	procTextOutW               = modgdi32.NewProc("TextOutW")
 	procTextOutA               = modgdi32.NewProc("TextOutA")
@@ -327,6 +335,18 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procEnableWindow                = moduser32.NewProc("EnableWindow")
+	procDrawMenuBar                 = moduser32.NewProc("DrawMenuBar")
+	procDrawFrameControl            = moduser32.NewProc("DrawFrameControl")
+	procDrawEdge                    = moduser32.NewProc("DrawEdge")
+	procDestroyMenu                 = moduser32.NewProc("DestroyMenu")
+	procDestroyIcon                 = moduser32.NewProc("DestroyIcon")
+	procDestroyCaret                = moduser32.NewProc("DestroyCaret")
+	procCreatePopupMenu             = moduser32.NewProc("CreatePopupMenu")
+	procCreateMenu                  = moduser32.NewProc("CreateMenu")
+	procCreateIconIndirect          = moduser32.NewProc("CreateIconIndirect")
+	procCreateIconFromResourceEx    = moduser32.NewProc("CreateIconFromResourceEx")
+	procCreateIconFromResource      = moduser32.NewProc("CreateIconFromResource")
 	procTrackPopupMenu              = moduser32.NewProc("TrackPopupMenu")
 	procToUnicode                   = moduser32.NewProc("ToUnicode")
 	procSystemParametersInfoW       = moduser32.NewProc("SystemParametersInfoW")
@@ -8344,106 +8364,6 @@ func XCreateFileMoniker(t *TLS, _ ...any) THRESULT {
 	panic(todo(""))
 }
 
-func XCreateFontIndirectW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateIconFromResource(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateIconFromResourceEx(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateIconIndirect(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateMenu(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreatePatternBrush(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreatePen(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreatePopupMenu(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateRectRgn(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateRectRgnIndirect(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateSolidBrush(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XDPtoLP(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XDeleteDC(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XDestroyCaret(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XDestroyIcon(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XDestroyMenu(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XDrawEdge(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XDrawFrameControl(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XDrawMenuBar(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XEnableWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
 func XEndDialog(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
@@ -9505,5 +9425,244 @@ func XTranslateCharsetInfo(tls *TLS, _lpSrc uintptr, _lpCs TLPCHARSETINFO, _dwFl
 	if r0 == 0 {
 		tls.setErrno(err)
 	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) HFONT CreateFontIndirectW( const LOGFONTW *lplf);
+func XCreateFontIndirectW(tls *TLS, _lplf uintptr) (r THFONT) {
+	if __ccgo_strace {
+		trc("lplf=%+v", _lplf)
+		defer func() { trc(`XCreateFontIndirectW->%+v`, r) }()
+	}
+	r0, _, _ := procCreateFontIndirectW.Call(_lplf)
+	return THFONT(r0)
+}
+
+type THFONT = uintptr
+
+// __attribute__((dllimport)) HICON CreateIconFromResource(PBYTE presbits,DWORD dwResSize,WINBOOL fIcon,DWORD dwVer);
+func XCreateIconFromResource(tls *TLS, _presbits TPBYTE, _dwResSize TDWORD, _fIcon TWINBOOL, _dwVer TDWORD) (r THICON) {
+	if __ccgo_strace {
+		trc("presbits=%+v dwResSize=%+v fIcon=%+v dwVer=%+v", _presbits, _dwResSize, _fIcon, _dwVer)
+		defer func() { trc(`XCreateIconFromResource->%+v`, r) }()
+	}
+	r0, _, err := procCreateIconFromResource.Call(_presbits, uintptr(_dwResSize), uintptr(_fIcon), uintptr(_dwVer))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THICON(r0)
+}
+
+// __attribute__((dllimport)) HICON CreateIconFromResourceEx(PBYTE presbits,DWORD dwResSize,WINBOOL fIcon,DWORD dwVer,int cxDesired,int cyDesired,UINT Flags);
+func XCreateIconFromResourceEx(tls *TLS, _presbits TPBYTE, _dwResSize TDWORD, _fIcon TWINBOOL, _dwVer TDWORD, _cxDesired int32, _cyDesired int32, _Flags TUINT) (r THICON) {
+	if __ccgo_strace {
+		trc("presbits=%+v dwResSize=%+v fIcon=%+v dwVer=%+v cxDesired=%+v cyDesired=%+v Flags=%+v", _presbits, _dwResSize, _fIcon, _dwVer, _cxDesired, _cyDesired, _Flags)
+		defer func() { trc(`XCreateIconFromResourceEx->%+v`, r) }()
+	}
+	r0, _, err := procCreateIconFromResourceEx.Call(_presbits, uintptr(_dwResSize), uintptr(_fIcon), uintptr(_dwVer), uintptr(_cxDesired), uintptr(_cyDesired), uintptr(_Flags))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THICON(r0)
+}
+
+type TPBYTE = uintptr
+
+// __attribute__((dllimport)) HICON CreateIconIndirect(PICONINFO piconinfo);
+func XCreateIconIndirect(tls *TLS, _piconinfo TPICONINFO) (r THICON) {
+	if __ccgo_strace {
+		trc("piconinfo=%+v", _piconinfo)
+		defer func() { trc(`XCreateIconIndirect->%+v`, r) }()
+	}
+	r0, _, err := procCreateIconIndirect.Call(_piconinfo)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THICON(r0)
+}
+
+type TPICONINFO = uintptr
+
+// __attribute__((dllimport)) HMENU CreateMenu( void);
+func XCreateMenu(tls *TLS) (r THMENU) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XCreateMenu->%+v`, r) }()
+	}
+	r0, _, err := procCreateMenu.Call()
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THMENU(r0)
+}
+
+// __attribute__((dllimport)) HBRUSH CreatePatternBrush(HBITMAP hbm);
+func XCreatePatternBrush(tls *TLS, _hbm THBITMAP) (r THBRUSH) {
+	if __ccgo_strace {
+		trc("hbm=%+v", _hbm)
+		defer func() { trc(`XCreatePatternBrush->%+v`, r) }()
+	}
+	r0, _, _ := procCreatePatternBrush.Call(_hbm)
+	return THBRUSH(r0)
+}
+
+type THBITMAP = uintptr
+
+// __attribute__((dllimport)) HPEN CreatePen(int iStyle,int cWidth,COLORREF color);
+func XCreatePen(tls *TLS, _iStyle int32, _cWidth int32, _color TCOLORREF) (r THPEN) {
+	if __ccgo_strace {
+		trc("iStyle=%+v cWidth=%+v color=%+v", _iStyle, _cWidth, _color)
+		defer func() { trc(`XCreatePen->%+v`, r) }()
+	}
+	r0, _, _ := procCreatePen.Call(uintptr(_iStyle), uintptr(_cWidth), uintptr(_color))
+	return THPEN(r0)
+}
+
+type THPEN = uintptr
+
+// __attribute__((dllimport)) HMENU CreatePopupMenu( void);
+func XCreatePopupMenu(tls *TLS) (r THMENU) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XCreatePopupMenu->%+v`, r) }()
+	}
+	r0, _, err := procCreatePopupMenu.Call()
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THMENU(r0)
+}
+
+// __attribute__((dllimport)) HRGN CreateRectRgn(int x1,int y1,int x2,int y2);
+func XCreateRectRgn(tls *TLS, _x1 int32, _y1 int32, _x2 int32, _y2 int32) (r THRGN) {
+	if __ccgo_strace {
+		trc("x1=%+v y1=%+v x2=%+v y2=%+v", _x1, _y1, _x2, _y2)
+		defer func() { trc(`XCreateRectRgn->%+v`, r) }()
+	}
+	r0, _, _ := procCreateRectRgn.Call(uintptr(_x1), uintptr(_y1), uintptr(_x2), uintptr(_y2))
+	return THRGN(r0)
+}
+
+// __attribute__((dllimport)) HRGN CreateRectRgnIndirect( const RECT *lprect);
+func XCreateRectRgnIndirect(tls *TLS, _lprect uintptr) (r THRGN) {
+	if __ccgo_strace {
+		trc("lprect=%+v", _lprect)
+		defer func() { trc(`XCreateRectRgnIndirect->%+v`, r) }()
+	}
+	r0, _, _ := procCreateRectRgnIndirect.Call(_lprect)
+	return THRGN(r0)
+}
+
+// __attribute__((dllimport)) HBRUSH CreateSolidBrush(COLORREF color);
+func XCreateSolidBrush(tls *TLS, _color TCOLORREF) (r THBRUSH) {
+	if __ccgo_strace {
+		trc("color=%+v", _color)
+		defer func() { trc(`XCreateSolidBrush->%+v`, r) }()
+	}
+	r0, _, _ := procCreateSolidBrush.Call(uintptr(_color))
+	return THBRUSH(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL DPtoLP(HDC hdc,LPPOINT lppt,int c);
+func XDPtoLP(tls *TLS, _hdc THDC, _lppt TLPPOINT, _c int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v lppt=%+v c=%+v", _hdc, _lppt, _c)
+		defer func() { trc(`XDPtoLP->%+v`, r) }()
+	}
+	r0, _, _ := procDPtoLP.Call(_hdc, _lppt, uintptr(_c))
+	return TWINBOOL(r0)
+}
+
+type TLPPOINT = uintptr
+
+// __attribute__((dllimport)) WINBOOL DeleteDC(HDC hdc);
+func XDeleteDC(tls *TLS, _hdc THDC) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XDeleteDC->%+v`, r) }()
+	}
+	r0, _, _ := procDeleteDC.Call(_hdc)
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL DestroyCaret( void);
+func XDestroyCaret(tls *TLS) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XDestroyCaret->%+v`, r) }()
+	}
+	r0, _, err := procDestroyCaret.Call()
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL DestroyIcon(HICON hIcon);
+func XDestroyIcon(tls *TLS, _hIcon THICON) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hIcon=%+v", _hIcon)
+		defer func() { trc(`XDestroyIcon->%+v`, r) }()
+	}
+	r0, _, err := procDestroyIcon.Call(_hIcon)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL DestroyMenu(HMENU hMenu);
+func XDestroyMenu(tls *TLS, _hMenu THMENU) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hMenu=%+v", _hMenu)
+		defer func() { trc(`XDestroyMenu->%+v`, r) }()
+	}
+	r0, _, err := procDestroyMenu.Call(_hMenu)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL DrawEdge(HDC hdc,LPRECT qrc,UINT edge,UINT grfFlags);
+func XDrawEdge(tls *TLS, _hdc THDC, _qrc TLPRECT, _edge TUINT, _grfFlags TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v qrc=%+v edge=%+v grfFlags=%+v", _hdc, _qrc, _edge, _grfFlags)
+		defer func() { trc(`XDrawEdge->%+v`, r) }()
+	}
+	r0, _, _ := procDrawEdge.Call(_hdc, _qrc, uintptr(_edge), uintptr(_grfFlags))
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL DrawFrameControl(HDC,LPRECT,UINT,UINT);
+func XDrawFrameControl(tls *TLS, _0 THDC, _1 TLPRECT, _2 TUINT, _3 TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("0=%+v 1=%+v 2=%+v 3=%+v", _0, _1, _2, _3)
+		defer func() { trc(`XDrawFrameControl->%+v`, r) }()
+	}
+	r0, _, _ := procDrawFrameControl.Call(_0, _1, uintptr(_2), uintptr(_3))
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL DrawMenuBar(HWND hWnd);
+func XDrawMenuBar(tls *TLS, _hWnd THWND) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XDrawMenuBar->%+v`, r) }()
+	}
+	r0, _, err := procDrawMenuBar.Call(_hWnd)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL EnableWindow(HWND hWnd,WINBOOL bEnable);
+func XEnableWindow(tls *TLS, _hWnd THWND, _bEnable TWINBOOL) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v bEnable=%+v", _hWnd, _bEnable)
+		defer func() { trc(`XEnableWindow->%+v`, r) }()
+	}
+	r0, _, _ := procEnableWindow.Call(_hWnd, uintptr(_bEnable))
 	return TWINBOOL(r0)
 }
