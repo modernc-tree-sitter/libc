@@ -152,6 +152,7 @@ type (
 var (
 	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
 	//--
+	procGetStockObject = modgdi32.NewProc("GetStockObject")
 	procGetNearestColor        = modgdi32.NewProc("GetNearestColor")
 	procDeleteObject           = modgdi32.NewProc("DeleteObject")
 	procCreatePalette          = modgdi32.NewProc("CreatePalette")
@@ -8576,11 +8577,6 @@ func XGetSaveFileNameW(t *TLS, _ ...any) int32 {
 	panic(todo(""))
 }
 
-func XGetStockObject(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
 func XGetSysColorBrush(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
@@ -9239,4 +9235,14 @@ func XReleaseDC(tls *TLS, _hWnd THWND, _hDC THDC) (r int32) {
 	}
 	r0, _, _ := procReleaseDC.Call(_hWnd, _hDC)
 	return int32(r0)
+}
+
+// __attribute__((dllimport)) HGDIOBJ GetStockObject(int i);
+func XGetStockObject(tls *TLS, _i int32) (r THGDIOBJ) {
+	if __ccgo_strace {
+		trc("i=%+v", _i)
+		defer func() { trc(`XGetStockObject->%+v`, r) }()
+	}
+	r0, _, _ := procGetStockObject.Call(uintptr(_i))
+	return THGDIOBJ(r0)
 }
