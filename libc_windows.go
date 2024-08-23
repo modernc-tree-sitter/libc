@@ -228,7 +228,7 @@ var (
 	//	procGetSystemTime              = modkernel32.NewProc("GetSystemTime")
 	procGetSystemTimeAsFileTime = modkernel32.NewProc("GetSystemTimeAsFileTime")
 	procGetTempFileNameW        = modkernel32.NewProc("GetTempFileNameW")
-	//	procGetTickCount               = modkernel32.NewProc("GetTickCount")
+	procGetTickCount               = modkernel32.NewProc("GetTickCount")
 	//	procGetVersionExA              = modkernel32.NewProc("GetVersionExA")
 	procGetVersionExW             = modkernel32.NewProc("GetVersionExW")
 	procGetVolumeInformationA     = modkernel32.NewProc("GetVolumeInformationA")
@@ -3983,15 +3983,6 @@ func XGetTempPathW(t *TLS, nBufferLength uint32, lpBuffer uintptr) uint32 {
 	return rv
 }
 
-// // DWORD GetTickCount();
-// func XGetTickCount(t *TLS) uint32 {
-// 	if __ccgo_strace {
-// 		trc("t=%v, (%v:)", t, origin(2))
-// 	}
-// 	r0, _, _ := procGetTickCount.Call(0, 0, 0)
-// 	return uint32(r0)
-// }
-//
 // // BOOL GetVersionExA(
 // //
 // //	LPOSVERSIONINFOA lpVersionInformation
@@ -8622,11 +8613,6 @@ func XGetTextMetricsW(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XGetTickCount(t *TLS, _ ...any) uint32 {
-	die("")
-	panic(todo(""))
-}
-
 func XGetWindow(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
@@ -9245,4 +9231,14 @@ func XGetStockObject(tls *TLS, _i int32) (r THGDIOBJ) {
 	}
 	r0, _, _ := procGetStockObject.Call(uintptr(_i))
 	return THGDIOBJ(r0)
+}
+
+// __attribute__((dllimport)) DWORD GetTickCount ( void);
+func XGetTickCount(tls *TLS) (r TDWORD) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XGetTickCount->%+v`, r) }()
+	}
+	r0, _, _ := procGetTickCount.Call()
+	return TDWORD(r0)
 }
