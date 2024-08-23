@@ -75,17 +75,56 @@ var X_iob [stdio.X_IOB_ENTRIES]stdio.FILE
 
 var Xin6addr_any [16]byte
 var Xtimezone long // extern long timezone;
+
 var (
 	iobMap     = map[uintptr]int32{} // &_iob[fd] -> fd
 	wenvValid  bool
 	wenviron   uintptr // &winEnviron[0]
 	winEnviron = []uintptr{0}
+	wndProcs = newWndProcRegister()
 )
 
 func init() {
 	for i := range X_iob {
 		iobMap[uintptr(unsafe.Pointer(&X_iob[i]))] = int32(i)
 	}
+}
+
+type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
+
+type TWPARAM = uint64
+
+type TLPARAM = int64
+
+type callbackKey struct {
+	tls   *TLS
+	gofnp uintptr
+}
+
+type wndProcRegister struct {
+	sync.Mutex
+	m map[callbackKey]uintptr
+}
+
+func newWndProcRegister() *wndProcRegister {
+	return &wndProcRegister{m: map[callbackKey]uintptr{}}
+}
+
+func (c *wndProcRegister) register(tls *TLS, gofnp uintptr) (r uintptr) {
+	c.Lock()
+
+	defer c.Unlock()
+
+	key := callbackKey{tls, gofnp}
+	var ok bool
+	if r, ok = c.m[key]; !ok {
+		r = windows.NewCallback(func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r uintptr) {
+			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
+			return uintptr(f(tls, hwnd, message, wParam, lParam))
+		})
+		c.m[key] = r
+	}
+	return r
 }
 
 // func X__p__wenviron(t *TLS) uintptr {
@@ -5356,13 +5395,40 @@ func XwsprintfW(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
+type TWNDCLASSA = struct {
+	Fstyle         TUINT
+	FlpfnWndProc   TWNDPROC
+	FcbClsExtra    int32
+	FcbWndExtra    int32
+	FhInstance     THINSTANCE
+	FhIcon         THICON
+	FhCursor       THCURSOR
+	FhbrBackground THBRUSH
+	FlpszMenuName  TLPCSTR
+	FlpszClassName TLPCSTR
+}
+
+type TLPCSTR = uintptr
+
+type THBRUSH = uintptr
+
+type THCURSOR = uintptr
+
+type TWNDPROC = uintptr
+
+type THINSTANCE = uintptr
+
+type THICON = uintptr
+
 // ATOM RegisterClassW(
 //
 //	const WNDCLASSW *lpWndClass
 //
 // );
 func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
-	die("")
+	if gofnp := (*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
+		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = wndProcs.register(t, gofnp)
+	}
 	if __ccgo_strace {
 		trc("t=%v lpWndClass=%v, (%v:)", t, lpWndClass, origin(2))
 	}
