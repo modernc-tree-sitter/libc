@@ -166,6 +166,7 @@ var (
 
 	modkernel32 = windows.NewLazySystemDLL("kernel32.dll")
 	//--
+	procMulDiv = modkernel32.NewProc("MulDiv")
 	procGlobalAlloc       = modkernel32.NewProc("GlobalAlloc")
 	procGetClipboardOwner = modkernel32.NewProc("GetClipboardOwner")
 	procGetLocaleInfoA    = modkernel32.NewProc("GetLocaleInfoA")
@@ -8754,11 +8755,6 @@ func XMoveWindow(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XMulDiv(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
 func XOffsetClipRgn(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
@@ -9227,4 +9223,14 @@ var XIID_ITaskbarList3 = TGUID{
 		6: uint8(0xef),
 		7: uint8(0xaf),
 	},
+}
+
+// __attribute__((dllimport)) int MulDiv (int nNumber, int nNumerator, int nDenominator);
+func XMulDiv(tls *TLS, _nNumber int32, _nNumerator int32, _nDenominator int32) (r int32) {
+	if __ccgo_strace {
+		trc("nNumber=%+v nNumerator=%+v nDenominator=%+v", _nNumber, _nNumerator, _nDenominator)
+		defer func() { trc(`XMulDiv->%+v`, r) }()
+	}
+	r0, _, _ := procMulDiv.Call(uintptr(_nNumber), uintptr(_nNumerator), uintptr(_nDenominator))
+	return int32(r0)
 }
