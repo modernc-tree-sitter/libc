@@ -307,6 +307,7 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procMapVirtualKeyW = moduser32.NewProc("MapVirtualKeyW")
 	procReleaseDC = moduser32.NewProc("ReleaseDC")
 	procVkKeyScanW                  = moduser32.NewProc("VkKeyScanW")
 	procWindowFromPoint             = moduser32.NewProc("WindowFromPoint")
@@ -8728,11 +8729,6 @@ func XLoadLibraryW(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XMapVirtualKeyW(t *TLS, _ ...any) uint32 {
-	die("")
-	panic(todo(""))
-}
-
 func XMoveWindow(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
@@ -9241,4 +9237,14 @@ func XGetTickCount(tls *TLS) (r TDWORD) {
 	}
 	r0, _, _ := procGetTickCount.Call()
 	return TDWORD(r0)
+}
+
+// __attribute__((dllimport)) UINT MapVirtualKeyW(UINT uCode,UINT uMapType);
+func XMapVirtualKeyW(tls *TLS, _uCode TUINT, _uMapType TUINT) (r TUINT) {
+	if __ccgo_strace {
+		trc("uCode=%+v uMapType=%+v", _uCode, _uMapType)
+		defer func() { trc(`XMapVirtualKeyW->%+v`, r) }()
+	}
+	r0, _, _ := procMapVirtualKeyW.Call(uintptr(_uCode), uintptr(_uMapType))
+	return TUINT(r0)
 }
