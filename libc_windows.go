@@ -81,7 +81,7 @@ var (
 	wenvValid  bool
 	wenviron   uintptr // &winEnviron[0]
 	winEnviron = []uintptr{0}
-	wndProcs = newWndProcRegister()
+	wndProcs   = newWndProcRegister()
 )
 
 func init() {
@@ -152,7 +152,8 @@ type (
 var (
 	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
 	//--
-	procGetStockObject = modgdi32.NewProc("GetStockObject")
+	procUpdateColors           = modgdi32.NewProc("UpdateColors")
+	procGetStockObject         = modgdi32.NewProc("GetStockObject")
 	procGetNearestColor        = modgdi32.NewProc("GetNearestColor")
 	procDeleteObject           = modgdi32.NewProc("DeleteObject")
 	procCreatePalette          = modgdi32.NewProc("CreatePalette")
@@ -167,7 +168,10 @@ var (
 
 	modkernel32 = windows.NewLazySystemDLL("kernel32.dll")
 	//--
-	procMulDiv = modkernel32.NewProc("MulDiv")
+	procLocalAlloc        = modkernel32.NewProc("LocalAlloc")
+	procGetThreadLocale   = modkernel32.NewProc("GetThreadLocale")
+	procFormatMessageA    = modkernel32.NewProc("FormatMessageA")
+	procMulDiv            = modkernel32.NewProc("MulDiv")
 	procGlobalAlloc       = modkernel32.NewProc("GlobalAlloc")
 	procGetClipboardOwner = modkernel32.NewProc("GetClipboardOwner")
 	procGetLocaleInfoA    = modkernel32.NewProc("GetLocaleInfoA")
@@ -228,7 +232,7 @@ var (
 	//	procGetSystemTime              = modkernel32.NewProc("GetSystemTime")
 	procGetSystemTimeAsFileTime = modkernel32.NewProc("GetSystemTimeAsFileTime")
 	procGetTempFileNameW        = modkernel32.NewProc("GetTempFileNameW")
-	procGetTickCount               = modkernel32.NewProc("GetTickCount")
+	procGetTickCount            = modkernel32.NewProc("GetTickCount")
 	//	procGetVersionExA              = modkernel32.NewProc("GetVersionExA")
 	procGetVersionExW             = modkernel32.NewProc("GetVersionExW")
 	procGetVolumeInformationA     = modkernel32.NewProc("GetVolumeInformationA")
@@ -307,8 +311,19 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
-	procMapVirtualKeyW = moduser32.NewProc("MapVirtualKeyW")
-	procReleaseDC = moduser32.NewProc("ReleaseDC")
+	procSendMessageA                = moduser32.NewProc("SendMessageA")
+	procSendDlgItemMessageA         = moduser32.NewProc("SendDlgItemMessageA")
+	procGetWindowThreadProcessId    = moduser32.NewProc("GetWindowThreadProcessId")
+	procGetDlgCtrlID                = moduser32.NewProc("GetDlgCtrlID")
+	procGetClassNameW               = moduser32.NewProc("GetClassNameW")
+	procFindWindowExW               = moduser32.NewProc("FindWindowExW")
+	procFindWindowA                 = moduser32.NewProc("FindWindowA")
+	procEnumChildWindows            = moduser32.NewProc("EnumChildWindows")
+	procUpdateWindow                = moduser32.NewProc("UpdateWindow")
+	procUnhookWindowsHookEx         = moduser32.NewProc("UnhookWindowsHookEx")
+	procGetKeyState                 = moduser32.NewProc("GetKeyState")
+	procMapVirtualKeyW              = moduser32.NewProc("MapVirtualKeyW")
+	procReleaseDC                   = moduser32.NewProc("ReleaseDC")
 	procVkKeyScanW                  = moduser32.NewProc("VkKeyScanW")
 	procWindowFromPoint             = moduser32.NewProc("WindowFromPoint")
 	procAdjustWindowRectEx          = moduser32.NewProc("AdjustWindowRectEx")
@@ -3711,24 +3726,6 @@ func X_InterlockedCompareExchange(t *TLS, Destination uintptr, Exchange, Compara
 // func XDeleteFileA(t *TLS, lpFileName uintptr) int32 {
 // 	if __ccgo_strace {
 // 		trc("t=%v lpFileName=%v, (%v:)", t, lpFileName, origin(2))
-// 	}
-// 	die("");panic(todo(""))
-// }
-//
-// // DWORD FormatMessageA(
-// //
-// //	DWORD   dwFlags,
-// //	LPCVOID lpSource,
-// //	DWORD   dwMessageId,
-// //	DWORD   dwLanguageId,
-// //	LPSTR   lpBuffer,
-// //	DWORD   nSize,
-// //	va_list *Arguments
-// //
-// // );
-// func XFormatMessageA(t *TLS, dwFlagsAndAttributes uint32, lpSource uintptr, dwMessageId, dwLanguageId uint32, lpBuffer uintptr, nSize uint32, Arguments uintptr) uint32 {
-// 	if __ccgo_strace {
-// 		trc("t=%v dwFlagsAndAttributes=%v lpSource=%v dwLanguageId=%v lpBuffer=%v nSize=%v Arguments=%v, (%v:)", t, dwFlagsAndAttributes, lpSource, dwLanguageId, lpBuffer, nSize, Arguments, origin(2))
 // 	}
 // 	die("");panic(todo(""))
 // }
@@ -8155,8 +8152,29 @@ func XVkKeyScanW(tls *TLS, _ch TWCHAR) (r TSHORT) {
 
 // extern __attribute__((dllimport))void VariantInit(VARIANTARG *pvarg);
 func XVariantInit(tls *TLS, _pvarg uintptr) {
-	die("")
+	die("syscall with func pointer")
+	panic(todo(""))
 }
+
+func XVariantChangeType(t *TLS, _ ...any) THRESULT {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+func XVariantClear(t *TLS, _ ...any) uintptr {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+type TWNDENUMPROC = uintptr
+
+// __attribute__((dllimport)) WINBOOL EnumChildWindows(HWND hWndParent,WNDENUMPROC lpEnumFunc,LPARAM lParam);
+func XEnumChildWindows(tls *TLS, _hWndParent THWND, _lpEnumFunc TWNDENUMPROC, _lParam TLPARAM) (r TWINBOOL) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+// ----
 
 func XArc(t *TLS, _ ...any) uintptr {
 	die("")
@@ -8490,11 +8508,6 @@ func XGetFontData(t *TLS, _ ...any) uintptr {
 }
 
 func XGetForegroundWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetKeyState(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
 }
@@ -9024,96 +9037,6 @@ func XTranslateCharsetInfo(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XUnhookWindowsHookEx(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XUpdateColors(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XUpdateWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XVariantChangeType(t *TLS, _ ...any) THRESULT {
-	die("")
-	panic(todo(""))
-}
-
-func XVariantClear(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func X_InterlockedDecrement(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func X_InterlockedIncrement(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XEnumChildWindows(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XFindWindowA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XFindWindowExW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XFormatMessageA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetClassNameW(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XGetDlgCtrlID(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XGetThreadLocale(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetWindowThreadProcessId(t *TLS, _ ...any) TDWORD {
-	die("")
-	panic(todo(""))
-}
-
-func XLocalAlloc(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSendDlgItemMessageA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSendMessageA(t *TLS, _ ...any) TLRESULT {
-	die("")
-	panic(todo(""))
-}
-
 type TGUID = struct {
 	FData1 uint32
 	FData2 uint16
@@ -9122,10 +9045,10 @@ type TGUID = struct {
 }
 
 var XIID_IUnknown = TGUID{
-       FData4: [8]uint8{
-               0: uint8(0xc0),
-               7: uint8(0x46),
-       },
+	FData4: [8]uint8{
+		0: uint8(0xc0),
+		7: uint8(0x46),
+	},
 }
 
 var XGUID_NULL TGUID
@@ -9247,4 +9170,193 @@ func XMapVirtualKeyW(tls *TLS, _uCode TUINT, _uMapType TUINT) (r TUINT) {
 	}
 	r0, _, _ := procMapVirtualKeyW.Call(uintptr(_uCode), uintptr(_uMapType))
 	return TUINT(r0)
+}
+
+// __attribute__((dllimport)) SHORT GetKeyState(int nVirtKey);
+func XGetKeyState(tls *TLS, _nVirtKey int32) (r TSHORT) {
+	if __ccgo_strace {
+		trc("nVirtKey=%+v", _nVirtKey)
+		defer func() { trc(`XGetKeyState->%+v`, r) }()
+	}
+	r0, _, _ := procGetKeyState.Call(uintptr(_nVirtKey))
+	return TSHORT(r0)
+}
+
+type THHOOK = uintptr
+
+// __attribute__((dllimport)) WINBOOL UnhookWindowsHookEx (HHOOK hhk);
+func XUnhookWindowsHookEx(tls *TLS, _hhk THHOOK) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hhk=%+v", _hhk)
+		defer func() { trc(`XUnhookWindowsHookEx->%+v`, r) }()
+	}
+	r0, _, err := procUnhookWindowsHookEx.Call(_hhk)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL UpdateColors(HDC hdc);
+func XUpdateColors(tls *TLS, _hdc THDC) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XUpdateColors->%+v`, r) }()
+	}
+	r0, _, _ := procUpdateColors.Call(_hdc)
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL UpdateWindow(HWND hWnd);
+func XUpdateWindow(tls *TLS, _hWnd THWND) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XUpdateWindow->%+v`, r) }()
+	}
+	r0, _, _ := procUpdateWindow.Call(_hWnd)
+	return TWINBOOL(r0)
+}
+
+// LONG InterlockedDecrement(
+//
+//	[in, out] LONG volatile *Addend
+//
+// );
+func X_InterlockedDecrement(t *TLS, Addend uintptr) int32 {
+	return atomic.AddInt32((*int32)(unsafe.Pointer(Addend)), -1)
+}
+
+// LONG InterlockedIncrement(
+//
+//	[in, out] LONG volatile *Addend
+//
+// );
+func X_InterlockedIncrement(t *TLS, Addend uintptr) int32 {
+	return atomic.AddInt32((*int32)(unsafe.Pointer(Addend)), 1)
+}
+
+// __attribute__((dllimport)) HWND FindWindowA(LPCSTR lpClassName,LPCSTR lpWindowName);
+func XFindWindowA(tls *TLS, _lpClassName TLPCSTR, _lpWindowName TLPCSTR) (r THWND) {
+	if __ccgo_strace {
+		trc("lpClassName=%+v lpWindowName=%+v", _lpClassName, _lpWindowName)
+		defer func() { trc(`XFindWindowA->%+v`, r) }()
+	}
+	r0, _, _ := procFindWindowA.Call(_lpClassName, _lpWindowName)
+	return THWND(r0)
+}
+
+// __attribute__((dllimport)) HWND FindWindowExW(HWND hWndParent,HWND hWndChildAfter,LPCWSTR lpszClass,LPCWSTR lpszWindow);
+func XFindWindowExW(tls *TLS, _hWndParent THWND, _hWndChildAfter THWND, _lpszClass TLPCWSTR, _lpszWindow TLPCWSTR) (r THWND) {
+	if __ccgo_strace {
+		trc("hWndParent=%+v hWndChildAfter=%+v lpszClass=%+v lpszWindow=%+v", _hWndParent, _hWndChildAfter, _lpszClass, _lpszWindow)
+		defer func() { trc(`XFindWindowExW->%+v`, r) }()
+	}
+	r0, _, err := procFindWindowExW.Call(_hWndParent, _hWndChildAfter, _lpszClass, _lpszWindow)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THWND(r0)
+}
+
+type TLPCVOID = uintptr
+
+// __attribute__((dllimport)) DWORD FormatMessageA (DWORD dwFlags, LPCVOID lpSource, DWORD dwMessageId, DWORD dwLanguageId, LPSTR lpBuffer, DWORD nSize, va_list *Arguments);
+func XFormatMessageA(tls *TLS, _dwFlags TDWORD, _lpSource TLPCVOID, _dwMessageId TDWORD, _dwLanguageId TDWORD, _lpBuffer TLPSTR, _nSize TDWORD, _Arguments uintptr) (r TDWORD) {
+	if __ccgo_strace {
+		trc("dwFlags=%+v lpSource=%+v dwMessageId=%+v dwLanguageId=%+v lpBuffer=%+v nSize=%+v Arguments=%+v", _dwFlags, _lpSource, _dwMessageId, _dwLanguageId, _lpBuffer, _nSize, _Arguments)
+		defer func() { trc(`XFormatMessageA->%+v`, r) }()
+	}
+	r0, _, err := procFormatMessageA.Call(uintptr(_dwFlags), _lpSource, uintptr(_dwMessageId), uintptr(_dwLanguageId), _lpBuffer, uintptr(_nSize), _Arguments)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TDWORD(r0)
+}
+
+type TLPWSTR = uintptr
+
+// __attribute__((dllimport)) int GetClassNameW(HWND hWnd,LPWSTR lpClassName,int nMaxCount);
+func XGetClassNameW(tls *TLS, _hWnd THWND, _lpClassName TLPWSTR, _nMaxCount int32) (r int32) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpClassName=%+v nMaxCount=%+v", _hWnd, _lpClassName, _nMaxCount)
+		defer func() { trc(`XGetClassNameW->%+v`, r) }()
+	}
+	r0, _, err := procGetClassNameW.Call(_hWnd, _lpClassName, uintptr(_nMaxCount))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) int GetDlgCtrlID(HWND hWnd);
+func XGetDlgCtrlID(tls *TLS, _hWnd THWND) (r int32) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XGetDlgCtrlID->%+v`, r) }()
+	}
+	r0, _, err := procGetDlgCtrlID.Call(_hWnd)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) LCID GetThreadLocale (void);
+func XGetThreadLocale(tls *TLS) (r TLCID) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XGetThreadLocale->%+v`, r) }()
+	}
+	r0, _, _ := procGetThreadLocale.Call()
+	return TLCID(r0)
+}
+
+type TLPDWORD = uintptr
+
+// __attribute__((dllimport)) DWORD GetWindowThreadProcessId(HWND hWnd,LPDWORD lpdwProcessId);
+func XGetWindowThreadProcessId(tls *TLS, _hWnd THWND, _lpdwProcessId TLPDWORD) (r TDWORD) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpdwProcessId=%+v", _hWnd, _lpdwProcessId)
+		defer func() { trc(`XGetWindowThreadProcessId->%+v`, r) }()
+	}
+	r0, _, err := procGetWindowThreadProcessId.Call(_hWnd, _lpdwProcessId)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TDWORD(r0)
+}
+
+type THLOCAL = uintptr
+
+// __attribute__((dllimport)) HLOCAL LocalAlloc (UINT uFlags, SIZE_T uBytes);
+func XLocalAlloc(tls *TLS, _uFlags TUINT, _uBytes TSIZE_T) (r THLOCAL) {
+	if __ccgo_strace {
+		trc("uFlags=%+v uBytes=%+v", _uFlags, _uBytes)
+		defer func() { trc(`XLocalAlloc->%+v`, r) }()
+	}
+	r0, _, err := procLocalAlloc.Call(uintptr(_uFlags), uintptr(_uBytes))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THLOCAL(r0)
+}
+
+// __attribute__((dllimport)) LRESULT SendDlgItemMessageA(HWND hDlg,int nIDDlgItem,UINT Msg,WPARAM wParam,LPARAM lParam);
+func XSendDlgItemMessageA(tls *TLS, _hDlg THWND, _nIDDlgItem int32, _Msg TUINT, _wParam TWPARAM, _lParam TLPARAM) (r TLRESULT) {
+	if __ccgo_strace {
+		trc("hDlg=%+v nIDDlgItem=%+v Msg=%+v wParam=%+v lParam=%+v", _hDlg, _nIDDlgItem, _Msg, _wParam, _lParam)
+		defer func() { trc(`XSendDlgItemMessageA->%+v`, r) }()
+	}
+	r0, _, _ := procSendDlgItemMessageA.Call(_hDlg, uintptr(_nIDDlgItem), uintptr(_Msg), uintptr(_wParam), uintptr(_lParam))
+	return TLRESULT(r0)
+}
+
+// __attribute__((dllimport)) LRESULT SendMessageA(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+func XSendMessageA(tls *TLS, _hWnd THWND, _Msg TUINT, _wParam TWPARAM, _lParam TLPARAM) (r TLRESULT) {
+	if __ccgo_strace {
+		trc("hWnd=%+v Msg=%+v wParam=%+v lParam=%+v", _hWnd, _Msg, _wParam, _lParam)
+		defer func() { trc(`XSendMessageA->%+v`, r) }()
+	}
+	r0, _, _ := procSendMessageA.Call(_hWnd, uintptr(_Msg), uintptr(_wParam), uintptr(_lParam))
+	return TLRESULT(r0)
 }
