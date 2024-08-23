@@ -8507,7 +8507,7 @@ func XGetLocaleInfoW(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XGetMapMode(t *TLS, _ ...any) uintptr {
+func XGetMapMode(t *TLS, _ ...any) int32 {
 	die("")
 	panic(todo(""))
 }
