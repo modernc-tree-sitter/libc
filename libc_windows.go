@@ -152,6 +152,7 @@ type (
 var (
 	modoleaut32 = windows.NewLazySystemDLL("oleaut32.dll")
 	//--
+	procSetErrorInfo   = modoleaut32.NewProc("SetErrorInfo")
 	procSysStringLen   = modoleaut32.NewProc("SysStringLen")
 	procSysFreeString  = modoleaut32.NewProc("SysFreeString")
 	procSysAllocString = modoleaut32.NewProc("SysAllocString")
@@ -159,6 +160,13 @@ var (
 
 	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
 	//--
+	procSetPaletteEntries      = modgdi32.NewProc("SetPaletteEntries")
+	procSetMapMode             = modgdi32.NewProc("SetMapMode")
+	procSetBrushOrgEx          = modgdi32.NewProc("SetBrushOrgEx")
+	procSetBkMode              = modgdi32.NewProc("SetBkMode")
+	procSelectPalette          = modgdi32.NewProc("SelectPalette")
+	procSelectObject           = modgdi32.NewProc("SelectObject")
+	procSelectClipRgn          = modgdi32.NewProc("SelectClipRgn")
 	procDeleteDC               = modgdi32.NewProc("DeleteDC")
 	procDPtoLP                 = modgdi32.NewProc("DPtoLP")
 	procCreateSolidBrush       = modgdi32.NewProc("CreateSolidBrush")
@@ -335,6 +343,18 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procSetMenu                     = moduser32.NewProc("SetMenu")
+	procSetLayeredWindowAttributes  = moduser32.NewProc("SetLayeredWindowAttributes")
+	procSetForegroundWindow         = moduser32.NewProc("SetForegroundWindow")
+	procSetFocus                    = moduser32.NewProc("SetFocus")
+	procSetCursorPos                = moduser32.NewProc("SetCursorPos")
+	procSetCursor                   = moduser32.NewProc("SetCursor")
+	procSetClassLongPtrW            = moduser32.NewProc("SetClassLongPtrW")
+	procSetCaretPos                 = moduser32.NewProc("SetCaretPos")
+	procSetCapture                  = moduser32.NewProc("SetCapture")
+	procSetActiveWindow             = moduser32.NewProc("SetActiveWindow")
+	procSendInput                   = moduser32.NewProc("SendInput")
+	procScrollWindowEx              = moduser32.NewProc("ScrollWindowEx")
 	procEnableWindow                = moduser32.NewProc("EnableWindow")
 	procDrawMenuBar                 = moduser32.NewProc("DrawMenuBar")
 	procDrawFrameControl            = moduser32.NewProc("DrawFrameControl")
@@ -8226,6 +8246,14 @@ func XSetWindowsHookExW(tls *TLS, _idHook int32, _lpfn THOOKPROC, _hmod THINSTAN
 
 type THOOKPROC = uintptr
 
+// extern __attribute__((dllimport)) HRESULT SetErrorInfo(ULONG dwReserved,IErrorInfo *perrinfo);
+func XSetErrorInfo(tls *TLS, _dwReserved TULONG, _perrinfo uintptr) (r THRESULT) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+type TULONG = uint32
+
 // ----
 
 func XArc(t *TLS, _ ...any) uintptr {
@@ -8785,106 +8813,6 @@ func XSHGetPathFromIDListW(t *TLS, _ ...any) uintptr {
 }
 
 func XScreenToClient(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XScrollWindowEx(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XSelectClipRgn(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSelectObject(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSelectPalette(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSendInput(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetActiveWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetBkMode(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetBrushOrgEx(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetCapture(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetCaretPos(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetClassLongPtrW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetCursor(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetCursorPos(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetErrorInfo(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetFocus(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetForegroundWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetLayeredWindowAttributes(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetMapMode(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetMenu(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetPaletteEntries(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
 }
@@ -9665,4 +9593,229 @@ func XEnableWindow(tls *TLS, _hWnd THWND, _bEnable TWINBOOL) (r TWINBOOL) {
 	}
 	r0, _, _ := procEnableWindow.Call(_hWnd, uintptr(_bEnable))
 	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) int ScrollWindowEx(HWND hWnd,int dx,int dy, const RECT *prcScroll, const RECT *prcClip,HRGN hrgnUpdate,LPRECT prcUpdate,UINT flags);
+func XScrollWindowEx(tls *TLS, _hWnd THWND, _dx int32, _dy int32, _prcScroll uintptr, _prcClip uintptr, _hrgnUpdate THRGN, _prcUpdate TLPRECT, _flags TUINT) (r int32) {
+	if __ccgo_strace {
+		trc("hWnd=%+v dx=%+v dy=%+v prcScroll=%+v prcClip=%+v hrgnUpdate=%+v prcUpdate=%+v flags=%+v", _hWnd, _dx, _dy, _prcScroll, _prcClip, _hrgnUpdate, _prcUpdate, _flags)
+		defer func() { trc(`XScrollWindowEx->%+v`, r) }()
+	}
+	r0, _, err := procScrollWindowEx.Call(_hWnd, uintptr(_dx), uintptr(_dy), _prcScroll, _prcClip, _hrgnUpdate, _prcUpdate, uintptr(_flags))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) int SelectClipRgn(HDC hdc,HRGN hrgn);
+func XSelectClipRgn(tls *TLS, _hdc THDC, _hrgn THRGN) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v hrgn=%+v", _hdc, _hrgn)
+		defer func() { trc(`XSelectClipRgn->%+v`, r) }()
+	}
+	r0, _, _ := procSelectClipRgn.Call(_hdc, _hrgn)
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) HGDIOBJ SelectObject(HDC hdc,HGDIOBJ h);
+func XSelectObject(tls *TLS, _hdc THDC, _h THGDIOBJ) (r THGDIOBJ) {
+	if __ccgo_strace {
+		trc("hdc=%+v h=%+v", _hdc, _h)
+		defer func() { trc(`XSelectObject->%+v`, r) }()
+	}
+	r0, _, _ := procSelectObject.Call(_hdc, _h)
+	return THGDIOBJ(r0)
+}
+
+// __attribute__((dllimport)) HPALETTE SelectPalette(HDC hdc,HPALETTE hPal,WINBOOL bForceBkgd);
+func XSelectPalette(tls *TLS, _hdc THDC, _hPal THPALETTE, _bForceBkgd TWINBOOL) (r THPALETTE) {
+	if __ccgo_strace {
+		trc("hdc=%+v hPal=%+v bForceBkgd=%+v", _hdc, _hPal, _bForceBkgd)
+		defer func() { trc(`XSelectPalette->%+v`, r) }()
+	}
+	r0, _, _ := procSelectPalette.Call(_hdc, _hPal, uintptr(_bForceBkgd))
+	return THPALETTE(r0)
+}
+
+// __attribute__((dllimport)) UINT SendInput(UINT cInputs,LPINPUT pInputs,int cbSize);
+func XSendInput(tls *TLS, _cInputs TUINT, _pInputs TLPINPUT, _cbSize int32) (r TUINT) {
+	if __ccgo_strace {
+		trc("cInputs=%+v pInputs=%+v cbSize=%+v", _cInputs, _pInputs, _cbSize)
+		defer func() { trc(`XSendInput->%+v`, r) }()
+	}
+	r0, _, err := procSendInput.Call(uintptr(_cInputs), _pInputs, uintptr(_cbSize))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TUINT(r0)
+}
+
+type TLPINPUT = uintptr
+
+// __attribute__((dllimport)) HWND SetActiveWindow(HWND hWnd);
+func XSetActiveWindow(tls *TLS, _hWnd THWND) (r THWND) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XSetActiveWindow->%+v`, r) }()
+	}
+	r0, _, err := procSetActiveWindow.Call(_hWnd)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THWND(r0)
+}
+
+// __attribute__((dllimport)) int SetBkMode(HDC hdc,int mode);
+func XSetBkMode(tls *TLS, _hdc THDC, _mode int32) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v mode=%+v", _hdc, _mode)
+		defer func() { trc(`XSetBkMode->%+v`, r) }()
+	}
+	r0, _, _ := procSetBkMode.Call(_hdc, uintptr(_mode))
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL SetBrushOrgEx(HDC hdc,int x,int y,LPPOINT lppt);
+func XSetBrushOrgEx(tls *TLS, _hdc THDC, _x int32, _y int32, _lppt TLPPOINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v x=%+v y=%+v lppt=%+v", _hdc, _x, _y, _lppt)
+		defer func() { trc(`XSetBrushOrgEx->%+v`, r) }()
+	}
+	r0, _, _ := procSetBrushOrgEx.Call(_hdc, uintptr(_x), uintptr(_y), _lppt)
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) HWND SetCapture(HWND hWnd);
+func XSetCapture(tls *TLS, _hWnd THWND) (r THWND) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XSetCapture->%+v`, r) }()
+	}
+	r0, _, _ := procSetCapture.Call(_hWnd)
+	return THWND(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL SetCaretPos(int X,int Y);
+func XSetCaretPos(tls *TLS, _X int32, _Y int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("X=%+v Y=%+v", _X, _Y)
+		defer func() { trc(`XSetCaretPos->%+v`, r) }()
+	}
+	r0, _, err := procSetCaretPos.Call(uintptr(_X), uintptr(_Y))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) ULONG_PTR SetClassLongPtrW(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
+func XSetClassLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32, _dwNewLong TLONG_PTR) (r TULONG_PTR) {
+	if __ccgo_strace {
+		trc("hWnd=%+v nIndex=%+v dwNewLong=%+v", _hWnd, _nIndex, _dwNewLong)
+		defer func() { trc(`XSetClassLongPtrW->%+v`, r) }()
+	}
+	r0, _, err := procSetClassLongPtrW.Call(_hWnd, uintptr(_nIndex), uintptr(_dwNewLong))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TULONG_PTR(r0)
+}
+
+type TLONG_PTR = int64
+
+type TULONG_PTR = uint64
+
+// __attribute__((dllimport)) HCURSOR SetCursor(HCURSOR hCursor);
+func XSetCursor(tls *TLS, _hCursor THCURSOR) (r THCURSOR) {
+	if __ccgo_strace {
+		trc("hCursor=%+v", _hCursor)
+		defer func() { trc(`XSetCursor->%+v`, r) }()
+	}
+	r0, _, _ := procSetCursor.Call(_hCursor)
+	return THCURSOR(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL SetCursorPos(int X,int Y);
+func XSetCursorPos(tls *TLS, _X int32, _Y int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("X=%+v Y=%+v", _X, _Y)
+		defer func() { trc(`XSetCursorPos->%+v`, r) }()
+	}
+	r0, _, err := procSetCursorPos.Call(uintptr(_X), uintptr(_Y))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) HWND SetFocus(HWND hWnd);
+func XSetFocus(tls *TLS, _hWnd THWND) (r THWND) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XSetFocus->%+v`, r) }()
+	}
+	r0, _, err := procSetFocus.Call(_hWnd)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THWND(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL SetForegroundWindow(HWND hWnd);
+func XSetForegroundWindow(tls *TLS, _hWnd THWND) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XSetForegroundWindow->%+v`, r) }()
+	}
+	r0, _, _ := procSetForegroundWindow.Call(_hWnd)
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL SetLayeredWindowAttributes (HWND hwnd, COLORREF crKey, BYTE bAlpha, DWORD dwFlags);
+func XSetLayeredWindowAttributes(tls *TLS, _hwnd THWND, _crKey TCOLORREF, _bAlpha TBYTE, _dwFlags TDWORD) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hwnd=%+v crKey=%+v bAlpha=%+v dwFlags=%+v", _hwnd, _crKey, _bAlpha, _dwFlags)
+		defer func() { trc(`XSetLayeredWindowAttributes->%+v`, r) }()
+	}
+	r0, _, err := procSetLayeredWindowAttributes.Call(_hwnd, uintptr(_crKey), uintptr(_bAlpha), uintptr(_dwFlags))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+type TBYTE = uint8
+
+// __attribute__((dllimport)) int SetMapMode(HDC hdc,int iMode);
+func XSetMapMode(tls *TLS, _hdc THDC, _iMode int32) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v iMode=%+v", _hdc, _iMode)
+		defer func() { trc(`XSetMapMode->%+v`, r) }()
+	}
+	r0, _, _ := procSetMapMode.Call(_hdc, uintptr(_iMode))
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL SetMenu(HWND hWnd,HMENU hMenu);
+func XSetMenu(tls *TLS, _hWnd THWND, _hMenu THMENU) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v hMenu=%+v", _hWnd, _hMenu)
+		defer func() { trc(`XSetMenu->%+v`, r) }()
+	}
+	r0, _, err := procSetMenu.Call(_hWnd, _hMenu)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) UINT SetPaletteEntries(HPALETTE hpal,UINT iStart,UINT cEntries, const PALETTEENTRY *pPalEntries);
+func XSetPaletteEntries(tls *TLS, _hpal THPALETTE, _iStart TUINT, _cEntries TUINT, _pPalEntries uintptr) (r TUINT) {
+	if __ccgo_strace {
+		trc("hpal=%+v iStart=%+v cEntries=%+v pPalEntries=%+v", _hpal, _iStart, _cEntries, _pPalEntries)
+		defer func() { trc(`XSetPaletteEntries->%+v`, r) }()
+	}
+	r0, _, _ := procSetPaletteEntries.Call(_hpal, uintptr(_iStart), uintptr(_cEntries), _pPalEntries)
+	return TUINT(r0)
 }
