@@ -306,6 +306,7 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procReleaseDC = moduser32.NewProc("ReleaseDC")
 	procVkKeyScanW                  = moduser32.NewProc("VkKeyScanW")
 	procWindowFromPoint             = moduser32.NewProc("WindowFromPoint")
 	procAdjustWindowRectEx          = moduser32.NewProc("AdjustWindowRectEx")
@@ -8810,11 +8811,6 @@ func XReleaseCapture(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XReleaseDC(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
 func XRemoveMenu(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
@@ -9232,5 +9228,15 @@ func XMulDiv(tls *TLS, _nNumber int32, _nNumerator int32, _nDenominator int32) (
 		defer func() { trc(`XMulDiv->%+v`, r) }()
 	}
 	r0, _, _ := procMulDiv.Call(uintptr(_nNumber), uintptr(_nNumerator), uintptr(_nDenominator))
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) int ReleaseDC(HWND hWnd,HDC hDC);
+func XReleaseDC(tls *TLS, _hWnd THWND, _hDC THDC) (r int32) {
+	if __ccgo_strace {
+		trc("hWnd=%+v hDC=%+v", _hWnd, _hDC)
+		defer func() { trc(`XReleaseDC->%+v`, r) }()
+	}
+	r0, _, _ := procReleaseDC.Call(_hWnd, _hDC)
 	return int32(r0)
 }
