@@ -150,8 +150,24 @@ type (
 )
 
 var (
+	modoleaut32 = windows.NewLazySystemDLL("oleaut32.dll")
+	//--
+	procSysStringLen   = modoleaut32.NewProc("SysStringLen")
+	procSysFreeString  = modoleaut32.NewProc("SysFreeString")
+	procSysAllocString = modoleaut32.NewProc("SysAllocString")
+	//--
+
 	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
 	//--
+	procTranslateCharsetInfo   = modgdi32.NewProc("TranslateCharsetInfo")
+	procTextOutW               = modgdi32.NewProc("TextOutW")
+	procTextOutA               = modgdi32.NewProc("TextOutA")
+	procStrokePath             = modgdi32.NewProc("StrokePath")
+	procStrokeAndFillPath      = modgdi32.NewProc("StrokeAndFillPath")
+	procSetTextAlign           = modgdi32.NewProc("SetTextAlign")
+	procSetRectRgn             = modgdi32.NewProc("SetRectRgn")
+	procSetROP2                = modgdi32.NewProc("SetROP2")
+	procSetPolyFillMode        = modgdi32.NewProc("SetPolyFillMode")
 	procUpdateColors           = modgdi32.NewProc("UpdateColors")
 	procGetStockObject         = modgdi32.NewProc("GetStockObject")
 	procGetNearestColor        = modgdi32.NewProc("GetNearestColor")
@@ -311,6 +327,14 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procTrackPopupMenu              = moduser32.NewProc("TrackPopupMenu")
+	procToUnicode                   = moduser32.NewProc("ToUnicode")
+	procSystemParametersInfoW       = moduser32.NewProc("SystemParametersInfoW")
+	procShowWindow                  = moduser32.NewProc("ShowWindow")
+	procSetWindowsHookExW           = moduser32.NewProc("SetWindowsHookExW")
+	procSetWindowTextW              = moduser32.NewProc("SetWindowTextW")
+	procSetScrollInfo               = moduser32.NewProc("SetScrollInfo")
+	procSetParent                   = moduser32.NewProc("SetParent")
 	procSendMessageA                = moduser32.NewProc("SendMessageA")
 	procSendDlgItemMessageA         = moduser32.NewProc("SendDlgItemMessageA")
 	procGetWindowThreadProcessId    = moduser32.NewProc("GetWindowThreadProcessId")
@@ -8174,6 +8198,14 @@ func XEnumChildWindows(tls *TLS, _hWndParent THWND, _lpEnumFunc TWNDENUMPROC, _l
 	panic(todo(""))
 }
 
+// __attribute__((dllimport)) HHOOK SetWindowsHookExW (int idHook, HOOKPROC lpfn, HINSTANCE hmod, DWORD dwThreadId);
+func XSetWindowsHookExW(tls *TLS, _idHook int32, _lpfn THOOKPROC, _hmod THINSTANCE, _dwThreadId TDWORD) (r THHOOK) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+type THOOKPROC = uintptr
+
 // ----
 
 func XArc(t *TLS, _ ...any) uintptr {
@@ -8937,106 +8969,6 @@ func XSetPaletteEntries(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XSetParent(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetPolyFillMode(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetROP2(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetRectRgn(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetScrollInfo(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetTextAlign(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetWindowTextW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSetWindowsHookExW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XShowWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XStrokeAndFillPath(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XStrokePath(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSysAllocString(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSysFreeString(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSysStringLen(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSystemParametersInfoW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XTextOutA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XTextOutW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XToUnicode(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XTrackPopupMenu(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XTranslateCharsetInfo(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
 type TGUID = struct {
 	FData1 uint32
 	FData2 uint16
@@ -9359,4 +9291,219 @@ func XSendMessageA(tls *TLS, _hWnd THWND, _Msg TUINT, _wParam TWPARAM, _lParam T
 	}
 	r0, _, _ := procSendMessageA.Call(_hWnd, uintptr(_Msg), uintptr(_wParam), uintptr(_lParam))
 	return TLRESULT(r0)
+}
+
+// __attribute__((dllimport)) HWND SetParent(HWND hWndChild,HWND hWndNewParent);
+func XSetParent(tls *TLS, _hWndChild THWND, _hWndNewParent THWND) (r THWND) {
+	if __ccgo_strace {
+		trc("hWndChild=%+v hWndNewParent=%+v", _hWndChild, _hWndNewParent)
+		defer func() { trc(`XSetParent->%+v`, r) }()
+	}
+	r0, _, err := procSetParent.Call(_hWndChild, _hWndNewParent)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THWND(r0)
+}
+
+// __attribute__((dllimport)) int SetPolyFillMode(HDC hdc,int mode);
+func XSetPolyFillMode(tls *TLS, _hdc THDC, _mode int32) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v mode=%+v", _hdc, _mode)
+		defer func() { trc(`XSetPolyFillMode->%+v`, r) }()
+	}
+	r0, _, _ := procSetPolyFillMode.Call(_hdc, uintptr(_mode))
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) int SetROP2(HDC hdc,int rop2);
+func XSetROP2(tls *TLS, _hdc THDC, _rop2 int32) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v rop2=%+v", _hdc, _rop2)
+		defer func() { trc(`XSetROP2->%+v`, r) }()
+	}
+	r0, _, _ := procSetROP2.Call(_hdc, uintptr(_rop2))
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL SetRectRgn(HRGN hrgn,int left,int top,int right,int bottom);
+func XSetRectRgn(tls *TLS, _hrgn THRGN, _left int32, _top int32, _right int32, _bottom int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hrgn=%+v left=%+v top=%+v right=%+v bottom=%+v", _hrgn, _left, _top, _right, _bottom)
+		defer func() { trc(`XSetRectRgn->%+v`, r) }()
+	}
+	r0, _, _ := procSetRectRgn.Call(_hrgn, uintptr(_left), uintptr(_top), uintptr(_right), uintptr(_bottom))
+	return TWINBOOL(r0)
+}
+
+type THRGN = uintptr
+
+// __attribute__((dllimport)) int SetScrollInfo(HWND hwnd,int nBar,LPCSCROLLINFO lpsi,WINBOOL redraw);
+func XSetScrollInfo(tls *TLS, _hwnd THWND, _nBar int32, _lpsi TLPCSCROLLINFO, _redraw TWINBOOL) (r int32) {
+	if __ccgo_strace {
+		trc("hwnd=%+v nBar=%+v lpsi=%+v redraw=%+v", _hwnd, _nBar, _lpsi, _redraw)
+		defer func() { trc(`XSetScrollInfo->%+v`, r) }()
+	}
+	r0, _, _ := procSetScrollInfo.Call(_hwnd, uintptr(_nBar), _lpsi, uintptr(_redraw))
+	return int32(r0)
+}
+
+type TLPCSCROLLINFO = uintptr
+
+// __attribute__((dllimport)) UINT SetTextAlign(HDC hdc,UINT align);
+func XSetTextAlign(tls *TLS, _hdc THDC, _align TUINT) (r TUINT) {
+	if __ccgo_strace {
+		trc("hdc=%+v align=%+v", _hdc, _align)
+		defer func() { trc(`XSetTextAlign->%+v`, r) }()
+	}
+	r0, _, _ := procSetTextAlign.Call(_hdc, uintptr(_align))
+	return TUINT(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL SetWindowTextW(HWND hWnd,LPCWSTR lpString);
+func XSetWindowTextW(tls *TLS, _hWnd THWND, _lpString TLPCWSTR) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpString=%+v", _hWnd, _lpString)
+		defer func() { trc(`XSetWindowTextW->%+v`, r) }()
+	}
+	r0, _, err := procSetWindowTextW.Call(_hWnd, _lpString)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL ShowWindow(HWND hWnd,int nCmdShow);
+func XShowWindow(tls *TLS, _hWnd THWND, _nCmdShow int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v nCmdShow=%+v", _hWnd, _nCmdShow)
+		defer func() { trc(`XShowWindow->%+v`, r) }()
+	}
+	r0, _, _ := procShowWindow.Call(_hWnd, uintptr(_nCmdShow))
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL StrokeAndFillPath(HDC hdc);
+func XStrokeAndFillPath(tls *TLS, _hdc THDC) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XStrokeAndFillPath->%+v`, r) }()
+	}
+	r0, _, _ := procStrokeAndFillPath.Call(_hdc)
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL StrokePath(HDC hdc);
+func XStrokePath(tls *TLS, _hdc THDC) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XStrokePath->%+v`, r) }()
+	}
+	r0, _, _ := procStrokePath.Call(_hdc)
+	return TWINBOOL(r0)
+}
+
+// extern __attribute__((dllimport))BSTR SysAllocString(const OLECHAR *);
+func XSysAllocString(tls *TLS, _0 uintptr) (r TBSTR) {
+	if __ccgo_strace {
+		trc("0=%+v", _0)
+		defer func() { trc(`XSysAllocString->%+v`, r) }()
+	}
+	r0, _, _ := procSysAllocString.Call(_0)
+	return TBSTR(r0)
+}
+
+// extern __attribute__((dllimport))void SysFreeString(BSTR);
+func XSysFreeString(tls *TLS, _0 TBSTR) {
+	if __ccgo_strace {
+		trc("0=%+v", _0)
+	}
+	procSysFreeString.Call(_0)
+}
+
+// extern __attribute__((dllimport))UINT SysStringLen(BSTR);
+func XSysStringLen(tls *TLS, _0 TBSTR) (r TUINT) {
+	if __ccgo_strace {
+		trc("0=%+v", _0)
+		defer func() { trc(`XSysStringLen->%+v`, r) }()
+	}
+	r0, _, _ := procSysStringLen.Call(_0)
+	return TUINT(r0)
+}
+
+type TBSTR = uintptr
+
+// __attribute__((dllimport)) WINBOOL SystemParametersInfoW(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni);
+func XSystemParametersInfoW(tls *TLS, _uiAction TUINT, _uiParam TUINT, _pvParam TPVOID, _fWinIni TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("uiAction=%+v uiParam=%+v pvParam=%+v fWinIni=%+v", _uiAction, _uiParam, _pvParam, _fWinIni)
+		defer func() { trc(`XSystemParametersInfoW->%+v`, r) }()
+	}
+	r0, _, err := procSystemParametersInfoW.Call(uintptr(_uiAction), uintptr(_uiParam), _pvParam, uintptr(_fWinIni))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+type TPVOID = uintptr
+
+// __attribute__((dllimport)) WINBOOL TextOutA(HDC hdc,int x,int y,LPCSTR lpString,int c);
+func XTextOutA(tls *TLS, _hdc THDC, _x int32, _y int32, _lpString TLPCSTR, _c int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v x=%+v y=%+v lpString=%+v c=%+v", _hdc, _x, _y, _lpString, _c)
+		defer func() { trc(`XTextOutA->%+v`, r) }()
+	}
+	r0, _, _ := procTextOutA.Call(_hdc, uintptr(_x), uintptr(_y), _lpString, uintptr(_c))
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL TextOutW(HDC hdc,int x,int y,LPCWSTR lpString,int c);
+func XTextOutW(tls *TLS, _hdc THDC, _x int32, _y int32, _lpString TLPCWSTR, _c int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v x=%+v y=%+v lpString=%+v c=%+v", _hdc, _x, _y, _lpString, _c)
+		defer func() { trc(`XTextOutW->%+v`, r) }()
+	}
+	r0, _, _ := procTextOutW.Call(_hdc, uintptr(_x), uintptr(_y), _lpString, uintptr(_c))
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) int ToUnicode(UINT wVirtKey,UINT wScanCode, const BYTE *lpKeyState,LPWSTR pwszBuff,int cchBuff,UINT wFlags);
+func XToUnicode(tls *TLS, _wVirtKey TUINT, _wScanCode TUINT, _lpKeyState uintptr, _pwszBuff TLPWSTR, _cchBuff int32, _wFlags TUINT) (r int32) {
+	if __ccgo_strace {
+		trc("wVirtKey=%+v wScanCode=%+v lpKeyState=%+v pwszBuff=%+v cchBuff=%+v wFlags=%+v", _wVirtKey, _wScanCode, _lpKeyState, _pwszBuff, _cchBuff, _wFlags)
+		defer func() { trc(`XToUnicode->%+v`, r) }()
+	}
+	r0, _, _ := procToUnicode.Call(uintptr(_wVirtKey), uintptr(_wScanCode), _lpKeyState, _pwszBuff, uintptr(_cchBuff), uintptr(_wFlags))
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL TrackPopupMenu(HMENU hMenu,UINT uFlags,int x,int y,int nReserved,HWND hWnd, const RECT *prcRect);
+func XTrackPopupMenu(tls *TLS, _hMenu THMENU, _uFlags TUINT, _x int32, _y int32, _nReserved int32, _hWnd THWND, _prcRect uintptr) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hMenu=%+v uFlags=%+v x=%+v y=%+v nReserved=%+v hWnd=%+v prcRect=%+v", _hMenu, _uFlags, _x, _y, _nReserved, _hWnd, _prcRect)
+		defer func() { trc(`XTrackPopupMenu->%+v`, r) }()
+	}
+	r0, _, err := procTrackPopupMenu.Call(_hMenu, uintptr(_uFlags), uintptr(_x), uintptr(_y), uintptr(_nReserved), _hWnd, _prcRect)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+type THMENU = uintptr
+
+type TLPCHARSETINFO = uintptr
+
+// __attribute__((dllimport)) WINBOOL TranslateCharsetInfo(DWORD *lpSrc,LPCHARSETINFO lpCs,DWORD dwFlags);
+func XTranslateCharsetInfo(tls *TLS, _lpSrc uintptr, _lpCs TLPCHARSETINFO, _dwFlags TDWORD) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("lpSrc=%+v lpCs=%+v dwFlags=%+v", _lpSrc, _lpCs, _dwFlags)
+		defer func() { trc(`XTranslateCharsetInfo->%+v`, r) }()
+	}
+	r0, _, err := procTranslateCharsetInfo.Call(_lpSrc, _lpCs, uintptr(_dwFlags))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
 }
