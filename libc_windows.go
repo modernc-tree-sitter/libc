@@ -266,6 +266,9 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procVkKeyScanW                  = moduser32.NewProc("VkKeyScanW")
+	procWindowFromPoint             = moduser32.NewProc("WindowFromPoint")
+	procAdjustWindowRectEx          = moduser32.NewProc("AdjustWindowRectEx")
 	procSetClipboardData            = moduser32.NewProc("SetClipboardData")
 	procGetDC                       = moduser32.NewProc("GetDC")
 	procEmptyClipboard              = moduser32.NewProc("EmptyClipboard")
@@ -297,9 +300,9 @@ var (
 
 	modcrt = windows.NewLazySystemDLL("msvcrt.dll")
 	//	procAccess    = modcrt.NewProc("_access")
-	procChmod = modcrt.NewProc("_chmod")
-	//	procCtime64   = modcrt.NewProc("ctime64")
-	procGmtime = modcrt.NewProc("gmtime")
+	procChmod   = modcrt.NewProc("_chmod")
+	procCtime64 = modcrt.NewProc("ctime64")
+	procGmtime  = modcrt.NewProc("gmtime")
 	//	procGmtime32  = modcrt.NewProc("_gmtime32")
 	procGmtime64 = modcrt.NewProc("_gmtime64")
 	//	procStat64i32 = modcrt.NewProc("_stat64i32")
@@ -307,9 +310,9 @@ var (
 	//	procStrftime  = modcrt.NewProc("strftime")
 	procStrnicmp = modcrt.NewProc("_strnicmp")
 	procStrtod   = modcrt.NewProc("strtod")
-	//	procTime64    = modcrt.NewProc("time64")
-	//	procWcsncpy   = modcrt.NewProc("wcsncpy")
-	//	procWcsrchr   = modcrt.NewProc("wcsrchr")
+	procTime64   = modcrt.NewProc("time64")
+	procWcsncpy  = modcrt.NewProc("wcsncpy")
+	procWcsrchr  = modcrt.NewProc("wcsrchr")
 	//
 	//	moducrt         = windows.NewLazySystemDLL("ucrtbase.dll")
 	//	procFindfirst32 = moducrt.NewProc("_findfirst32")
@@ -5359,6 +5362,7 @@ func XwsprintfW(t *TLS, _ ...interface{}) int32 {
 //
 // );
 func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
+	die("")
 	if __ccgo_strace {
 		trc("t=%v lpWndClass=%v, (%v:)", t, lpWndClass, origin(2))
 	}
@@ -5386,6 +5390,7 @@ func XDestroyWindow(t *TLS, _ ...interface{}) int32 {
 //
 // );
 func XUnregisterClassW(t *TLS, lpClassName, hInstance uintptr) int32 {
+	die("")
 	if __ccgo_strace {
 		trc("t=%v hInstance=%v, (%v:)", t, hInstance, origin(2))
 	}
@@ -5675,7 +5680,7 @@ func Xgethostname(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-func XSendMessageW(t *TLS, _ ...interface{}) int32 {
+func XSendMessageW(t *TLS, _ ...interface{}) int64 {
 	die("")
 	panic(todo(""))
 }
@@ -5722,7 +5727,7 @@ func Xioctlsocket(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-func XGetWindowLongPtrW(t *TLS, _ ...interface{}) int32 {
+func XGetWindowLongPtrW(t *TLS, _ ...interface{}) int64 {
 	die("")
 	panic(todo(""))
 }
@@ -7487,13 +7492,13 @@ func Xislower(tls *TLS, c int32) int32 { /* islower.c:4:5: */
 	return Bool32(uint32(c)-uint32('a') < uint32(26))
 }
 
-// func Xisupper(tls *TLS, c int32) int32 { /* isupper.c:4:5: */
-// 	if __ccgo_strace {
-// 		trc("tls=%v c=%v, (%v:)", tls, c, origin(2))
-// 	}
-// 	return Bool32(uint32(c)-uint32('A') < uint32(26))
-// }
-//
+func Xisupper(tls *TLS, c int32) int32 { /* isupper.c:4:5: */
+	if __ccgo_strace {
+		trc("tls=%v c=%v, (%v:)", tls, c, origin(2))
+	}
+	return Bool32(uint32(c)-uint32('A') < uint32(26))
+}
+
 // // int access(const char *pathname, int mode);
 // func Xaccess(t *TLS, pathname uintptr, mode int32) int32 {
 // 	if __ccgo_strace {
@@ -7610,50 +7615,38 @@ func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int
 // func CreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t, lpStartAddress, lpParameter uintptr, dwCreationFlags uint32, lpThreadId uintptr) uintptr {
 // 	return XCreateThread(t, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
 // }
-//
-// // wchar_t *wcsncpy(wchar_t *strDest, const wchar_t *strSource, size_t count);
-// func Xwcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
-// 	r0, _, err := procWcsncpy.Call(strDest, strSource, uintptr(count))
-// 	if err != windows.ERROR_SUCCESS {
-// 		t.setErrno(err)
-// 	}
-// 	return r0
-// }
-//
-// // wchar_t *wcsrchr(const wchar_t *str, wchar_t c);
-// func Xwcsrchr(t *TLS, str uintptr, c types.Wchar_t) uintptr {
-// 	r0, _, err := procWcsrchr.Call(str, uintptr(c))
-// 	if err != windows.ERROR_SUCCESS {
-// 		t.setErrno(err)
-// 	}
-// 	return r0
-// }
-//
-// // __attribute__ ((__dllimport__)) char * __attribute__((__cdecl__)) _ctime64(const __time64_t *_Time);
-// func X_ctime64(tls *TLS, __Time uintptr) (r uintptr) {
-// 	if __ccgo_strace {
-// 		trc("_Time=%+v", __Time)
-// 		defer func() { trc(`X_ctime64->%+v`, r) }()
-// 	}
-// 	r0, _, err := procCtime64.Call(__Time)
-// 	if err != windows.ERROR_SUCCESS {
-// 		tls.setErrno(int32(err.(windows.Errno)))
-// 	}
-// 	return uintptr(r0)
-// }
-//
-// // __attribute__ ((__dllimport__)) __time64_t __attribute__((__cdecl__)) _time64(__time64_t *_Time);
-// func X_time64(tls *TLS, __Time uintptr) (r int64) {
-// 	if __ccgo_strace {
-// 		trc("_Time=%+v", __Time)
-// 		defer func() { trc(`X_time64->%+v`, r) }()
-// 	}
-// 	r0, _, err := procTime64.Call(__Time)
-// 	if err != windows.ERROR_SUCCESS {
-// 		tls.setErrno(int32(err.(windows.Errno)))
-// 	}
-// 	return int64(r0)
-// }
+
+// wchar_t *wcsncpy(wchar_t *strDest, const wchar_t *strSource, size_t count);
+func Xwcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
+	r0, _, _ := procWcsncpy.Call(strDest, strSource, uintptr(count))
+	return r0
+}
+
+// wchar_t *wcsrchr(const wchar_t *str, wchar_t c);
+func Xwcsrchr(t *TLS, str uintptr, c types.Wchar_t) uintptr {
+	r0, _, _ := procWcsrchr.Call(str, uintptr(c))
+	return r0
+}
+
+// __attribute__ ((__dllimport__)) char * __attribute__((__cdecl__)) _ctime64(const __time64_t *_Time);
+func X_ctime64(tls *TLS, __Time uintptr) (r uintptr) {
+	if __ccgo_strace {
+		trc("_Time=%+v", __Time)
+		defer func() { trc(`X_ctime64->%+v`, r) }()
+	}
+	r0, _, _ := procCtime64.Call(__Time)
+	return uintptr(r0)
+}
+
+// __attribute__ ((__dllimport__)) __time64_t __attribute__((__cdecl__)) _time64(__time64_t *_Time);
+func X_time64(tls *TLS, __Time uintptr) (r int64) {
+	if __ccgo_strace {
+		trc("_Time=%+v", __Time)
+		defer func() { trc(`X_time64->%+v`, r) }()
+	}
+	r0, _, _ := procTime64.Call(__Time)
+	return int64(r0)
+}
 
 // __attribute__ ((__dllimport__)) int __attribute__((__cdecl__)) _strnicmp(const char *_Str1,const char *_Str2,size_t _MaxCount);
 func X_strnicmp(tls *TLS, __Str1 uintptr, __Str2 uintptr, __MaxCount types.Size_t) (r int32) {
@@ -8052,200 +8045,1120 @@ func XGetNearestColor(tls *TLS, _hdc THDC, _color TCOLORREF) (r TCOLORREF) {
 }
 
 type THGDIOBJ = uintptr
+type TLPRECT = uintptr
 
-//TODO AdjustWindowRectEx
-//TODO Arc
-//TODO BeginPath
-//TODO BitBlt
-//TODO CallNextHookEx
-//TODO CallWindowProcW
-//TODO ChooseColorW
-//TODO ChooseFontW
-//TODO Chord
-//TODO ClientToScreen
-//TODO CloseFigure
-//TODO CoCreateInstance
-//TODO CoInitialize
-//TODO CoTaskMemAlloc
-//TODO CoTaskMemFree
-//TODO CombineRgn
-//TODO CommDlgExtendedError
-//TODO CreateBindCtx
-//TODO CreateBitmap
-//TODO CreateCaret
-//TODO CreateCompatibleBitmap
-//TODO CreateCompatibleDC
-//TODO CreateDCW
-//TODO CreateDIBSection
-//TODO CreateDIBitmap
-//TODO CreateErrorInfo
-//TODO CreateFileMoniker
-//TODO CreateFontIndirectW
-//TODO CreateIconFromResource
-//TODO CreateIconFromResourceEx
-//TODO CreateIconIndirect
-//TODO CreateMenu
-//TODO CreatePatternBrush
-//TODO CreatePen
-//TODO CreatePopupMenu
-//TODO CreateRectRgn
-//TODO CreateRectRgnIndirect
-//TODO CreateSolidBrush
-//TODO DPtoLP
-//TODO DeleteDC
-//TODO DestroyCaret
-//TODO DestroyIcon
-//TODO DestroyMenu
-//TODO DrawEdge
-//TODO DrawFrameControl
-//TODO DrawMenuBar
-//TODO EnableWindow
-//TODO EndDialog
-//TODO EndPath
-//TODO EnumFontFamiliesW
-//TODO ExtCreatePen
-//TODO ExtTextOutW
-//TODO FillRect
-//TODO GUID_NULL
-//TODO GetAsyncKeyState
-//TODO GetBkMode
-//TODO GetCapture
-//TODO GetCharWidthA
-//TODO GetCharWidthW
-//TODO GetClassLongPtrW
-//TODO GetClientRect
-//TODO GetCursorPos
-//TODO GetDIBits
-//TODO GetDesktopWindow
-//TODO GetDlgItem
-//TODO GetFocus
-//TODO GetFontData
-//TODO GetForegroundWindow
-//TODO GetKeyState
-//TODO GetKeyboardLayout
-//TODO GetLastInputInfo
-//TODO GetLocaleInfoW
-//TODO GetMapMode
-//TODO GetMenuItemCount
-//TODO GetMessageA
-//TODO GetMessagePos
-//TODO GetObjectA
-//TODO GetOpenFileNameW
-//TODO GetParent
-//TODO GetPixel
-//TODO GetRgnBox
-//TODO GetRunningObjectTable
-//TODO GetSaveFileNameW
-//TODO GetStockObject
-//TODO GetSysColorBrush
-//TODO GetSystemMenu
-//TODO GetTextCharset
-//TODO GetTextExtentPoint32A
-//TODO GetTextExtentPoint32W
-//TODO GetTextExtentPointA
-//TODO GetTextFaceA
-//TODO GetTextFaceW
-//TODO GetTextMetricsW
-//TODO GetTickCount
-//TODO GetWindow
-//TODO GetWindowPlacement
-//TODO GetWindowRect
-//TODO GetWindowTextW
-//TODO IID_IDispatch
-//TODO IID_IErrorInfo
-//TODO IID_ISupportErrorInfo
-//TODO IID_IUnknown
-//TODO ImmGetCompositionStringW
-//TODO ImmGetContext
-//TODO ImmReleaseContext
-//TODO ImmSetCompositionWindow
-//TODO InitCommonControlsEx
-//TODO InsertMenuW
-//TODO InvalidateRect
-//TODO IsDBCSLeadByte
-//TODO IsIconic
-//TODO IsWindowVisible
-//TODO IsZoomed
-//TODO LoadBitmapW
-//TODO LoadCursorA
-//TODO LoadCursorFromFileA
-//TODO LoadCursorW
-//TODO LoadIconW
-//TODO LoadLibraryW
-//TODO MapVirtualKeyW
-//TODO MoveWindow
-//TODO MulDiv
-//TODO OffsetClipRgn
-//TODO OutputDebugStringA
-//TODO PatBlt
-//TODO PeekMessageA
-//TODO Pie
-//TODO Polygon
-//TODO Polyline
-//TODO RealizePalette
-//TODO RectInRegion
-//TODO Rectangle
-//TODO ReleaseCapture
-//TODO ReleaseDC
-//TODO RemoveMenu
-//TODO SHBrowseForFolderW
-//TODO SHGetDesktopFolder
-//TODO SHGetFileInfoW
-//TODO SHGetMalloc
-//TODO SHGetPathFromIDListW
-//TODO ScreenToClient
-//TODO ScrollWindowEx
-//TODO SelectClipRgn
-//TODO SelectObject
-//TODO SelectPalette
-//TODO SendInput
-//TODO SetActiveWindow
-//TODO SetBkMode
-//TODO SetBrushOrgEx
-//TODO SetCapture
-//TODO SetCaretPos
-//TODO SetClassLongPtrW
-//TODO SetCursor
-//TODO SetCursorPos
-//TODO SetErrorInfo
-//TODO SetFocus
-//TODO SetForegroundWindow
-//TODO SetLayeredWindowAttributes
-//TODO SetMapMode
-//TODO SetMenu
-//TODO SetPaletteEntries
-//TODO SetParent
-//TODO SetPolyFillMode
-//TODO SetROP2
-//TODO SetRectRgn
-//TODO SetScrollInfo
-//TODO SetTextAlign
-//TODO SetWindowTextW
-//TODO SetWindowsHookExW
-//TODO ShowWindow
-//TODO StrokeAndFillPath
-//TODO StrokePath
-//TODO SysAllocString
-//TODO SysFreeString
-//TODO SysStringLen
-//TODO SystemParametersInfoW
-//TODO TextOutA
-//TODO TextOutW
-//TODO ToUnicode
-//TODO TrackPopupMenu
-//TODO TranslateCharsetInfo
-//TODO UnhookWindowsHookEx
-//TODO UpdateColors
-//TODO UpdateWindow
-//TODO VariantChangeType
-//TODO VariantClear
-//TODO VariantInit
-//TODO VkKeyScanW
-//TODO WindowFromPoint
-//TODO _InterlockedDecrement
-//TODO _InterlockedIncrement
-//TODO _ctime64
-//TODO _time64
-//TODO isupper
-//TODO wcsncpy
-//TODO wcsrchr
+// __attribute__((dllimport)) WINBOOL AdjustWindowRectEx(LPRECT lpRect,DWORD dwStyle,WINBOOL bMenu,DWORD dwExStyle);
+func XAdjustWindowRectEx(tls *TLS, _lpRect TLPRECT, _dwStyle TDWORD, _bMenu TWINBOOL, _dwExStyle TDWORD) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("lpRect=%+v dwStyle=%+v bMenu=%+v dwExStyle=%+v", _lpRect, _dwStyle, _bMenu, _dwExStyle)
+		defer func() { trc(`XAdjustWindowRectEx->%+v`, r) }()
+	}
+	r0, _, err := procAdjustWindowRectEx.Call(_lpRect, uintptr(_dwStyle), uintptr(_bMenu), uintptr(_dwExStyle))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+type TPOINT = struct {
+	Fx TLONG
+	Fy TLONG
+}
+
+type TLONG = int32
+
+// __attribute__((dllimport)) HWND WindowFromPoint(POINT Point);
+func XWindowFromPoint(tls *TLS, _Point TPOINT) (r THWND) {
+	if __ccgo_strace {
+		trc("Point=%+v", _Point)
+		defer func() { trc(`XWindowFromPoint->%+v`, r) }()
+	}
+	r0, _, _ := procWindowFromPoint.Call(uintptr(*(*int64)(unsafe.Pointer(&_Point))))
+	return THWND(r0)
+}
+
+type TSHORT = int16
+type TWCHAR = uint16
+
+// __attribute__((dllimport)) SHORT VkKeyScanW(WCHAR ch);
+func XVkKeyScanW(tls *TLS, _ch TWCHAR) (r TSHORT) {
+	if __ccgo_strace {
+		trc("ch=%+v", _ch)
+		defer func() { trc(`XVkKeyScanW->%+v`, r) }()
+	}
+	r0, _, _ := procVkKeyScanW.Call(uintptr(_ch))
+	return TSHORT(r0)
+}
+
+// var procVariantInit = dll.NewProc("VariantInit")
+
+// extern __attribute__((dllimport))void VariantInit(VARIANTARG *pvarg);
+func XVariantInit(tls *TLS, _pvarg uintptr) {
+	die("")
+}
+
+func XArc(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XBeginPath(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+type TBOOL = int32
+
+func XBitBlt(t *TLS, _ ...any) TBOOL {
+	die("")
+	panic(todo(""))
+}
+
+type TLRESULT = int64
+
+func XCallNextHookEx(t *TLS, _ ...any) TLRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XCallWindowProcW(t *TLS, _ ...any) TLRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XChooseColorW(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XChooseFontW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XChord(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XClientToScreen(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCloseFigure(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+type THRESULT = int32
+
+func XCoCreateInstance(t *TLS, _ ...any) THRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XCoInitialize(t *TLS, _ ...any) THRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XCoTaskMemAlloc(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCoTaskMemFree(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCombineRgn(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCommDlgExtendedError(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateBindCtx(t *TLS, _ ...any) THRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateBitmap(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateCaret(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateCompatibleBitmap(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateCompatibleDC(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateDCW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateDIBSection(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateDIBitmap(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateErrorInfo(t *TLS, _ ...any) THRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateFileMoniker(t *TLS, _ ...any) THRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateFontIndirectW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateIconFromResource(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateIconFromResourceEx(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateIconIndirect(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateMenu(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreatePatternBrush(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreatePen(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreatePopupMenu(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateRectRgn(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateRectRgnIndirect(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCreateSolidBrush(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XDPtoLP(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XDeleteDC(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XDestroyCaret(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XDestroyIcon(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XDestroyMenu(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XDrawEdge(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XDrawFrameControl(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XDrawMenuBar(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XEnableWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XEndDialog(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XEndPath(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XEnumFontFamiliesW(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XExtCreatePen(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XExtTextOutW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XFillRect(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetAsyncKeyState(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetBkMode(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XGetCapture(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetCharWidthA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetCharWidthW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetClassLongPtrW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetClientRect(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetCursorPos(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetDIBits(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetDesktopWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetDlgItem(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetFocus(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetFontData(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetForegroundWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetKeyState(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetKeyboardLayout(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetLastInputInfo(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetLocaleInfoW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetMapMode(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetMenuItemCount(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XGetMessageA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetMessagePos(t *TLS, _ ...any) TDWORD {
+	die("")
+	panic(todo(""))
+}
+
+func XGetObjectA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetOpenFileNameW(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XGetParent(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetPixel(t *TLS, _ ...any) TCOLORREF {
+	die("")
+	panic(todo(""))
+}
+
+func XGetRgnBox(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetRunningObjectTable(t *TLS, _ ...any) THRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XGetSaveFileNameW(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XGetStockObject(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetSysColorBrush(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetSystemMenu(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetTextCharset(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetTextExtentPoint32A(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetTextExtentPoint32W(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetTextExtentPointA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetTextFaceA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetTextFaceW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetTextMetricsW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetTickCount(t *TLS, _ ...any) uint32 {
+	die("")
+	panic(todo(""))
+}
+
+func XGetWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetWindowPlacement(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetWindowRect(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetWindowTextW(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XImmGetCompositionStringW(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XImmGetContext(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XImmReleaseContext(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XImmSetCompositionWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XInitCommonControlsEx(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XInsertMenuW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XInterlockedDecrement(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XInterlockedIncrement(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XInvalidateRect(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XIsDBCSLeadByte(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XIsIconic(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XIsWindowVisible(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XIsZoomed(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XLoadBitmapW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XLoadCursorA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XLoadCursorFromFileA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XLoadCursorW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XLoadIconW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XLoadLibraryW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XMapVirtualKeyW(t *TLS, _ ...any) uint32 {
+	die("")
+	panic(todo(""))
+}
+
+func XMoveWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XMulDiv(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XOffsetClipRgn(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XOutputDebugStringA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XPatBlt(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XPeekMessageA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XPie(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XPolygon(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XPolyline(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XRealizePalette(t *TLS, _ ...any) uint32 {
+	die("")
+	panic(todo(""))
+}
+
+func XRectInRegion(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XRectangle(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XReleaseCapture(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XReleaseDC(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XRemoveMenu(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSHBrowseForFolderW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSHGetDesktopFolder(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSHGetFileInfoW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSHGetMalloc(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSHGetPathFromIDListW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XScreenToClient(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XScrollWindowEx(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XSelectClipRgn(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSelectObject(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSelectPalette(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSendInput(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetActiveWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetBkMode(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetBrushOrgEx(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetCapture(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetCaretPos(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetClassLongPtrW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetCursor(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetCursorPos(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetErrorInfo(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetFocus(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetForegroundWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetLayeredWindowAttributes(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetMapMode(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetMenu(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetPaletteEntries(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetParent(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetPolyFillMode(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetROP2(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetRectRgn(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetScrollInfo(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetTextAlign(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetWindowTextW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSetWindowsHookExW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XShowWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XStrokeAndFillPath(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XStrokePath(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSysAllocString(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSysFreeString(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSysStringLen(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSystemParametersInfoW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XTextOutA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XTextOutW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XToUnicode(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XTrackPopupMenu(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XTranslateCharsetInfo(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XUnhookWindowsHookEx(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XUpdateColors(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XUpdateWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XVariantChangeType(t *TLS, _ ...any) THRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XVariantClear(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func X_InterlockedDecrement(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func X_InterlockedIncrement(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XEnumChildWindows(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XFindWindowA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XFindWindowExW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XFormatMessageA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetClassNameW(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XGetDlgCtrlID(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XGetThreadLocale(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetWindowThreadProcessId(t *TLS, _ ...any) TDWORD {
+	die("")
+	panic(todo(""))
+}
+
+func XLocalAlloc(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSendDlgItemMessageA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XSendMessageA(t *TLS, _ ...any) TLRESULT {
+	die("")
+	panic(todo(""))
+}
+
+type TGUID = struct {
+	FData1 uint32
+	FData2 uint16
+	FData3 uint16
+	FData4 [8]uint8
+}
+
+var XIID_IUnknown = TGUID{
+       FData4: [8]uint8{
+               0: uint8(0xc0),
+               7: uint8(0x46),
+       },
+}
+
+var XGUID_NULL TGUID
+
+var XIID_IDispatch = TGUID{
+	FData1: uint32(0x00020400),
+	FData4: [8]uint8{
+		0: uint8(0xc0),
+		7: uint8(0x46),
+	},
+}
+
+var XIID_IErrorInfo = TGUID{
+	FData1: uint32(0x1cf2b120),
+	FData2: uint16(0x547d),
+	FData3: uint16(0x101b),
+	FData4: [8]uint8{
+		0: uint8(0x8e),
+		1: uint8(0x65),
+		2: uint8(0x08),
+		4: uint8(0x2b),
+		5: uint8(0x2b),
+		6: uint8(0xd1),
+		7: uint8(0x19),
+	},
+}
+
+var XIID_ISupportErrorInfo = TGUID{
+	FData1: uint32(0xdf0b3d60),
+	FData2: uint16(0x548f),
+	FData3: uint16(0x101b),
+	FData4: [8]uint8{
+		0: uint8(0x8e),
+		1: uint8(0x65),
+		2: uint8(0x08),
+		4: uint8(0x2b),
+		5: uint8(0x2b),
+		6: uint8(0xd1),
+		7: uint8(0x19),
+	},
+}
+
+var XCLSID_TaskbarList = TGUID{
+	FData1: uint32(0x56fdf344),
+	FData2: uint16(0xfd6d),
+	FData3: uint16(0x11d0),
+	FData4: [8]uint8{
+		0: uint8(0x95),
+		1: uint8(0x8a),
+		3: uint8(0x60),
+		4: uint8(0x97),
+		5: uint8(0xc9),
+		6: uint8(0xa0),
+		7: uint8(0x90),
+	},
+}
+
+var XIID_ITaskbarList3 = TGUID{
+	FData1: uint32(0xea1afb91),
+	FData2: uint16(0x9e28),
+	FData3: uint16(0x4b86),
+	FData4: [8]uint8{
+		0: uint8(0x90),
+		1: uint8(0xe9),
+		2: uint8(0x9e),
+		3: uint8(0x9f),
+		4: uint8(0x8a),
+		5: uint8(0x5e),
+		6: uint8(0xef),
+		7: uint8(0xaf),
+	},
+}
