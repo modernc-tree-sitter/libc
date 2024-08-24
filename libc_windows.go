@@ -160,6 +160,7 @@ var (
 
 	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
 	//--
+	procGetTextMetricsW        = modgdi32.NewProc("GetTextMetricsW")
 	procSetPaletteEntries      = modgdi32.NewProc("SetPaletteEntries")
 	procSetMapMode             = modgdi32.NewProc("SetMapMode")
 	procSetBrushOrgEx          = modgdi32.NewProc("SetBrushOrgEx")
@@ -343,6 +344,7 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procGetWindow                   = moduser32.NewProc("GetWindow")
 	procSetMenu                     = moduser32.NewProc("SetMenu")
 	procSetLayeredWindowAttributes  = moduser32.NewProc("SetLayeredWindowAttributes")
 	procSetForegroundWindow         = moduser32.NewProc("SetForegroundWindow")
@@ -8602,106 +8604,6 @@ func XGetTextFaceW(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XGetTextMetricsW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetWindowPlacement(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetWindowRect(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetWindowTextW(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XImmGetCompositionStringW(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XImmGetContext(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XImmReleaseContext(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XImmSetCompositionWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XInitCommonControlsEx(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XInsertMenuW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XInterlockedDecrement(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XInterlockedIncrement(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XInvalidateRect(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XIsDBCSLeadByte(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XIsIconic(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XIsWindowVisible(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XIsZoomed(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XLoadBitmapW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XLoadCursorA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
 func XLoadCursorFromFileA(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
@@ -9818,4 +9720,119 @@ func XSetPaletteEntries(tls *TLS, _hpal THPALETTE, _iStart TUINT, _cEntries TUIN
 	}
 	r0, _, _ := procSetPaletteEntries.Call(_hpal, uintptr(_iStart), uintptr(_cEntries), _pPalEntries)
 	return TUINT(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL GetTextMetricsW(HDC hdc,LPTEXTMETRICW lptm);
+func XGetTextMetricsW(tls *TLS, _hdc THDC, _lptm TLPTEXTMETRICW) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v lptm=%+v", _hdc, _lptm)
+		defer func() { trc(`XGetTextMetricsW->%+v`, r) }()
+	}
+	r0, _, _ := procGetTextMetricsW.Call(_hdc, _lptm)
+	return TWINBOOL(r0)
+}
+
+type TLPTEXTMETRICW = uintptr
+
+// __attribute__((dllimport)) HWND GetWindow(HWND hWnd,UINT uCmd);
+func XGetWindow(tls *TLS, _hWnd THWND, _uCmd TUINT) (r THWND) {
+	if __ccgo_strace {
+		trc("hWnd=%+v uCmd=%+v", _hWnd, _uCmd)
+		defer func() { trc(`XGetWindow->%+v`, r) }()
+	}
+	r0, _, err := procGetWindow.Call(_hWnd, uintptr(_uCmd))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THWND(r0)
+}
+
+func XGetWindowPlacement(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetWindowRect(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetWindowTextW(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XImmGetCompositionStringW(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XImmGetContext(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XImmReleaseContext(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XImmSetCompositionWindow(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XInitCommonControlsEx(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XInsertMenuW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XInterlockedDecrement(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XInterlockedIncrement(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XInvalidateRect(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XIsDBCSLeadByte(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XIsIconic(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XIsWindowVisible(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XIsZoomed(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XLoadBitmapW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XLoadCursorA(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
 }
