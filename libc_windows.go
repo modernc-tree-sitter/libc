@@ -181,7 +181,11 @@ func init() {
 	}
 }
 
-func wndProc(slot int, h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT {
+func wndProc(slot int, h THWND, u TUINT, w TWPARAM, l TLPARAM) (r TLRESULT) {
+	Dbg("%v: slot=%v", origin(1), slot)
+	defer func() {
+		Dbg("%v: slot=%v -> r=%v err=%v", origin(1), slot, r, recover())
+	}()
 	cb := wndProcs[slot]
 	return cb.g(cb.tls, h, u, w, l)
 }
