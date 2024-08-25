@@ -5919,11 +5919,6 @@ func Xioctlsocket(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-func XSetWindowLongPtrW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
-}
-
 func XWSAAsyncSelect(t *TLS, _ ...interface{}) int32 {
 	die("")
 	panic(todo(""))
@@ -10283,4 +10278,19 @@ func XDefWindowProcW(tls *TLS, _hWnd THWND, _Msg TUINT, _wParam TWPARAM, _lParam
 	}
 	r0, _, _ := procDefWindowProcW.Call(_hWnd, uintptr(_Msg), uintptr(_wParam), uintptr(_lParam))
 	return TLRESULT(r0)
+}
+
+var procSetWindowLongPtrW = moduser32.NewProc("SetWindowLongPtrW")
+
+// __attribute__((moduser32import)) LONG_PTR SetWindowLongPtrW(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
+func XSetWindowLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32, _dwNewLong TLONG_PTR) (r TLONG_PTR) {
+	if __ccgo_strace {
+		trc("hWnd=%+v nIndex=%+v dwNewLong=%+v", _hWnd, _nIndex, _dwNewLong)
+		defer func() { trc(`XSetWindowLongPtrW->%+v`, r) }()
+	}
+	r0, _, err := procSetWindowLongPtrW.Call(_hWnd, uintptr(_nIndex), uintptr(_dwNewLong))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TLONG_PTR(r0)
 }
