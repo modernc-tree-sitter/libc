@@ -150,6 +150,11 @@ type (
 )
 
 var (
+	modcomdlg32 = windows.NewLazySystemDLL("comdlg32.dll")
+	//--
+	procGetOpenFileNameW = modcomdlg32.NewProc("GetOpenFileNameW")
+	//--
+
 	modcomctl32 = windows.NewLazySystemDLL("comctl32.dll")
 	//--
 	procInitCommonControlsEx = modcomctl32.NewProc("InitCommonControlsEx")
@@ -173,6 +178,9 @@ var (
 
 	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
 	//--
+	procGetDIBits              = modgdi32.NewProc("GetDIBits")
+	procGetCharWidthW          = modgdi32.NewProc("GetCharWidthW")
+	procGetCharWidthA          = modgdi32.NewProc("GetCharWidthA")
 	procGetObjectA             = modgdi32.NewProc("GetObjectA")
 	procGetMapMode             = modgdi32.NewProc("GetMapMode")
 	procGetFontData            = modgdi32.NewProc("GetFontData")
@@ -365,6 +373,12 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procGetFocus                    = moduser32.NewProc("GetFocus")
+	procGetDlgItem                  = moduser32.NewProc("GetDlgItem")
+	procGetDesktopWindow            = moduser32.NewProc("GetDesktopWindow")
+	procGetCursorPos                = moduser32.NewProc("GetCursorPos")
+	procGetClientRect               = moduser32.NewProc("GetClientRect")
+	procGetClassLongPtrW            = moduser32.NewProc("GetClassLongPtrW")
 	procGetMessagePos               = moduser32.NewProc("GetMessagePos")
 	procGetMessageA                 = moduser32.NewProc("GetMessageA")
 	procGetMenuItemCount            = moduser32.NewProc("GetMenuItemCount")
@@ -8274,6 +8288,14 @@ func XSetErrorInfo(tls *TLS, _dwReserved TULONG, _perrinfo uintptr) (r THRESULT)
 
 type TULONG = uint32
 
+// __attribute__((dllimport)) WINBOOL GetOpenFileNameW(LPOPENFILENAMEW);
+func XGetOpenFileNameW(tls *TLS, _0 TLPOPENFILENAMEW) (r TWINBOOL) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+type TLPOPENFILENAMEW = uintptr
+
 // ----
 
 func XArc(t *TLS, _ ...any) uintptr {
@@ -8453,56 +8475,6 @@ func XGetBkMode(t *TLS, _ ...any) int32 {
 }
 
 func XGetCapture(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetCharWidthA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetCharWidthW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetClassLongPtrW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetClientRect(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetCursorPos(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetDIBits(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetDesktopWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetDlgItem(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetFocus(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetOpenFileNameW(t *TLS, _ ...any) int32 {
 	die("")
 	panic(todo(""))
 }
@@ -10082,4 +10054,110 @@ func XGetObjectA(tls *TLS, _h THANDLE, _c int32, _pv TLPVOID) (r int32) {
 	}
 	r0, _, _ := procGetObjectA.Call(_h, uintptr(_c), _pv)
 	return int32(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL GetCharWidthA(HDC hdc,UINT iFirst,UINT iLast,LPINT lpBuffer);
+func XGetCharWidthA(tls *TLS, _hdc THDC, _iFirst TUINT, _iLast TUINT, _lpBuffer TLPINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v iFirst=%+v iLast=%+v lpBuffer=%+v", _hdc, _iFirst, _iLast, _lpBuffer)
+		defer func() { trc(`XGetCharWidthA->%+v`, r) }()
+	}
+	r0, _, _ := procGetCharWidthA.Call(_hdc, uintptr(_iFirst), uintptr(_iLast), _lpBuffer)
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL GetCharWidthW(HDC hdc,UINT iFirst,UINT iLast,LPINT lpBuffer);
+func XGetCharWidthW(tls *TLS, _hdc THDC, _iFirst TUINT, _iLast TUINT, _lpBuffer TLPINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v iFirst=%+v iLast=%+v lpBuffer=%+v", _hdc, _iFirst, _iLast, _lpBuffer)
+		defer func() { trc(`XGetCharWidthW->%+v`, r) }()
+	}
+	r0, _, _ := procGetCharWidthW.Call(_hdc, uintptr(_iFirst), uintptr(_iLast), _lpBuffer)
+	return TWINBOOL(r0)
+}
+
+type TLPINT = uintptr
+
+// __attribute__((dllimport)) ULONG_PTR GetClassLongPtrW(HWND hWnd,int nIndex);
+func XGetClassLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32) (r TULONG_PTR) {
+	if __ccgo_strace {
+		trc("hWnd=%+v nIndex=%+v", _hWnd, _nIndex)
+		defer func() { trc(`XGetClassLongPtrW->%+v`, r) }()
+	}
+	r0, _, err := procGetClassLongPtrW.Call(_hWnd, uintptr(_nIndex))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TULONG_PTR(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL GetClientRect(HWND hWnd,LPRECT lpRect);
+func XGetClientRect(tls *TLS, _hWnd THWND, _lpRect TLPRECT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpRect=%+v", _hWnd, _lpRect)
+		defer func() { trc(`XGetClientRect->%+v`, r) }()
+	}
+	r0, _, err := procGetClientRect.Call(_hWnd, _lpRect)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL GetCursorPos(LPPOINT lpPoint);
+func XGetCursorPos(tls *TLS, _lpPoint TLPPOINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("lpPoint=%+v", _lpPoint)
+		defer func() { trc(`XGetCursorPos->%+v`, r) }()
+	}
+	r0, _, err := procGetCursorPos.Call(_lpPoint)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) int GetDIBits(HDC hdc,HBITMAP hbm,UINT start,UINT cLines,LPVOID lpvBits,LPBITMAPINFO lpbmi,UINT usage);
+func XGetDIBits(tls *TLS, _hdc THDC, _hbm THBITMAP, _start TUINT, _cLines TUINT, _lpvBits TLPVOID, _lpbmi TLPBITMAPINFO, _usage TUINT) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v hbm=%+v start=%+v cLines=%+v lpvBits=%+v lpbmi=%+v usage=%+v", _hdc, _hbm, _start, _cLines, _lpvBits, _lpbmi, _usage)
+		defer func() { trc(`XGetDIBits->%+v`, r) }()
+	}
+	r0, _, _ := procGetDIBits.Call(_hdc, _hbm, uintptr(_start), uintptr(_cLines), _lpvBits, _lpbmi, uintptr(_usage))
+	return int32(r0)
+}
+
+type TLPBITMAPINFO = uintptr
+
+// __attribute__((dllimport)) HWND GetDesktopWindow( void);
+func XGetDesktopWindow(tls *TLS) (r THWND) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XGetDesktopWindow->%+v`, r) }()
+	}
+	r0, _, _ := procGetDesktopWindow.Call()
+	return THWND(r0)
+}
+
+// __attribute__((dllimport)) HWND GetDlgItem(HWND hDlg,int nIDDlgItem);
+func XGetDlgItem(tls *TLS, _hDlg THWND, _nIDDlgItem int32) (r THWND) {
+	if __ccgo_strace {
+		trc("hDlg=%+v nIDDlgItem=%+v", _hDlg, _nIDDlgItem)
+		defer func() { trc(`XGetDlgItem->%+v`, r) }()
+	}
+	r0, _, err := procGetDlgItem.Call(_hDlg, uintptr(_nIDDlgItem))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THWND(r0)
+}
+
+// __attribute__((dllimport)) HWND GetFocus( void);
+func XGetFocus(tls *TLS) (r THWND) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XGetFocus->%+v`, r) }()
+	}
+	r0, _, _ := procGetFocus.Call()
+	return THWND(r0)
 }
