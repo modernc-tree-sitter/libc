@@ -181,6 +181,7 @@ func wndProc0(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(
 
 func registerWndProc(tls *TLS, g goWndProc) (r uintptr) {
 	slot := wndProcsLen.Add(1) - 1
+	Dbg("%v: slot=%v", origin(1), slot)
 	wndProcs[slot].tls = tls
 	wndProcs[slot].g = g
 	return windows.NewCallback(wndProcs[slot].w)
@@ -229,6 +230,7 @@ func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 	}
 	r0, _, err := procRegisterClassW.Call(lpWndClass, 0, 0)
 	if r0 == 0 {
+		Dbg("%v: err=%#0x", origin(1), uint32(err.(windows.Errno)))
 		t.setErrno(err)
 	}
 	return int32(r0)
@@ -238,8 +240,6 @@ var procRegisterClassExW = moduser32.NewProc("RegisterClassExW")
 
 // __attribute__((dllimport)) ATOM RegisterClassExW ( const WNDCLASSEXW *);
 func XRegisterClassExW(t *TLS, wndClassExW uintptr) (r TATOM) {
-	die("TODO")
-	panic(todo(""))
 	// Dbg("%v: lpWndClassEx=%#0x", origin(1), wndClassExW)
 	// if gofnp := (*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc; gofnp != 0 {
 	// 	Dbg("%v: gofnp=%#0x", origin(1), gofnp)
@@ -256,6 +256,17 @@ func XRegisterClassExW(t *TLS, wndClassExW uintptr) (r TATOM) {
 	// 	t.setErrno(err)
 	// }
 	// return TATOM(r0)
+
+	if gofnp := (*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc; gofnp != 0 {
+		f := (*struct{ f goWndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = registerWndProc(t, f)
+	}
+	r0, _, err := procRegisterClassExW.Call(wndClassExW)
+	if r0 == 0 {
+		Dbg("%v: err=%#0x", origin(1), uint32(err.(windows.Errno)))
+		t.setErrno(err)
+	}
+	return TATOM(r0)
 }
 
 type TWNDCLASSEXW = struct {
