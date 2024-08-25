@@ -5530,6 +5530,41 @@ func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 	return int32(r0)
 }
 
+var procRegisterClassExW = moduser32.NewProc("RegisterClassExW")
+
+// __attribute__((dllimport)) ATOM RegisterClassExW ( const WNDCLASSEXW *);
+func XRegisterClassExW(t *TLS, wndClassExW uintptr) (r TATOM) {
+	if gofnp := (*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc; gofnp != 0 {
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = wndProcs.register(t, gofnp)
+	}
+	if __ccgo_strace {
+		trc("lpWndClass=%+v", wndClassExW)
+		defer func() { trc(`XRegisterClassW->%+v`, r) }()
+	}
+	r0, _, err := procRegisterClassExW.Call(wndClassExW)
+	if r0 == 0 {
+		t.setErrno(err)
+	}
+	return TATOM(r0)
+}
+
+type TWNDCLASSEXW = struct {
+	FcbSize        TUINT
+	Fstyle         TUINT
+	FlpfnWndProc   TWNDPROC
+	FcbClsExtra    int32
+	FcbWndExtra    int32
+	FhInstance     THINSTANCE
+	FhIcon         THICON
+	FhCursor       THCURSOR
+	FhbrBackground THBRUSH
+	FlpszMenuName  TLPCWSTR
+	FlpszClassName TLPCWSTR
+	FhIconSm       THICON
+}
+
+type TATOM = uint16
+
 func XKillTimer(t *TLS, _ ...interface{}) int32 {
 	die("")
 	panic(todo(""))
@@ -6016,11 +6051,6 @@ func XDdeConnect(t *TLS, _ ...interface{}) uintptr {
 }
 
 func XDdeFreeStringHandle(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XRegisterClassExW(t *TLS, _ ...interface{}) int32 {
 	die("")
 	panic(todo(""))
 }
