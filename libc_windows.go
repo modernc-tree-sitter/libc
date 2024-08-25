@@ -10272,3 +10272,15 @@ func XGetWindowLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32) (r TLONG_PTR) {
 	}
 	return TLONG_PTR(r0)
 }
+
+var procDefWindowProcW = moduser32.NewProc("DefWindowProcW")
+
+// __attribute__((moduser32import)) LRESULT DefWindowProcW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+func XDefWindowProcW(tls *TLS, _hWnd THWND, _Msg TUINT, _wParam TWPARAM, _lParam TLPARAM) (r TLRESULT) {
+	if __ccgo_strace {
+		trc("hWnd=%+v Msg=%+v wParam=%+v lParam=%+v", _hWnd, _Msg, _wParam, _lParam)
+		defer func() { trc(`XDefWindowProcW->%+v`, r) }()
+	}
+	r0, _, _ := procDefWindowProcW.Call(_hWnd, uintptr(_Msg), uintptr(_wParam), uintptr(_lParam))
+	return TLRESULT(r0)
+}

@@ -606,11 +606,6 @@ func Xaccept(t *TLS, sockfd uint64, addr uintptr, addrlen uintptr) uint64 {
 //	LPARAM lParam
 //
 // );
-func XDefWindowProcW(t *TLS, _ ...interface{}) int64 {
-	die("")
-	panic(todo(""))
-}
-
 func XSendMessageTimeoutW(t *TLS, _ ...interface{}) int64 {
 	die("")
 	panic(todo(""))
