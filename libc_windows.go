@@ -132,7 +132,7 @@ func (c *wndProcRegister) register(tls *TLS, gofnp uintptr) (r uintptr) {
 		Dbg("%v: registering gofnp=%#0x", origin(1), gofnp)
 		c.m[key] = r
 	}
-	Dbg("%v: gofnp=#0x r=%#0x key=%#0x", origin(1), gofnp, r, key)
+	Dbg("%v: gofnp=%#0x r=%#0x key=%#0x", origin(1), gofnp, r, key)
 	return r
 }
 
@@ -607,7 +607,6 @@ func newFile(t *TLS, fd int32) uintptr {
 	if fd == unistd.STDIN_FILENO {
 		h, err := windows.GetStdHandle(windows.STD_INPUT_HANDLE)
 		if err != nil {
-			die("")
 			panic("no console")
 		}
 		return addFile(h, fd)
@@ -615,7 +614,6 @@ func newFile(t *TLS, fd int32) uintptr {
 	if fd == unistd.STDOUT_FILENO {
 		h, err := windows.GetStdHandle(windows.STD_OUTPUT_HANDLE)
 		if err != nil {
-			die("")
 			panic("no console")
 		}
 		return addFile(h, fd)
@@ -623,7 +621,6 @@ func newFile(t *TLS, fd int32) uintptr {
 	if fd == unistd.STDERR_FILENO {
 		h, err := windows.GetStdHandle(windows.STD_ERROR_HANDLE)
 		if err != nil {
-			die("")
 			panic("no console")
 		}
 		return addFile(h, fd)
@@ -633,7 +630,6 @@ func newFile(t *TLS, fd int32) uintptr {
 	// is being used from somewhere we don't know about
 	// to originate fds.
 
-	die("")
 	panic("unknown fd source")
 	return 0
 }
@@ -5685,26 +5681,6 @@ func XPeekMessageW(t *TLS, lpMsg, hWnd uintptr, wMsgFilterMin, wMsgFilterMax, wR
 	return int32(r0)
 }
 
-func XGetMessageW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XPostQuitMessage(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XTranslateMessage(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XDispatchMessageW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
-}
-
 // DWORD SleepEx(
 //
 //	DWORD dwMilliseconds,
@@ -8429,65 +8405,41 @@ type TLPUNKNOWN = uintptr
 //
 // );
 func XEnumFontFamiliesW(t *TLS, _ ...any) int32 {
-	die("")
+	die("syscall with func pointer")
 	panic(todo(""))
 }
+
+var procCallWindowProcW = moduser32.NewProc("CallWindowProcW")
+
+// __attribute__((moduser32import)) LRESULT CallWindowProcW (WNDPROC lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+func XCallWindowProcW(tls *TLS, _lpPrevWndFunc TWNDPROC, _hWnd THWND, _Msg TUINT, _wParam TWPARAM, _lParam TLPARAM) (r TLRESULT) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+var procChooseColorW = modcomdlg32.NewProc("ChooseColorW")
+
+// __attribute__((dllimport)) WINBOOL ChooseColorW(LPCHOOSECOLORW);
+func XChooseColorW(tls *TLS, _0 TLPCHOOSECOLORW) (r TWINBOOL) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+type TLPCHOOSECOLORW = uintptr
+
+var procChooseFontW = modcomdlg32.NewProc("ChooseFontW")
+
+// __attribute__((dllimport)) WINBOOL ChooseFontW(LPCHOOSEFONTW);
+func XChooseFontW(tls *TLS, _0 TLPCHOOSEFONTW) (r TWINBOOL) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+type TLPCHOOSEFONTW = uintptr
 
 // ----
 
-func XArc(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XBeginPath(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-type TBOOL = int32
-
-func XBitBlt(t *TLS, _ ...any) TBOOL {
-	die("")
-	panic(todo(""))
-}
-
 type TLRESULT = int64
-
-func XCallNextHookEx(t *TLS, _ ...any) TLRESULT {
-	die("")
-	panic(todo(""))
-}
-
-func XCallWindowProcW(t *TLS, _ ...any) TLRESULT {
-	die("")
-	panic(todo(""))
-}
-
-func XChooseColorW(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XChooseFontW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XChord(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XClientToScreen(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCloseFigure(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
 
 type THRESULT = int32
 
@@ -10601,4 +10553,142 @@ func XCoTaskMemFree(tls *TLS, _pv TLPVOID) {
 		trc("pv=%+v", _pv)
 	}
 	procCoTaskMemFree.Call(_pv)
+}
+
+var procGetMessageW = moduser32.NewProc("GetMessageW")
+
+// __attribute__((moduser32import)) WINBOOL GetMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax);
+func XGetMessageW(tls *TLS, _lpMsg TLPMSG, _hWnd THWND, _wMsgFilterMin TUINT, _wMsgFilterMax TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("lpMsg=%+v hWnd=%+v wMsgFilterMin=%+v wMsgFilterMax=%+v", _lpMsg, _hWnd, _wMsgFilterMin, _wMsgFilterMax)
+		defer func() { trc(`XGetMessageW->%+v`, r) }()
+	}
+	r0, _, err := procGetMessageW.Call(_lpMsg, _hWnd, uintptr(_wMsgFilterMin), uintptr(_wMsgFilterMax))
+	if r = TWINBOOL(r0); r == -1 {
+		tls.setErrno(err)
+	}
+	return r
+}
+
+var procPostQuitMessage = moduser32.NewProc("PostQuitMessage")
+
+// __attribute__((moduser32import)) void PostQuitMessage (int nExitCode);
+func XPostQuitMessage(tls *TLS, _nExitCode int32) {
+	if __ccgo_strace {
+		trc("nExitCode=%+v", _nExitCode)
+	}
+	procPostQuitMessage.Call(uintptr(_nExitCode))
+}
+
+var procTranslateMessage = moduser32.NewProc("TranslateMessage")
+
+// __attribute__((moduser32import)) WINBOOL TranslateMessage( const MSG *lpMsg);
+func XTranslateMessage(tls *TLS, _lpMsg uintptr) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("lpMsg=%+v", _lpMsg)
+		defer func() { trc(`XTranslateMessage->%+v`, r) }()
+	}
+	r0, _, _ := procTranslateMessage.Call(_lpMsg)
+	return TWINBOOL(r0)
+}
+
+var procDispatchMessageW = moduser32.NewProc("DispatchMessageW")
+
+// __attribute__((moduser32import)) LRESULT DispatchMessageW( const MSG *lpMsg);
+func XDispatchMessageW(tls *TLS, _lpMsg uintptr) (r TLRESULT) {
+	if __ccgo_strace {
+		trc("lpMsg=%+v", _lpMsg)
+		defer func() { trc(`XDispatchMessageW->%+v`, r) }()
+	}
+	r0, _, _ := procDispatchMessageW.Call(_lpMsg)
+	return TLRESULT(r0)
+}
+
+var procCallNextHookEx = moduser32.NewProc("CallNextHookEx")
+
+// __attribute__((moduser32import)) LRESULT CallNextHookEx (HHOOK hhk, int nCode, WPARAM wParam, LPARAM lParam);
+func XCallNextHookEx(tls *TLS, _hhk THHOOK, _nCode int32, _wParam TWPARAM, _lParam TLPARAM) (r TLRESULT) {
+	if __ccgo_strace {
+		trc("hhk=%+v nCode=%+v wParam=%+v lParam=%+v", _hhk, _nCode, _wParam, _lParam)
+		defer func() { trc(`XCallNextHookEx->%+v`, r) }()
+	}
+	r0, _, _ := procCallNextHookEx.Call(_hhk, uintptr(_nCode), uintptr(_wParam), uintptr(_lParam))
+	return TLRESULT(r0)
+}
+
+var procChord = modgdi32.NewProc("Chord")
+
+// __attribute__((dllimport)) WINBOOL Chord(HDC hdc,int x1,int y1,int x2,int y2,int x3,int y3,int x4,int y4);
+func XChord(tls *TLS, _hdc THDC, _x1 int32, _y1 int32, _x2 int32, _y2 int32, _x3 int32, _y3 int32, _x4 int32, _y4 int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v x1=%+v y1=%+v x2=%+v y2=%+v x3=%+v y3=%+v x4=%+v y4=%+v", _hdc, _x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4)
+		defer func() { trc(`XChord->%+v`, r) }()
+	}
+	r0, _, _ := procChord.Call(_hdc, uintptr(_x1), uintptr(_y1), uintptr(_x2), uintptr(_y2), uintptr(_x3), uintptr(_y3), uintptr(_x4), uintptr(_y4))
+	return TWINBOOL(r0)
+}
+
+var procClientToScreen = moduser32.NewProc("ClientToScreen")
+
+// __attribute__((moduser32import)) WINBOOL ClientToScreen(HWND hWnd,LPPOINT lpPoint);
+func XClientToScreen(tls *TLS, _hWnd THWND, _lpPoint TLPPOINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpPoint=%+v", _hWnd, _lpPoint)
+		defer func() { trc(`XClientToScreen->%+v`, r) }()
+	}
+	r0, _, _ := procClientToScreen.Call(_hWnd, _lpPoint)
+	return TWINBOOL(r0)
+}
+
+var procCloseFigure = modgdi32.NewProc("CloseFigure")
+
+// __attribute__((dllimport)) WINBOOL CloseFigure(HDC hdc);
+func XCloseFigure(tls *TLS, _hdc THDC) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XCloseFigure->%+v`, r) }()
+	}
+	r0, _, _ := procCloseFigure.Call(_hdc)
+	return TWINBOOL(r0)
+}
+
+var procArc = modgdi32.NewProc("Arc")
+
+// __attribute__((dllimport)) WINBOOL Arc(HDC hdc,int x1,int y1,int x2,int y2,int x3,int y3,int x4,int y4);
+func XArc(tls *TLS, _hdc THDC, _x1 int32, _y1 int32, _x2 int32, _y2 int32, _x3 int32, _y3 int32, _x4 int32, _y4 int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v x1=%+v y1=%+v x2=%+v y2=%+v x3=%+v y3=%+v x4=%+v y4=%+v", _hdc, _x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4)
+		defer func() { trc(`XArc->%+v`, r) }()
+	}
+	r0, _, _ := procArc.Call(_hdc, uintptr(_x1), uintptr(_y1), uintptr(_x2), uintptr(_y2), uintptr(_x3), uintptr(_y3), uintptr(_x4), uintptr(_y4))
+	return TWINBOOL(r0)
+}
+
+var procBeginPath = modgdi32.NewProc("BeginPath")
+
+// __attribute__((dllimport)) WINBOOL BeginPath(HDC hdc);
+func XBeginPath(tls *TLS, _hdc THDC) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XBeginPath->%+v`, r) }()
+	}
+	r0, _, _ := procBeginPath.Call(_hdc)
+	return TWINBOOL(r0)
+}
+
+type TBOOL = int32
+
+var procBitBlt = modgdi32.NewProc("BitBlt")
+
+// __attribute__((dllimport)) WINBOOL BitBlt(HDC hdc,int x,int y,int cx,int cy,HDC hdcSrc,int x1,int y1,DWORD rop);
+func XBitBlt(tls *TLS, _hdc THDC, _x int32, _y int32, _cx int32, _cy int32, _hdcSrc THDC, _x1 int32, _y1 int32, _rop TDWORD) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v x=%+v y=%+v cx=%+v cy=%+v hdcSrc=%+v x1=%+v y1=%+v rop=%+v", _hdc, _x, _y, _cx, _cy, _hdcSrc, _x1, _y1, _rop)
+		defer func() { trc(`XBitBlt->%+v`, r) }()
+	}
+	r0, _, err := procBitBlt.Call(_hdc, uintptr(_x), uintptr(_y), uintptr(_cx), uintptr(_cy), _hdcSrc, uintptr(_x1), uintptr(_y1), uintptr(_rop))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
 }
