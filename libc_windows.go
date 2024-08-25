@@ -5919,11 +5919,6 @@ func Xioctlsocket(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-func XGetWindowLongPtrW(t *TLS, _ ...interface{}) int64 {
-	die("")
-	panic(todo(""))
-}
-
 func XSetWindowLongPtrW(t *TLS, _ ...interface{}) int32 {
 	die("")
 	panic(todo(""))
@@ -10261,4 +10256,19 @@ func XRectInRegion(tls *TLS, _hrgn THRGN, _lprect uintptr) (r TWINBOOL) {
 	}
 	r0, _, _ := procRectInRegion.Call(_hrgn, _lprect)
 	return TWINBOOL(r0)
+}
+
+var procGetWindowLongPtrW = moduser32.NewProc("GetWindowLongPtrW")
+
+// __attribute__((moduser32import)) LONG_PTR GetWindowLongPtrW(HWND hWnd,int nIndex);
+func XGetWindowLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32) (r TLONG_PTR) {
+	if __ccgo_strace {
+		trc("hWnd=%+v nIndex=%+v", _hWnd, _nIndex)
+		defer func() { trc(`XGetWindowLongPtrW->%+v`, r) }()
+	}
+	r0, _, err := procGetWindowLongPtrW.Call(_hWnd, uintptr(_nIndex))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TLONG_PTR(r0)
 }
