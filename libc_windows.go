@@ -60,6 +60,13 @@ func die(s string, args ...any) {
 	os.Exit(1)
 }
 
+func Dbg(s string, args ...any) {
+	s = fmt.Sprintf(s, args...)
+	s = fmt.Sprintf("\n==== DBG: %s (%v: %v: %v:)\n", s, origin(4), origin(3), origin(2))
+	dbgFile.Write([]byte(s))
+	fmt.Println(s)
+}
+
 // const (
 //
 //	INVALID_FILE_SIZE = 0xffffffff
@@ -150,13 +157,11 @@ type (
 )
 
 var (
-	modole32 = windows.NewLazySystemDLL("ole32.dll")
-	//--
-	//--
+	modole32   = windows.NewLazySystemDLL("ole32.dll")
+	modshell32 = windows.NewLazySystemDLL("shell32.dll")
 
 	modcomdlg32 = windows.NewLazySystemDLL("comdlg32.dll")
 	//--
-	procGetOpenFileNameW = modcomdlg32.NewProc("GetOpenFileNameW")
 	//--
 
 	modcomctl32 = windows.NewLazySystemDLL("comctl32.dll")
@@ -5490,7 +5495,7 @@ func XwsprintfW(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-type TWNDCLASSA = struct {
+type TWNDCLASSW = struct {
 	Fstyle         TUINT
 	FlpfnWndProc   TWNDPROC
 	FcbClsExtra    int32
@@ -5499,8 +5504,8 @@ type TWNDCLASSA = struct {
 	FhIcon         THICON
 	FhCursor       THCURSOR
 	FhbrBackground THBRUSH
-	FlpszMenuName  TLPCSTR
-	FlpszClassName TLPCSTR
+	FlpszMenuName  TLPCWSTR
+	FlpszClassName TLPCWSTR
 }
 
 type TLPCSTR = uintptr
@@ -5521,14 +5526,16 @@ type THICON = uintptr
 //
 // );
 func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
-	if gofnp := (*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
-		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = wndProcs.register(t, gofnp)
+	if gofnp := (*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = wndProcs.register(t, gofnp)
 	}
 	if __ccgo_strace {
 		trc("t=%v lpWndClass=%v, (%v:)", t, lpWndClass, origin(2))
 	}
+	XSetLastError(t, 0)
 	r0, _, err := procRegisterClassW.Call(lpWndClass, 0, 0)
 	if r0 == 0 {
+		Dbg("%v: err=%#0x", err)
 		t.setErrno(err)
 	}
 	return int32(r0)
@@ -5545,8 +5552,10 @@ func XRegisterClassExW(t *TLS, wndClassExW uintptr) (r TATOM) {
 		trc("lpWndClass=%+v", wndClassExW)
 		defer func() { trc(`XRegisterClassW->%+v`, r) }()
 	}
+	XSetLastError(t, 0)
 	r0, _, err := procRegisterClassExW.Call(wndClassExW)
 	if r0 == 0 {
+		Dbg("%v: err=%#0x", err)
 		t.setErrno(err)
 	}
 	return TATOM(r0)
@@ -6644,6 +6653,10 @@ func goWideString(p uintptr) string {
 // func goWideStringN(p uintptr, n int) string {
 // 	die("");panic(todo(""))
 // }
+
+func GoWideString(p uintptr) string {
+	return goWideStringNZ(p)
+}
 
 // This version does not include the zero terminator in the returned Go string.
 func goWideStringNZ(p uintptr) string {
@@ -8337,7 +8350,51 @@ func XCreateFileMoniker(tls *TLS, _lpszPathName TLPCOLESTR, _ppmk uintptr) (r TH
 	panic(todo(""))
 }
 
+var procGetRunningObjectTable = modole32.NewProc("GetRunningObjectTable")
+
+// extern __attribute__((modole32import)) HRESULT GetRunningObjectTable (DWORD reserved, LPRUNNINGOBJECTTABLE *pprot);
+func XGetRunningObjectTable(tls *TLS, _reserved TDWORD, _pprot uintptr) (r THRESULT) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
 type TLPCOLESTR = uintptr
+
+var procGetSaveFileNameW = modcomdlg32.NewProc("GetSaveFileNameW")
+
+// __attribute__((dllimport)) WINBOOL GetSaveFileNameW(LPOPENFILENAMEW);
+func XGetSaveFileNameW(tls *TLS, _0 TLPOPENFILENAMEW) (r TWINBOOL) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+var procSHBrowseForFolderW = modshell32.NewProc("SHBrowseForFolderW")
+
+// __attribute__((dllimport)) LPITEMIDLIST SHBrowseForFolderW (LPBROWSEINFOW lpbi);
+func XSHBrowseForFolderW(tls *TLS, _lpbi TLPBROWSEINFOW) (r TLPITEMIDLIST) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+type TLPITEMIDLIST = uintptr
+
+type TLPBROWSEINFOW = uintptr
+
+var procSHGetDesktopFolder = modshell32.NewProc("SHGetDesktopFolder")
+
+// __attribute__((dllimport)) HRESULT SHGetDesktopFolder (IShellFolder **ppshf);
+func XSHGetDesktopFolder(tls *TLS, _ppshf uintptr) (r THRESULT) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+var procSHGetMalloc = modshell32.NewProc("SHGetMalloc")
+
+// __attribute__((dllimport)) HRESULT SHGetMalloc (IMalloc **ppMalloc);
+func XSHGetMalloc(tls *TLS, _ppMalloc uintptr) (r THRESULT) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
 
 // ----
 
@@ -8478,76 +8535,6 @@ func XGetParent(t *TLS, _ ...any) uintptr {
 }
 
 func XGetPixel(t *TLS, _ ...any) TCOLORREF {
-	die("")
-	panic(todo(""))
-}
-
-func XGetRgnBox(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetRunningObjectTable(t *TLS, _ ...any) THRESULT {
-	die("")
-	panic(todo(""))
-}
-
-func XGetSaveFileNameW(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XGetSysColorBrush(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetSystemMenu(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XRectangle(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XReleaseCapture(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XRemoveMenu(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSHBrowseForFolderW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSHGetDesktopFolder(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSHGetFileInfoW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSHGetMalloc(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XSHGetPathFromIDListW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XScreenToClient(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
 }
@@ -10373,3 +10360,124 @@ func XEndDialog(tls *TLS, _hDlg THWND, _nResult TINT_PTR) (r TWINBOOL) {
 }
 
 type TINT_PTR = int64
+
+var procGetRgnBox = modgdi32.NewProc("GetRgnBox")
+
+// __attribute__((dllimport)) int GetRgnBox(HRGN hrgn,LPRECT lprc);
+func XGetRgnBox(tls *TLS, _hrgn THRGN, _lprc TLPRECT) (r int32) {
+	if __ccgo_strace {
+		trc("hrgn=%+v lprc=%+v", _hrgn, _lprc)
+		defer func() { trc(`XGetRgnBox->%+v`, r) }()
+	}
+	r0, _, _ := procGetRgnBox.Call(_hrgn, _lprc)
+	return int32(r0)
+}
+
+var procGetSysColorBrush = moduser32.NewProc("GetSysColorBrush")
+
+// __attribute__((moduser32import)) HBRUSH GetSysColorBrush(int nIndex);
+func XGetSysColorBrush(tls *TLS, _nIndex int32) (r THBRUSH) {
+	if __ccgo_strace {
+		trc("nIndex=%+v", _nIndex)
+		defer func() { trc(`XGetSysColorBrush->%+v`, r) }()
+	}
+	r0, _, _ := procGetSysColorBrush.Call(uintptr(_nIndex))
+	return THBRUSH(r0)
+}
+
+var procGetSystemMenu = moduser32.NewProc("GetSystemMenu")
+
+// __attribute__((moduser32import)) HMENU GetSystemMenu(HWND hWnd,WINBOOL bRevert);
+func XGetSystemMenu(tls *TLS, _hWnd THWND, _bRevert TWINBOOL) (r THMENU) {
+	if __ccgo_strace {
+		trc("hWnd=%+v bRevert=%+v", _hWnd, _bRevert)
+		defer func() { trc(`XGetSystemMenu->%+v`, r) }()
+	}
+	r0, _, _ := procGetSystemMenu.Call(_hWnd, uintptr(_bRevert))
+	return THMENU(r0)
+}
+
+var procRectangle = modgdi32.NewProc("Rectangle")
+
+// __attribute__((dllimport)) WINBOOL Rectangle(HDC hdc,int left,int top,int right,int bottom);
+func XRectangle(tls *TLS, _hdc THDC, _left int32, _top int32, _right int32, _bottom int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v left=%+v top=%+v right=%+v bottom=%+v", _hdc, _left, _top, _right, _bottom)
+		defer func() { trc(`XRectangle->%+v`, r) }()
+	}
+	r0, _, _ := procRectangle.Call(_hdc, uintptr(_left), uintptr(_top), uintptr(_right), uintptr(_bottom))
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) void SetLastError (DWORD dwErrCode);
+func XSetLastError(tls *TLS, _dwErrCode uint32) {
+	tls.setErrno(int32(_dwErrCode))
+}
+
+var procReleaseCapture = moduser32.NewProc("ReleaseCapture")
+
+// __attribute__((moduser32import)) WINBOOL ReleaseCapture( void);
+func XReleaseCapture(tls *TLS) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XReleaseCapture->%+v`, r) }()
+	}
+	r0, _, err := procReleaseCapture.Call()
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+var procRemoveMenu = moduser32.NewProc("RemoveMenu")
+
+// __attribute__((moduser32import)) WINBOOL RemoveMenu(HMENU hMenu,UINT uPosition,UINT uFlags);
+func XRemoveMenu(tls *TLS, _hMenu THMENU, _uPosition TUINT, _uFlags TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hMenu=%+v uPosition=%+v uFlags=%+v", _hMenu, _uPosition, _uFlags)
+		defer func() { trc(`XRemoveMenu->%+v`, r) }()
+	}
+	r0, _, err := procRemoveMenu.Call(_hMenu, uintptr(_uPosition), uintptr(_uFlags))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+var procSHGetFileInfoW = modshell32.NewProc("SHGetFileInfoW")
+
+// __attribute__((dllimport))DWORD_PTR SHGetFileInfoW (LPCWSTR pszPath, DWORD dwFileAttributes, SHFILEINFOW *psfi, UINT cbFileInfo, UINT uFlags);
+func XSHGetFileInfoW(tls *TLS, _pszPath TLPCWSTR, _dwFileAttributes TDWORD, _psfi uintptr, _cbFileInfo TUINT, _uFlags TUINT) (r TDWORD_PTR) {
+	if __ccgo_strace {
+		trc("pszPath=%+v dwFileAttributes=%+v psfi=%+v cbFileInfo=%+v uFlags=%+v", _pszPath, _dwFileAttributes, _psfi, _cbFileInfo, _uFlags)
+		defer func() { trc(`XSHGetFileInfoW->%+v`, r) }()
+	}
+	r0, _, _ := procSHGetFileInfoW.Call(_pszPath, uintptr(_dwFileAttributes), _psfi, uintptr(_cbFileInfo), uintptr(_uFlags))
+	return TDWORD_PTR(r0)
+}
+
+type TDWORD_PTR = uint64
+
+var procSHGetPathFromIDListW = modshell32.NewProc("SHGetPathFromIDListW")
+
+// __attribute__((dllimport))WINBOOL SHGetPathFromIDListW ( LPCITEMIDLIST pidl, LPWSTR pszPath);
+func XSHGetPathFromIDListW(tls *TLS, _pidl uintptr, _pszPath TLPWSTR) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("pidl=%+v pszPath=%+v", _pidl, _pszPath)
+		defer func() { trc(`XSHGetPathFromIDListW->%+v`, r) }()
+	}
+	r0, _, _ := procSHGetPathFromIDListW.Call(_pidl, _pszPath)
+	return TWINBOOL(r0)
+}
+
+var procScreenToClient = moduser32.NewProc("ScreenToClient")
+
+// __attribute__((moduser32import)) WINBOOL ScreenToClient(HWND hWnd,LPPOINT lpPoint);
+func XScreenToClient(tls *TLS, _hWnd THWND, _lpPoint TLPPOINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpPoint=%+v", _hWnd, _lpPoint)
+		defer func() { trc(`XScreenToClient->%+v`, r) }()
+	}
+	r0, _, _ := procScreenToClient.Call(_hWnd, _lpPoint)
+	return TWINBOOL(r0)
+}
