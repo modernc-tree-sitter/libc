@@ -150,6 +150,19 @@ type (
 )
 
 var (
+	modcomctl32 = windows.NewLazySystemDLL("comctl32.dll")
+	//--
+	procInitCommonControlsEx = modcomctl32.NewProc("InitCommonControlsEx")
+	//--
+
+	modimm32 = windows.NewLazySystemDLL("imm32.dll")
+	//--
+	procImmSetCompositionWindow  = modimm32.NewProc("ImmSetCompositionWindow")
+	procImmReleaseContext        = modimm32.NewProc("ImmReleaseContext")
+	procImmGetContext            = modimm32.NewProc("ImmGetContext")
+	procImmGetCompositionStringW = modimm32.NewProc("ImmGetCompositionStringW")
+	//--
+
 	modoleaut32 = windows.NewLazySystemDLL("oleaut32.dll")
 	//--
 	procSetErrorInfo   = modoleaut32.NewProc("SetErrorInfo")
@@ -201,6 +214,7 @@ var (
 
 	modkernel32 = windows.NewLazySystemDLL("kernel32.dll")
 	//--
+	procIsDBCSLeadByte    = modkernel32.NewProc("IsDBCSLeadByte")
 	procLocalAlloc        = modkernel32.NewProc("LocalAlloc")
 	procGetThreadLocale   = modkernel32.NewProc("GetThreadLocale")
 	procFormatMessageA    = modkernel32.NewProc("FormatMessageA")
@@ -344,6 +358,16 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procLoadCursorA                 = moduser32.NewProc("LoadCursorA")
+	procLoadBitmapW                 = moduser32.NewProc("LoadBitmapW")
+	procIsZoomed                    = moduser32.NewProc("IsZoomed")
+	procIsWindowVisible             = moduser32.NewProc("IsWindowVisible")
+	procIsIconic                    = moduser32.NewProc("IsIconic")
+	procInvalidateRect              = moduser32.NewProc("InvalidateRect")
+	procInsertMenuW                 = moduser32.NewProc("InsertMenuW")
+	procGetWindowTextW              = moduser32.NewProc("GetWindowTextW")
+	procGetWindowRect               = moduser32.NewProc("GetWindowRect")
+	procGetWindowPlacement          = moduser32.NewProc("GetWindowPlacement")
 	procGetWindow                   = moduser32.NewProc("GetWindow")
 	procSetMenu                     = moduser32.NewProc("SetMenu")
 	procSetLayeredWindowAttributes  = moduser32.NewProc("SetLayeredWindowAttributes")
@@ -9747,92 +9771,194 @@ func XGetWindow(tls *TLS, _hWnd THWND, _uCmd TUINT) (r THWND) {
 	return THWND(r0)
 }
 
-func XGetWindowPlacement(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) WINBOOL GetWindowPlacement (HWND hWnd, WINDOWPLACEMENT *lpwndpl);
+func XGetWindowPlacement(tls *TLS, _hWnd THWND, _lpwndpl uintptr) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpwndpl=%+v", _hWnd, _lpwndpl)
+		defer func() { trc(`XGetWindowPlacement->%+v`, r) }()
+	}
+	r0, _, err := procGetWindowPlacement.Call(_hWnd, _lpwndpl)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
 }
 
-func XGetWindowRect(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) WINBOOL GetWindowRect(HWND hWnd,LPRECT lpRect);
+func XGetWindowRect(tls *TLS, _hWnd THWND, _lpRect TLPRECT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpRect=%+v", _hWnd, _lpRect)
+		defer func() { trc(`XGetWindowRect->%+v`, r) }()
+	}
+	r0, _, err := procGetWindowRect.Call(_hWnd, _lpRect)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
 }
 
-func XGetWindowTextW(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) int GetWindowTextW(HWND hWnd,LPWSTR lpString,int nMaxCount);
+func XGetWindowTextW(tls *TLS, _hWnd THWND, _lpString TLPWSTR, _nMaxCount int32) (r int32) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpString=%+v nMaxCount=%+v", _hWnd, _lpString, _nMaxCount)
+		defer func() { trc(`XGetWindowTextW->%+v`, r) }()
+	}
+	r0, _, err := procGetWindowTextW.Call(_hWnd, _lpString, uintptr(_nMaxCount))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return int32(r0)
 }
 
-func XImmGetCompositionStringW(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
+// LONG ImmGetCompositionStringW(HIMC,DWORD,LPVOID,DWORD);
+func XImmGetCompositionStringW(tls *TLS, _0 THIMC, _1 TDWORD, _2 TLPVOID, _3 TDWORD) (r TLONG) {
+	if __ccgo_strace {
+		trc("0=%+v 1=%+v 2=%+v 3=%+v", _0, _1, _2, _3)
+		defer func() { trc(`XImmGetCompositionStringW->%+v`, r) }()
+	}
+	r0, _, _ := procImmGetCompositionStringW.Call(_0, uintptr(_1), _2, uintptr(_3))
+	return TLONG(r0)
 }
 
-func XImmGetContext(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// HIMC ImmGetContext(HWND);
+func XImmGetContext(tls *TLS, _0 THWND) (r THIMC) {
+	if __ccgo_strace {
+		trc("0=%+v", _0)
+		defer func() { trc(`XImmGetContext->%+v`, r) }()
+	}
+	r0, _, _ := procImmGetContext.Call(_0)
+	return THIMC(r0)
 }
 
-func XImmReleaseContext(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// WINBOOL ImmReleaseContext(HWND,HIMC);
+func XImmReleaseContext(tls *TLS, _0 THWND, _1 THIMC) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("0=%+v 1=%+v", _0, _1)
+		defer func() { trc(`XImmReleaseContext->%+v`, r) }()
+	}
+	r0, _, _ := procImmReleaseContext.Call(_0, _1)
+	return TWINBOOL(r0)
 }
 
-func XImmSetCompositionWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// WINBOOL ImmSetCompositionWindow(HIMC,LPCOMPOSITIONFORM);
+func XImmSetCompositionWindow(tls *TLS, _0 THIMC, _1 TLPCOMPOSITIONFORM) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("0=%+v 1=%+v", _0, _1)
+		defer func() { trc(`XImmSetCompositionWindow->%+v`, r) }()
+	}
+	r0, _, _ := procImmSetCompositionWindow.Call(_0, _1)
+	return TWINBOOL(r0)
 }
 
-func XInitCommonControlsEx(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+type THIMC = uintptr
+
+type TLPCOMPOSITIONFORM = uintptr
+
+// __attribute__((dllimport)) WINBOOL InitCommonControlsEx(const INITCOMMONCONTROLSEX *);
+func XInitCommonControlsEx(tls *TLS, _0 uintptr) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("0=%+v", _0)
+		defer func() { trc(`XInitCommonControlsEx->%+v`, r) }()
+	}
+	r0, _, _ := procInitCommonControlsEx.Call(_0)
+	return TWINBOOL(r0)
 }
 
-func XInsertMenuW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) WINBOOL InsertMenuW(HMENU hMenu,UINT uPosition,UINT uFlags,UINT_PTR uIDNewItem,LPCWSTR lpNewItem);
+func XInsertMenuW(tls *TLS, _hMenu THMENU, _uPosition TUINT, _uFlags TUINT, _uIDNewItem TUINT_PTR, _lpNewItem TLPCWSTR) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hMenu=%+v uPosition=%+v uFlags=%+v uIDNewItem=%+v lpNewItem=%+v", _hMenu, _uPosition, _uFlags, _uIDNewItem, _lpNewItem)
+		defer func() { trc(`XInsertMenuW->%+v`, r) }()
+	}
+	r0, _, err := procInsertMenuW.Call(_hMenu, uintptr(_uPosition), uintptr(_uFlags), uintptr(_uIDNewItem), _lpNewItem)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
 }
 
-func XInterlockedDecrement(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+type TUINT_PTR = uint64
+
+func XInterlockedDecrement(t *TLS, Addend uintptr) int32 {
+	return atomic.AddInt32((*int32)(unsafe.Pointer(Addend)), -1)
 }
 
-func XInterlockedIncrement(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+func XInterlockedInrement(t *TLS, Addend uintptr) int32 {
+	return atomic.AddInt32((*int32)(unsafe.Pointer(Addend)), 1)
 }
 
-func XInvalidateRect(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) WINBOOL InvalidateRect(HWND hWnd, const RECT *lpRect,WINBOOL bErase);
+func XInvalidateRect(tls *TLS, _hWnd THWND, _lpRect uintptr, _bErase TWINBOOL) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpRect=%+v bErase=%+v", _hWnd, _lpRect, _bErase)
+		defer func() { trc(`XInvalidateRect->%+v`, r) }()
+	}
+	r0, _, _ := procInvalidateRect.Call(_hWnd, _lpRect, uintptr(_bErase))
+	return TWINBOOL(r0)
 }
 
-func XIsDBCSLeadByte(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) WINBOOL IsDBCSLeadByte (BYTE TestChar);
+func XIsDBCSLeadByte(tls *TLS, _TestChar TBYTE) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("TestChar=%+v", _TestChar)
+		defer func() { trc(`XIsDBCSLeadByte->%+v`, r) }()
+	}
+	r0, _, err := procIsDBCSLeadByte.Call(uintptr(_TestChar))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
 }
 
-func XIsIconic(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) WINBOOL IsIconic (HWND hWnd);
+func XIsIconic(tls *TLS, _hWnd THWND) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XIsIconic->%+v`, r) }()
+	}
+	r0, _, _ := procIsIconic.Call(_hWnd)
+	return TWINBOOL(r0)
 }
 
-func XIsWindowVisible(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) WINBOOL IsWindowVisible (HWND hWnd);
+func XIsWindowVisible(tls *TLS, _hWnd THWND) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XIsWindowVisible->%+v`, r) }()
+	}
+	r0, _, _ := procIsWindowVisible.Call(_hWnd)
+	return TWINBOOL(r0)
 }
 
-func XIsZoomed(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) WINBOOL IsZoomed (HWND hWnd);
+func XIsZoomed(tls *TLS, _hWnd THWND) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XIsZoomed->%+v`, r) }()
+	}
+	r0, _, _ := procIsZoomed.Call(_hWnd)
+	return TWINBOOL(r0)
 }
 
-func XLoadBitmapW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) HBITMAP LoadBitmapW(HINSTANCE hInstance,LPCWSTR lpBitmapName);
+func XLoadBitmapW(tls *TLS, _hInstance THINSTANCE, _lpBitmapName TLPCWSTR) (r THBITMAP) {
+	if __ccgo_strace {
+		trc("hInstance=%+v lpBitmapName=%+v", _hInstance, _lpBitmapName)
+		defer func() { trc(`XLoadBitmapW->%+v`, r) }()
+	}
+	r0, _, _ := procLoadBitmapW.Call(_hInstance, _lpBitmapName)
+	return THBITMAP(r0)
 }
 
-func XLoadCursorA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
+// __attribute__((dllimport)) HCURSOR LoadCursorA(HINSTANCE hInstance,LPCSTR lpCursorName);
+func XLoadCursorA(tls *TLS, _hInstance THINSTANCE, _lpCursorName TLPCSTR) (r THCURSOR) {
+	if __ccgo_strace {
+		trc("hInstance=%+v lpCursorName=%+v", _hInstance, _lpCursorName)
+		defer func() { trc(`XLoadCursorA->%+v`, r) }()
+	}
+	r0, _, err := procLoadCursorA.Call(_hInstance, _lpCursorName)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THCURSOR(r0)
 }
