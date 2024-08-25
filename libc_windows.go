@@ -150,6 +150,10 @@ type (
 )
 
 var (
+	modole32 = windows.NewLazySystemDLL("ole32.dll")
+	//--
+	//--
+
 	modcomdlg32 = windows.NewLazySystemDLL("comdlg32.dll")
 	//--
 	procGetOpenFileNameW = modcomdlg32.NewProc("GetOpenFileNameW")
@@ -8317,6 +8321,24 @@ func XGetOpenFileNameW(tls *TLS, _0 TLPOPENFILENAMEW) (r TWINBOOL) {
 
 type TLPOPENFILENAMEW = uintptr
 
+var procCreateErrorInfo = modole32.NewProc("CreateErrorInfo")
+
+// extern __attribute__((dllimport)) HRESULT CreateErrorInfo(ICreateErrorInfo **pperrinfo);
+func XCreateErrorInfo(tls *TLS, _pperrinfo uintptr) (r THRESULT) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+var procCreateFileMoniker = modole32.NewProc("CreateFileMoniker")
+
+// extern __attribute__((modole32import)) HRESULT CreateFileMoniker (LPCOLESTR lpszPathName, LPMONIKER *ppmk);
+func XCreateFileMoniker(tls *TLS, _lpszPathName TLPCOLESTR, _ppmk uintptr) (r THRESULT) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+type TLPCOLESTR = uintptr
+
 // ----
 
 func XArc(t *TLS, _ ...any) uintptr {
@@ -8406,56 +8428,6 @@ func XCommDlgExtendedError(t *TLS, _ ...any) uintptr {
 }
 
 func XCreateBindCtx(t *TLS, _ ...any) THRESULT {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateBitmap(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateCaret(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateCompatibleBitmap(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateCompatibleDC(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateDCW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateDIBSection(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateDIBitmap(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateErrorInfo(t *TLS, _ ...any) THRESULT {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateFileMoniker(t *TLS, _ ...any) THRESULT {
-	die("")
-	panic(todo(""))
-}
-
-func XEndDialog(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
 }
@@ -10294,3 +10266,110 @@ func XSetWindowLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32, _dwNewLong TLONG_P
 	}
 	return TLONG_PTR(r0)
 }
+
+var procCreateBitmap = modgdi32.NewProc("CreateBitmap")
+
+// __attribute__((dllimport)) HBITMAP CreateBitmap(int nWidth,int nHeight,UINT nPlanes,UINT nBitCount, const void *lpBits);
+func XCreateBitmap(tls *TLS, _nWidth int32, _nHeight int32, _nPlanes TUINT, _nBitCount TUINT, _lpBits uintptr) (r THBITMAP) {
+	if __ccgo_strace {
+		trc("nWidth=%+v nHeight=%+v nPlanes=%+v nBitCount=%+v lpBits=%+v", _nWidth, _nHeight, _nPlanes, _nBitCount, _lpBits)
+		defer func() { trc(`XCreateBitmap->%+v`, r) }()
+	}
+	r0, _, _ := procCreateBitmap.Call(uintptr(_nWidth), uintptr(_nHeight), uintptr(_nPlanes), uintptr(_nBitCount), _lpBits)
+	return THBITMAP(r0)
+}
+
+var procCreateCaret = moduser32.NewProc("CreateCaret")
+
+// __attribute__((moduser32import)) WINBOOL CreateCaret(HWND hWnd,HBITMAP hBitmap,int nWidth,int nHeight);
+func XCreateCaret(tls *TLS, _hWnd THWND, _hBitmap THBITMAP, _nWidth int32, _nHeight int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v hBitmap=%+v nWidth=%+v nHeight=%+v", _hWnd, _hBitmap, _nWidth, _nHeight)
+		defer func() { trc(`XCreateCaret->%+v`, r) }()
+	}
+	r0, _, err := procCreateCaret.Call(_hWnd, _hBitmap, uintptr(_nWidth), uintptr(_nHeight))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+var procCreateCompatibleBitmap = modgdi32.NewProc("CreateCompatibleBitmap")
+
+// __attribute__((dllimport)) HBITMAP CreateCompatibleBitmap(HDC hdc,int cx,int cy);
+func XCreateCompatibleBitmap(tls *TLS, _hdc THDC, _cx int32, _cy int32) (r THBITMAP) {
+	if __ccgo_strace {
+		trc("hdc=%+v cx=%+v cy=%+v", _hdc, _cx, _cy)
+		defer func() { trc(`XCreateCompatibleBitmap->%+v`, r) }()
+	}
+	r0, _, _ := procCreateCompatibleBitmap.Call(_hdc, uintptr(_cx), uintptr(_cy))
+	return THBITMAP(r0)
+}
+
+var procCreateCompatibleDC = modgdi32.NewProc("CreateCompatibleDC")
+
+// __attribute__((dllimport)) HDC CreateCompatibleDC(HDC hdc);
+func XCreateCompatibleDC(tls *TLS, _hdc THDC) (r THDC) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XCreateCompatibleDC->%+v`, r) }()
+	}
+	r0, _, _ := procCreateCompatibleDC.Call(_hdc)
+	return THDC(r0)
+}
+
+var procCreateDCW = modgdi32.NewProc("CreateDCW")
+
+// __attribute__((dllimport)) HDC CreateDCW(LPCWSTR pwszDriver,LPCWSTR pwszDevice,LPCWSTR pszPort, const DEVMODEW *pdm);
+func XCreateDCW(tls *TLS, _pwszDriver TLPCWSTR, _pwszDevice TLPCWSTR, _pszPort TLPCWSTR, _pdm uintptr) (r THDC) {
+	if __ccgo_strace {
+		trc("pwszDriver=%+v pwszDevice=%+v pszPort=%+v pdm=%+v", _pwszDriver, _pwszDevice, _pszPort, _pdm)
+		defer func() { trc(`XCreateDCW->%+v`, r) }()
+	}
+	r0, _, _ := procCreateDCW.Call(_pwszDriver, _pwszDevice, _pszPort, _pdm)
+	return THDC(r0)
+}
+
+var procCreateDIBSection = modgdi32.NewProc("CreateDIBSection")
+
+// __attribute__((dllimport)) HBITMAP CreateDIBSection(HDC hdc, const BITMAPINFO *lpbmi,UINT usage, void **ppvBits,HANDLE hSection,DWORD offset);
+func XCreateDIBSection(tls *TLS, _hdc THDC, _lpbmi uintptr, _usage TUINT, _ppvBits uintptr, _hSection THANDLE, _offset TDWORD) (r THBITMAP) {
+	if __ccgo_strace {
+		trc("hdc=%+v lpbmi=%+v usage=%+v ppvBits=%+v hSection=%+v offset=%+v", _hdc, _lpbmi, _usage, _ppvBits, _hSection, _offset)
+		defer func() { trc(`XCreateDIBSection->%+v`, r) }()
+	}
+	r0, _, err := procCreateDIBSection.Call(_hdc, _lpbmi, uintptr(_usage), _ppvBits, _hSection, uintptr(_offset))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THBITMAP(r0)
+}
+
+var procCreateDIBitmap = modgdi32.NewProc("CreateDIBitmap")
+
+// __attribute__((dllimport)) HBITMAP CreateDIBitmap(HDC hdc, const BITMAPINFOHEADER *pbmih,DWORD flInit, const void *pjBits, const BITMAPINFO *pbmi,UINT iUsage);
+func XCreateDIBitmap(tls *TLS, _hdc THDC, _pbmih uintptr, _flInit TDWORD, _pjBits uintptr, _pbmi uintptr, _iUsage TUINT) (r THBITMAP) {
+	if __ccgo_strace {
+		trc("hdc=%+v pbmih=%+v flInit=%+v pjBits=%+v pbmi=%+v iUsage=%+v", _hdc, _pbmih, _flInit, _pjBits, _pbmi, _iUsage)
+		defer func() { trc(`XCreateDIBitmap->%+v`, r) }()
+	}
+	r0, _, _ := procCreateDIBitmap.Call(_hdc, _pbmih, uintptr(_flInit), _pjBits, _pbmi, uintptr(_iUsage))
+	return THBITMAP(r0)
+}
+
+var procEndDialog = moduser32.NewProc("EndDialog")
+
+// __attribute__((moduser32import)) WINBOOL EndDialog(HWND hDlg,INT_PTR nResult);
+func XEndDialog(tls *TLS, _hDlg THWND, _nResult TINT_PTR) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hDlg=%+v nResult=%+v", _hDlg, _nResult)
+		defer func() { trc(`XEndDialog->%+v`, r) }()
+	}
+	r0, _, err := procEndDialog.Call(_hDlg, uintptr(_nResult))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+type TINT_PTR = int64
