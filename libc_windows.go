@@ -173,6 +173,9 @@ var (
 
 	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
 	//--
+	procPatBlt                 = modgdi32.NewProc("PatBlt")
+	procOffsetClipRgn          = modgdi32.NewProc("OffsetClipRgn")
+	procGetTextFaceW           = modgdi32.NewProc("GetTextFaceW")
 	procGetTextMetricsW        = modgdi32.NewProc("GetTextMetricsW")
 	procSetPaletteEntries      = modgdi32.NewProc("SetPaletteEntries")
 	procSetMapMode             = modgdi32.NewProc("SetMapMode")
@@ -358,6 +361,11 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procPeekMessageA                = moduser32.NewProc("PeekMessageA")
+	procMoveWindow                  = moduser32.NewProc("MoveWindow")
+	procLoadIconW                   = moduser32.NewProc("LoadIconW")
+	procLoadCursorW                 = moduser32.NewProc("LoadCursorW")
+	procLoadCursorFromFileA         = moduser32.NewProc("LoadCursorFromFileA")
 	procLoadCursorA                 = moduser32.NewProc("LoadCursorA")
 	procLoadBitmapW                 = moduser32.NewProc("LoadBitmapW")
 	procIsZoomed                    = moduser32.NewProc("IsZoomed")
@@ -4176,18 +4184,6 @@ func XGetTempPathW(t *TLS, nBufferLength uint32, lpBuffer uintptr) uint32 {
 // 	}
 // 	die("");panic(todo(""))
 // }
-//
-// // HMODULE LoadLibraryW(
-// //
-// //	LPCWSTR lpLibFileName
-// //
-// // );
-// func XLoadLibraryW(t *TLS, lpLibFileName uintptr) uintptr {
-// 	if __ccgo_strace {
-// 		trc("t=%v lpLibFileName=%v, (%v:)", t, lpLibFileName, origin(2))
-// 	}
-// 	die("");panic(todo(""))
-// }
 
 // HLOCAL LocalFree(
 //
@@ -4411,18 +4407,6 @@ func XWideCharToMultiByte(t *TLS, CodePage uint32, dwFlags uint32, lpWideCharStr
 	return (int32(r1))
 }
 
-// // void OutputDebugStringA(
-// //
-// //	LPCSTR lpOutputString
-// //
-// // )
-// func XOutputDebugStringA(t *TLS, lpOutputString uintptr) {
-// 	if __ccgo_strace {
-// 		trc("t=%v lpOutputString=%v, (%v:)", t, lpOutputString, origin(2))
-// 	}
-// 	die("");panic(todo(""))
-// }
-//
 // // BOOL FlushViewOfFile(
 // //
 // //	LPCVOID lpBaseAddress,
@@ -8623,56 +8607,6 @@ func XGetTextFaceA(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XGetTextFaceW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XLoadCursorFromFileA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XLoadCursorW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XLoadIconW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XLoadLibraryW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XMoveWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XOffsetClipRgn(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XOutputDebugStringA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XPatBlt(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XPeekMessageA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
 func XPie(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
@@ -9962,3 +9896,117 @@ func XLoadCursorA(tls *TLS, _hInstance THINSTANCE, _lpCursorName TLPCSTR) (r THC
 	}
 	return THCURSOR(r0)
 }
+
+// __attribute__((dllimport)) int GetTextFaceW(HDC hdc,int c,LPWSTR lpName);
+func XGetTextFaceW(tls *TLS, _hdc THDC, _c int32, _lpName TLPWSTR) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v c=%+v lpName=%+v", _hdc, _c, _lpName)
+		defer func() { trc(`XGetTextFaceW->%+v`, r) }()
+	}
+	r0, _, _ := procGetTextFaceW.Call(_hdc, uintptr(_c), _lpName)
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) HCURSOR LoadCursorFromFileA(LPCSTR lpFileName);
+func XLoadCursorFromFileA(tls *TLS, _lpFileName TLPCSTR) (r THCURSOR) {
+	if __ccgo_strace {
+		trc("lpFileName=%+v", _lpFileName)
+		defer func() { trc(`XLoadCursorFromFileA->%+v`, r) }()
+	}
+	r0, _, err := procLoadCursorFromFileA.Call(_lpFileName)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THCURSOR(r0)
+}
+
+// __attribute__((dllimport)) HCURSOR LoadCursorW(HINSTANCE hInstance,LPCWSTR lpCursorName);
+func XLoadCursorW(tls *TLS, _hInstance THINSTANCE, _lpCursorName TLPCWSTR) (r THCURSOR) {
+	if __ccgo_strace {
+		trc("hInstance=%+v lpCursorName=%+v", _hInstance, _lpCursorName)
+		defer func() { trc(`XLoadCursorW->%+v`, r) }()
+	}
+	r0, _, err := procLoadCursorW.Call(_hInstance, _lpCursorName)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THCURSOR(r0)
+}
+
+// __attribute__((dllimport)) HICON LoadIconW(HINSTANCE hInstance,LPCWSTR lpIconName);
+func XLoadIconW(tls *TLS, _hInstance THINSTANCE, _lpIconName TLPCWSTR) (r THICON) {
+	if __ccgo_strace {
+		trc("hInstance=%+v lpIconName=%+v", _hInstance, _lpIconName)
+		defer func() { trc(`XLoadIconW->%+v`, r) }()
+	}
+	r0, _, err := procLoadIconW.Call(_hInstance, _lpIconName)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THICON(r0)
+}
+
+// __attribute__((dllimport)) HMODULE LoadLibraryW(LPCWSTR lpLibFileName);
+func XLoadLibraryW(tls *TLS, _lpLibFileName TLPCWSTR) (r THMODULE) {
+	if __ccgo_strace {
+		trc("lpLibFileName=%+v", _lpLibFileName)
+		defer func() { trc(`XLoadLibraryW->%+v`, r) }()
+	}
+	tls.setErrno(windows.ERROR_INVALID_LIBRARY)
+	return THMODULE(0)
+}
+
+// __attribute__((dllimport)) WINBOOL MoveWindow (HWND hWnd, int X, int Y, int nWidth, int nHeight, WINBOOL bRepaint);
+func XMoveWindow(tls *TLS, _hWnd THWND, _X int32, _Y int32, _nWidth int32, _nHeight int32, _bRepaint TWINBOOL) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v X=%+v Y=%+v nWidth=%+v nHeight=%+v bRepaint=%+v", _hWnd, _X, _Y, _nWidth, _nHeight, _bRepaint)
+		defer func() { trc(`XMoveWindow->%+v`, r) }()
+	}
+	r0, _, err := procMoveWindow.Call(_hWnd, uintptr(_X), uintptr(_Y), uintptr(_nWidth), uintptr(_nHeight), uintptr(_bRepaint))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) int OffsetClipRgn(HDC hdc,int x,int y);
+func XOffsetClipRgn(tls *TLS, _hdc THDC, _x int32, _y int32) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v x=%+v y=%+v", _hdc, _x, _y)
+		defer func() { trc(`XOffsetClipRgn->%+v`, r) }()
+	}
+	r0, _, _ := procOffsetClipRgn.Call(_hdc, uintptr(_x), uintptr(_y))
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) void OutputDebugStringA (LPCSTR lpOutputString);
+func XOutputDebugStringA(tls *TLS, _lpOutputString TLPCSTR) {
+	if __ccgo_strace {
+		trc("lpOutputString=%+v", _lpOutputString)
+	}
+	if dmesgs {
+		dmesg("OutputDebugStringA: %s", GoString(_lpOutputString))
+	}
+}
+
+// __attribute__((dllimport)) WINBOOL PatBlt(HDC hdc,int x,int y,int w,int h,DWORD rop);
+func XPatBlt(tls *TLS, _hdc THDC, _x int32, _y int32, _w int32, _h int32, _rop TDWORD) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v x=%+v y=%+v w=%+v h=%+v rop=%+v", _hdc, _x, _y, _w, _h, _rop)
+		defer func() { trc(`XPatBlt->%+v`, r) }()
+	}
+	r0, _, _ := procPatBlt.Call(_hdc, uintptr(_x), uintptr(_y), uintptr(_w), uintptr(_h), uintptr(_rop))
+	return TWINBOOL(r0)
+}
+
+// __attribute__((dllimport)) WINBOOL PeekMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg);
+func XPeekMessageA(tls *TLS, _lpMsg TLPMSG, _hWnd THWND, _wMsgFilterMin TUINT, _wMsgFilterMax TUINT, _wRemoveMsg TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("lpMsg=%+v hWnd=%+v wMsgFilterMin=%+v wMsgFilterMax=%+v wRemoveMsg=%+v", _lpMsg, _hWnd, _wMsgFilterMin, _wMsgFilterMax, _wRemoveMsg)
+		defer func() { trc(`XPeekMessageA->%+v`, r) }()
+	}
+	r0, _, _ := procPeekMessageA.Call(_lpMsg, _hWnd, uintptr(_wMsgFilterMin), uintptr(_wMsgFilterMax), uintptr(_wRemoveMsg))
+	return TWINBOOL(r0)
+}
+
+type TLPMSG = uintptr
