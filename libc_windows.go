@@ -156,19 +156,28 @@ type winWndProc = func(THWND, TUINT, TWPARAM, TLPARAM) TLRESULT
 type goWndProc = func(*TLS, THWND, TUINT, TWPARAM, TLPARAM) TLRESULT
 
 const (
-	nWndProcs = 1
+	nWndProcs = 10
 )
 
 var (
 	callBackMu sync.Mutex
 
 	wndProcs    [nWndProcs]callBackInfo[winWndProc, goWndProc]
-	wndProcsLen atomic.Int32
+	wndProcsLen int
 )
 
 func init() {
 	wndProcs = [nWndProcs]callBackInfo[winWndProc, goWndProc]{
 		{w: wndProc0},
+		{w: wndProc1},
+		{w: wndProc2},
+		{w: wndProc3},
+		{w: wndProc4},
+		{w: wndProc5},
+		{w: wndProc6},
+		{w: wndProc7},
+		{w: wndProc8},
+		{w: wndProc9},
 	}
 }
 
@@ -178,9 +187,23 @@ func wndProc(slot int, h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT {
 }
 
 func wndProc0(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(0, h, u, w, l) }
+func wndProc1(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(1, h, u, w, l) }
+func wndProc2(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(2, h, u, w, l) }
+func wndProc3(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(3, h, u, w, l) }
+func wndProc4(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(4, h, u, w, l) }
+func wndProc5(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(5, h, u, w, l) }
+func wndProc6(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(6, h, u, w, l) }
+func wndProc7(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(7, h, u, w, l) }
+func wndProc8(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(8, h, u, w, l) }
+func wndProc9(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(9, h, u, w, l) }
 
 func registerWndProc(tls *TLS, g goWndProc) (r uintptr) {
-	slot := wndProcsLen.Add(1) - 1
+	callBackMu.Lock()
+
+	defer callBackMu.Unlock()
+
+	slot := wndProcsLen
+	wndProcsLen++
 	Dbg("%v: slot=%v", origin(1), slot)
 	wndProcs[slot].tls = tls
 	wndProcs[slot].g = g
@@ -202,11 +225,7 @@ type TWNDCLASSW = struct {
 
 var procRegisterClassW = moduser32.NewProc("RegisterClassW")
 
-// ATOM RegisterClassW(
-//
-//	const WNDCLASSW *lpWndClass
-//
-// );
+// ATOM RegisterClassW(const WNDCLASSW *lpWndClass);
 func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 	// Dbg("%v: lpWndClass=%#0x", origin(1), lpWndClass)
 	// if gofnp := (*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
