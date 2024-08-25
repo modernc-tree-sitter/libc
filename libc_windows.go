@@ -178,6 +178,7 @@ var (
 
 	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
 	//--
+	procGetTextCharset         = modgdi32.NewProc("GetTextCharset")
 	procGetDIBits              = modgdi32.NewProc("GetDIBits")
 	procGetCharWidthW          = modgdi32.NewProc("GetCharWidthW")
 	procGetCharWidthA          = modgdi32.NewProc("GetCharWidthA")
@@ -8514,56 +8515,6 @@ func XGetSystemMenu(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XGetTextCharset(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetTextExtentPoint32A(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetTextExtentPoint32W(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetTextExtentPointA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetTextFaceA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XPie(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XPolygon(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XPolyline(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XRealizePalette(t *TLS, _ ...any) uint32 {
-	die("")
-	panic(todo(""))
-}
-
-func XRectInRegion(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
 func XRectangle(t *TLS, _ ...any) uintptr {
 	die("")
 	panic(todo(""))
@@ -10160,4 +10111,124 @@ func XGetFocus(tls *TLS) (r THWND) {
 	}
 	r0, _, _ := procGetFocus.Call()
 	return THWND(r0)
+}
+
+// __attribute__((dllimport)) int GetTextCharset(HDC hdc);
+func XGetTextCharset(tls *TLS, _hdc THDC) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XGetTextCharset->%+v`, r) }()
+	}
+	r0, _, _ := procGetTextCharset.Call(_hdc)
+	return int32(r0)
+}
+
+var procGetTextExtentPoint32A = modgdi32.NewProc("GetTextExtentPoint32A")
+
+// __attribute__((dllimport)) WINBOOL GetTextExtentPoint32A(HDC hdc,LPCSTR lpString,int c,LPSIZE psizl);
+func XGetTextExtentPoint32A(tls *TLS, _hdc THDC, _lpString TLPCSTR, _c int32, _psizl TLPSIZE) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v lpString=%+v c=%+v psizl=%+v", _hdc, _lpString, _c, _psizl)
+		defer func() { trc(`XGetTextExtentPoint32A->%+v`, r) }()
+	}
+	r0, _, _ := procGetTextExtentPoint32A.Call(_hdc, _lpString, uintptr(_c), _psizl)
+	return TWINBOOL(r0)
+}
+
+var procGetTextExtentPoint32W = modgdi32.NewProc("GetTextExtentPoint32W")
+
+// __attribute__((dllimport)) WINBOOL GetTextExtentPoint32W(HDC hdc,LPCWSTR lpString,int c,LPSIZE psizl);
+func XGetTextExtentPoint32W(tls *TLS, _hdc THDC, _lpString TLPCWSTR, _c int32, _psizl TLPSIZE) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v lpString=%+v c=%+v psizl=%+v", _hdc, _lpString, _c, _psizl)
+		defer func() { trc(`XGetTextExtentPoint32W->%+v`, r) }()
+	}
+	r0, _, _ := procGetTextExtentPoint32W.Call(_hdc, _lpString, uintptr(_c), _psizl)
+	return TWINBOOL(r0)
+}
+
+var procGetTextExtentPointA = modgdi32.NewProc("GetTextExtentPointA")
+
+// __attribute__((dllimport)) WINBOOL GetTextExtentPointA(HDC hdc,LPCSTR lpString,int c,LPSIZE lpsz);
+func XGetTextExtentPointA(tls *TLS, _hdc THDC, _lpString TLPCSTR, _c int32, _lpsz TLPSIZE) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v lpString=%+v c=%+v lpsz=%+v", _hdc, _lpString, _c, _lpsz)
+		defer func() { trc(`XGetTextExtentPointA->%+v`, r) }()
+	}
+	r0, _, _ := procGetTextExtentPointA.Call(_hdc, _lpString, uintptr(_c), _lpsz)
+	return TWINBOOL(r0)
+}
+
+type TLPSIZE = uintptr
+
+var procGetTextFaceA = modgdi32.NewProc("GetTextFaceA")
+
+// __attribute__((dllimport)) int GetTextFaceA(HDC hdc,int c,LPSTR lpName);
+func XGetTextFaceA(tls *TLS, _hdc THDC, _c int32, _lpName TLPSTR) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v c=%+v lpName=%+v", _hdc, _c, _lpName)
+		defer func() { trc(`XGetTextFaceA->%+v`, r) }()
+	}
+	r0, _, _ := procGetTextFaceA.Call(_hdc, uintptr(_c), _lpName)
+	return int32(r0)
+}
+
+var procPie = modgdi32.NewProc("Pie")
+
+// __attribute__((dllimport)) WINBOOL Pie(HDC hdc,int left,int top,int right,int bottom,int xr1,int yr1,int xr2,int yr2);
+func XPie(tls *TLS, _hdc THDC, _left int32, _top int32, _right int32, _bottom int32, _xr1 int32, _yr1 int32, _xr2 int32, _yr2 int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v left=%+v top=%+v right=%+v bottom=%+v xr1=%+v yr1=%+v xr2=%+v yr2=%+v", _hdc, _left, _top, _right, _bottom, _xr1, _yr1, _xr2, _yr2)
+		defer func() { trc(`XPie->%+v`, r) }()
+	}
+	r0, _, _ := procPie.Call(_hdc, uintptr(_left), uintptr(_top), uintptr(_right), uintptr(_bottom), uintptr(_xr1), uintptr(_yr1), uintptr(_xr2), uintptr(_yr2))
+	return TWINBOOL(r0)
+}
+
+var procPolygon = modgdi32.NewProc("Polygon")
+
+// __attribute__((dllimport)) WINBOOL Polygon(HDC hdc, const POINT *apt,int cpt);
+func XPolygon(tls *TLS, _hdc THDC, _apt uintptr, _cpt int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v apt=%+v cpt=%+v", _hdc, _apt, _cpt)
+		defer func() { trc(`XPolygon->%+v`, r) }()
+	}
+	r0, _, _ := procPolygon.Call(_hdc, _apt, uintptr(_cpt))
+	return TWINBOOL(r0)
+}
+
+var procPolyline = modgdi32.NewProc("Polyline")
+
+// __attribute__((dllimport)) WINBOOL Polyline(HDC hdc, const POINT *apt,int cpt);
+func XPolyline(tls *TLS, _hdc THDC, _apt uintptr, _cpt int32) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v apt=%+v cpt=%+v", _hdc, _apt, _cpt)
+		defer func() { trc(`XPolyline->%+v`, r) }()
+	}
+	r0, _, _ := procPolyline.Call(_hdc, _apt, uintptr(_cpt))
+	return TWINBOOL(r0)
+}
+
+var procRealizePalette = modgdi32.NewProc("RealizePalette")
+
+// __attribute__((dllimport)) UINT RealizePalette(HDC hdc);
+func XRealizePalette(tls *TLS, _hdc THDC) (r TUINT) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XRealizePalette->%+v`, r) }()
+	}
+	r0, _, _ := procRealizePalette.Call(_hdc)
+	return TUINT(r0)
+}
+
+var procRectInRegion = modgdi32.NewProc("RectInRegion")
+
+// __attribute__((dllimport)) WINBOOL RectInRegion(HRGN hrgn, const RECT *lprect);
+func XRectInRegion(tls *TLS, _hrgn THRGN, _lprect uintptr) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hrgn=%+v lprect=%+v", _hrgn, _lprect)
+		defer func() { trc(`XRectInRegion->%+v`, r) }()
+	}
+	r0, _, _ := procRectInRegion.Call(_hrgn, _lprect)
+	return TWINBOOL(r0)
 }
