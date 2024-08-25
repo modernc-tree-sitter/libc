@@ -173,6 +173,9 @@ var (
 
 	modgdi32 = windows.NewLazySystemDLL("gdi32.dll")
 	//--
+	procGetObjectA             = modgdi32.NewProc("GetObjectA")
+	procGetMapMode             = modgdi32.NewProc("GetMapMode")
+	procGetFontData            = modgdi32.NewProc("GetFontData")
 	procPatBlt                 = modgdi32.NewProc("PatBlt")
 	procOffsetClipRgn          = modgdi32.NewProc("OffsetClipRgn")
 	procGetTextFaceW           = modgdi32.NewProc("GetTextFaceW")
@@ -217,6 +220,7 @@ var (
 
 	modkernel32 = windows.NewLazySystemDLL("kernel32.dll")
 	//--
+	procGetLocaleInfoW    = modkernel32.NewProc("GetLocaleInfoW")
 	procIsDBCSLeadByte    = modkernel32.NewProc("IsDBCSLeadByte")
 	procLocalAlloc        = modkernel32.NewProc("LocalAlloc")
 	procGetThreadLocale   = modkernel32.NewProc("GetThreadLocale")
@@ -361,6 +365,12 @@ var (
 
 	moduser32 = windows.NewLazySystemDLL("user32.dll")
 	//--
+	procGetMessagePos               = moduser32.NewProc("GetMessagePos")
+	procGetMessageA                 = moduser32.NewProc("GetMessageA")
+	procGetMenuItemCount            = moduser32.NewProc("GetMenuItemCount")
+	procGetLastInputInfo            = moduser32.NewProc("GetLastInputInfo")
+	procGetKeyboardLayout           = moduser32.NewProc("GetKeyboardLayout")
+	procGetForegroundWindow         = moduser32.NewProc("GetForegroundWindow")
 	procPeekMessageA                = moduser32.NewProc("PeekMessageA")
 	procMoveWindow                  = moduser32.NewProc("MoveWindow")
 	procLoadIconW                   = moduser32.NewProc("LoadIconW")
@@ -8492,56 +8502,6 @@ func XGetFocus(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-func XGetFontData(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetForegroundWindow(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetKeyboardLayout(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetLastInputInfo(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetLocaleInfoW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetMapMode(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XGetMenuItemCount(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XGetMessageA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetMessagePos(t *TLS, _ ...any) TDWORD {
-	die("")
-	panic(todo(""))
-}
-
-func XGetObjectA(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
 func XGetOpenFileNameW(t *TLS, _ ...any) int32 {
 	die("")
 	panic(todo(""))
@@ -10010,3 +9970,116 @@ func XPeekMessageA(tls *TLS, _lpMsg TLPMSG, _hWnd THWND, _wMsgFilterMin TUINT, _
 }
 
 type TLPMSG = uintptr
+
+// __attribute__((dllimport)) DWORD GetFontData (HDC hdc,DWORD dwTable,DWORD dwOffset,PVOID pvBuffer,DWORD cjBuffer);
+func XGetFontData(tls *TLS, _hdc THDC, _dwTable TDWORD, _dwOffset TDWORD, _pvBuffer TPVOID, _cjBuffer TDWORD) (r TDWORD) {
+	if __ccgo_strace {
+		trc("hdc=%+v dwTable=%+v dwOffset=%+v pvBuffer=%+v cjBuffer=%+v", _hdc, _dwTable, _dwOffset, _pvBuffer, _cjBuffer)
+		defer func() { trc(`XGetFontData->%+v`, r) }()
+	}
+	r0, _, _ := procGetFontData.Call(_hdc, uintptr(_dwTable), uintptr(_dwOffset), _pvBuffer, uintptr(_cjBuffer))
+	return TDWORD(r0)
+}
+
+// __attribute__((dllimport)) HWND GetForegroundWindow( void);
+func XGetForegroundWindow(tls *TLS) (r THWND) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XGetForegroundWindow->%+v`, r) }()
+	}
+	r0, _, _ := procGetForegroundWindow.Call()
+	return THWND(r0)
+}
+
+// __attribute__((dllimport)) HKL GetKeyboardLayout(DWORD idThread);
+func XGetKeyboardLayout(tls *TLS, _idThread TDWORD) (r THKL) {
+	if __ccgo_strace {
+		trc("idThread=%+v", _idThread)
+		defer func() { trc(`XGetKeyboardLayout->%+v`, r) }()
+	}
+	r0, _, _ := procGetKeyboardLayout.Call(uintptr(_idThread))
+	return THKL(r0)
+}
+
+type THKL = uintptr
+
+// __attribute__((dllimport)) WINBOOL GetLastInputInfo(PLASTINPUTINFO plii);
+func XGetLastInputInfo(tls *TLS, _plii TPLASTINPUTINFO) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("plii=%+v", _plii)
+		defer func() { trc(`XGetLastInputInfo->%+v`, r) }()
+	}
+	r0, _, _ := procGetLastInputInfo.Call(_plii)
+	return TWINBOOL(r0)
+}
+
+type TPLASTINPUTINFO = uintptr
+
+// __attribute__((dllimport)) int GetLocaleInfoW (LCID Locale, LCTYPE LCType, LPWSTR lpLCData, int cchData);
+func XGetLocaleInfoW(tls *TLS, _Locale TLCID, _LCType TLCTYPE, _lpLCData TLPWSTR, _cchData int32) (r int32) {
+	if __ccgo_strace {
+		trc("Locale=%+v LCType=%+v lpLCData=%+v cchData=%+v", _Locale, _LCType, _lpLCData, _cchData)
+		defer func() { trc(`XGetLocaleInfoW->%+v`, r) }()
+	}
+	r0, _, err := procGetLocaleInfoW.Call(uintptr(_Locale), uintptr(_LCType), _lpLCData, uintptr(_cchData))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) int GetMapMode(HDC hdc);
+func XGetMapMode(tls *TLS, _hdc THDC) (r int32) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XGetMapMode->%+v`, r) }()
+	}
+	r0, _, _ := procGetMapMode.Call(_hdc)
+	return int32(r0)
+}
+
+// __attribute__((dllimport)) int GetMenuItemCount(HMENU hMenu);
+func XGetMenuItemCount(tls *TLS, _hMenu THMENU) (r int32) {
+	if __ccgo_strace {
+		trc("hMenu=%+v", _hMenu)
+		defer func() { trc(`XGetMenuItemCount->%+v`, r) }()
+	}
+	r0, _, err := procGetMenuItemCount.Call(_hMenu)
+	if r = int32(r0); r == -1 {
+		tls.setErrno(err)
+	}
+	return r
+}
+
+// __attribute__((dllimport)) WINBOOL GetMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax);
+func XGetMessageA(tls *TLS, _lpMsg TLPMSG, _hWnd THWND, _wMsgFilterMin TUINT, _wMsgFilterMax TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("lpMsg=%+v hWnd=%+v wMsgFilterMin=%+v wMsgFilterMax=%+v", _lpMsg, _hWnd, _wMsgFilterMin, _wMsgFilterMax)
+		defer func() { trc(`XGetMessageA->%+v`, r) }()
+	}
+	r0, _, err := procGetMessageA.Call(_lpMsg, _hWnd, uintptr(_wMsgFilterMin), uintptr(_wMsgFilterMax))
+	if r = TWINBOOL(r0); r == -1 {
+		tls.setErrno(err)
+	}
+	return r
+}
+
+// __attribute__((dllimport)) DWORD GetMessagePos( void);
+func XGetMessagePos(tls *TLS) (r TDWORD) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XGetMessagePos->%+v`, r) }()
+	}
+	r0, _, _ := procGetMessagePos.Call()
+	return TDWORD(r0)
+}
+
+// __attribute__((dllimport)) int GetObjectA(HANDLE h,int c,LPVOID pv);
+func XGetObjectA(tls *TLS, _h THANDLE, _c int32, _pv TLPVOID) (r int32) {
+	if __ccgo_strace {
+		trc("h=%+v c=%+v pv=%+v", _h, _c, _pv)
+		defer func() { trc(`XGetObjectA->%+v`, r) }()
+	}
+	r0, _, _ := procGetObjectA.Call(_h, uintptr(_c), _pv)
+	return int32(r0)
+}
