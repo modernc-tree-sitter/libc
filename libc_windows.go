@@ -129,8 +129,10 @@ func (c *wndProcRegister) register(tls *TLS, gofnp uintptr) (r uintptr) {
 			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 			return uintptr(f(tls, hwnd, message, wParam, lParam))
 		})
+		Dbg("%v: registering gofnp=%#0x", origin(1), gofnp)
 		c.m[key] = r
 	}
+	Dbg("%v: gofnp=#0x r=%#0x key=%#0x", origin(1), gofnp, r, key)
 	return r
 }
 
@@ -5526,7 +5528,9 @@ type THICON = uintptr
 //
 // );
 func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
+	Dbg("%v: lpWndClass=%#0x", origin(1), lpWndClass)
 	if gofnp := (*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
+		Dbg("%v: gofnp=%#0x", origin(1), gofnp)
 		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = wndProcs.register(t, gofnp)
 	}
 	if __ccgo_strace {
@@ -5535,7 +5539,7 @@ func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 	XSetLastError(t, 0)
 	r0, _, err := procRegisterClassW.Call(lpWndClass, 0, 0)
 	if r0 == 0 {
-		Dbg("%v: err=%#0x", err)
+		Dbg("%v: err=%#0x", origin(1), uint32(err))
 		t.setErrno(err)
 	}
 	return int32(r0)
@@ -5545,7 +5549,9 @@ var procRegisterClassExW = moduser32.NewProc("RegisterClassExW")
 
 // __attribute__((dllimport)) ATOM RegisterClassExW ( const WNDCLASSEXW *);
 func XRegisterClassExW(t *TLS, wndClassExW uintptr) (r TATOM) {
+	Dbg("%v: lpWndClassEx=%#0x", origin(1), lpWndClassExW)
 	if gofnp := (*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc; gofnp != 0 {
+		Dbg("%v: gofnp=%#0x", origin(1), gofnp)
 		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = wndProcs.register(t, gofnp)
 	}
 	if __ccgo_strace {
@@ -5555,7 +5561,7 @@ func XRegisterClassExW(t *TLS, wndClassExW uintptr) (r TATOM) {
 	XSetLastError(t, 0)
 	r0, _, err := procRegisterClassExW.Call(wndClassExW)
 	if r0 == 0 {
-		Dbg("%v: err=%#0x", err)
+		Dbg("%v: err=%#0x", origin(1), uint32(err))
 		t.setErrno(err)
 	}
 	return TATOM(r0)
@@ -8396,6 +8402,25 @@ func XSHGetMalloc(tls *TLS, _ppMalloc uintptr) (r THRESULT) {
 	panic(todo(""))
 }
 
+var procCreateBindCtx = modole32.NewProc("CreateBindCtx")
+
+// extern __attribute__((modole32import)) HRESULT CreateBindCtx (DWORD reserved, LPBC *ppbc);
+func XCreateBindCtx(tls *TLS, _reserved TDWORD, _ppbc uintptr) (r THRESULT) {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
+
+// int EnumFontFamiliesA(
+//   [in] HDC           hdc,
+//   [in] LPCSTR        lpLogfont,
+//   [in] FONTENUMPROCA lpProc,
+//   [in] LPARAM        lParam
+// );
+func XEnumFontFamiliesW(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
 // ----
 
 func XArc(t *TLS, _ ...any) uintptr {
@@ -8453,91 +8478,6 @@ func XCloseFigure(t *TLS, _ ...any) uintptr {
 }
 
 type THRESULT = int32
-
-func XCoCreateInstance(t *TLS, _ ...any) THRESULT {
-	die("")
-	panic(todo(""))
-}
-
-func XCoInitialize(t *TLS, _ ...any) THRESULT {
-	die("")
-	panic(todo(""))
-}
-
-func XCoTaskMemAlloc(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCoTaskMemFree(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCombineRgn(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCommDlgExtendedError(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XCreateBindCtx(t *TLS, _ ...any) THRESULT {
-	die("")
-	panic(todo(""))
-}
-
-func XEndPath(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XEnumFontFamiliesW(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XExtCreatePen(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XExtTextOutW(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XFillRect(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetAsyncKeyState(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetBkMode(t *TLS, _ ...any) int32 {
-	die("")
-	panic(todo(""))
-}
-
-func XGetCapture(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetParent(t *TLS, _ ...any) uintptr {
-	die("")
-	panic(todo(""))
-}
-
-func XGetPixel(t *TLS, _ ...any) TCOLORREF {
-	die("")
-	panic(todo(""))
-}
 
 type TGUID = struct {
 	FData1 uint32
@@ -10480,4 +10420,107 @@ func XScreenToClient(tls *TLS, _hWnd THWND, _lpPoint TLPPOINT) (r TWINBOOL) {
 	}
 	r0, _, _ := procScreenToClient.Call(_hWnd, _lpPoint)
 	return TWINBOOL(r0)
+}
+
+var procCombineRgn = modgdi32.NewProc("CombineRgn")
+
+// __attribute__((dllimport)) int CombineRgn(HRGN hrgnDst,HRGN hrgnSrc1,HRGN hrgnSrc2,int iMode);
+func XCombineRgn(tls *TLS, _hrgnDst THRGN, _hrgnSrc1 THRGN, _hrgnSrc2 THRGN, _iMode int32) (r int32) {
+	if __ccgo_strace {
+		trc("hrgnDst=%+v hrgnSrc1=%+v hrgnSrc2=%+v iMode=%+v", _hrgnDst, _hrgnSrc1, _hrgnSrc2, _iMode)
+		defer func() { trc(`XCombineRgn->%+v`, r) }()
+	}
+	r0, _, _ := procCombineRgn.Call(_hrgnDst, _hrgnSrc1, _hrgnSrc2, uintptr(_iMode))
+	return int32(r0)
+}
+
+var procCommDlgExtendedError = modcomdlg32.NewProc("CommDlgExtendedError")
+
+// __attribute__((dllimport)) DWORD CommDlgExtendedError( void);
+func XCommDlgExtendedError(tls *TLS) (r TDWORD) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XCommDlgExtendedError->%+v`, r) }()
+	}
+	r0, _, _ := procCommDlgExtendedError.Call()
+	return TDWORD(r0)
+}
+
+var procEndPath = modgdi32.NewProc("EndPath")
+
+// __attribute__((dllimport)) WINBOOL EndPath(HDC hdc);
+func XEndPath(tls *TLS, _hdc THDC) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hdc=%+v", _hdc)
+		defer func() { trc(`XEndPath->%+v`, r) }()
+	}
+	r0, _, _ := procEndPath.Call(_hdc)
+	return TWINBOOL(r0)
+}
+
+var procExtCreatePen = modgdi32.NewProc("ExtCreatePen")
+
+// __attribute__((dllimport)) HPEN ExtCreatePen(DWORD iPenStyle,DWORD cWidth, const LOGBRUSH *plbrush,DWORD cStyle, const DWORD *pstyle);
+func XExtCreatePen(tls *TLS, _iPenStyle TDWORD, _cWidth TDWORD, _plbrush uintptr, _cStyle TDWORD, _pstyle uintptr) (r THPEN) {
+	if __ccgo_strace {
+		trc("iPenStyle=%+v cWidth=%+v plbrush=%+v cStyle=%+v pstyle=%+v", _iPenStyle, _cWidth, _plbrush, _cStyle, _pstyle)
+		defer func() { trc(`XExtCreatePen->%+v`, r) }()
+	}
+	r0, _, _ := procExtCreatePen.Call(uintptr(_iPenStyle), uintptr(_cWidth), _plbrush, uintptr(_cStyle), _pstyle)
+	return THPEN(r0)
+}
+
+func XExtTextOutW(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XFillRect(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetAsyncKeyState(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetBkMode(t *TLS, _ ...any) int32 {
+	die("")
+	panic(todo(""))
+}
+
+func XGetCapture(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetParent(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XGetPixel(t *TLS, _ ...any) TCOLORREF {
+	die("")
+	panic(todo(""))
+}
+
+func XCoCreateInstance(t *TLS, _ ...any) THRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XCoInitialize(t *TLS, _ ...any) THRESULT {
+	die("")
+	panic(todo(""))
+}
+
+func XCoTaskMemAlloc(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
+}
+
+func XCoTaskMemFree(t *TLS, _ ...any) uintptr {
+	die("")
+	panic(todo(""))
 }
