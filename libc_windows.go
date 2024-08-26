@@ -2133,26 +2133,7 @@ func Xsetlocale(t *TLS, category int32, locale uintptr) uintptr {
 // // }
 
 func Xabort(t *TLS) {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	die("")
-	panic(todo(""))
-	// 	if dmesgs {
-	// 		dmesg("%v:\n%s", origin(1), debug.Stack())
-	// 	}
-	// 	p := Xmalloc(t, types.Size_t(unsafe.Sizeof(signal.Sigaction{})))
-	// 	if p == 0 {
-	//		die("");panic("OOM")
-	//	}
-	//
-	// 	*(*signal.Sigaction)(unsafe.Pointer(p)) = signal.Sigaction{
-	// 		F__sigaction_handler: struct{ Fsa_handler signal.X__sighandler_t }{Fsa_handler: signal.SIG_DFL},
-	// 	}
-	// 	Xsigaction(t, signal.SIGABRT, p, 0)
-	// 	Xfree(t, p)
-	// 	unix.Kill(unix.Getpid(), windows.Signal(signal.SIGABRT))
-	// 	die("");panic(todo("unrechable"))
+	windows.Exit(3)
 }
 
 // int fflush(FILE *stream);
