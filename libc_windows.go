@@ -152,6 +152,21 @@ type TWNDCLASSW = struct {
 	FlpszClassName TLPCWSTR
 }
 
+type TWNDCLASSEXW = struct {
+	FcbSize        TUINT
+	Fstyle         TUINT
+	FlpfnWndProc   TWNDPROC
+	FcbClsExtra    int32
+	FcbWndExtra    int32
+	FhInstance     THINSTANCE
+	FhIcon         THICON
+	FhCursor       THCURSOR
+	FhbrBackground THBRUSH
+	FlpszMenuName  TLPCWSTR
+	FlpszClassName TLPCWSTR
+	FhIconSm       THICON
+}
+
 type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
 
 var procRegisterClassW = moduser32.NewProc("RegisterClassW")
@@ -190,21 +205,6 @@ func XRegisterClassExW(tls *TLS, wndClassExW uintptr) (r TATOM) {
 		tls.setErrno(err)
 	}
 	return TATOM(r0)
-}
-
-type TWNDCLASSEXW = struct {
-	FcbSize        TUINT
-	Fstyle         TUINT
-	FlpfnWndProc   TWNDPROC
-	FcbClsExtra    int32
-	FcbWndExtra    int32
-	FhInstance     THINSTANCE
-	FhIcon         THICON
-	FhCursor       THCURSOR
-	FhbrBackground THBRUSH
-	FlpszMenuName  TLPCWSTR
-	FlpszClassName TLPCWSTR
-	FhIconSm       THICON
 }
 
 var procEnumFontFamiliesW = modgdi32.NewProc("EnumFontFamiliesW")
@@ -10160,9 +10160,9 @@ func XSetWindowLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32, _dwNewLong TLONG_P
 		trc("hWnd=%+v nIndex=%+v dwNewLong=%+v", _hWnd, _nIndex, _dwNewLong)
 		defer func() { trc(`XSetWindowLongPtrW->%+v`, r) }()
 	}
-	XSetLastError(0)
+	XSetLastError(tls, 0)
 	r0, _, err := procSetWindowLongPtrW.Call(_hWnd, uintptr(_nIndex), uintptr(_dwNewLong))
-	if r0 == 0 {
+	if r0 == 0 && err.(windows.Errno) != 0 {
 		tls.setErrno(err)
 	}
 	return TLONG_PTR(r0)
