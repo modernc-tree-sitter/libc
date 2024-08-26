@@ -500,20 +500,18 @@ flags:
 			panic(todo("", err))
 		}
 
-		if c != '0' {
-			r.UnreadByte()
-			panic(todo("%#U", c))
-		}
-
-		if c, err = r.ReadByte(); err != nil {
-			panic(todo("", err))
-		}
-
-		if c != 'x' && c != 'X' {
-			r.UnreadByte()
-		}
-
 		var digit, n uint64
+		if c == '0' {
+			if c, err = r.ReadByte(); err != nil {
+				goto donePtr
+			}
+
+			if c != 'x' && c != 'X' {
+				match = true
+				r.UnreadByte()
+			}
+		}
+
 	ptr:
 		for ; width != 0; width-- {
 			c, err := r.ReadByte()
@@ -547,6 +545,7 @@ flags:
 			break
 		}
 
+	donePtr:
 		if !discard {
 			arg := VaUintptr(args)
 			*(*uintptr)(unsafe.Pointer(arg)) = uintptr(n)
