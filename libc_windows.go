@@ -105,33 +105,40 @@ func init() {
 
 type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
 
-var callBacks = newCallBackRegister()
+var callbacks = newCallbackRegister()
 
 type callbackKey struct {
 	tls   *TLS
 	gofnp uintptr
 }
 
-type callBackRegister struct {
+type callbackValue struct {
+	gocb uintptr // As returned from windows.NewCallback
+	cb   any     // As passed to callbackRegister.register
+}
+
+type callbackRegister struct {
 	sync.Mutex
-	m map[callbackKey]uintptr
+	m map[callbackKey]callbackValue
 }
 
-func newCallBackRegister() *callBackRegister {
-	return &callBackRegister{m: map[callbackKey]uintptr{}}
+func newCallbackRegister() *callbackRegister {
+	return &callbackRegister{m: map[callbackKey]callbackValue{}}
 }
 
-func (c *callBackRegister) register(tls *TLS, gofnp uintptr, cb any) (r uintptr) { //TODO-
+func (c *callbackRegister) register(tls *TLS, gofnp uintptr, cb any) (r uintptr) {
 	c.Lock()
 
 	defer c.Unlock()
 
 	key := callbackKey{tls, gofnp}
-	var ok bool
-	if r, ok = c.m[key]; !ok {
+	switch x, ok := c.m[key]; {
+	case ok:
+		r = x.gocb
+	default:
 		r = windows.NewCallback(cb)
 		Dbg("%v: registering tls=%p gofnp=%#0x cb=%T", origin(1), tls, gofnp, cb)
-		c.m[key] = r
+		c.m[key] = callbackValue{r, cb}
 	}
 	Dbg("%v: tls=%p gofnp=%#0x -> r=%#0x", origin(1), tls, gofnp, r)
 	return r
@@ -159,7 +166,7 @@ func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 			return uintptr(f(t, hwnd, message, wParam, lParam))
 		}
-		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = callBacks.register(t, gofnp, cb)
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = callbacks.register(t, gofnp, cb)
 	}
 	r0, _, err := procRegisterClassW.Call(lpWndClass, 0, 0)
 	if r0 == 0 {
@@ -178,7 +185,7 @@ func XRegisterClassExW(t *TLS, wndClassExW uintptr) (r TATOM) {
 			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 			return uintptr(f(t, hwnd, message, wParam, lParam))
 		}
-		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = callBacks.register(t, gofnp, cb)
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = callbacks.register(t, gofnp, cb)
 	}
 	r0, _, err := procRegisterClassExW.Call(wndClassExW)
 	if r0 == 0 {
@@ -208,11 +215,11 @@ var procEnumFontFamiliesW = modgdi32.NewProc("EnumFontFamiliesW")
 // int EnumFontFamiliesW(HDC hdc, LPCWSTR lpLogfont, FONTENUMPROCW lpProc, LPARAM lParam);
 func XEnumFontFamiliesW(t *TLS, hdc THDC, lpLogfont TLPCWSTR, lpProc TFONTENUMPROCW, lParam TLPARAM) int32 {
 	if lpProc != 0 {
-		cb := func(tls *TLS, lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) uintptr {
+		cb := func(lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) uintptr {
 			f := (*struct{ f fontEnumProc })(unsafe.Pointer(&struct{ uintptr }{lpProc})).f
 			return uintptr(f(t, lpelf, lpntm, FontType, lParam))
 		}
-		lpProc = callBacks.register(t, lpProc, cb)
+		lpProc = callbacks.register(t, lpProc, cb)
 	}
 	r0, _, _ := procEnumFontFamiliesW.Call(hdc, lpLogfont, lpProc, uintptr(lParam))
 	return int32(r0)
