@@ -4986,9 +4986,19 @@ func XMsgWaitForMultipleObjectsEx(t *TLS, nCount uint32, pHandles uintptr, dwMil
 	return uint32(r0)
 }
 
-func XMessageBoxW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procMessageBoxW = moduser32.NewProc("MessageBoxW")
+
+// __attribute__((dllimport)) int MessageBoxW(HWND hWnd,LPCWSTR lpText,LPCWSTR lpCaption,UINT uType);
+func XMessageBoxW(tls *TLS, _hWnd THWND, _lpText TLPCWSTR, _lpCaption TLPCWSTR, _uType TUINT) (r int32) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpText=%+v lpCaption=%+v uType=%+v", _hWnd, _lpText, _lpCaption, _uType)
+		defer func() { trc(`XMessageBoxW->%+v`, r) }()
+	}
+	r0, _, err := procMessageBoxW.Call(_hWnd, _lpText, _lpCaption, uintptr(_uType))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return int32(r0)
 }
 
 // DWORD GetModuleFileNameW(
