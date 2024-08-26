@@ -159,18 +159,18 @@ type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam 
 var procRegisterClassW = moduser32.NewProc("RegisterClassW")
 
 // ATOM RegisterClassW(const WNDCLASSW *lpWndClass);
-func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
+func XRegisterClassW(tls *TLS, lpWndClass uintptr) int32 {
 	if gofnp := (*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
 		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) uintptr {
 			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
-			return uintptr(f(t, hwnd, message, wParam, lParam))
+			return uintptr(f(tls, hwnd, message, wParam, lParam))
 		}
-		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = callbacks.register(t, gofnp, cb)
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = callbacks.register(tls, gofnp, cb)
 	}
 	r0, _, err := procRegisterClassW.Call(lpWndClass, 0, 0)
 	if r0 == 0 {
 		Dbg("FAIL err=%v", err)
-		t.setErrno(err)
+		tls.setErrno(err)
 	}
 	return int32(r0)
 }
@@ -178,18 +178,18 @@ func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 var procRegisterClassExW = moduser32.NewProc("RegisterClassExW")
 
 // __attribute__((dllimport)) ATOM RegisterClassExW ( const WNDCLASSEXW *);
-func XRegisterClassExW(t *TLS, wndClassExW uintptr) (r TATOM) {
+func XRegisterClassExW(tls *TLS, wndClassExW uintptr) (r TATOM) {
 	if gofnp := (*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc; gofnp != 0 {
 		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) uintptr {
 			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
-			return uintptr(f(t, hwnd, message, wParam, lParam))
+			return uintptr(f(tls, hwnd, message, wParam, lParam))
 		}
-		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = callbacks.register(t, gofnp, cb)
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = callbacks.register(tls, gofnp, cb)
 	}
 	r0, _, err := procRegisterClassExW.Call(wndClassExW)
 	if r0 == 0 {
 		Dbg("FAIL err=%v", err)
-		t.setErrno(err)
+		tls.setErrno(err)
 	}
 	return TATOM(r0)
 }
@@ -214,13 +214,16 @@ var procEnumFontFamiliesW = modgdi32.NewProc("EnumFontFamiliesW")
 // int EnumFontFamiliesW(HDC hdc, LPCWSTR lpLogfont, FONTENUMPROCW lpProc, LPARAM lParam);
 func XEnumFontFamiliesW(tls *TLS, hdc THDC, lpLogfont TLPCWSTR, lpProc TFONTENUMPROCW, lParam TLPARAM) int32 {
 	if lpProc != 0 {
+		gofnp := lpProc
+		f := (*struct{ f fontEnumProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 		cb := func(lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) (r uintptr) {
 			Dbg("tls=%p lpelf=%#0x lpntm=%#0x FontType=%#0x, lParam=%#0x", tls, lpelf, lpntm, FontType, lParam)
 			defer func() { Dbg("-> r=%v", r) }()
-			f := (*struct{ f fontEnumProc })(unsafe.Pointer(&struct{ uintptr }{lpProc})).f
-			return uintptr(f(tls, lpelf, lpntm, FontType, lParam))
+			r = uintptr(f(tls, lpelf, lpntm, FontType, lParam))
+			Dbg("returning r=%v", r)
+			return r
 		}
-		lpProc = callbacks.register(tls, lpProc, cb)
+		lpProc = callbacks.register(tls, gofnp, cb)
 	}
 	r0, _, _ := procEnumFontFamiliesW.Call(hdc, lpLogfont, lpProc, uintptr(lParam))
 	return int32(r0)
