@@ -103,8 +103,6 @@ func init() {
 // 	return uintptr(unsafe.Pointer(&wenviron))
 // }
 
-type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
-
 var callbacks = newCallbackRegister()
 
 type callbackKey struct {
@@ -132,10 +130,9 @@ func (c *callbackRegister) register(tls *TLS, gofnp uintptr, cb any) (r uintptr)
 	defer c.Unlock()
 
 	key := callbackKey{tls, gofnp}
-	switch x, ok := c.m[key]; {
-	case ok:
-		r = x.gocb
-	default:
+	x, ok := c.m[key]
+	r = x.gocb
+	if !ok {
 		r = windows.NewCallback(cb)
 		Dbg("%v: registering tls=%p gofnp=%#0x cb=%T", origin(1), tls, gofnp, cb)
 		c.m[key] = callbackValue{r, cb}
@@ -176,6 +173,8 @@ func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 	return int32(r0)
 }
 
+type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
+
 var procRegisterClassExW = moduser32.NewProc("RegisterClassExW")
 
 // __attribute__((dllimport)) ATOM RegisterClassExW ( const WNDCLASSEXW *);
@@ -215,9 +214,11 @@ var procEnumFontFamiliesW = modgdi32.NewProc("EnumFontFamiliesW")
 // int EnumFontFamiliesW(HDC hdc, LPCWSTR lpLogfont, FONTENUMPROCW lpProc, LPARAM lParam);
 func XEnumFontFamiliesW(t *TLS, hdc THDC, lpLogfont TLPCWSTR, lpProc TFONTENUMPROCW, lParam TLPARAM) int32 {
 	if lpProc != 0 {
-		cb := func(lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) uintptr {
+		cb := func(lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) (r int32) {
+			Dbg("%v: lpelf=%#0x lpntm=%#0x FontType=%#0x, lParam=%#0x", origin(1), lpelf, lpntm, FontType, lParam)
+			defer func() { Dbg("%v: -> r=%v", origin(1), r) }()
 			f := (*struct{ f fontEnumProc })(unsafe.Pointer(&struct{ uintptr }{lpProc})).f
-			return uintptr(f(t, lpelf, lpntm, FontType, lParam))
+			return f(t, lpelf, lpntm, FontType, lParam)
 		}
 		lpProc = callbacks.register(t, lpProc, cb)
 	}
