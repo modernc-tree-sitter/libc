@@ -10160,6 +10160,7 @@ func XSetWindowLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32, _dwNewLong TLONG_P
 		trc("hWnd=%+v nIndex=%+v dwNewLong=%+v", _hWnd, _nIndex, _dwNewLong)
 		defer func() { trc(`XSetWindowLongPtrW->%+v`, r) }()
 	}
+	XSetLastError(0)
 	r0, _, err := procSetWindowLongPtrW.Call(_hWnd, uintptr(_nIndex), uintptr(_dwNewLong))
 	if r0 == 0 {
 		tls.setErrno(err)
