@@ -154,6 +154,8 @@ type TWNDCLASSW = struct {
 	FlpszClassName TLPCWSTR
 }
 
+type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
+
 var procRegisterClassW = moduser32.NewProc("RegisterClassW")
 
 // ATOM RegisterClassW(const WNDCLASSW *lpWndClass);
@@ -172,8 +174,6 @@ func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 	}
 	return int32(r0)
 }
-
-type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
 
 var procRegisterClassExW = moduser32.NewProc("RegisterClassExW")
 
@@ -214,11 +214,11 @@ var procEnumFontFamiliesW = modgdi32.NewProc("EnumFontFamiliesW")
 // int EnumFontFamiliesW(HDC hdc, LPCWSTR lpLogfont, FONTENUMPROCW lpProc, LPARAM lParam);
 func XEnumFontFamiliesW(t *TLS, hdc THDC, lpLogfont TLPCWSTR, lpProc TFONTENUMPROCW, lParam TLPARAM) int32 {
 	if lpProc != 0 {
-		cb := func(lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) (r int32) {
+		cb := func(lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) (r uintptr) {
 			Dbg("%v: lpelf=%#0x lpntm=%#0x FontType=%#0x, lParam=%#0x", origin(1), lpelf, lpntm, FontType, lParam)
 			defer func() { Dbg("%v: -> r=%v", origin(1), r) }()
 			f := (*struct{ f fontEnumProc })(unsafe.Pointer(&struct{ uintptr }{lpProc})).f
-			return f(t, lpelf, lpntm, FontType, lParam)
+			return uintptr(f(t, lpelf, lpntm, FontType, lParam))
 		}
 		lpProc = callbacks.register(t, lpProc, cb)
 	}
