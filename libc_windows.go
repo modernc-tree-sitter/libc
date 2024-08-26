@@ -134,10 +134,10 @@ func (c *callbackRegister) register(tls *TLS, gofnp uintptr, cb any) (r uintptr)
 	r = x.gocb
 	if !ok {
 		r = windows.NewCallback(cb)
-		Dbg("%v: registering tls=%p gofnp=%#0x cb=%T", origin(1), tls, gofnp, cb)
+		Dbg("registering tls=%p gofnp=%#0x cb=%T", tls, gofnp, cb)
 		c.m[key] = callbackValue{r, cb}
 	}
-	Dbg("%v: tls=%p gofnp=%#0x -> r=%#0x", origin(1), tls, gofnp, r)
+	Dbg("tls=%p gofnp=%#0x -> r=%#0x", tls, gofnp, r)
 	return r
 }
 
@@ -169,7 +169,7 @@ func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 	}
 	r0, _, err := procRegisterClassW.Call(lpWndClass, 0, 0)
 	if r0 == 0 {
-		Dbg("%v: FAIL err=%v", origin(1), err)
+		Dbg("FAIL err=%v", err)
 		t.setErrno(err)
 	}
 	return int32(r0)
@@ -188,7 +188,7 @@ func XRegisterClassExW(t *TLS, wndClassExW uintptr) (r TATOM) {
 	}
 	r0, _, err := procRegisterClassExW.Call(wndClassExW)
 	if r0 == 0 {
-		Dbg("%v: FAIL err=%v", origin(1), err)
+		Dbg("FAIL err=%v", err)
 		t.setErrno(err)
 	}
 	return TATOM(r0)
@@ -212,15 +212,15 @@ type TWNDCLASSEXW = struct {
 var procEnumFontFamiliesW = modgdi32.NewProc("EnumFontFamiliesW")
 
 // int EnumFontFamiliesW(HDC hdc, LPCWSTR lpLogfont, FONTENUMPROCW lpProc, LPARAM lParam);
-func XEnumFontFamiliesW(t *TLS, hdc THDC, lpLogfont TLPCWSTR, lpProc TFONTENUMPROCW, lParam TLPARAM) int32 {
+func XEnumFontFamiliesW(tls *TLS, hdc THDC, lpLogfont TLPCWSTR, lpProc TFONTENUMPROCW, lParam TLPARAM) int32 {
 	if lpProc != 0 {
 		cb := func(lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) (r uintptr) {
-			Dbg("%v: lpelf=%#0x lpntm=%#0x FontType=%#0x, lParam=%#0x", origin(1), lpelf, lpntm, FontType, lParam)
-			defer func() { Dbg("%v: -> r=%v", origin(1), r) }()
+			Dbg("tls=%p lpelf=%#0x lpntm=%#0x FontType=%#0x, lParam=%#0x", tls, lpelf, lpntm, FontType, lParam)
+			defer func() { Dbg("-> r=%v", r) }()
 			f := (*struct{ f fontEnumProc })(unsafe.Pointer(&struct{ uintptr }{lpProc})).f
-			return uintptr(f(t, lpelf, lpntm, FontType, lParam))
+			return uintptr(f(tls, lpelf, lpntm, FontType, lParam))
 		}
-		lpProc = callbacks.register(t, lpProc, cb)
+		lpProc = callbacks.register(tls, lpProc, cb)
 	}
 	r0, _, _ := procEnumFontFamiliesW.Call(hdc, lpLogfont, lpProc, uintptr(lParam))
 	return int32(r0)
