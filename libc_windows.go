@@ -107,111 +107,38 @@ type TWPARAM = uint64
 
 type TLPARAM = int64
 
-// type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
-//
-// var wndProcs   = newWndProcRegister()
-//
-// type callbackKey struct {
-// 	tls   *TLS
-// 	gofnp uintptr
-// }
-//
-// type wndProcRegister struct {
-// 	sync.Mutex
-// 	m map[callbackKey]uintptr
-// }
-//
-// func newWndProcRegister() *wndProcRegister {
-// 	return &wndProcRegister{m: map[callbackKey]uintptr{}}
-// }
-//
-// func (c *wndProcRegister) register(tls *TLS, gofnp uintptr) (r uintptr) {
-// 	c.Lock()
-//
-// 	defer c.Unlock()
-//
-// 	key := callbackKey{tls, gofnp}
-// 	var ok bool
-// 	if r, ok = c.m[key]; !ok {
-// 		r = windows.NewCallback(func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) uintptr {
-// 			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
-// 			return uintptr(f(tls, hwnd, message, wParam, lParam))
-// 		})
-// 		Dbg("%v: registering gofnp=%#0x", origin(1), gofnp)
-// 		c.m[key] = r
-// 	}
-// 	Dbg("%v: gofnp=%#0x r=%#0x key=%#0x", origin(1), gofnp, r, key)
-// 	return r
-// }
+type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
 
-type callBackInfo[WinCallBack, GoCallBack any] struct {
-	tls *TLS
-	w   WinCallBack
-	g   GoCallBack
+var wndProcs = newWndProcRegister()
+
+type callbackKey struct {
+	tls   *TLS
+	gofnp uintptr
 }
 
-// LRESULT Wndproc(HWND unnamedParam1, UINT unnamedParam2, WPARAM unnamedParam3, LPARAM unnamedParam4)
-type winWndProc = func(THWND, TUINT, TWPARAM, TLPARAM) TLRESULT
+type callBackRegister struct {
+	sync.Mutex
+	m map[callbackKey]uintptr
+}
 
-type goWndProc = func(*TLS, THWND, TUINT, TWPARAM, TLPARAM) TLRESULT
+func newWndProcRegister() *callBackRegister {
+	return &callBackRegister{m: map[callbackKey]uintptr{}}
+}
 
-const (
-	nWndProcs = 10
-)
+func (c *callBackRegister) register(tls *TLS, gofnp uintptr, cb any) (r uintptr) { //TODO-
+	c.Lock()
 
-var (
-	callBackMu sync.Mutex
+	defer c.Unlock()
 
-	wndProcs    [nWndProcs]callBackInfo[winWndProc, goWndProc]
-	wndProcsLen int
-)
-
-func init() {
-	wndProcs = [nWndProcs]callBackInfo[winWndProc, goWndProc]{
-		{w: wndProc0},
-		{w: wndProc1},
-		{w: wndProc2},
-		{w: wndProc3},
-		{w: wndProc4},
-		{w: wndProc5},
-		{w: wndProc6},
-		{w: wndProc7},
-		{w: wndProc8},
-		{w: wndProc9},
+	key := callbackKey{tls, gofnp}
+	var ok bool
+	if r, ok = c.m[key]; !ok {
+		r = windows.NewCallback(cb)
+		Dbg("%v: registering tls=%p gofnp=%#0x cb=%T", origin(1), tls, gofnp, cb)
+		c.m[key] = r
 	}
-}
-
-func wndProc(slot int, h THWND, u TUINT, w TWPARAM, l TLPARAM) (r TLRESULT) {
-	Dbg("%v: slot=%v", origin(1), slot)
-	defer func() {
-		Dbg("%v: slot=%v -> r=%v err=%v", origin(1), slot, r, recover())
-	}()
-	cb := wndProcs[slot]
-	return cb.g(cb.tls, h, u, w, l)
-}
-
-func wndProc0(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(0, h, u, w, l) }
-func wndProc1(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(1, h, u, w, l) }
-func wndProc2(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(2, h, u, w, l) }
-func wndProc3(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(3, h, u, w, l) }
-func wndProc4(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(4, h, u, w, l) }
-func wndProc5(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(5, h, u, w, l) }
-func wndProc6(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(6, h, u, w, l) }
-func wndProc7(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(7, h, u, w, l) }
-func wndProc8(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(8, h, u, w, l) }
-func wndProc9(h THWND, u TUINT, w TWPARAM, l TLPARAM) TLRESULT { return wndProc(9, h, u, w, l) }
-
-func registerWndProc(tls *TLS, g goWndProc) (r uintptr) {
-	callBackMu.Lock()
-
-	defer callBackMu.Unlock()
-
-	slot := wndProcsLen
-	wndProcsLen++
-	Dbg("%v: slot=%v", origin(1), slot)
-	wndProcs[slot].tls = tls
-	wndProcs[slot].g = g
-	return windows.NewCallback(wndProcs[slot].w)
+	Dbg("%v: tls=%p gofnp=%#0x -> r=%#0x", origin(1), gofnp, r)
+	return r
 }
 
 type TWNDCLASSW = struct {
@@ -231,29 +158,15 @@ var procRegisterClassW = moduser32.NewProc("RegisterClassW")
 
 // ATOM RegisterClassW(const WNDCLASSW *lpWndClass);
 func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
-	// Dbg("%v: lpWndClass=%#0x", origin(1), lpWndClass)
-	// if gofnp := (*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
-	// 	Dbg("%v: gofnp=%#0x", origin(1), gofnp)
-	// 	(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = wndProcs.register(t, gofnp)
-	// }
-	// if __ccgo_strace {
-	// 	trc("t=%v lpWndClass=%v, (%v:)", t, lpWndClass, origin(2))
-	// }
-	// XSetLastError(t, 0)
-	// r0, _, err := procRegisterClassW.Call(lpWndClass, 0, 0)
-	// if r0 == 0 {
-	// 	Dbg("%v: err=%#0x", origin(1), uint32(err.(windows.Errno)))
-	// 	t.setErrno(err)
-	// }
-	// return int32(r0)
-
 	if gofnp := (*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
-		f := (*struct{ f goWndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
-		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = registerWndProc(t, f)
+		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) TLRESULT {
+			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
+			return f(t, hwnd, message, wParam, lParam)
+		}
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = wndProcs.register(t, gofnp, cb)
 	}
 	r0, _, err := procRegisterClassW.Call(lpWndClass, 0, 0)
 	if r0 == 0 {
-		Dbg("%v: err=%#0x", origin(1), uint32(err.(windows.Errno)))
 		t.setErrno(err)
 	}
 	return int32(r0)
@@ -263,30 +176,15 @@ var procRegisterClassExW = moduser32.NewProc("RegisterClassExW")
 
 // __attribute__((dllimport)) ATOM RegisterClassExW ( const WNDCLASSEXW *);
 func XRegisterClassExW(t *TLS, wndClassExW uintptr) (r TATOM) {
-	// Dbg("%v: lpWndClassEx=%#0x", origin(1), wndClassExW)
-	// if gofnp := (*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc; gofnp != 0 {
-	// 	Dbg("%v: gofnp=%#0x", origin(1), gofnp)
-	// 	(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = wndProcs.register(t, gofnp)
-	// }
-	// if __ccgo_strace {
-	// 	trc("lpWndClass=%+v", wndClassExW)
-	// 	defer func() { trc(`XRegisterClassW->%+v`, r) }()
-	// }
-	// XSetLastError(t, 0)
-	// r0, _, err := procRegisterClassExW.Call(wndClassExW)
-	// if r0 == 0 {
-	// 	Dbg("%v: err=%#0x", origin(1), uint32(err.(windows.Errno)))
-	// 	t.setErrno(err)
-	// }
-	// return TATOM(r0)
-
 	if gofnp := (*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc; gofnp != 0 {
-		f := (*struct{ f goWndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
-		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = registerWndProc(t, f)
+		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) TLRESULT {
+			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
+			return f(t, hwnd, message, wParam, lParam)
+		}
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = wndProcs.register(t, gofnp, cb)
 	}
 	r0, _, err := procRegisterClassExW.Call(wndClassExW)
 	if r0 == 0 {
-		Dbg("%v: err=%#0x", origin(1), uint32(err.(windows.Errno)))
 		t.setErrno(err)
 	}
 	return TATOM(r0)
