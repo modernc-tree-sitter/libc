@@ -3801,9 +3801,19 @@ func XOutputDebugStringW(t *TLS, lpOutputString uintptr) {
 	panic(todo(""))
 }
 
-func XMessageBeep(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procMessageBeep = moduser32.NewProc("MessageBeep")
+
+// __attribute__((dllimport)) WINBOOL MessageBeep(UINT uType);
+func XMessageBeep(tls *TLS, _uType TUINT) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("uType=%+v", _uType)
+		defer func() { trc(`XMessageBeep->%+v`, r) }()
+	}
+	r0, _, err := procMessageBeep.Call(uintptr(_uType))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
 }
 
 //====
