@@ -56,7 +56,7 @@ func die(s string, args ...any) {
 	s = fmt.Sprintf(s, args...)
 	s = fmt.Sprintf("\n==== DIE: %s\n%s", s, debug.Stack())
 	dbgFile.Write([]byte(s))
-	fmt.Println(s)
+	// fmt.Println(s)
 	os.Exit(1)
 }
 
@@ -64,7 +64,7 @@ func Dbg(s string, args ...any) {
 	s = fmt.Sprintf(s, args...)
 	s = fmt.Sprintf("\n==== DBG: %s (%v: %v: %v:)\n", s, origin(4), origin(3), origin(2))
 	dbgFile.Write([]byte(s))
-	fmt.Println(s)
+	// fmt.Println(s)
 }
 
 // const (
@@ -134,10 +134,8 @@ func (c *callbackRegister) register(tls *TLS, gofnp uintptr, cb any) (r uintptr)
 	r = x.gocb
 	if !ok {
 		r = windows.NewCallback(cb)
-		Dbg("registering tls=%p gofnp=%#0x cb=%T", tls, gofnp, cb)
 		c.m[key] = callbackValue{r, cb}
 	}
-	Dbg("tls=%p gofnp=%#0x -> r=%#0x", tls, gofnp, r)
 	return r
 }
 
@@ -217,11 +215,7 @@ func XEnumFontFamiliesW(tls *TLS, hdc THDC, lpLogfont TLPCWSTR, lpProc TFONTENUM
 		gofnp := lpProc
 		f := (*struct{ f fontEnumProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 		cb := func(lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) (r uintptr) {
-			Dbg("tls=%p lpelf=%#0x lpntm=%#0x FontType=%#0x, lParam=%#0x", tls, lpelf, lpntm, FontType, lParam)
-			defer func() { Dbg("-> r=%v", r) }()
-			r = uintptr(f(tls, lpelf, lpntm, FontType, lParam))
-			Dbg("returning r=%v", r)
-			return r
+			return uintptr(f(tls, lpelf, lpntm, FontType, lParam))
 		}
 		lpProc = callbacks.register(tls, gofnp, cb)
 	}
