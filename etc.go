@@ -171,7 +171,7 @@ func removeObject(t uintptr) {
 }
 
 func (t *TLS) setErrno(err interface{}) {
-	// Dbg("tls=%p %T(%v) (%v: %v: %v:)", t, err, err, origin(4), origin(3), origin(2)) //TODO-DBG
+	Dbg("tls=%p %T(%v) (%v: %v: %v:)", t, err, err, origin(4), origin(3), origin(2)) //TODO-DBG
 	if t == nil {
 		panic("nil TLS")
 	}
@@ -193,13 +193,16 @@ func (t *TLS) setErrno(err interface{}) {
 again:
 	switch x := err.(type) {
 	case int:
+		Dbg("errno=%v", x)
 		*(*int32)(unsafe.Pointer(t.errnop)) = int32(x)
 	case int32:
+		Dbg("errno=%v", x)
 		*(*int32)(unsafe.Pointer(t.errnop)) = x
 	case *os.PathError:
 		err = x.Err
 		goto again
 	case syscallErrno:
+		Dbg("errno=%v", int32(x))
 		*(*int32)(unsafe.Pointer(t.errnop)) = int32(x)
 	case *os.SyscallError:
 		err = x.Err
