@@ -161,8 +161,8 @@ var procRegisterClassW = moduser32.NewProc("RegisterClassW")
 // ATOM RegisterClassW(const WNDCLASSW *lpWndClass);
 func XRegisterClassW(tls *TLS, lpWndClass uintptr) int32 {
 	if gofnp := (*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
+		f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) uintptr {
-			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 			return uintptr(f(tls, hwnd, message, wParam, lParam))
 		}
 		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = callbacks.register(tls, gofnp, cb)
@@ -180,8 +180,8 @@ var procRegisterClassExW = moduser32.NewProc("RegisterClassExW")
 // __attribute__((dllimport)) ATOM RegisterClassExW ( const WNDCLASSEXW *);
 func XRegisterClassExW(tls *TLS, wndClassExW uintptr) (r TATOM) {
 	if gofnp := (*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc; gofnp != 0 {
+		f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) uintptr {
-			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 			return uintptr(f(tls, hwnd, message, wParam, lParam))
 		}
 		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc = callbacks.register(tls, gofnp, cb)
@@ -5601,9 +5601,19 @@ func XKillTimer(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-func XDestroyWindow(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procDestroyWindow = moduser32.NewProc("DestroyWindow")
+
+// __attribute__((dllimport)) WINBOOL DestroyWindow(HWND hWnd);
+func XDestroyWindow(tls *TLS, _hWnd THWND) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XDestroyWindow->%+v`, r) }()
+	}
+	r0, _, err := procDestroyWindow.Call(_hWnd)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
 }
 
 // BOOL UnregisterClassW(
