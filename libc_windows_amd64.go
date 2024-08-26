@@ -13,6 +13,10 @@ import (
 	"unsafe"
 )
 
+type TWPARAM = uint64
+
+type TLPARAM = int64
+
 type TLRESULT = int64
 
 // // int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
