@@ -562,7 +562,6 @@ var (
 	procCreateWindowExW             = moduser32.NewProc("CreateWindowExW")
 	procMsgWaitForMultipleObjectsEx = moduser32.NewProc("MsgWaitForMultipleObjectsEx")
 	procPeekMessageW                = moduser32.NewProc("PeekMessageW")
-	procUnregisterClassW            = moduser32.NewProc("UnregisterClassW")
 	procWaitForInputIdle            = moduser32.NewProc("WaitForInputIdle")
 	//	//--
 
@@ -5610,22 +5609,19 @@ func XDestroyWindow(tls *TLS, _hWnd THWND) (r TWINBOOL) {
 	return TWINBOOL(r0)
 }
 
-// BOOL UnregisterClassW(
-//
-//	LPCWSTR   lpClassName,
-//	HINSTANCE hInstance
-//
-// );
-func XUnregisterClassW(t *TLS, lpClassName, hInstance uintptr) int32 {
-	die("")
+var procUnregisterClassW = moduser32.NewProc("UnregisterClassW")
+
+// __attribute__((dllimport)) WINBOOL UnregisterClassW (LPCWSTR lpClassName, HINSTANCE hInstance);
+func XUnregisterClassW(tls *TLS, _lpClassName TLPCWSTR, _hInstance THINSTANCE) (r TWINBOOL) {
 	if __ccgo_strace {
-		trc("t=%v hInstance=%v, (%v:)", t, hInstance, origin(2))
+		trc("lpClassName=%+v hInstance=%+v", _lpClassName, _hInstance)
+		defer func() { trc(`XUnregisterClassW->%+v`, r) }()
 	}
-	r0, _, err := procUnregisterClassW.Call(lpClassName, hInstance, 0)
+	r0, _, err := procUnregisterClassW.Call(_lpClassName, _hInstance)
 	if r0 == 0 {
-		t.setErrno(err)
+		tls.setErrno(err)
 	}
-	return int32(r0)
+	return TWINBOOL(r0)
 }
 
 func XPostMessageW(t *TLS, _ ...interface{}) int32 {
