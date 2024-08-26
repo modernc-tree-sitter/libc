@@ -5884,9 +5884,16 @@ func Xgethostname(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-func XSendMessageW(t *TLS, _ ...interface{}) int64 {
-	die("")
-	panic(todo(""))
+var procSendMessageW = moduser32.NewProc("SendMessageW")
+
+// __attribute__((dllimport)) LRESULT SendMessageW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam);
+func XSendMessageW(tls *TLS, _hWnd THWND, _Msg TUINT, _wParam TWPARAM, _lParam TLPARAM) (r TLRESULT) {
+	if __ccgo_strace {
+		trc("hWnd=%+v Msg=%+v wParam=%+v lParam=%+v", _hWnd, _Msg, _wParam, _lParam)
+		defer func() { trc(`XSendMessageW->%+v`, r) }()
+	}
+	r0, _, _ := procSendMessageW.Call(_hWnd, uintptr(_Msg), uintptr(_wParam), uintptr(_lParam))
+	return TLRESULT(r0)
 }
 
 func XWSAGetLastError(t *TLS, _ ...interface{}) int32 {
