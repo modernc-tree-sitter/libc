@@ -137,7 +137,7 @@ func (c *callBackRegister) register(tls *TLS, gofnp uintptr, cb any) (r uintptr)
 		Dbg("%v: registering tls=%p gofnp=%#0x cb=%T", origin(1), tls, gofnp, cb)
 		c.m[key] = r
 	}
-	Dbg("%v: tls=%p gofnp=%#0x -> r=%#0x", origin(1), gofnp, r)
+	Dbg("%v: tls=%p gofnp=%#0x -> r=%#0x", origin(1), tls, gofnp, r)
 	return r
 }
 
@@ -159,7 +159,7 @@ var procRegisterClassW = moduser32.NewProc("RegisterClassW")
 // ATOM RegisterClassW(const WNDCLASSW *lpWndClass);
 func XRegisterClassW(t *TLS, lpWndClass uintptr) int32 {
 	if gofnp := (*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
-		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) TLRESULT {
+		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT) {
 			f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 			return f(t, hwnd, message, wParam, lParam)
 		}
@@ -8426,8 +8426,6 @@ func XChooseFontW(tls *TLS, _0 TLPCHOOSEFONTW) (r TWINBOOL) {
 type TLPCHOOSEFONTW = uintptr
 
 // ----
-
-type TLRESULT = int64
 
 type THRESULT = int32
 
