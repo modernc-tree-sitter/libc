@@ -173,6 +173,19 @@ var procRegisterClassW = moduser32.NewProc("RegisterClassW")
 
 // ATOM RegisterClassW(const WNDCLASSW *lpWndClass);
 func XRegisterClassW(tls *TLS, lpWndClass uintptr) int32 {
+	Dbg(
+		"Fstyle=%v FlpWndProc=%#0x FcbClsExtra=%v FcbWndExtra=%v FhInstance=%#0x FhIcon=%v FhCursor=%v FhbrBackground=%v FlpszMenuName=%q FlpszClassName=%q",
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).Fstyle,
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc,
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FcbClsExtra,
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FcbWndExtra,
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FhInstance,
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FhIcon,
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FhCursor,
+		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FhbrBackground,
+		GoWideString((*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpszMenuName),
+		GoWideString((*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpszClassName),
+	)
 	if gofnp := (*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
 		f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) uintptr {
@@ -192,6 +205,21 @@ var procRegisterClassExW = moduser32.NewProc("RegisterClassExW")
 
 // __attribute__((dllimport)) ATOM RegisterClassExW ( const WNDCLASSEXW *);
 func XRegisterClassExW(tls *TLS, wndClassExW uintptr) (r TATOM) {
+	Dbg(
+		"FcbSize=%v Fstyle=%v FlpWndProc=%#0x FcbClsExtra=%v FcbWndExtra=%v FhInstance=%#0x FhIcon=%v FhCursor=%v FhbrBackground=%v FlpszMenuName=%q FlpszClassName=%q FhIconSm=%v",
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FcbSize,
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).Fstyle,
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc,
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FcbClsExtra,
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FcbWndExtra,
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FhInstance,
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FhIcon,
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FhCursor,
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FhbrBackground,
+		GoWideString((*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpszMenuName),
+		GoWideString((*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpszClassName),
+		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FhIconSm,
+	)
 	if gofnp := (*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FlpfnWndProc; gofnp != 0 {
 		f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
 		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) uintptr {
@@ -10326,7 +10354,7 @@ func XRectangle(tls *TLS, _hdc THDC, _left int32, _top int32, _right int32, _bot
 
 // __attribute__((dllimport)) void SetLastError (DWORD dwErrCode);
 func XSetLastError(tls *TLS, _dwErrCode uint32) {
-	tls.setErrno(int32(_dwErrCode))
+	*(*int32)(unsafe.Pointer(tls.errnop)) = int32(_dwErrCode)
 }
 
 var procReleaseCapture = moduser32.NewProc("ReleaseCapture")
