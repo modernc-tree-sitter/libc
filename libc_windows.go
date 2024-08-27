@@ -10133,8 +10133,9 @@ func XGetWindowLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32) (r TLONG_PTR) {
 		trc("hWnd=%+v nIndex=%+v", _hWnd, _nIndex)
 		defer func() { trc(`XGetWindowLongPtrW->%+v`, r) }()
 	}
+	XSetLastError(tls, 0)
 	r0, _, err := procGetWindowLongPtrW.Call(_hWnd, uintptr(_nIndex))
-	if r0 == 0 {
+	if r0 == 0 && err.(windows.Errno) != 0 {
 		tls.setErrno(err)
 	}
 	return TLONG_PTR(r0)
