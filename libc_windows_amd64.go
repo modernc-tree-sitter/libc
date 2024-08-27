@@ -19,6 +19,8 @@ type TLPARAM = int64
 
 type TLRESULT = int64
 
+type TPLARGE_INTEGER = uintptr
+
 // // int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
 // func Xsigaction(t *TLS, signum int32, act, oldact uintptr) int32 {
 // 	if __ccgo_strace {

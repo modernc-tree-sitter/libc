@@ -370,28 +370,26 @@ var (
 	//	procCreateEventA               = modkernel32.NewProc("CreateEventA")
 	procCreateEventW = modkernel32.NewProc("CreateEventW")
 	//	procCreateFileA                = modkernel32.NewProc("CreateFileA")
-	//	procCreateFileMappingW         = modkernel32.NewProc("CreateFileMappingW")
 	procCreateFileW     = modkernel32.NewProc("CreateFileW")
 	procCreateHardLinkW = modkernel32.NewProc("CreateHardLinkW")
 	procCreatePipe      = modkernel32.NewProc("CreatePipe")
 	//	procCreateProcessA             = modkernel32.NewProc("CreateProcessA")
-	procCreateProcessW        = modkernel32.NewProc("CreateProcessW")
-	procCreateThread          = modkernel32.NewProc("CreateThread")
-	procDeleteCriticalSection = modkernel32.NewProc("DeleteCriticalSection")
-	procDeviceIoControl       = modkernel32.NewProc("DeviceIoControl")
-	procDuplicateHandle       = modkernel32.NewProc("DuplicateHandle")
-	procEnterCriticalSection  = modkernel32.NewProc("EnterCriticalSection")
-	procFindClose             = modkernel32.NewProc("FindClose")
-	procFindFirstFileExW      = modkernel32.NewProc("FindFirstFileExW")
-	procFindFirstFileW        = modkernel32.NewProc("FindFirstFileW")
-	procFindNextFileW         = modkernel32.NewProc("FindNextFileW")
-	procFindResourceW         = modkernel32.NewProc("FindResourceW")
-	procFormatMessageW        = modkernel32.NewProc("FormatMessageW")
-	procGetACP                = modkernel32.NewProc("GetACP")
-	procGetCommState          = modkernel32.NewProc("GetCommState")
-	procGetComputerNameExW    = modkernel32.NewProc("GetComputerNameExW")
-	procGetConsoleCP          = modkernel32.NewProc("GetConsoleCP")
-	//	procGetConsoleScreenBufferInfo = modkernel32.NewProc("GetConsoleScreenBufferInfo")
+	procCreateProcessW          = modkernel32.NewProc("CreateProcessW")
+	procCreateThread            = modkernel32.NewProc("CreateThread")
+	procDeleteCriticalSection   = modkernel32.NewProc("DeleteCriticalSection")
+	procDeviceIoControl         = modkernel32.NewProc("DeviceIoControl")
+	procDuplicateHandle         = modkernel32.NewProc("DuplicateHandle")
+	procEnterCriticalSection    = modkernel32.NewProc("EnterCriticalSection")
+	procFindClose               = modkernel32.NewProc("FindClose")
+	procFindFirstFileExW        = modkernel32.NewProc("FindFirstFileExW")
+	procFindFirstFileW          = modkernel32.NewProc("FindFirstFileW")
+	procFindNextFileW           = modkernel32.NewProc("FindNextFileW")
+	procFindResourceW           = modkernel32.NewProc("FindResourceW")
+	procFormatMessageW          = modkernel32.NewProc("FormatMessageW")
+	procGetACP                  = modkernel32.NewProc("GetACP")
+	procGetCommState            = modkernel32.NewProc("GetCommState")
+	procGetComputerNameExW      = modkernel32.NewProc("GetComputerNameExW")
+	procGetConsoleCP            = modkernel32.NewProc("GetConsoleCP")
 	procGetCurrentProcess       = modkernel32.NewProc("GetCurrentProcess")
 	procGetCurrentProcessId     = modkernel32.NewProc("GetCurrentProcessId")
 	procGetCurrentThread        = modkernel32.NewProc("GetCurrentThread")
@@ -429,8 +427,7 @@ var (
 	procLeaveCriticalSection      = modkernel32.NewProc("LeaveCriticalSection")
 	//	procLockFile                   = modkernel32.NewProc("LockFile")
 	//	procLockFileEx                 = modkernel32.NewProc("LockFileEx")
-	procLstrlenW = modkernel32.NewProc("lstrlenW")
-	//	procMapViewOfFile              = modkernel32.NewProc("MapViewOfFile")
+	procLstrlenW            = modkernel32.NewProc("lstrlenW")
 	procMoveFileW           = modkernel32.NewProc("MoveFileW")
 	procMultiByteToWideChar = modkernel32.NewProc("MultiByteToWideChar")
 	//	procOpenEventA                 = modkernel32.NewProc("OpenEventA")
@@ -466,28 +463,28 @@ var (
 	//	//	procSetThreadPriority          = modkernel32.NewProc("SetThreadPriority")
 	//	//--
 
-	modadvapi = windows.NewLazySystemDLL("advapi32.dll")
+	modadvapi32 = windows.NewLazySystemDLL("advapi32.dll")
 	//--
-	procAccessCheck                = modadvapi.NewProc("AccessCheck")
-	procAddAce                     = modadvapi.NewProc("AddAce")
-	procEqualSid                   = modadvapi.NewProc("EqualSid")
-	procGetAce                     = modadvapi.NewProc("GetAce")
-	procGetAclInformation          = modadvapi.NewProc("GetAclInformation")
-	procGetFileSecurityA           = modadvapi.NewProc("GetFileSecurityA")
-	procGetFileSecurityW           = modadvapi.NewProc("GetFileSecurityW")
-	procGetLengthSid               = modadvapi.NewProc("GetLengthSid")
-	procGetNamedSecurityInfoW      = modadvapi.NewProc("GetNamedSecurityInfoW")
-	procGetSecurityDescriptorDacl  = modadvapi.NewProc("GetSecurityDescriptorDacl")
-	procGetSecurityDescriptorOwner = modadvapi.NewProc("GetSecurityDescriptorOwner")
-	procGetSidIdentifierAuthority  = modadvapi.NewProc("GetSidIdentifierAuthority")
-	procGetSidLengthRequired       = modadvapi.NewProc("GetSidLengthRequired")
-	procGetSidSubAuthority         = modadvapi.NewProc("GetSidSubAuthority")
-	procGetTokenInformation        = modadvapi.NewProc("GetTokenInformation")
-	procImpersonateSelf            = modadvapi.NewProc("ImpersonateSelf")
-	procInitializeAcl              = modadvapi.NewProc("InitializeAcl")
-	procInitializeSid              = modadvapi.NewProc("InitializeSid")
-	procOpenThreadToken            = modadvapi.NewProc("OpenThreadToken")
-	procRevertToSelf               = modadvapi.NewProc("RevertToSelf")
+	procAccessCheck                = modadvapi32.NewProc("AccessCheck")
+	procAddAce                     = modadvapi32.NewProc("AddAce")
+	procEqualSid                   = modadvapi32.NewProc("EqualSid")
+	procGetAce                     = modadvapi32.NewProc("GetAce")
+	procGetAclInformation          = modadvapi32.NewProc("GetAclInformation")
+	procGetFileSecurityA           = modadvapi32.NewProc("GetFileSecurityA")
+	procGetFileSecurityW           = modadvapi32.NewProc("GetFileSecurityW")
+	procGetLengthSid               = modadvapi32.NewProc("GetLengthSid")
+	procGetNamedSecurityInfoW      = modadvapi32.NewProc("GetNamedSecurityInfoW")
+	procGetSecurityDescriptorDacl  = modadvapi32.NewProc("GetSecurityDescriptorDacl")
+	procGetSecurityDescriptorOwner = modadvapi32.NewProc("GetSecurityDescriptorOwner")
+	procGetSidIdentifierAuthority  = modadvapi32.NewProc("GetSidIdentifierAuthority")
+	procGetSidLengthRequired       = modadvapi32.NewProc("GetSidLengthRequired")
+	procGetSidSubAuthority         = modadvapi32.NewProc("GetSidSubAuthority")
+	procGetTokenInformation        = modadvapi32.NewProc("GetTokenInformation")
+	procImpersonateSelf            = modadvapi32.NewProc("ImpersonateSelf")
+	procInitializeAcl              = modadvapi32.NewProc("InitializeAcl")
+	procInitializeSid              = modadvapi32.NewProc("InitializeSid")
+	procOpenThreadToken            = modadvapi32.NewProc("OpenThreadToken")
+	procRevertToSelf               = modadvapi32.NewProc("RevertToSelf")
 	//--
 
 	modws2_32 = windows.NewLazySystemDLL("ws2_32.dll")
@@ -3909,32 +3906,6 @@ func X_InterlockedCompareExchange(t *TLS, Destination uintptr, Exchange, Compara
 // 	die("");panic(todo(""))
 // }
 //
-// // HANDLE CreateFileMappingW(
-// //
-// //	HANDLE                hFile,
-// //	LPSECURITY_ATTRIBUTES lpFileMappingAttributes,
-// //	DWORD                 flProtect,
-// //	DWORD                 dwMaximumSizeHigh,
-// //	DWORD                 dwMaximumSizeLow,
-// //	LPCWSTR               lpName
-// //
-// // );
-// func XCreateFileMappingW(t *TLS, hFile, lpFileMappingAttributes uintptr, flProtect, dwMaximumSizeHigh, dwMaximumSizeLow uint32, lpName uintptr) uintptr {
-// 	if __ccgo_strace {
-// 		trc("t=%v lpFileMappingAttributes=%v dwMaximumSizeLow=%v lpName=%v, (%v:)", t, lpFileMappingAttributes, dwMaximumSizeLow, lpName, origin(2))
-// 	}
-// 	h, _, e1 := procCreateFileMappingW.Call(hFile, lpFileMappingAttributes, uintptr(flProtect),
-// 		uintptr(dwMaximumSizeHigh), uintptr(dwMaximumSizeLow), lpName)
-// 	if h == 0 {
-// 		if e1 != windows.ERROR_SUCCESS {
-// 			t.setErrno(e1)
-// 		} else {
-// 			t.setErrno(errno.EINVAL)
-// 		}
-// 	}
-// 	return h
-// }
-//
 // // HANDLE CreateMutexW(
 // //
 // //	LPSECURITY_ATTRIBUTES lpMutexAttributes,
@@ -4253,22 +4224,19 @@ func XGetTempPathW(t *TLS, nBufferLength uint32, lpBuffer uintptr) uint32 {
 // 	}
 // 	die("");panic(todo(""))
 // }
-//
-// // LPVOID HeapReAlloc(
-// //
-// //	HANDLE                 hHeap,
-// //	DWORD                  dwFlags,
-// //	_Frees_ptr_opt_ LPVOID lpMem,
-// //	SIZE_T                 dwBytes
-// //
-// // );
-// func XHeapReAlloc(t *TLS, hHeap uintptr, dwFlags uint32, lpMem uintptr, dwBytes types.Size_t) uintptr {
-// 	if __ccgo_strace {
-// 		trc("t=%v hHeap=%v dwFlags=%v lpMem=%v dwBytes=%v, (%v:)", t, hHeap, dwFlags, lpMem, dwBytes, origin(2))
-// 	}
-// 	die("");panic(todo(""))
-// }
-//
+
+var procHeapReAlloc = modkernel32.NewProc("HeapReAlloc")
+
+// __attribute__((dllimport)) LPVOID HeapReAlloc (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem, SIZE_T dwBytes);
+func XHeapReAlloc(tls *TLS, _hHeap THANDLE, _dwFlags TDWORD, _lpMem TLPVOID, _dwBytes TSIZE_T) (r TLPVOID) {
+	if __ccgo_strace {
+		trc("hHeap=%+v dwFlags=%+v lpMem=%+v dwBytes=%+v", _hHeap, _dwFlags, _lpMem, _dwBytes)
+		defer func() { trc(`XHeapReAlloc->%+v`, r) }()
+	}
+	r0, _, _ := procHeapReAlloc.Call(_hHeap, uintptr(_dwFlags), _lpMem, uintptr(_dwBytes))
+	return TLPVOID(r0)
+}
+
 // // SIZE_T HeapSize(
 // //
 // //	HANDLE  hHeap,
@@ -4391,31 +4359,6 @@ func XLocalFree(t *TLS, hMem uintptr) uintptr {
 // 	}
 // 	return int32(r1)
 // }
-//
-// // LPVOID MapViewOfFile(
-// //
-// //	HANDLE hFileMappingObject,
-// //	DWORD  dwDesiredAccess,
-// //	DWORD  dwFileOffsetHigh,
-// //	DWORD  dwFileOffsetLow,
-// //	SIZE_T dwNumberOfBytesToMap
-// //
-// // );
-// func XMapViewOfFile(t *TLS, hFileMappingObject uintptr, dwDesiredAccess, dwFileOffsetHigh, dwFileOffsetLow uint32, dwNumberOfBytesToMap types.Size_t) uintptr {
-// 	if __ccgo_strace {
-// 		trc("t=%v hFileMappingObject=%v dwFileOffsetLow=%v dwNumberOfBytesToMap=%v, (%v:)", t, hFileMappingObject, dwFileOffsetLow, dwNumberOfBytesToMap, origin(2))
-// 	}
-// 	h, _, e1 := procMapViewOfFile.Call(hFileMappingObject, uintptr(dwDesiredAccess),
-// 		uintptr(dwFileOffsetHigh), uintptr(dwFileOffsetLow), uintptr(dwNumberOfBytesToMap), 0)
-// 	if h == 0 {
-// 		if e1 != windows.ERROR_SUCCESS {
-// 			t.setErrno(e1)
-// 		} else {
-// 			t.setErrno(errno.EINVAL)
-// 		}
-// 	}
-// 	return h
-// }
 
 // BOOL QueryPerformanceCounter(
 //
@@ -4500,23 +4443,21 @@ func XSleep(t *TLS, dwMilliseconds uint32) {
 // 	}
 // 	return int32(r1)
 // }
-//
-// // BOOL UnmapViewOfFile(
-// //
-// //	LPCVOID lpBaseAddress
-// //
-// // );
-// func XUnmapViewOfFile(t *TLS, lpBaseAddress uintptr) int32 {
-// 	if __ccgo_strace {
-// 		trc("t=%v lpBaseAddress=%v, (%v:)", t, lpBaseAddress, origin(2))
-// 	}
-// 	err := windows.UnmapViewOfFile(lpBaseAddress)
-// 	if err != nil {
-// 		t.setErrno(err)
-// 		return 0
-// 	}
-// 	return 1
-// }
+
+var procUnmapViewOfFile = modkernel32.NewProc("UnmapViewOfFile")
+
+// __attribute__((dllimport)) WINBOOL UnmapViewOfFile (LPCVOID lpBaseAddress);
+func XUnmapViewOfFile(tls *TLS, _lpBaseAddress TLPCVOID) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("lpBaseAddress=%+v", _lpBaseAddress)
+		defer func() { trc(`XUnmapViewOfFile->%+v`, r) }()
+	}
+	r0, _, err := procUnmapViewOfFile.Call(_lpBaseAddress)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
 
 // int WideCharToMultiByte(
 //
@@ -4870,18 +4811,6 @@ func XGetEnvironmentVariableW(t *TLS, lpName, lpBuffer uintptr, nSize uint32) (r
 // 		t.setErrno(err)
 // 	}
 // 	return r0
-// }
-//
-// // BOOL WINAPI CancelSynchronousIo(
-// //
-// //	_In_ HANDLE hThread
-// //
-// // );
-// func XCancelSynchronousIo(t *TLS, hThread uintptr) int32 {
-// 	if __ccgo_strace {
-// 		trc("t=%v hThread=%v, (%v:)", t, hThread, origin(2))
-// 	}
-// 	die("");panic(todo(""))
 // }
 
 func X_endthreadex(t *TLS, _ ...interface{}) {
@@ -6468,21 +6397,6 @@ func XRegSetValueExW(t *TLS, _ ...interface{}) int32 {
 // 	r1, _, _ := procSetConsoleTextAttribute.Call(hConsoleOutput, uintptr(wAttributes), 0)
 // 	return int32(r1)
 // }
-//
-// // BOOL WINAPI GetConsoleScreenBufferInfo(
-// //
-// //	_In_  HANDLE                      hConsoleOutput,
-// //	_Out_ PCONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo
-// //
-// // );
-// func XGetConsoleScreenBufferInfo(t *TLS, hConsoleOutput, lpConsoleScreenBufferInfo uintptr) int32 {
-// 	if __ccgo_strace {
-// 		trc("t=%v lpConsoleScreenBufferInfo=%v, (%v:)", t, lpConsoleScreenBufferInfo, origin(2))
-// 	}
-// 	r1, _, _ := procGetConsoleScreenBufferInfo.Call(hConsoleOutput, lpConsoleScreenBufferInfo, 0)
-// 	return int32(r1)
-// }
-//
 // // FILE *_popen(
 // //
 // //	const char *command,
@@ -10731,3 +10645,334 @@ func XBitBlt(tls *TLS, _hdc THDC, _x int32, _y int32, _cx int32, _cy int32, _hdc
 	}
 	return TWINBOOL(r0)
 }
+
+// unsigned long long strtoull(const char *nptr, char **endptr, int base);
+func Xstrtoull(t *TLS, nptr, endptr uintptr, base int32) uint64 {
+	var s uintptr = nptr
+	var acc uint64
+	var c byte
+	var cutoff uint64
+	var neg int32
+	var any int32
+	var cutlim int32
+
+	/*
+	 * Skip white space and pick up leading +/- sign if any.
+	 * If base is 0, allow 0x for hex and 0 for octal, else
+	 * assume decimal; if base is already 16, allow 0x.
+	 */
+	for {
+		c = *(*byte)(unsafe.Pointer(s))
+		PostIncUintptr(&s, 1)
+		var sp = strings.TrimSpace(string(c))
+		if len(sp) > 0 {
+			break
+		}
+	}
+
+	if c == '-' {
+		neg = 1
+		c = *(*byte)(unsafe.Pointer(s))
+		PostIncUintptr(&s, 1)
+	} else if c == '+' {
+		c = *(*byte)(unsafe.Pointer(s))
+		PostIncUintptr(&s, 1)
+	}
+
+	sp := *(*byte)(unsafe.Pointer(s))
+
+	if (base == 0 || base == 16) &&
+		c == '0' && (sp == 'x' || sp == 'X') {
+		PostIncUintptr(&s, 1)
+		c = *(*byte)(unsafe.Pointer(s)) //s[1];
+		PostIncUintptr(&s, 1)
+		base = 16
+	}
+	if base == 0 {
+		if c == '0' {
+			base = 0
+		} else {
+			base = 10
+		}
+	}
+
+	cutoff = math.MaxUint64 / uint64(base)
+	cutlim = int32(math.MaxUint64 % uint64(base))
+
+	acc = 0
+	any = 0
+
+	for {
+		var cs = string(c)
+		if unicode.IsDigit([]rune(cs)[0]) {
+			c -= '0'
+		} else if unicode.IsLetter([]rune(cs)[0]) {
+			if unicode.IsUpper([]rune(cs)[0]) {
+				c -= 'A' - 10
+			} else {
+				c -= 'a' - 10
+			}
+		} else {
+			break
+		}
+
+		if int32(c) >= base {
+			break
+		}
+		if any < 0 || acc > cutoff || (acc == cutoff && int32(c) > cutlim) {
+			any = -1
+
+		} else {
+			any = 1
+			acc *= uint64(base)
+			acc += uint64(c)
+		}
+
+		c = *(*byte)(unsafe.Pointer(s))
+		PostIncUintptr(&s, 1)
+	}
+
+	if any < 0 {
+		acc = math.MaxUint64
+		t.setErrno(errno.ERANGE)
+	} else if neg == 1 {
+		acc = -acc
+	}
+
+	if endptr != 0 {
+		if any == 1 {
+			PostDecUintptr(&s, 1)
+			AssignPtrUintptr(endptr, s)
+		} else {
+			AssignPtrUintptr(endptr, nptr)
+		}
+	}
+	return acc
+}
+
+var procGetFileSizeEx = modkernel32.NewProc("GetFileSizeEx")
+
+// __attribute__((dllimport)) WINBOOL GetFileSizeEx (HANDLE hFile, PLARGE_INTEGER lpFileSize);
+func XGetFileSizeEx(tls *TLS, _hFile THANDLE, _lpFileSize TPLARGE_INTEGER) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hFile=%+v lpFileSize=%+v", _hFile, _lpFileSize)
+		defer func() { trc(`XGetFileSizeEx->%+v`, r) }()
+	}
+	r0, _, err := procGetFileSizeEx.Call(_hFile, _lpFileSize)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+var procCopySid = modadvapi32.NewProc("CopySid")
+
+// __attribute__((dllimport)) WINBOOL CopySid (DWORD nDestinationSidLength, PSID pDestinationSid, PSID pSourceSid);
+func XCopySid(tls *TLS, _nDestinationSidLength TDWORD, _pDestinationSid TPSID, _pSourceSid TPSID) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("nDestinationSidLength=%+v pDestinationSid=%+v pSourceSid=%+v", _nDestinationSidLength, _pDestinationSid, _pSourceSid)
+		defer func() { trc(`XCopySid->%+v`, r) }()
+	}
+	r0, _, err := procCopySid.Call(uintptr(_nDestinationSidLength), _pDestinationSid, _pSourceSid)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+var procConvertStringSidToSidA = modadvapi32.NewProc("ConvertStringSidToSidA")
+
+// __attribute__((dllimport)) WINBOOL ConvertStringSidToSidA(LPCSTR StringSid,PSID *Sid);
+func XConvertStringSidToSidA(tls *TLS, _StringSid TLPCSTR, _Sid uintptr) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("StringSid=%+v Sid=%+v", _StringSid, _Sid)
+		defer func() { trc(`XConvertStringSidToSidA->%+v`, r) }()
+	}
+	r0, _, err := procConvertStringSidToSidA.Call(_StringSid, _Sid)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+var procAddAccessAllowedAce = modadvapi32.NewProc("AddAccessAllowedAce")
+
+// __attribute__((dllimport)) WINBOOL AddAccessAllowedAce (PACL pAcl, DWORD dwAceRevision, DWORD AccessMask, PSID pSid);
+func XAddAccessAllowedAce(tls *TLS, _pAcl TPACL, _dwAceRevision TDWORD, _AccessMask TDWORD, _pSid TPSID) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("pAcl=%+v dwAceRevision=%+v AccessMask=%+v pSid=%+v", _pAcl, _dwAceRevision, _AccessMask, _pSid)
+		defer func() { trc(`XAddAccessAllowedAce->%+v`, r) }()
+	}
+	r0, _, err := procAddAccessAllowedAce.Call(_pAcl, uintptr(_dwAceRevision), uintptr(_AccessMask), _pSid)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+type TPSID = uintptr
+
+type TPACL = uintptr
+
+var procCreateFileMappingW = modkernel32.NewProc("CreateFileMappingW")
+
+// __attribute__((dllimport)) HANDLE CreateFileMappingW (HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect, DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCWSTR lpName);
+func XCreateFileMappingW(tls *TLS, _hFile THANDLE, _lpFileMappingAttributes TLPSECURITY_ATTRIBUTES, _flProtect TDWORD, _dwMaximumSizeHigh TDWORD, _dwMaximumSizeLow TDWORD, _lpName TLPCWSTR) (r THANDLE) {
+	if __ccgo_strace {
+		trc("hFile=%+v lpFileMappingAttributes=%+v flProtect=%+v dwMaximumSizeHigh=%+v dwMaximumSizeLow=%+v lpName=%+v", _hFile, _lpFileMappingAttributes, _flProtect, _dwMaximumSizeHigh, _dwMaximumSizeLow, _lpName)
+		defer func() { trc(`XCreateFileMappingW->%+v`, r) }()
+	}
+	r0, _, err := procCreateFileMappingW.Call(_hFile, _lpFileMappingAttributes, uintptr(_flProtect), uintptr(_dwMaximumSizeHigh), uintptr(_dwMaximumSizeLow), _lpName)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return THANDLE(r0)
+}
+
+var procMapViewOfFile = modkernel32.NewProc("MapViewOfFile")
+
+// __attribute__((dllimport)) LPVOID MapViewOfFile (HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh, DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap);
+func XMapViewOfFile(tls *TLS, _hFileMappingObject THANDLE, _dwDesiredAccess TDWORD, _dwFileOffsetHigh TDWORD, _dwFileOffsetLow TDWORD, _dwNumberOfBytesToMap TSIZE_T) (r TLPVOID) {
+	if __ccgo_strace {
+		trc("hFileMappingObject=%+v dwDesiredAccess=%+v dwFileOffsetHigh=%+v dwFileOffsetLow=%+v dwNumberOfBytesToMap=%+v", _hFileMappingObject, _dwDesiredAccess, _dwFileOffsetHigh, _dwFileOffsetLow, _dwNumberOfBytesToMap)
+		defer func() { trc(`XMapViewOfFile->%+v`, r) }()
+	}
+	r0, _, err := procMapViewOfFile.Call(_hFileMappingObject, uintptr(_dwDesiredAccess), uintptr(_dwFileOffsetHigh), uintptr(_dwFileOffsetLow), uintptr(_dwNumberOfBytesToMap))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TLPVOID(r0)
+}
+
+var procAcquireSRWLockExclusive = modkernel32.NewProc("AcquireSRWLockExclusive")
+
+// void AcquireSRWLockExclusive (PSRWLOCK SRWLock);
+func XAcquireSRWLockExclusive(tls *TLS, _SRWLock TPSRWLOCK) {
+	if __ccgo_strace {
+		trc("SRWLock=%+v", _SRWLock)
+	}
+	procAcquireSRWLockExclusive.Call(_SRWLock)
+}
+
+var procReleaseSRWLockExclusive = modkernel32.NewProc("ReleaseSRWLockExclusive")
+
+// void ReleaseSRWLockExclusive (PSRWLOCK SRWLock);
+func XReleaseSRWLockExclusive(tls *TLS, _SRWLock TPSRWLOCK) {
+	if __ccgo_strace {
+		trc("SRWLock=%+v", _SRWLock)
+	}
+	procReleaseSRWLockExclusive.Call(_SRWLock)
+}
+
+type TPSRWLOCK = uintptr
+
+type TLPSECURITY_ATTRIBUTES = uintptr
+
+var procAcquireSRWLockShared = modkernel32.NewProc("AcquireSRWLockShared")
+
+// void AcquireSRWLockShared (PSRWLOCK SRWLock);
+func XAcquireSRWLockShared(tls *TLS, _SRWLock TPSRWLOCK) {
+	if __ccgo_strace {
+		trc("SRWLock=%+v", _SRWLock)
+	}
+	procAcquireSRWLockShared.Call(_SRWLock)
+}
+
+var procReleaseSRWLockShared = modkernel32.NewProc("ReleaseSRWLockShared")
+
+// void ReleaseSRWLockShared (PSRWLOCK SRWLock);
+func XReleaseSRWLockShared(tls *TLS, _SRWLock TPSRWLOCK) {
+	if __ccgo_strace {
+		trc("SRWLock=%+v", _SRWLock)
+	}
+	procReleaseSRWLockShared.Call(_SRWLock)
+}
+
+var procWakeConditionVariable = modkernel32.NewProc("WakeConditionVariable")
+
+// __attribute__((dllimport)) void WakeConditionVariable (PCONDITION_VARIABLE ConditionVariable);
+func XWakeConditionVariable(tls *TLS, _ConditionVariable TPCONDITION_VARIABLE) {
+	if __ccgo_strace {
+		trc("ConditionVariable=%+v", _ConditionVariable)
+	}
+	procWakeConditionVariable.Call(_ConditionVariable)
+}
+
+type TPCONDITION_VARIABLE = uintptr
+
+var procCancelSynchronousIo = modkernel32.NewProc("CancelSynchronousIo")
+
+// __attribute__((dllimport)) WINBOOL CancelSynchronousIo (HANDLE hThread);
+func XCancelSynchronousIo(tls *TLS, _hThread THANDLE) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hThread=%+v", _hThread)
+		defer func() { trc(`XCancelSynchronousIo->%+v`, r) }()
+	}
+	r0, _, err := procCancelSynchronousIo.Call(_hThread)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+var procSleepConditionVariableSRW = modkernel32.NewProc("SleepConditionVariableSRW")
+
+// __attribute__((dllimport)) WINBOOL SleepConditionVariableSRW (PCONDITION_VARIABLE ConditionVariable, PSRWLOCK SRWLock, DWORD dwMilliseconds, ULONG Flags);
+func XSleepConditionVariableSRW(tls *TLS, _ConditionVariable TPCONDITION_VARIABLE, _SRWLock TPSRWLOCK, _dwMilliseconds TDWORD, _Flags TULONG) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("ConditionVariable=%+v SRWLock=%+v dwMilliseconds=%+v Flags=%+v", _ConditionVariable, _SRWLock, _dwMilliseconds, _Flags)
+		defer func() { trc(`XSleepConditionVariableSRW->%+v`, r) }()
+	}
+	r0, _, err := procSleepConditionVariableSRW.Call(_ConditionVariable, _SRWLock, uintptr(_dwMilliseconds), uintptr(_Flags))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+var procWakeAllConditionVariable = modkernel32.NewProc("WakeAllConditionVariable")
+
+// __attribute__((dllimport)) void WakeAllConditionVariable (PCONDITION_VARIABLE ConditionVariable);
+func XWakeAllConditionVariable(tls *TLS, _ConditionVariable TPCONDITION_VARIABLE) {
+	if __ccgo_strace {
+		trc("ConditionVariable=%+v", _ConditionVariable)
+	}
+	procWakeAllConditionVariable.Call(_ConditionVariable)
+}
+
+var procInitializeSRWLock = modkernel32.NewProc("InitializeSRWLock")
+
+// __attribute__((dllimport)) void InitializeSRWLock (PSRWLOCK SRWLock);
+func XInitializeSRWLock(tls *TLS, _SRWLock TPSRWLOCK) {
+	if __ccgo_strace {
+		trc("SRWLock=%+v", _SRWLock)
+	}
+	procInitializeSRWLock.Call(_SRWLock)
+}
+
+var procInitializeConditionVariable = modkernel32.NewProc("InitializeConditionVariable")
+
+// __attribute__((dllimport)) void InitializeConditionVariable (PCONDITION_VARIABLE ConditionVariable);
+func XInitializeConditionVariable(tls *TLS, _ConditionVariable TPCONDITION_VARIABLE) {
+	if __ccgo_strace {
+		trc("ConditionVariable=%+v", _ConditionVariable)
+	}
+	procInitializeConditionVariable.Call(_ConditionVariable)
+}
+
+var procGetConsoleScreenBufferInfo = modkernel32.NewProc("GetConsoleScreenBufferInfo")
+
+// __attribute__((dllimport)) WINBOOL GetConsoleScreenBufferInfo(HANDLE hConsoleOutput,PCONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo);
+func XGetConsoleScreenBufferInfo(tls *TLS, _hConsoleOutput THANDLE, _lpConsoleScreenBufferInfo TPCONSOLE_SCREEN_BUFFER_INFO) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hConsoleOutput=%+v lpConsoleScreenBufferInfo=%+v", _hConsoleOutput, _lpConsoleScreenBufferInfo)
+		defer func() { trc(`XGetConsoleScreenBufferInfo->%+v`, r) }()
+	}
+	r0, _, err := procGetConsoleScreenBufferInfo.Call(_hConsoleOutput, _lpConsoleScreenBufferInfo)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+type TPCONSOLE_SCREEN_BUFFER_INFO = uintptr
