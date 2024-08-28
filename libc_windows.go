@@ -25,7 +25,7 @@ import (
 	// 	"github.com/ncruces/go-strftime"
 	"modernc.org/libc/errno"
 	"modernc.org/libc/fcntl"
-	// 	"modernc.org/libc/limits"
+	"modernc.org/libc/limits"
 	"modernc.org/libc/stdio"
 	// 	"modernc.org/libc/sys/stat"
 	"modernc.org/libc/sys/types"
@@ -2127,14 +2127,6 @@ func Xsetlocale(t *TLS, category int32, locale uintptr) uintptr {
 // 	copy((*RawMem)(unsafe.Pointer(resolved_path))[:len(s):len(s)], s)
 // 	(*RawMem)(unsafe.Pointer(resolved_path))[len(s)] = 0
 // 	return resolved_path
-// }
-//
-// // struct tm *gmtime_r(const time_t *timep, struct tm *result);
-// func Xgmtime_r(t *TLS, timep, result uintptr) uintptr {
-// 	if __ccgo_strace {
-// 		trc("t=%v result=%v, (%v:)", t, result, origin(2))
-// 	}
-// 	die("");panic(todo(""))
 // }
 //
 // // // char *inet_ntoa(struct in_addr in);
@@ -7781,16 +7773,116 @@ func X_vscprintf(t *TLS, format uintptr, argptr uintptr) int32 {
 // 	return byte(a_load_8(ptr))
 // }
 
-var procGmtime = modcrt.NewProc("gmtime")
+var procGmtime = modcrt.NewProc("_gmtime")
 var _ = procGmtime.Addr()
 
 // struct tm *gmtime( const time_t *sourceTime );
-func Xgmtime(t *TLS, sourceTime uintptr) uintptr {
-	if __ccgo_strace {
-		trc("t=%v sourceTime=%v, (%v:)", t, sourceTime, origin(2))
+func Xgmtime(tls *TLS, sourceTime uintptr) uintptr {
+	return Xgmtime_r(tls, sourceTime, uintptr(unsafe.Pointer(&_tm)))
+}
+
+var _tm time.Tm
+
+func Xgmtime_r(tls *TLS, t uintptr, tm uintptr) (r uintptr) {
+	if x___secs_to_tm(tls, int64(*(*time.Time_t)(unsafe.Pointer(t))), tm) < 0 {
+		tls.setErrno(errno.EOVERFLOW)
+		return uintptr(0)
 	}
-	r0, _, _ := procGmtime.Call(uintptr(sourceTime))
-	return uintptr(r0)
+	(*time.Tm)(unsafe.Pointer(tm)).Ftm_isdst = 0
+	// (*time.Tm)(unsafe.Pointer(tm)).Ftm_gmtoff = 0
+	// (*time.Tm)(unsafe.Pointer(tm)).Ftm_zone = uintptr(unsafe.Pointer(&x___utc))
+	return tm
+}
+
+var x___utc = [4]int8{'U', 'T', 'C'}
+
+func x___secs_to_tm(tls *TLS, t int64, tm uintptr) (r int32) {
+	var c_cycles, leap, months, q_cycles, qc_cycles, remdays, remsecs, remyears, wday, yday int32
+	var days, secs, years int64
+	_, _, _, _, _, _, _, _, _, _, _, _, _ = c_cycles, days, leap, months, q_cycles, qc_cycles, remdays, remsecs, remyears, secs, wday, yday, years
+	/* Reject time_t values whose year would overflow int */
+	if t < int64(-Int32FromInt32(1)-Int32FromInt32(0x7fffffff))*Int64FromInt64(31622400) || t > Int64FromInt32(limits.INT_MAX)*Int64FromInt64(31622400) {
+		return -int32(1)
+	}
+	secs = t - (Int64FromInt64(946684800) + int64(Int32FromInt32(86400)*(Int32FromInt32(31)+Int32FromInt32(29))))
+	days = secs / int64(86400)
+	remsecs = int32(secs % int64(86400))
+	if remsecs < 0 {
+		remsecs += int32(86400)
+		days--
+	}
+	wday = int32((int64(3) + days) % int64(7))
+	if wday < 0 {
+		wday += int32(7)
+	}
+	qc_cycles = int32(days / int64(Int32FromInt32(365)*Int32FromInt32(400)+Int32FromInt32(97)))
+	remdays = int32(days % int64(Int32FromInt32(365)*Int32FromInt32(400)+Int32FromInt32(97)))
+	if remdays < 0 {
+		remdays += Int32FromInt32(365)*Int32FromInt32(400) + Int32FromInt32(97)
+		qc_cycles--
+	}
+	c_cycles = remdays / (Int32FromInt32(365)*Int32FromInt32(100) + Int32FromInt32(24))
+	if c_cycles == int32(4) {
+		c_cycles--
+	}
+	remdays -= c_cycles * (Int32FromInt32(365)*Int32FromInt32(100) + Int32FromInt32(24))
+	q_cycles = remdays / (Int32FromInt32(365)*Int32FromInt32(4) + Int32FromInt32(1))
+	if q_cycles == int32(25) {
+		q_cycles--
+	}
+	remdays -= q_cycles * (Int32FromInt32(365)*Int32FromInt32(4) + Int32FromInt32(1))
+	remyears = remdays / int32(365)
+	if remyears == int32(4) {
+		remyears--
+	}
+	remdays -= remyears * int32(365)
+	leap = BoolInt32(!(remyears != 0) && (q_cycles != 0 || !(c_cycles != 0)))
+	yday = remdays + int32(31) + int32(28) + leap
+	if yday >= int32(365)+leap {
+		yday -= int32(365) + leap
+	}
+	years = int64(remyears+int32(4)*q_cycles+int32(100)*c_cycles) + int64(400)*int64(int64(qc_cycles))
+	months = 0
+	for {
+		if !(int32(_days_in_month[months]) <= remdays) {
+			break
+		}
+		remdays -= int32(_days_in_month[months])
+		goto _1
+	_1:
+		months++
+	}
+	if months >= int32(10) {
+		months -= int32(12)
+		years++
+	}
+	if years+int64(100) > int64(limits.INT_MAX) || years+int64(100) < int64(-Int32FromInt32(1)-Int32FromInt32(0x7fffffff)) {
+		return -int32(1)
+	}
+	(*time.Tm)(unsafe.Pointer(tm)).Ftm_year = int32(years + int64(100))
+	(*time.Tm)(unsafe.Pointer(tm)).Ftm_mon = months + int32(2)
+	(*time.Tm)(unsafe.Pointer(tm)).Ftm_mday = remdays + int32(1)
+	(*time.Tm)(unsafe.Pointer(tm)).Ftm_wday = wday
+	(*time.Tm)(unsafe.Pointer(tm)).Ftm_yday = yday
+	(*time.Tm)(unsafe.Pointer(tm)).Ftm_hour = remsecs / int32(3600)
+	(*time.Tm)(unsafe.Pointer(tm)).Ftm_min = remsecs / int32(60) % int32(60)
+	(*time.Tm)(unsafe.Pointer(tm)).Ftm_sec = remsecs % int32(60)
+	return 0
+}
+
+var _days_in_month = [12]int8{
+	0:  int8(31),
+	1:  int8(30),
+	2:  int8(31),
+	3:  int8(30),
+	4:  int8(31),
+	5:  int8(31),
+	6:  int8(30),
+	7:  int8(31),
+	8:  int8(30),
+	9:  int8(31),
+	10: int8(31),
+	11: int8(29),
 }
 
 // // size_t strftime(
