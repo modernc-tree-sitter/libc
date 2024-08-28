@@ -5620,9 +5620,19 @@ func XUnregisterClassW(tls *TLS, _lpClassName TLPCWSTR, _hInstance THINSTANCE) (
 	return TWINBOOL(r0)
 }
 
-func XPostMessageW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procPostMessageW = moduser32.NewProc("PostMessageW")
+
+// __attribute__((dllimport)) WINBOOL PostMessageW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+func XPostMessageW(tls *TLS, _hWnd THWND, _Msg TUINT, _wParam TWPARAM, _lParam TLPARAM) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v Msg=%+v wParam=%+v lParam=%+v", _hWnd, _Msg, _wParam, _lParam)
+		defer func() { trc(`XPostMessageW->%+v`, r) }()
+	}
+	r0, _, err := procPostMessageW.Call(_hWnd, uintptr(_Msg), uintptr(_wParam), uintptr(_lParam))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
 }
 
 func XSetTimer(t *TLS, _ ...interface{}) int32 {
