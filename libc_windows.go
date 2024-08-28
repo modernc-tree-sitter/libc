@@ -11429,3 +11429,20 @@ func XTlsSetValue(tls *TLS, _dwTlsIndex TDWORD, _lpTlsValue TLPVOID) (r TWINBOOL
 	}
 	return TWINBOOL(r0)
 }
+
+var procSendMessageTimeoutW = moduser32.NewProc("SendMessageTimeoutW")
+
+// __attribute__((dllimport)) LRESULT SendMessageTimeoutW(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam,UINT fuFlags,UINT uTimeout,PDWORD_PTR lpdwResult);
+func XSendMessageTimeoutW(tls *TLS, _hWnd THWND, _Msg TUINT, _wParam TWPARAM, _lParam TLPARAM, _fuFlags TUINT, _uTimeout TUINT, _lpdwResult TPDWORD_PTR) (r TLRESULT) {
+	if __ccgo_strace {
+		trc("hWnd=%+v Msg=%+v wParam=%+v lParam=%+v fuFlags=%+v uTimeout=%+v lpdwResult=%+v", _hWnd, _Msg, _wParam, _lParam, _fuFlags, _uTimeout, _lpdwResult)
+		defer func() { trc(`XSendMessageTimeoutW->%+v`, r) }()
+	}
+	r0, _, err := procSendMessageTimeoutW.Call(_hWnd, uintptr(_Msg), uintptr(_wParam), uintptr(_lParam), uintptr(_fuFlags), uintptr(_uTimeout), _lpdwResult)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TLRESULT(r0)
+}
+
+type TPDWORD_PTR = uintptr

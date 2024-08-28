@@ -606,19 +606,6 @@ func Xaccept(t *TLS, sockfd uint64, addr uintptr, addrlen uintptr) uint64 {
 	panic(todo(""))
 }
 
-// LRESULT LRESULT DefWindowProcW(
-//
-//	HWND   hWnd,
-//	UINT   Msg,
-//	WPARAM wParam,
-//	LPARAM lParam
-//
-// );
-func XSendMessageTimeoutW(t *TLS, _ ...interface{}) int64 {
-	die("")
-	panic(todo(""))
-}
-
 // func Xstrspn(tls *TLS, s uintptr, c uintptr) size_t { /* strspn.c:6:8: */
 // 	if __ccgo_strace {
 // 		trc("tls=%v s=%v c=%v, (%v:)", tls, s, c, origin(2))
