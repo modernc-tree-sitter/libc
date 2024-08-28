@@ -271,12 +271,10 @@ type (
 )
 
 var (
-	modole32   = windows.NewLazySystemDLL("ole32.dll")
-	modshell32 = windows.NewLazySystemDLL("shell32.dll")
-
 	modcomdlg32 = windows.NewLazySystemDLL("comdlg32.dll")
-	//--
-	//--
+	modole32    = windows.NewLazySystemDLL("ole32.dll")
+	modshell32  = windows.NewLazySystemDLL("shell32.dll")
+	moduserenv  = windows.NewLazySystemDLL("userenv.dll")
 
 	modcomctl32 = windows.NewLazySystemDLL("comctl32.dll")
 	//--
@@ -10976,3 +10974,94 @@ func XGetConsoleScreenBufferInfo(tls *TLS, _hConsoleOutput THANDLE, _lpConsoleSc
 }
 
 type TPCONSOLE_SCREEN_BUFFER_INFO = uintptr
+
+var procCreateSymbolicLinkW = modkernel32.NewProc("CreateSymbolicLinkW")
+
+// __attribute__((dllimport)) BOOLEAN CreateSymbolicLinkW (LPCWSTR lpSymlinkFileName, LPCWSTR lpTargetFileName, DWORD dwFlags);
+func XCreateSymbolicLinkW(tls *TLS, _lpSymlinkFileName TLPCWSTR, _lpTargetFileName TLPCWSTR, _dwFlags TDWORD) (r TBOOLEAN) {
+	if __ccgo_strace {
+		trc("lpSymlinkFileName=%+v lpTargetFileName=%+v dwFlags=%+v", _lpSymlinkFileName, _lpTargetFileName, _dwFlags)
+		defer func() { trc(`XCreateSymbolicLinkW->%+v`, r) }()
+	}
+	r0, _, err := procCreateSymbolicLinkW.Call(_lpSymlinkFileName, _lpTargetFileName, uintptr(_dwFlags))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TBOOLEAN(r0)
+}
+
+type TBOOLEAN = uint8
+
+var procGetUserProfileDirectoryW = moduserenv.NewProc("GetUserProfileDirectoryW")
+
+// __attribute__((dllimport)) WINBOOL GetUserProfileDirectoryW (HANDLE hToken, LPWSTR lpProfileDir, LPDWORD lpcchSize);
+func XGetUserProfileDirectoryW(tls *TLS, _hToken THANDLE, _lpProfileDir TLPWSTR, _lpcchSize TLPDWORD) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hToken=%+v lpProfileDir=%+v lpcchSize=%+v", _hToken, _lpProfileDir, _lpcchSize)
+		defer func() { trc(`XGetUserProfileDirectoryW->%+v`, r) }()
+	}
+	r0, _, _ := procGetUserProfileDirectoryW.Call(_hToken, _lpProfileDir, _lpcchSize)
+	return TWINBOOL(r0)
+}
+
+var procTlsAlloc = modkernel32.NewProc("TlsAlloc")
+
+// __attribute__((dllimport)) DWORD TlsAlloc ( void);
+func XTlsAlloc(tls *TLS) (r TDWORD) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XTlsAlloc->%+v`, r) }()
+	}
+	r0, _, err := procTlsAlloc.Call()
+	if r0 == TLS_OUT_OF_INDEXES {
+		tls.setErrno(err)
+	}
+	return TDWORD(r0)
+}
+
+const TLS_OUT_OF_INDEXES = 0xffffffff
+
+var procTlsGetValue = modkernel32.NewProc("TlsGetValue")
+
+// __attribute__((dllimport)) LPVOID TlsGetValue (DWORD dwTlsIndex);
+func XTlsGetValue(tls *TLS, _dwTlsIndex TDWORD) (r TLPVOID) {
+	if __ccgo_strace {
+		trc("dwTlsIndex=%+v", _dwTlsIndex)
+		defer func() { trc(`XTlsGetValue->%+v`, r) }()
+	}
+	r0, _, err := procTlsGetValue.Call(uintptr(_dwTlsIndex))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TLPVOID(r0)
+}
+
+var procTlsFree = modkernel32.NewProc("TlsFree")
+
+// __attribute__((dllimport)) WINBOOL TlsFree (DWORD dwTlsIndex);
+func XTlsFree(tls *TLS, _dwTlsIndex TDWORD) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("dwTlsIndex=%+v", _dwTlsIndex)
+		defer func() { trc(`XTlsFree->%+v`, r) }()
+	}
+	r0, _, err := procTlsFree.Call(uintptr(_dwTlsIndex))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
+
+var procTlsSetValue = modkernel32.NewProc("TlsSetValue")
+
+// __attribute__((dllimport)) WINBOOL TlsSetValue (DWORD dwTlsIndex, LPVOID lpTlsValue);
+func XTlsSetValue(tls *TLS, _dwTlsIndex TDWORD, _lpTlsValue TLPVOID) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("dwTlsIndex=%+v lpTlsValue=%+v", _dwTlsIndex, _lpTlsValue)
+		defer func() { trc(`XTlsSetValue->%+v`, r) }()
+	}
+	r0, _, err := procTlsSetValue.Call(uintptr(_dwTlsIndex), _lpTlsValue)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
+}
