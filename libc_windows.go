@@ -6069,75 +6069,187 @@ func XDdeClientTransaction(t *TLS, pData uintptr, cbData uint32, hConv uintptr, 
 	panic(todo(""))
 }
 
-func XDdeAbandonTransaction(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procDdeAbandonTransaction = moduser32.NewProc("DdeAbandonTransaction")
+
+// WINBOOL DdeAbandonTransaction(DWORD idInst,HCONV hConv,DWORD idTransaction);
+func XDdeAbandonTransaction(tls *TLS, _idInst TDWORD, _hConv THCONV, _idTransaction TDWORD) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("idInst=%+v hConv=%+v idTransaction=%+v", _idInst, _hConv, _idTransaction)
+		defer func() { trc(`XDdeAbandonTransaction->%+v`, r) }()
+	}
+	r0, _, _ := procDdeAbandonTransaction.Call(uintptr(_idInst), _hConv, uintptr(_idTransaction))
+	return TWINBOOL(r0)
 }
 
-func XDdeFreeDataHandle(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procDdeFreeDataHandle = moduser32.NewProc("DdeFreeDataHandle")
+
+// WINBOOL DdeFreeDataHandle(HDDEDATA hData);
+func XDdeFreeDataHandle(tls *TLS, _hData THDDEDATA) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hData=%+v", _hData)
+		defer func() { trc(`XDdeFreeDataHandle->%+v`, r) }()
+	}
+	r0, _, _ := procDdeFreeDataHandle.Call(_hData)
+	return TWINBOOL(r0)
 }
 
-func XDdeGetData(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procDdeGetData = moduser32.NewProc("DdeGetData")
+
+// DWORD DdeGetData(HDDEDATA hData,LPBYTE pDst,DWORD cbMax,DWORD cbOff);
+func XDdeGetData(tls *TLS, _hData THDDEDATA, _pDst TLPBYTE, _cbMax TDWORD, _cbOff TDWORD) (r TDWORD) {
+	if __ccgo_strace {
+		trc("hData=%+v pDst=%+v cbMax=%+v cbOff=%+v", _hData, _pDst, _cbMax, _cbOff)
+		defer func() { trc(`XDdeGetData->%+v`, r) }()
+	}
+	r0, _, _ := procDdeGetData.Call(_hData, _pDst, uintptr(_cbMax), uintptr(_cbOff))
+	return TDWORD(r0)
 }
 
-func XDdeDisconnect(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+type THDDEDATA = uintptr
+
+var procDdeDisconnect = moduser32.NewProc("DdeDisconnect")
+
+// WINBOOL DdeDisconnect(HCONV hConv);
+func XDdeDisconnect(tls *TLS, _hConv THCONV) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hConv=%+v", _hConv)
+		defer func() { trc(`XDdeDisconnect->%+v`, r) }()
+	}
+	r0, _, _ := procDdeDisconnect.Call(_hConv)
+	return TWINBOOL(r0)
 }
 
-func XRegCloseKey(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+type THCONV = uintptr
+
+var procRegCloseKey = modadvapi32.NewProc("RegCloseKey")
+
+// __attribute__((dllimport)) LONG RegCloseKey(HKEY hKey);
+func XRegCloseKey(tls *TLS, _hKey THKEY) (r TLONG) {
+	if __ccgo_strace {
+		trc("hKey=%+v", _hKey)
+		defer func() { trc(`XRegCloseKey->%+v`, r) }()
+	}
+	r0, _, _ := procRegCloseKey.Call(_hKey)
+	return TLONG(r0)
 }
 
-func XRegDeleteValueW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procRegDeleteValueW = modadvapi32.NewProc("RegDeleteValueW")
+
+// __attribute__((dllimport)) LONG RegDeleteValueW(HKEY hKey,LPCWSTR lpValueName);
+func XRegDeleteValueW(tls *TLS, _hKey THKEY, _lpValueName TLPCWSTR) (r TLONG) {
+	if __ccgo_strace {
+		trc("hKey=%+v lpValueName=%+v", _hKey, _lpValueName)
+		defer func() { trc(`XRegDeleteValueW->%+v`, r) }()
+	}
+	r0, _, _ := procRegDeleteValueW.Call(_hKey, _lpValueName)
+	return TLONG(r0)
 }
 
-func XRegEnumKeyExW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procRegEnumKeyExW = modadvapi32.NewProc("RegEnumKeyExW")
+
+// __attribute__((dllimport)) LONG RegEnumKeyExW(HKEY hKey,DWORD dwIndex,LPWSTR lpName,LPDWORD lpcchName,LPDWORD lpReserved,LPWSTR lpClass,LPDWORD lpcchClass,PFILETIME lpftLastWriteTime);
+func XRegEnumKeyExW(tls *TLS, _hKey THKEY, _dwIndex TDWORD, _lpName TLPWSTR, _lpcchName TLPDWORD, _lpReserved TLPDWORD, _lpClass TLPWSTR, _lpcchClass TLPDWORD, _lpftLastWriteTime TPFILETIME) (r TLONG) {
+	if __ccgo_strace {
+		trc("hKey=%+v dwIndex=%+v lpName=%+v lpcchName=%+v lpReserved=%+v lpClass=%+v lpcchClass=%+v lpftLastWriteTime=%+v", _hKey, _dwIndex, _lpName, _lpcchName, _lpReserved, _lpClass, _lpcchClass, _lpftLastWriteTime)
+		defer func() { trc(`XRegEnumKeyExW->%+v`, r) }()
+	}
+	r0, _, _ := procRegEnumKeyExW.Call(_hKey, uintptr(_dwIndex), _lpName, _lpcchName, _lpReserved, _lpClass, _lpcchClass, _lpftLastWriteTime)
+	return TLONG(r0)
 }
 
-func XRegQueryValueExW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+type TPFILETIME = uintptr
+
+var procRegQueryValueExW = modadvapi32.NewProc("RegQueryValueExW")
+
+// __attribute__((dllimport)) LONG RegQueryValueExW(HKEY hKey,LPCWSTR lpValueName,LPDWORD lpReserved,LPDWORD lpType,LPBYTE lpData,LPDWORD lpcbData);
+func XRegQueryValueExW(tls *TLS, _hKey THKEY, _lpValueName TLPCWSTR, _lpReserved TLPDWORD, _lpType TLPDWORD, _lpData TLPBYTE, _lpcbData TLPDWORD) (r TLONG) {
+	if __ccgo_strace {
+		trc("hKey=%+v lpValueName=%+v lpReserved=%+v lpType=%+v lpData=%+v lpcbData=%+v", _hKey, _lpValueName, _lpReserved, _lpType, _lpData, _lpcbData)
+		defer func() { trc(`XRegQueryValueExW->%+v`, r) }()
+	}
+	r0, _, _ := procRegQueryValueExW.Call(_hKey, _lpValueName, _lpReserved, _lpType, _lpData, _lpcbData)
+	return TLONG(r0)
 }
 
-func XRegEnumValueW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procRegEnumValueW = modadvapi32.NewProc("RegEnumValueW")
+
+// __attribute__((dllimport)) LONG RegEnumValueW(HKEY hKey,DWORD dwIndex,LPWSTR lpValueName,LPDWORD lpcchValueName,LPDWORD lpReserved,LPDWORD lpType,LPBYTE lpData,LPDWORD lpcbData);
+func XRegEnumValueW(tls *TLS, _hKey THKEY, _dwIndex TDWORD, _lpValueName TLPWSTR, _lpcchValueName TLPDWORD, _lpReserved TLPDWORD, _lpType TLPDWORD, _lpData TLPBYTE, _lpcbData TLPDWORD) (r TLONG) {
+	if __ccgo_strace {
+		trc("hKey=%+v dwIndex=%+v lpValueName=%+v lpcchValueName=%+v lpReserved=%+v lpType=%+v lpData=%+v lpcbData=%+v", _hKey, _dwIndex, _lpValueName, _lpcchValueName, _lpReserved, _lpType, _lpData, _lpcbData)
+		defer func() { trc(`XRegEnumValueW->%+v`, r) }()
+	}
+	r0, _, _ := procRegEnumValueW.Call(_hKey, uintptr(_dwIndex), _lpValueName, _lpcchValueName, _lpReserved, _lpType, _lpData, _lpcbData)
+	return TLONG(r0)
 }
 
-func XRegConnectRegistryW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+type TLPBYTE = uintptr
+
+var procRegConnectRegistryW = modadvapi32.NewProc("RegConnectRegistryW")
+
+// __attribute__((dllimport)) LONG RegConnectRegistryW(LPCWSTR lpMachineName,HKEY hKey,PHKEY phkResult);
+func XRegConnectRegistryW(tls *TLS, _lpMachineName TLPCWSTR, _hKey THKEY, _phkResult TPHKEY) (r TLONG) {
+	if __ccgo_strace {
+		trc("lpMachineName=%+v hKey=%+v phkResult=%+v", _lpMachineName, _hKey, _phkResult)
+		defer func() { trc(`XRegConnectRegistryW->%+v`, r) }()
+	}
+	r0, _, _ := procRegConnectRegistryW.Call(_lpMachineName, _hKey, _phkResult)
+	return TLONG(r0)
 }
 
-func XRegCreateKeyExW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procRegCreateKeyExW = modadvapi32.NewProc("RegCreateKeyExW")
+
+// __attribute__((dllimport)) LONG RegCreateKeyExW(HKEY hKey,LPCWSTR lpSubKey,DWORD Reserved,LPWSTR lpClass,DWORD dwOptions,REGSAM samDesired,LPSECURITY_ATTRIBUTES lpSecurityAttributes,PHKEY phkResult,LPDWORD lpdwDisposition);
+func XRegCreateKeyExW(tls *TLS, _hKey THKEY, _lpSubKey TLPCWSTR, _Reserved TDWORD, _lpClass TLPWSTR, _dwOptions TDWORD, _samDesired TREGSAM, _lpSecurityAttributes TLPSECURITY_ATTRIBUTES, _phkResult TPHKEY, _lpdwDisposition TLPDWORD) (r TLONG) {
+	if __ccgo_strace {
+		trc("hKey=%+v lpSubKey=%+v Reserved=%+v lpClass=%+v dwOptions=%+v samDesired=%+v lpSecurityAttributes=%+v phkResult=%+v lpdwDisposition=%+v", _hKey, _lpSubKey, _Reserved, _lpClass, _dwOptions, _samDesired, _lpSecurityAttributes, _phkResult, _lpdwDisposition)
+		defer func() { trc(`XRegCreateKeyExW->%+v`, r) }()
+	}
+	r0, _, _ := procRegCreateKeyExW.Call(_hKey, _lpSubKey, uintptr(_Reserved), _lpClass, uintptr(_dwOptions), uintptr(_samDesired), _lpSecurityAttributes, _phkResult, _lpdwDisposition)
+	return TLONG(r0)
 }
 
-func XRegOpenKeyExW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procRegOpenKeyExW = modadvapi32.NewProc("RegOpenKeyExW")
+
+// __attribute__((dllimport)) LONG RegOpenKeyExW(HKEY hKey,LPCWSTR lpSubKey,DWORD ulOptions,REGSAM samDesired,PHKEY phkResult);
+func XRegOpenKeyExW(tls *TLS, _hKey THKEY, _lpSubKey TLPCWSTR, _ulOptions TDWORD, _samDesired TREGSAM, _phkResult TPHKEY) (r TLONG) {
+	if __ccgo_strace {
+		trc("hKey=%+v lpSubKey=%+v ulOptions=%+v samDesired=%+v phkResult=%+v", _hKey, _lpSubKey, _ulOptions, _samDesired, _phkResult)
+		defer func() { trc(`XRegOpenKeyExW->%+v`, r) }()
+	}
+	r0, _, _ := procRegOpenKeyExW.Call(_hKey, _lpSubKey, uintptr(_ulOptions), uintptr(_samDesired), _phkResult)
+	return TLONG(r0)
 }
 
-func XRegDeleteKeyW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+type TREGSAM = uint32
+
+type TPHKEY = uintptr
+
+var procRegDeleteKeyW = modadvapi32.NewProc("RegDeleteKeyW")
+
+// __attribute__((dllimport)) LONG RegDeleteKeyW(HKEY hKey,LPCWSTR lpSubKey);
+func XRegDeleteKeyW(tls *TLS, _hKey THKEY, _lpSubKey TLPCWSTR) (r TLONG) {
+	if __ccgo_strace {
+		trc("hKey=%+v lpSubKey=%+v", _hKey, _lpSubKey)
+		defer func() { trc(`XRegDeleteKeyW->%+v`, r) }()
+	}
+	r0, _, _ := procRegDeleteKeyW.Call(_hKey, _lpSubKey)
+	return TLONG(r0)
 }
 
-func XRegSetValueExW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procRegSetValueExW = modadvapi32.NewProc("RegSetValueExW")
+
+// __attribute__((dllimport)) LONG RegSetValueExW(HKEY hKey,LPCWSTR lpValueName,DWORD Reserved,DWORD dwType, const BYTE *lpData,DWORD cbData);
+func XRegSetValueExW(tls *TLS, _hKey THKEY, _lpValueName TLPCWSTR, _Reserved TDWORD, _dwType TDWORD, _lpData uintptr, _cbData TDWORD) (r TLONG) {
+	if __ccgo_strace {
+		trc("hKey=%+v lpValueName=%+v Reserved=%+v dwType=%+v lpData=%+v cbData=%+v", _hKey, _lpValueName, _Reserved, _dwType, _lpData, _cbData)
+		defer func() { trc(`XRegSetValueExW->%+v`, r) }()
+	}
+	r0, _, _ := procRegSetValueExW.Call(_hKey, _lpValueName, uintptr(_Reserved), uintptr(_dwType), _lpData, uintptr(_cbData))
+	return TLONG(r0)
 }
+
+type THKEY = uintptr
 
 // // int _vsnwprintf(
 // //
@@ -6634,20 +6746,19 @@ func XGetCommandLineW(t *TLS) uintptr {
 	return uintptr(unsafe.Pointer(windows.GetCommandLine()))
 }
 
-// BOOL AddAccessDeniedAce(
-//
-//	PACL  pAcl,
-//	DWORD dwAceRevision,
-//	DWORD AccessMask,
-//	PSID  pSid
-//
-// );
-func XAddAccessDeniedAce(t *TLS, pAcl uintptr, dwAceRevision, AccessMask uint32, pSid uintptr) int32 {
+var procAddAccessDeniedAce = modadvapi32.NewProc("AddAccessDeniedAce")
+
+// __attribute__((dllimport)) WINBOOL AddAccessDeniedAce (PACL pAcl, DWORD dwAceRevision, DWORD AccessMask, PSID pSid);
+func XAddAccessDeniedAce(tls *TLS, _pAcl TPACL, _dwAceRevision TDWORD, _AccessMask TDWORD, _pSid TPSID) (r TWINBOOL) {
 	if __ccgo_strace {
-		trc("t=%v pAcl=%v AccessMask=%v pSid=%v, (%v:)", t, pAcl, AccessMask, pSid, origin(2))
+		trc("pAcl=%+v dwAceRevision=%+v AccessMask=%+v pSid=%+v", _pAcl, _dwAceRevision, _AccessMask, _pSid)
+		defer func() { trc(`XAddAccessDeniedAce->%+v`, r) }()
 	}
-	die("")
-	panic(todo(""))
+	r0, _, err := procAddAccessDeniedAce.Call(_pAcl, uintptr(_dwAceRevision), uintptr(_AccessMask), _pSid)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TWINBOOL(r0)
 }
 
 // __attribute__((dllimport)) WINBOOL AddAce (PACL pAcl, DWORD dwAceRevision, DWORD dwStartingAceIndex, LPVOID pAceList, DWORD nAceListLength);
@@ -6844,24 +6955,21 @@ func XSetErrorMode(t *TLS, uMode uint32) uint32 {
 	return windows.SetErrorMode(uMode)
 }
 
-// DWORD SetNamedSecurityInfoA(
-//
-//	LPSTR                pObjectName,
-//	SE_OBJECT_TYPE       ObjectType,
-//	SECURITY_INFORMATION SecurityInfo,
-//	PSID                 psidOwner,
-//	PSID                 psidGroup,
-//	PACL                 pDacl,
-//	PACL                 pSacl
-//
-// );
-func XSetNamedSecurityInfoA(t *TLS, pObjectName uintptr, ObjectType int32, SecurityInfo uint32, psidOwner, psidGroup, pDacl, pSacl uintptr) uint32 {
+var procSetNamedSecurityInfoA = modadvapi32.NewProc("SetNamedSecurityInfoA")
+
+// __attribute__((dllimport)) DWORD SetNamedSecurityInfoA (LPSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID psidOwner, PSID psidGroup, PACL pDacl, PACL pSacl);
+func XSetNamedSecurityInfoA(tls *TLS, _pObjectName TLPSTR, _ObjectType TSE_OBJECT_TYPE, _SecurityInfo TSECURITY_INFORMATION, _psidOwner TPSID, _psidGroup TPSID, _pDacl TPACL, _pSacl TPACL) (r TDWORD) {
 	if __ccgo_strace {
-		trc("t=%v pObjectName=%v SecurityInfo=%v pSacl=%v, (%v:)", t, pObjectName, SecurityInfo, pSacl, origin(2))
+		trc("pObjectName=%+v ObjectType=%+v SecurityInfo=%+v psidOwner=%+v psidGroup=%+v pDacl=%+v pSacl=%+v", _pObjectName, _ObjectType, _SecurityInfo, _psidOwner, _psidGroup, _pDacl, _pSacl)
+		defer func() { trc(`XSetNamedSecurityInfoA->%+v`, r) }()
 	}
-	die("")
-	panic(todo(""))
+	r0, _, _ := procSetNamedSecurityInfoA.Call(_pObjectName, uintptr(_ObjectType), uintptr(_SecurityInfo), _psidOwner, _psidGroup, _pDacl, _pSacl)
+	return TDWORD(r0)
 }
+
+type TSE_OBJECT_TYPE = int32
+
+type TSECURITY_INFORMATION = uint32
 
 // // BOOL CreateProcessA(
 // //
@@ -7747,11 +7855,6 @@ func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int
 	return Xvsnprintf(t, str, size, format, ap)
 }
 
-// func X__ccgo_SyscallFP() {
-// 	s := fmt.Sprintf("%s\nTODO syscall: function pointer", debug.Stack())
-// 	die("");panic(s)
-// }
-//
 // func CreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t, lpStartAddress, lpParameter uintptr, dwCreationFlags uint32, lpThreadId uintptr) uintptr {
 // 	return XCreateThread(t, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
 // }
@@ -11030,7 +11133,7 @@ func XTlsGetValue(tls *TLS, _dwTlsIndex TDWORD) (r TLPVOID) {
 		defer func() { trc(`XTlsGetValue->%+v`, r) }()
 	}
 	r0, _, err := procTlsGetValue.Call(uintptr(_dwTlsIndex))
-	if r0 == 0 {
+	if r0 == 0 && err.(windows.Errno) != windows.ERROR_SUCCESS {
 		tls.setErrno(err)
 	}
 	return TLPVOID(r0)
