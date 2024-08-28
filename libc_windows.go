@@ -36,6 +36,12 @@ import (
 import "path/filepath" //TODO-
 import "runtime/debug" //TODO-
 
+type (
+	syscallErrno = windows.Errno
+	long         = int32
+	ulong        = uint32
+)
+
 func init() { //TODO-
 	u, err := user.Current()
 	if err != nil {
@@ -167,7 +173,7 @@ type TWNDCLASSEXW = struct {
 	FhIconSm       THICON
 }
 
-type wndProc = func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
+type wndProc func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
 
 var procRegisterClassW = moduser32.NewProc("RegisterClassW")
 
@@ -253,7 +259,7 @@ func XEnumFontFamiliesW(tls *TLS, hdc THDC, lpLogfont TLPCWSTR, lpProc TFONTENUM
 
 type TFONTENUMPROCW = uintptr
 
-type fontEnumProc = func(tls *TLS, lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) int32
+type fontEnumProc func(tls *TLS, lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) int32
 
 var procDdeInitializeW = moduser32.NewProc("DdeInitializeW")
 
@@ -287,6 +293,30 @@ type TPFNCALLBACK = uintptr
 // )
 type pfnCallback func(tls *TLS, wType, wFmt TUINT, hConv THCONV, hsz1, hsz2 THSZ, hData THDDEDATA, dwData1, dwData2 TULONG_PTR) THDDEDATA
 
+var procEnumWindows = moduser32.NewProc("EnumWindows")
+
+// __attribute__((dllimport)) WINBOOL EnumWindows(WNDENUMPROC lpEnumFunc,LPARAM lParam);
+func XEnumWindows(tls *TLS, lpEnumFunc TWNDENUMPROC, lParam TLPARAM) (r TWINBOOL) {
+	if lpEnumFunc != 0 {
+		gofnp := lpEnumFunc
+		f := (*struct{ f wndEnumProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
+		cb := func(hwnd THWND, lParam TLPARAM) (r uintptr) {
+			return uintptr(f(tls, hwnd, lParam))
+		}
+		lpEnumFunc = callbacks.register(tls, gofnp, cb)
+	}
+	r0, _, _ := procEnumWindows.Call(lpEnumFunc, uintptr(lParam))
+	return TWINBOOL(r0)
+}
+
+// BOOL CALLBACK EnumWindowsProc(
+//
+//	_In_ HWND   hwnd,
+//	_In_ LPARAM lParam
+//
+// );
+type wndEnumProc func(tls *TLS, hwnd THWND, lParam TLPARAM) TBOOL
+
 func winGetObject(stream uintptr) interface{} {
 	if fd, ok := iobMap[stream]; ok {
 		f, _ := fdToFile(fd)
@@ -295,12 +325,6 @@ func winGetObject(stream uintptr) interface{} {
 
 	return getObject(stream)
 }
-
-type (
-	syscallErrno = windows.Errno
-	long         = int32
-	ulong        = uint32
-)
 
 var (
 	modcomdlg32 = windows.NewLazySystemDLL("comdlg32.dll")
@@ -8727,11 +8751,6 @@ func XChooseFontW(tls *TLS, _0 TLPCHOOSEFONTW) (r TWINBOOL) {
 }
 
 type TLPCHOOSEFONTW = uintptr
-
-func XEnumWindows(t *TLS, _ ...interface{}) int32 {
-	die("syscall with func pointer")
-	panic(todo(""))
-}
 
 // ----
 
