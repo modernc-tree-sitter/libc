@@ -255,6 +255,38 @@ type TFONTENUMPROCW = uintptr
 
 type fontEnumProc = func(tls *TLS, lpelf, lpntm uintptr, FontType TDWORD, lParam TLPARAM) int32
 
+var procDdeInitializeW = moduser32.NewProc("DdeInitializeW")
+
+// UINT DdeInitializeW(LPDWORD pidInst,PFNCALLBACK pfnCallback,DWORD afCmd,DWORD ulRes);
+func XDdeInitializeW(tls *TLS, _pidInst TLPDWORD, _pfnCallback TPFNCALLBACK, _afCmd TDWORD, _ulRes TDWORD) (r TUINT) {
+	if _pfnCallback != 0 {
+		gofnp := _pfnCallback
+		f := (*struct{ f pfnCallback })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
+		cb := func(wType, wFmt TUINT, hConv THCONV, hsz1, hsz2 THSZ, hData THDDEDATA, dwData1, dwData2 TULONG_PTR) (r uintptr) {
+			return uintptr(f(tls, wType, wFmt, hConv, hsz1, hsz2, hData, dwData1, dwData2))
+		}
+		_pfnCallback = callbacks.register(tls, gofnp, cb)
+	}
+	r0, _, _ := procDdeInitializeW.Call(_pidInst, _pfnCallback, uintptr(_afCmd), uintptr(_ulRes))
+	return TUINT(r0)
+}
+
+type TPFNCALLBACK = uintptr
+
+// HDDEDATA Pfncallback(
+//
+//	[in] UINT wType,
+//	[in] UINT wFmt,
+//	[in] HCONV hConv,
+//	[in] HSZ hsz1,
+//	[in] HSZ hsz2,
+//	[in] HDDEDATA hData,
+//	[in] ULONG_PTR dwData1,
+//	[in] ULONG_PTR dwData2
+//
+// )
+type pfnCallback func(tls *TLS, wType, wFmt TUINT, hConv THCONV, hsz1, hsz2 THSZ, hData THDDEDATA, dwData1, dwData2 TULONG_PTR) THDDEDATA
+
 func winGetObject(stream uintptr) interface{} {
 	if fd, ok := iobMap[stream]; ok {
 		f, _ := fdToFile(fd)
@@ -5934,11 +5966,6 @@ func XQueryPerformanceFrequency(t *TLS, lpFrequency uintptr) int32 {
 // 	_, offset := tm.Zone()
 // 	tPtr.Ftimezone = int16(offset)
 // }
-
-func XDdeInitializeW(t *TLS, _ ...interface{}) uint32 {
-	die("")
-	panic(todo(""))
-}
 
 var procDdeCreateStringHandleW = moduser32.NewProc("DdeCreateStringHandleW")
 
