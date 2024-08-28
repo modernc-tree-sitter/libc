@@ -6196,24 +6196,16 @@ func XDdeGetLastError(tls *TLS, _idInst TDWORD) (r TUINT) {
 	return TUINT(r0)
 }
 
-// HDDEDATA DdeClientTransaction(
-//
-//	LPBYTE  pData,
-//	DWORD   cbData,
-//	HCONV   hConv,
-//	HSZ     hszItem,
-//	UINT    wFmt,
-//	UINT    wType,
-//	DWORD   dwTimeout,
-//	LPDWORD pdwResult
-//
-// );
-func XDdeClientTransaction(t *TLS, pData uintptr, cbData uint32, hConv uintptr, hszItem uintptr, wFmt, wType, dwTimeout uint32, pdwResult uintptr) uintptr {
+var procDdeClientTransaction = moduser32.NewProc("DdeClientTransaction")
+
+// HDDEDATA DdeClientTransaction(LPBYTE pData,DWORD cbData,HCONV hConv,HSZ hszItem,UINT wFmt,UINT wType,DWORD dwTimeout,LPDWORD pdwResult);
+func XDdeClientTransaction(tls *TLS, _pData TLPBYTE, _cbData TDWORD, _hConv THCONV, _hszItem THSZ, _wFmt TUINT, _wType TUINT, _dwTimeout TDWORD, _pdwResult TLPDWORD) (r THDDEDATA) {
 	if __ccgo_strace {
-		trc("t=%v pData=%v cbData=%v hConv=%v hszItem=%v dwTimeout=%v pdwResult=%v, (%v:)", t, pData, cbData, hConv, hszItem, dwTimeout, pdwResult, origin(2))
+		trc("pData=%+v cbData=%+v hConv=%+v hszItem=%+v wFmt=%+v wType=%+v dwTimeout=%+v pdwResult=%+v", _pData, _cbData, _hConv, _hszItem, _wFmt, _wType, _dwTimeout, _pdwResult)
+		defer func() { trc(`XDdeClientTransaction->%+v`, r) }()
 	}
-	die("")
-	panic(todo(""))
+	r0, _, _ := procDdeClientTransaction.Call(_pData, uintptr(_cbData), _hConv, _hszItem, uintptr(_wFmt), uintptr(_wType), uintptr(_dwTimeout), _pdwResult)
+	return THDDEDATA(r0)
 }
 
 var procDdeAbandonTransaction = moduser32.NewProc("DdeAbandonTransaction")
