@@ -6353,35 +6353,35 @@ func XRegSetValueExW(t *TLS, _ ...interface{}) int32 {
 // 	}
 // 	die("");panic(todo(""))
 // }
-//
-// // int _isatty( int fd );
-// func X_isatty(t *TLS, fd int32) int32 {
-// 	if __ccgo_strace {
-// 		trc("t=%v fd=%v, (%v:)", t, fd, origin(2))
-// 	}
-//
-// 	f, ok := fdToFile(fd)
-// 	if !ok {
-// 		t.setErrno(errno.EBADF)
-// 		return 0
-// 	}
-//
-// 	if fd == unistd.STDOUT_FILENO ||
-// 		fd == unistd.STDIN_FILENO ||
-// 		fd == unistd.STDERR_FILENO {
-// 		var mode uint32
-// 		err := windows.GetConsoleMode(f.Handle, &mode)
-// 		if err != nil {
-// 			t.setErrno(errno.EINVAL)
-// 			return 0
-// 		}
-// 		// is console
-// 		return 1
-// 	}
-//
-// 	return 0
-// }
-//
+
+// int _isatty( int fd );
+func X_isatty(t *TLS, fd int32) int32 {
+	if __ccgo_strace {
+		trc("t=%v fd=%v, (%v:)", t, fd, origin(2))
+	}
+
+	f, ok := fdToFile(fd)
+	if !ok {
+		t.setErrno(errno.EBADF)
+		return 0
+	}
+
+	if fd == unistd.STDOUT_FILENO ||
+		fd == unistd.STDIN_FILENO ||
+		fd == unistd.STDERR_FILENO {
+		var mode uint32
+		err := windows.GetConsoleMode(f.Handle, &mode)
+		if err != nil {
+			t.setErrno(errno.EINVAL)
+			return 0
+		}
+		// is console
+		return 1
+	}
+
+	return 0
+}
+
 // // BOOL WINAPI SetConsoleTextAttribute(
 // //
 // //	_In_ HANDLE hConsoleOutput,

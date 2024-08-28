@@ -13,6 +13,14 @@ import (
 	"unsafe"
 )
 
+type TWPARAM = uint64
+
+type TLPARAM = int64
+
+type TLRESULT = int64
+
+type TPLARGE_INTEGER = uintptr
+
 // int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
 func Xsigaction(t *TLS, signum int32, act, oldact uintptr) int32 {
 	if __ccgo_strace {
@@ -583,18 +591,6 @@ func Xaccept(t *TLS, sockfd uint64, addr uintptr, addrlen uintptr) uint64 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v addr=%v addrlen=%v, (%v:)", t, sockfd, addr, addrlen, origin(2))
 	}
-	panic(todo(""))
-}
-
-// LRESULT LRESULT DefWindowProcW(
-//
-//	HWND   hWnd,
-//	UINT   Msg,
-//	WPARAM wParam,
-//	LPARAM lParam
-//
-// );
-func XDefWindowProcW(t *TLS, _ ...interface{}) int64 {
 	panic(todo(""))
 }
 
