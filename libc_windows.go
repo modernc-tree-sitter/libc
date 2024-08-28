@@ -595,21 +595,12 @@ var (
 	userenvapi                = windows.NewLazySystemDLL("userenv.dll")
 	procGetProfilesDirectoryW = userenvapi.NewProc("GetProfilesDirectoryW")
 
-	modcrt = windows.NewLazySystemDLL("msvcrt.dll")
+	modcrt = windows.NewLazySystemDLL("ucrtbase.dll")
 	//	procAccess    = modcrt.NewProc("_access")
-	procChmod   = modcrt.NewProc("_chmod")
-	procCtime64 = modcrt.NewProc("ctime64")
-	procGmtime  = modcrt.NewProc("gmtime")
 	//	procGmtime32  = modcrt.NewProc("_gmtime32")
-	procGmtime64 = modcrt.NewProc("_gmtime64")
 	//	procStat64i32 = modcrt.NewProc("_stat64i32")
 	//	procStati64   = modcrt.NewProc("_stati64")
 	//	procStrftime  = modcrt.NewProc("strftime")
-	procStrnicmp = modcrt.NewProc("_strnicmp")
-	procStrtod   = modcrt.NewProc("strtod")
-	procTime64   = modcrt.NewProc("time64")
-	procWcsncpy  = modcrt.NewProc("wcsncpy")
-	procWcsrchr  = modcrt.NewProc("wcsrchr")
 	//
 	//	moducrt         = windows.NewLazySystemDLL("ucrtbase.dll")
 	//	procFindfirst32 = moducrt.NewProc("_findfirst32")
@@ -7448,6 +7439,9 @@ func Xfdopen(t *TLS, fd int32, mode uintptr) uintptr {
 	panic(todo(""))
 }
 
+var procGmtime64 = modcrt.NewProc("_gmtime64")
+var _ = procGmtime64.Addr()
+
 // struct tm *_gmtime64( const __time64_t *sourceTime );
 func X_gmtime64(t *TLS, sourceTime uintptr) uintptr {
 	if __ccgo_strace {
@@ -7523,6 +7517,9 @@ func X__ccgo_pthreadMutexattrGettype(tls *TLS, a uintptr) int32 { /* pthread_att
 	}
 	return *(*int32)(unsafe.Pointer(a)) & int32(3)
 }
+
+var procChmod = modcrt.NewProc("_chmod")
+var _ = procChmod.Addr()
 
 func Xchmod(t *TLS, pathname uintptr, mode int32) int32 {
 	r0, _, err := procChmod.Call(pathname, uintptr(mode))
@@ -7784,6 +7781,9 @@ func X_vscprintf(t *TLS, format uintptr, argptr uintptr) int32 {
 // 	return byte(a_load_8(ptr))
 // }
 
+var procGmtime = modcrt.NewProc("gmtime")
+var _ = procGmtime.Addr()
+
 // struct tm *gmtime( const time_t *sourceTime );
 func Xgmtime(t *TLS, sourceTime uintptr) uintptr {
 	if __ccgo_strace {
@@ -7836,6 +7836,9 @@ func Xgmtime(t *TLS, sourceTime uintptr) uintptr {
 // 	return Xstrtod(t, s, p)
 // }
 
+var procStrtod = modcrt.NewProc("strtod")
+var _ = procStrtod.Addr()
+
 func Xstrtod(t *TLS, s uintptr, p uintptr) float64 {
 	if __ccgo_strace {
 		trc("tls=%v s=%v p=%v, (%v:)", t, s, p, origin(2))
@@ -7844,7 +7847,7 @@ func Xstrtod(t *TLS, s uintptr, p uintptr) float64 {
 	if err != windows.ERROR_SUCCESS {
 		t.setErrno(err)
 	}
-	return math.Float64frombits(uint64(r0))
+	return math.Float64frombits(uint64(r0)) //TODO Test 386
 }
 
 // int vsnprintf(char *str, size_t size, const char *format, va_list ap);
@@ -7859,17 +7862,26 @@ func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int
 // 	return XCreateThread(t, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
 // }
 
+var procWcsncpy = modcrt.NewProc("wcsncpy")
+var _ = procWcsncpy.Addr()
+
 // wchar_t *wcsncpy(wchar_t *strDest, const wchar_t *strSource, size_t count);
 func Xwcsncpy(t *TLS, strDest, strSource uintptr, count types.Size_t) uintptr {
 	r0, _, _ := procWcsncpy.Call(strDest, strSource, uintptr(count))
 	return r0
 }
 
+var procWcsrchr = modcrt.NewProc("wcsrchr")
+var _ = procWcsrchr.Addr()
+
 // wchar_t *wcsrchr(const wchar_t *str, wchar_t c);
 func Xwcsrchr(t *TLS, str uintptr, c types.Wchar_t) uintptr {
 	r0, _, _ := procWcsrchr.Call(str, uintptr(c))
 	return r0
 }
+
+var procCtime64 = modcrt.NewProc("ctime64")
+var _ = procCtime64.Addr()
 
 // __attribute__ ((__dllimport__)) char * __attribute__((__cdecl__)) _ctime64(const __time64_t *_Time);
 func X_ctime64(tls *TLS, __Time uintptr) (r uintptr) {
@@ -7881,6 +7893,9 @@ func X_ctime64(tls *TLS, __Time uintptr) (r uintptr) {
 	return uintptr(r0)
 }
 
+var procTime64 = modcrt.NewProc("time64")
+var _ = procTime64.Addr()
+
 // __attribute__ ((__dllimport__)) __time64_t __attribute__((__cdecl__)) _time64(__time64_t *_Time);
 func X_time64(tls *TLS, __Time uintptr) (r int64) {
 	if __ccgo_strace {
@@ -7890,6 +7905,9 @@ func X_time64(tls *TLS, __Time uintptr) (r int64) {
 	r0, _, _ := procTime64.Call(__Time)
 	return int64(r0)
 }
+
+var procStrnicmp = modcrt.NewProc("_strnicmp")
+var _ = procStrnicmp.Addr()
 
 // __attribute__ ((__dllimport__)) int __attribute__((__cdecl__)) _strnicmp(const char *_Str1,const char *_Str2,size_t _MaxCount);
 func X_strnicmp(tls *TLS, __Str1 uintptr, __Str2 uintptr, __MaxCount types.Size_t) (r int32) {
