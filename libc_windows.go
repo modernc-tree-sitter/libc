@@ -5996,64 +5996,143 @@ func X_wcsicmp(t *TLS, string1, string2 uintptr) int32 {
 	return Xwcsicmp(t, string1, string2)
 }
 
-func XDdeCreateDataHandle(t *TLS, _ ...interface{}) uintptr {
-	die("")
-	panic(todo(""))
+var procDdeCreateDataHandle = moduser32.NewProc("DdeCreateDataHandle")
+
+// HDDEDATA DdeCreateDataHandle(DWORD idInst,LPBYTE pSrc,DWORD cb,DWORD cbOff,HSZ hszItem,UINT wFmt,UINT afCmd);
+func XDdeCreateDataHandle(tls *TLS, _idInst TDWORD, _pSrc TLPBYTE, _cb TDWORD, _cbOff TDWORD, _hszItem THSZ, _wFmt TUINT, _afCmd TUINT) (r THDDEDATA) {
+	if __ccgo_strace {
+		trc("idInst=%+v pSrc=%+v cb=%+v cbOff=%+v hszItem=%+v wFmt=%+v afCmd=%+v", _idInst, _pSrc, _cb, _cbOff, _hszItem, _wFmt, _afCmd)
+		defer func() { trc(`XDdeCreateDataHandle->%+v`, r) }()
+	}
+	r0, _, _ := procDdeCreateDataHandle.Call(uintptr(_idInst), _pSrc, uintptr(_cb), uintptr(_cbOff), _hszItem, uintptr(_wFmt), uintptr(_afCmd))
+	return THDDEDATA(r0)
 }
 
-func XDdeAccessData(t *TLS, _ ...interface{}) uintptr {
-	die("")
-	panic(todo(""))
+var procDdeAccessData = moduser32.NewProc("DdeAccessData")
+
+// LPBYTE DdeAccessData(HDDEDATA hData,LPDWORD pcbDataSize);
+func XDdeAccessData(tls *TLS, _hData THDDEDATA, _pcbDataSize TLPDWORD) (r TLPBYTE) {
+	if __ccgo_strace {
+		trc("hData=%+v pcbDataSize=%+v", _hData, _pcbDataSize)
+		defer func() { trc(`XDdeAccessData->%+v`, r) }()
+	}
+	r0, _, _ := procDdeAccessData.Call(_hData, _pcbDataSize)
+	return TLPBYTE(r0)
 }
 
-func XDdeUnaccessData(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procDdeUnaccessData = moduser32.NewProc("DdeUnaccessData")
+
+// WINBOOL DdeUnaccessData(HDDEDATA hData);
+func XDdeUnaccessData(tls *TLS, _hData THDDEDATA) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hData=%+v", _hData)
+		defer func() { trc(`XDdeUnaccessData->%+v`, r) }()
+	}
+	r0, _, _ := procDdeUnaccessData.Call(_hData)
+	return TWINBOOL(r0)
 }
 
-func XDdeUninitialize(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procDdeUninitialize = moduser32.NewProc("DdeUninitialize")
+
+// WINBOOL DdeUninitialize(DWORD idInst);
+func XDdeUninitialize(tls *TLS, _idInst TDWORD) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("idInst=%+v", _idInst)
+		defer func() { trc(`XDdeUninitialize->%+v`, r) }()
+	}
+	r0, _, _ := procDdeUninitialize.Call(uintptr(_idInst))
+	return TWINBOOL(r0)
 }
 
-func XDdeConnect(t *TLS, _ ...interface{}) uintptr {
-	die("")
-	panic(todo(""))
+var procDdeConnect = moduser32.NewProc("DdeConnect")
+
+// HCONV DdeConnect(DWORD idInst,HSZ hszService,HSZ hszTopic,PCONVCONTEXT pCC);
+func XDdeConnect(tls *TLS, _idInst TDWORD, _hszService THSZ, _hszTopic THSZ, _pCC TPCONVCONTEXT) (r THCONV) {
+	if __ccgo_strace {
+		trc("idInst=%+v hszService=%+v hszTopic=%+v pCC=%+v", _idInst, _hszService, _hszTopic, _pCC)
+		defer func() { trc(`XDdeConnect->%+v`, r) }()
+	}
+	r0, _, _ := procDdeConnect.Call(uintptr(_idInst), _hszService, _hszTopic, _pCC)
+	return THCONV(r0)
 }
 
-func XDdeFreeStringHandle(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+type TPCONVCONTEXT = uintptr
+
+var procDdeFreeStringHandle = moduser32.NewProc("DdeFreeStringHandle")
+
+// WINBOOL DdeFreeStringHandle(DWORD idInst,HSZ hsz);
+func XDdeFreeStringHandle(tls *TLS, _idInst TDWORD, _hsz THSZ) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("idInst=%+v hsz=%+v", _idInst, _hsz)
+		defer func() { trc(`XDdeFreeStringHandle->%+v`, r) }()
+	}
+	r0, _, _ := procDdeFreeStringHandle.Call(uintptr(_idInst), _hsz)
+	return TWINBOOL(r0)
 }
 
-func XGlobalGetAtomNameW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procGlobalGetAtomNameW = modkernel32.NewProc("GlobalGetAtomNameW")
+
+// __attribute__((dllimport)) UINT GlobalGetAtomNameW (ATOM nAtom, LPWSTR lpBuffer, int nSize);
+func XGlobalGetAtomNameW(tls *TLS, _nAtom TATOM, _lpBuffer TLPWSTR, _nSize int32) (r TUINT) {
+	if __ccgo_strace {
+		trc("nAtom=%+v lpBuffer=%+v nSize=%+v", _nAtom, _lpBuffer, _nSize)
+		defer func() { trc(`XGlobalGetAtomNameW->%+v`, r) }()
+	}
+	r0, _, err := procGlobalGetAtomNameW.Call(uintptr(_nAtom), _lpBuffer, uintptr(_nSize))
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TUINT(r0)
 }
 
-func XGlobalAddAtomW(t *TLS, _ ...interface{}) uint16 {
-	die("")
-	panic(todo(""))
+var procGlobalAddAtomW = modkernel32.NewProc("GlobalAddAtomW")
+
+// __attribute__((dllimport)) ATOM GlobalAddAtomW (LPCWSTR lpString);
+func XGlobalAddAtomW(tls *TLS, _lpString TLPCWSTR) (r TATOM) {
+	if __ccgo_strace {
+		trc("lpString=%+v", _lpString)
+		defer func() { trc(`XGlobalAddAtomW->%+v`, r) }()
+	}
+	r0, _, err := procGlobalAddAtomW.Call(_lpString)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TATOM(r0)
 }
 
-func XEnumWindows(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procIsWindow = moduser32.NewProc("IsWindow")
+
+// __attribute__((dllimport)) WINBOOL IsWindow(HWND hWnd);
+func XIsWindow(tls *TLS, _hWnd THWND) (r TWINBOOL) {
+	if __ccgo_strace {
+		trc("hWnd=%+v", _hWnd)
+		defer func() { trc(`XIsWindow->%+v`, r) }()
+	}
+	r0, _, _ := procIsWindow.Call(_hWnd)
+	return TWINBOOL(r0)
 }
 
-func XIsWindow(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procGlobalDeleteAtom = modkernel32.NewProc("GlobalDeleteAtom")
+
+// __attribute__((dllimport)) ATOM GlobalDeleteAtom (ATOM nAtom);
+func XGlobalDeleteAtom(tls *TLS, _nAtom TATOM) (r TATOM) {
+	if __ccgo_strace {
+		trc("nAtom=%+v", _nAtom)
+		defer func() { trc(`XGlobalDeleteAtom->%+v`, r) }()
+	}
+	r0, _, err := procGlobalDeleteAtom.Call(uintptr(_nAtom))
+	if err != nil {
+		tls.setErrno(err)
+	}
+	return TATOM(r0)
 }
 
-func XGlobalDeleteAtom(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
-}
+var procDdeGetLastError = moduser32.NewProc("DdeGetLastError")
 
-func XDdeGetLastError(t *TLS, _ ...interface{}) uint32 {
-	die("")
-	panic(todo(""))
+// UINT DdeGetLastError(DWORD idInst);
+func XDdeGetLastError(tls *TLS, _idInst TDWORD) (r TUINT) {
+	r0, _, _ := procDdeGetLastError.Call(uintptr(_idInst))
+	return TUINT(r0)
 }
 
 // HDDEDATA DdeClientTransaction(
@@ -8621,6 +8700,11 @@ func XChooseFontW(tls *TLS, _0 TLPCHOOSEFONTW) (r TWINBOOL) {
 }
 
 type TLPCHOOSEFONTW = uintptr
+
+func XEnumWindows(t *TLS, _ ...interface{}) int32 {
+	die("syscall with func pointer")
+	panic(todo(""))
+}
 
 // ----
 
