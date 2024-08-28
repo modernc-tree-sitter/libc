@@ -6025,9 +6025,24 @@ func XDdeNameService(tls *TLS, _idInst TDWORD, _hsz1 THSZ, _hsz2 THSZ, _afCmd TU
 	return THDDEDATA(r0)
 }
 
-func X_snwprintf(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+// int _snwprintf(wchar_t *buffer, size_t count, wchar_t *format, ...);
+func X_snwprintf(tls *TLS, buffer uintptr, count size_t, format uintptr, va uintptr) int32 {
+	fmt := goWideString(format)
+	bp := tls.Alloc(len(fmt))
+	defer tls.Free(len(fmt))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(bp)), len(fmt)), fmt)
+	s := printf(bp, va)
+	s16 := utf16.Encode([]rune(string(s)))
+	switch n := len(s16); {
+	case count == 0:
+		// nop
+	case size_t(n)+1 <= count:
+		// ok
+	default:
+		s16 = s16[:count-1]
+	}
+	copy(unsafe.Slice((*uint16)(unsafe.Pointer(buffer)), count), s16)
+	return int32(len(s16))
 }
 
 var procDdeQueryStringW = moduser32.NewProc("DdeQueryStringW")
