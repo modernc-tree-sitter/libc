@@ -595,6 +595,7 @@ var (
 	userenvapi                = windows.NewLazySystemDLL("userenv.dll")
 	procGetProfilesDirectoryW = userenvapi.NewProc("GetProfilesDirectoryW")
 
+	// tcl9 requires UCRT
 	modcrt = windows.NewLazySystemDLL("ucrtbase.dll")
 	//	procAccess    = modcrt.NewProc("_access")
 	//	procGmtime32  = modcrt.NewProc("_gmtime32")
@@ -5939,14 +5940,28 @@ func XDdeInitializeW(t *TLS, _ ...interface{}) uint32 {
 	panic(todo(""))
 }
 
-func XDdeCreateStringHandleW(t *TLS, _ ...interface{}) uintptr {
-	die("")
-	panic(todo(""))
+var procDdeCreateStringHandleW = moduser32.NewProc("DdeCreateStringHandleW")
+
+// HSZ DdeCreateStringHandleW(DWORD idInst,LPCWSTR psz,int iCodePage);
+func XDdeCreateStringHandleW(tls *TLS, _idInst TDWORD, _psz TLPCWSTR, _iCodePage int32) (r THSZ) {
+	if __ccgo_strace {
+		trc("idInst=%+v psz=%+v iCodePage=%+v", _idInst, _psz, _iCodePage)
+		defer func() { trc(`XDdeCreateStringHandleW->%+v`, r) }()
+	}
+	r0, _, _ := procDdeCreateStringHandleW.Call(uintptr(_idInst), _psz, uintptr(_iCodePage))
+	return THSZ(r0)
 }
 
-func XDdeNameService(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procDdeNameService = moduser32.NewProc("DdeNameService")
+
+// HDDEDATA DdeNameService(DWORD idInst,HSZ hsz1,HSZ hsz2,UINT afCmd);
+func XDdeNameService(tls *TLS, _idInst TDWORD, _hsz1 THSZ, _hsz2 THSZ, _afCmd TUINT) (r THDDEDATA) {
+	if __ccgo_strace {
+		trc("idInst=%+v hsz1=%+v hsz2=%+v afCmd=%+v", _idInst, _hsz1, _hsz2, _afCmd)
+		defer func() { trc(`XDdeNameService->%+v`, r) }()
+	}
+	r0, _, _ := procDdeNameService.Call(uintptr(_idInst), _hsz1, _hsz2, uintptr(_afCmd))
+	return THDDEDATA(r0)
 }
 
 func X_snwprintf(t *TLS, _ ...interface{}) int32 {
@@ -5954,10 +5969,19 @@ func X_snwprintf(t *TLS, _ ...interface{}) int32 {
 	panic(todo(""))
 }
 
-func XDdeQueryStringW(t *TLS, _ ...interface{}) int32 {
-	die("")
-	panic(todo(""))
+var procDdeQueryStringW = moduser32.NewProc("DdeQueryStringW")
+
+// DWORD DdeQueryStringW(DWORD idInst,HSZ hsz,LPWSTR psz,DWORD cchMax,int iCodePage);
+func XDdeQueryStringW(tls *TLS, _idInst TDWORD, _hsz THSZ, _psz TLPWSTR, _cchMax TDWORD, _iCodePage int32) (r TDWORD) {
+	if __ccgo_strace {
+		trc("idInst=%+v hsz=%+v psz=%+v cchMax=%+v iCodePage=%+v", _idInst, _hsz, _psz, _cchMax, _iCodePage)
+		defer func() { trc(`XDdeQueryStringW->%+v`, r) }()
+	}
+	r0, _, _ := procDdeQueryStringW.Call(uintptr(_idInst), _hsz, _psz, uintptr(_cchMax), uintptr(_iCodePage))
+	return TDWORD(r0)
 }
+
+type THSZ = uintptr
 
 // int _wcsicmp(
 //
@@ -7773,9 +7797,6 @@ func X_vscprintf(t *TLS, format uintptr, argptr uintptr) int32 {
 // 	return byte(a_load_8(ptr))
 // }
 
-var procGmtime = modcrt.NewProc("_gmtime")
-var _ = procGmtime.Addr()
-
 // struct tm *gmtime( const time_t *sourceTime );
 func Xgmtime(tls *TLS, sourceTime uintptr) uintptr {
 	return Xgmtime_r(tls, sourceTime, uintptr(unsafe.Pointer(&_tm)))
@@ -7972,7 +7993,7 @@ func Xwcsrchr(t *TLS, str uintptr, c types.Wchar_t) uintptr {
 	return r0
 }
 
-var procCtime64 = modcrt.NewProc("ctime64")
+var procCtime64 = modcrt.NewProc("_ctime64")
 var _ = procCtime64.Addr()
 
 // __attribute__ ((__dllimport__)) char * __attribute__((__cdecl__)) _ctime64(const __time64_t *_Time);
@@ -7985,7 +8006,7 @@ func X_ctime64(tls *TLS, __Time uintptr) (r uintptr) {
 	return uintptr(r0)
 }
 
-var procTime64 = modcrt.NewProc("time64")
+var procTime64 = modcrt.NewProc("_time64")
 var _ = procTime64.Addr()
 
 // __attribute__ ((__dllimport__)) __time64_t __attribute__((__cdecl__)) _time64(__time64_t *_Time);
