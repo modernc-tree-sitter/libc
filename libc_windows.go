@@ -11455,8 +11455,9 @@ func XSendMessageTimeoutW(tls *TLS, _hWnd THWND, _Msg TUINT, _wParam TWPARAM, _l
 		trc("hWnd=%+v Msg=%+v wParam=%+v lParam=%+v fuFlags=%+v uTimeout=%+v lpdwResult=%+v", _hWnd, _Msg, _wParam, _lParam, _fuFlags, _uTimeout, _lpdwResult)
 		defer func() { trc(`XSendMessageTimeoutW->%+v`, r) }()
 	}
+	XSetLastError(tls, 0)
 	r0, _, err := procSendMessageTimeoutW.Call(_hWnd, uintptr(_Msg), uintptr(_wParam), uintptr(_lParam), uintptr(_fuFlags), uintptr(_uTimeout), _lpdwResult)
-	if r0 == 0 {
+	if r0 == 0 && err.(windows.Errno) != 0 {
 		tls.setErrno(err)
 	}
 	return TLRESULT(r0)
