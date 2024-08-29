@@ -10566,6 +10566,7 @@ var procGetWindowLongPtrW = moduser32.NewProc("GetWindowLongPtrW")
 
 // __attribute__((moduser32import)) LONG_PTR GetWindowLongPtrW(HWND hWnd,int nIndex);
 func XGetWindowLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32) (r TLONG_PTR) {
+	Dbg(tls, "hWnd=%+v nIndex=%+v", _hWnd, _nIndex)
 	if __ccgo_strace {
 		trc("hWnd=%+v nIndex=%+v", _hWnd, _nIndex)
 		defer func() { trc(`XGetWindowLongPtrW->%+v`, r) }()
@@ -10594,6 +10595,7 @@ var procSetWindowLongPtrW = moduser32.NewProc("SetWindowLongPtrW")
 
 // __attribute__((moduser32import)) LONG_PTR SetWindowLongPtrW(HWND hWnd,int nIndex,LONG_PTR dwNewLong);
 func XSetWindowLongPtrW(tls *TLS, _hWnd THWND, _nIndex int32, _dwNewLong TLONG_PTR) (r TLONG_PTR) {
+	Dbg(tls, "hWnd=%+v nIndex=%+v dwNewLong=%+v", _hWnd, _nIndex, _dwNewLong)
 	if __ccgo_strace {
 		trc("hWnd=%+v nIndex=%+v dwNewLong=%+v", _hWnd, _nIndex, _dwNewLong)
 		defer func() { trc(`XSetWindowLongPtrW->%+v`, r) }()
