@@ -146,6 +146,19 @@ func (c *callbackRegister) register(tls *TLS, gofnp uintptr, cb any) (r uintptr)
 	return r
 }
 
+type TWNDCLASSA = struct {
+	Fstyle         TUINT
+	FlpfnWndProc   TWNDPROC
+	FcbClsExtra    int32
+	FcbWndExtra    int32
+	FhInstance     THINSTANCE
+	FhIcon         THICON
+	FhCursor       THCURSOR
+	FhbrBackground THBRUSH
+	FlpszMenuName  TLPCSTR
+	FlpszClassName TLPCSTR
+}
+
 type TWNDCLASSW = struct {
 	Fstyle         TUINT
 	FlpfnWndProc   TWNDPROC
@@ -176,9 +189,35 @@ type TWNDCLASSEXW = struct {
 
 type wndProc func(tls *TLS, hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) (r TLRESULT)
 
+var procRegisterClassA = moduser32.NewProc("RegisterClassA")
+
 func XRegisterClassA(tls *TLS, lpWndClass uintptr) int32 {
-	die(tls, "")
-	panic(todo(""))
+	Dbg(
+		"Fstyle=%v FlpWndProc=%#0x FcbClsExtra=%v FcbWndExtra=%v FhInstance=%#0x FhIcon=%v FhCursor=%v FhbrBackground=%v FlpszMenuName=%q FlpszClassName=%q",
+		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).Fstyle,
+		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FlpfnWndProc,
+		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FcbClsExtra,
+		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FcbWndExtra,
+		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FhInstance,
+		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FhIcon,
+		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FhCursor,
+		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FhbrBackground,
+		GoString((*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FlpszMenuName),
+		GoString((*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FlpszClassName),
+	)
+	if gofnp := (*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FlpfnWndProc; gofnp != 0 {
+		f := (*struct{ f wndProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
+		cb := func(hwnd THWND, message TUINT, wParam TWPARAM, lParam TLPARAM) uintptr {
+			return uintptr(f(tls, hwnd, message, wParam, lParam))
+		}
+		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FlpfnWndProc = callbacks.register(tls, gofnp, cb)
+	}
+	r0, _, err := procRegisterClassA.Call(lpWndClass)
+	if r0 == 0 {
+		Dbg("FAIL err=%v", err)
+		tls.setErrno(err)
+	}
+	return int32(r0)
 }
 
 var procRegisterClassW = moduser32.NewProc("RegisterClassW")
@@ -3305,7 +3344,9 @@ type ThreadAdapter struct {
 
 func (ta *ThreadAdapter) run() uintptr {
 	runtime.LockOSThread()
+	Dbg("THREAD start tls=%p ID=%v", ta.tls, XGetCurrentThreadId(ta.tls))
 	r := ta.threadFunc(ta.tls, ta.param)
+	Dbg("THREAD returned tls=%p", ta.tls, XGetCurrentThreadId(ta.tls))
 	ta.tls.Close()
 	removeObject(ta.token)
 	return uintptr(r)

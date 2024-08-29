@@ -232,13 +232,13 @@ func Xftruncate64(t *TLS, fd int32, length types.Off_t) int32 {
 // 	if __ccgo_strace {
 // 		trc("t=%v fd=%v offset=%v whence=%v, (%v:)", t, fd, offset, whence, origin(2))
 // 	}
-// 
+//
 // 	f, ok := fdToFile(fd)
 // 	if !ok {
 // 		t.setErrno(errno.EBADF)
 // 		return -1
 // 	}
-// 
+//
 // 	n, err := windows.Seek(f.Handle, offset, int(whence))
 // 	if err != nil {
 // 		if dmesgs {
@@ -247,7 +247,7 @@ func Xftruncate64(t *TLS, fd int32, length types.Off_t) int32 {
 // 		t.setErrno(err)
 // 		return -1
 // 	}
-// 
+//
 // 	if dmesgs {
 // 		dmesg("%v: fd %v, off %#x, whence %v: ok", origin(1), f._fd, offset, whenceStr(whence))
 // 	}
