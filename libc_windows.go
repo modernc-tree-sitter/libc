@@ -476,19 +476,18 @@ var (
 
 	modkernel32 = windows.NewLazySystemDLL("kernel32.dll")
 	//--
-	procGetLocaleInfoW    = modkernel32.NewProc("GetLocaleInfoW")
-	procIsDBCSLeadByte    = modkernel32.NewProc("IsDBCSLeadByte")
-	procLocalAlloc        = modkernel32.NewProc("LocalAlloc")
-	procGetThreadLocale   = modkernel32.NewProc("GetThreadLocale")
-	procFormatMessageA    = modkernel32.NewProc("FormatMessageA")
-	procMulDiv            = modkernel32.NewProc("MulDiv")
-	procGlobalAlloc       = modkernel32.NewProc("GlobalAlloc")
-	procGetClipboardOwner = modkernel32.NewProc("GetClipboardOwner")
-	procGetLocaleInfoA    = modkernel32.NewProc("GetLocaleInfoA")
-	procGlobalLock        = modkernel32.NewProc("GlobalLock")
-	procGlobalUnlock      = modkernel32.NewProc("GlobalUnlock")
-	procLoadResource      = modkernel32.NewProc("LoadResource")
-	procLockResource      = modkernel32.NewProc("LockResource")
+	procGetLocaleInfoW  = modkernel32.NewProc("GetLocaleInfoW")
+	procIsDBCSLeadByte  = modkernel32.NewProc("IsDBCSLeadByte")
+	procLocalAlloc      = modkernel32.NewProc("LocalAlloc")
+	procGetThreadLocale = modkernel32.NewProc("GetThreadLocale")
+	procFormatMessageA  = modkernel32.NewProc("FormatMessageA")
+	procMulDiv          = modkernel32.NewProc("MulDiv")
+	procGlobalAlloc     = modkernel32.NewProc("GlobalAlloc")
+	procGetLocaleInfoA  = modkernel32.NewProc("GetLocaleInfoA")
+	procGlobalLock      = modkernel32.NewProc("GlobalLock")
+	procGlobalUnlock    = modkernel32.NewProc("GlobalUnlock")
+	procLoadResource    = modkernel32.NewProc("LoadResource")
+	procLockResource    = modkernel32.NewProc("LockResource")
 	//	procAreFileApisANSI            = modkernel32.NewProc("AreFileApisANSI")
 	procCopyFileW = modkernel32.NewProc("CopyFileW")
 	//	procCreateEventA               = modkernel32.NewProc("CreateEventA")
@@ -8518,6 +8517,8 @@ func XGetLocaleInfoA(tls *TLS, _Locale TLCID, _LCType TLCTYPE, _lpLCData TLPSTR,
 	}
 	return int32(r0)
 }
+
+var procGetClipboardOwner = moduser32.NewProc("GetClipboardOwner")
 
 // __attribute__((dllimport)) HWND GetClipboardOwner( void);
 func XGetClipboardOwner(tls *TLS) (r THWND) {
