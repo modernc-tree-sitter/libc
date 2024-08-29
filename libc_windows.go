@@ -4935,11 +4935,11 @@ func X_beginthreadex(t *TLS, _ uintptr, stack_sz uint32, procAddr uintptr, args 
 
 // DWORD GetCurrentThreadId();
 func XGetCurrentThreadId(t *TLS) uint32 {
-	Dbg("THREAD get ID")
 	if __ccgo_strace {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
 	r0, _, _ := procGetCurrentThreadId.Call()
+	Dbg("THREAD get ID tls=%p r=%v", t, r0)
 	return uint32(r0)
 }
 
@@ -12004,7 +12004,7 @@ func Xstrtok(tls *TLS, strToken, strDelimit uintptr) uintptr {
 	panic(todo(""))
 }
 
-var procstrtoll = modcrt.NewProc("_strtoll")
+var procstrtoll = modcrt.NewProc("strtoll")
 var _ = procstrtoll.Addr()
 
 // long long __attribute__((__cdecl__)) strtoll(const char * __restrict__, char ** __restrict, int);
