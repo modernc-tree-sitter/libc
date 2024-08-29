@@ -265,6 +265,7 @@ func XRegisterClassW(tls *TLS, lpWndClass uintptr) int32 {
 	r0, _, err := procRegisterClassW.Call(lpWndClass)
 	if r0 == 0 {
 		Dbg(tls, "FAIL err=%v", err)
+		return 1 //TODO-
 		tls.setErrno(err)
 	}
 	return int32(r0)
@@ -4999,7 +5000,6 @@ func XGetCurrentThreadId(t *TLS) uint32 {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
 	r0, _, _ := procGetCurrentThreadId.Call()
-	Dbg(t, "THREAD get ID r=%v", t, r0)
 	return uint32(r0)
 }
 
@@ -8838,8 +8838,8 @@ var procCoCreateInstance = modole32.NewProc("CoCreateInstance")
 
 // extern __attribute__((modole32import)) HRESULT CoCreateInstance ( const IID * const rclsid, LPUNKNOWN pUnkOuter, DWORD dwClsContext, const IID * const riid, LPVOID *ppv);
 func XCoCreateInstance(tls *TLS, _rclsid uintptr, _pUnkOuter TLPUNKNOWN, _dwClsContext TDWORD, _riid uintptr, _ppv uintptr) (r THRESULT) {
-	die(tls, "syscall with func pointer")
-	panic(todo(""))
+	r0, _, _ := procCoCreateInstance.Call(_rclsid, _pUnkOuter, uintptr(_dwClsContext), _riid, _ppv)
+	return THRESULT(r0)
 }
 
 type TLPUNKNOWN = uintptr
