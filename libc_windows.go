@@ -58,18 +58,34 @@ func init() { //TODO-
 
 var dbgFile *os.File //TODO-
 
+func (tls *TLS) id() int {
+	if tls == nil {
+		return -1
+	}
+
+	return int(tls.ID)
+}
+
+func (tls *TLS) tid() int {
+	if tls == nil {
+		return -1
+	}
+
+	return int(XGetCurrentThreadId(tls))
+}
+
 func die(tls *TLS, s string, args ...any) {
 	s = fmt.Sprintf(s, args...)
-	s = fmt.Sprintf("\n==== DIE: tls=%p %s\n%s", tls, s, debug.Stack())
+	s = fmt.Sprintf("\n==== DIE: tid=%v tls=%v %s\n%s", tls.tid(), tls.id(), s, debug.Stack())
 	dbgFile.Write([]byte(s))
 	dbgFile.Sync()
 	panic(42)
 	os.Exit(1)
 }
 
-func Dbg(s string, args ...any) {
+func Dbg(tls *TLS, s string, args ...any) {
 	s = fmt.Sprintf(s, args...)
-	s = fmt.Sprintf("\n==== DBG: %s (%v: %v: %v:)\n", s, origin(4), origin(3), origin(2))
+	s = fmt.Sprintf("\n==== DBG: tid=%v tls=%v %s (%v: %v: %v:)\n", tls.tid(), tls.id(), s, origin(4), origin(3), origin(2))
 	dbgFile.Write([]byte(s))
 	// fmt.Println(s)
 }
@@ -193,6 +209,7 @@ var procRegisterClassA = moduser32.NewProc("RegisterClassA")
 
 func XRegisterClassA(tls *TLS, lpWndClass uintptr) int32 {
 	Dbg(
+		tls,
 		"Fstyle=%v FlpWndProc=%#0x FcbClsExtra=%v FcbWndExtra=%v FhInstance=%#0x FhIcon=%v FhCursor=%v FhbrBackground=%v FlpszMenuName=%q FlpszClassName=%q",
 		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).Fstyle,
 		(*TWNDCLASSA)(unsafe.Pointer(lpWndClass)).FlpfnWndProc,
@@ -214,7 +231,7 @@ func XRegisterClassA(tls *TLS, lpWndClass uintptr) int32 {
 	}
 	r0, _, err := procRegisterClassA.Call(lpWndClass)
 	if r0 == 0 {
-		Dbg("FAIL err=%v", err)
+		Dbg(tls, "FAIL err=%v", err)
 		tls.setErrno(err)
 	}
 	return int32(r0)
@@ -225,6 +242,7 @@ var procRegisterClassW = moduser32.NewProc("RegisterClassW")
 // ATOM RegisterClassW(const WNDCLASSW *lpWndClass);
 func XRegisterClassW(tls *TLS, lpWndClass uintptr) int32 {
 	Dbg(
+		tls,
 		"Fstyle=%v FlpWndProc=%#0x FcbClsExtra=%v FcbWndExtra=%v FhInstance=%#0x FhIcon=%v FhCursor=%v FhbrBackground=%v FlpszMenuName=%q FlpszClassName=%q",
 		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).Fstyle,
 		(*TWNDCLASSW)(unsafe.Pointer(lpWndClass)).FlpfnWndProc,
@@ -246,7 +264,7 @@ func XRegisterClassW(tls *TLS, lpWndClass uintptr) int32 {
 	}
 	r0, _, err := procRegisterClassW.Call(lpWndClass)
 	if r0 == 0 {
-		Dbg("FAIL err=%v", err)
+		Dbg(tls, "FAIL err=%v", err)
 		tls.setErrno(err)
 	}
 	return int32(r0)
@@ -257,6 +275,7 @@ var procRegisterClassExW = moduser32.NewProc("RegisterClassExW")
 // __attribute__((dllimport)) ATOM RegisterClassExW ( const WNDCLASSEXW *);
 func XRegisterClassExW(tls *TLS, wndClassExW uintptr) (r TATOM) {
 	Dbg(
+		tls,
 		"FcbSize=%v Fstyle=%v FlpWndProc=%#0x FcbClsExtra=%v FcbWndExtra=%v FhInstance=%#0x FhIcon=%v FhCursor=%v FhbrBackground=%v FlpszMenuName=%q FlpszClassName=%q FhIconSm=%v",
 		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).FcbSize,
 		(*TWNDCLASSEXW)(unsafe.Pointer(wndClassExW)).Fstyle,
@@ -280,7 +299,7 @@ func XRegisterClassExW(tls *TLS, wndClassExW uintptr) (r TATOM) {
 	}
 	r0, _, err := procRegisterClassExW.Call(wndClassExW)
 	if r0 == 0 {
-		Dbg("FAIL err=%v", err)
+		Dbg(tls, "FAIL err=%v", err)
 		tls.setErrno(err)
 	}
 	return TATOM(r0)
@@ -3344,9 +3363,9 @@ type ThreadAdapter struct {
 
 func (ta *ThreadAdapter) run() uintptr {
 	runtime.LockOSThread()
-	Dbg("THREAD start tls=%p ID=%v", ta.tls, XGetCurrentThreadId(ta.tls))
+	Dbg(ta.tls, "THREAD start")
 	r := ta.threadFunc(ta.tls, ta.param)
-	Dbg("THREAD returned tls=%p", ta.tls, XGetCurrentThreadId(ta.tls))
+	Dbg(ta.tls, "THREAD returned")
 	ta.tls.Close()
 	removeObject(ta.token)
 	return uintptr(r)
@@ -3372,12 +3391,12 @@ func ThreadProc(p uintptr) uintptr {
 //
 // );
 func XCreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t, lpStartAddress, lpParameter uintptr, dwCreationFlags uint32, lpThreadId uintptr) uintptr {
-	Dbg("THREAD create")
 	if __ccgo_strace {
 		trc("t=%v lpThreadAttributes=%v dwStackSize=%v lpParameter=%v dwCreationFlags=%v lpThreadId=%v, (%v:)", t, lpThreadAttributes, dwStackSize, lpParameter, dwCreationFlags, lpThreadId, origin(2))
 	}
 	f := (*struct{ f func(*TLS, uintptr) uint32 })(unsafe.Pointer(&struct{ uintptr }{lpStartAddress})).f
 	var tAdp = ThreadAdapter{threadFunc: f, tls: NewTLS(), param: lpParameter}
+	Dbg(t, "THREAD create new tls=%v", tAdp.tls.id())
 	tAdp.token = addObject(&tAdp)
 
 	r0, _, err := procCreateThread.Call(lpThreadAttributes, uintptr(dwStackSize), threadCallback, tAdp.token, uintptr(dwCreationFlags), lpThreadId)
@@ -4980,7 +4999,7 @@ func XGetCurrentThreadId(t *TLS) uint32 {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
 	r0, _, _ := procGetCurrentThreadId.Call()
-	Dbg("THREAD get ID tls=%p r=%v", t, r0)
+	Dbg(t, "THREAD get ID r=%v", t, r0)
 	return uint32(r0)
 }
 
@@ -5257,7 +5276,7 @@ func XOpenThreadToken(t *TLS, ThreadHandle uintptr, DesiredAccess uint32, OpenAs
 
 // HANDLE GetCurrentThread();
 func XGetCurrentThread(t *TLS) uintptr {
-	Dbg("THREAD get current")
+	Dbg(t, "THREAD=%v get current")
 	if __ccgo_strace {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
