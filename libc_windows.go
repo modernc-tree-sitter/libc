@@ -56,7 +56,10 @@ func init() { //TODO-
 	dbgFile = f
 }
 
-var dbgFile *os.File //TODO-
+var (
+	dbgFile *os.File //TODO-
+	pid     = os.Getpid()
+)
 
 func (tls *TLS) id() int {
 	if tls == nil {
@@ -76,7 +79,7 @@ func (tls *TLS) tid() int {
 
 func die(tls *TLS, s string, args ...any) {
 	s = fmt.Sprintf(s, args...)
-	s = fmt.Sprintf("\n==== DIE: tid=%v tls=%v %s\n%s", tls.tid(), tls.id(), s, debug.Stack())
+	s = fmt.Sprintf("\n==== [%v] DIE: tid=%v tls=%v %s\n%s", pid, tls.tid(), tls.id(), s, debug.Stack())
 	dbgFile.Write([]byte(s))
 	dbgFile.Sync()
 	panic(42)
@@ -85,7 +88,7 @@ func die(tls *TLS, s string, args ...any) {
 
 func Dbg(tls *TLS, s string, args ...any) {
 	s = fmt.Sprintf(s, args...)
-	s = fmt.Sprintf("\n==== DBG: tid=%v tls=%v %s (%v: %v: %v:)\n", tls.tid(), tls.id(), s, origin(4), origin(3), origin(2))
+	s = fmt.Sprintf("\n==== [%v] DBG: tid=%v tls=%v %s (%v: %v: %v:)\n", pid, tls.tid(), tls.id(), s, origin(4), origin(3), origin(2))
 	dbgFile.Write([]byte(s))
 	// fmt.Println(s)
 }
@@ -5276,7 +5279,6 @@ func XOpenThreadToken(t *TLS, ThreadHandle uintptr, DesiredAccess uint32, OpenAs
 
 // HANDLE GetCurrentThread();
 func XGetCurrentThread(t *TLS) uintptr {
-	Dbg(t, "THREAD=%v get current")
 	if __ccgo_strace {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
