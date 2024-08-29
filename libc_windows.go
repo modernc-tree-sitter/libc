@@ -79,7 +79,7 @@ func (tls *TLS) tid() int {
 
 func die(tls *TLS, s string, args ...any) {
 	s = fmt.Sprintf(s, args...)
-	s = fmt.Sprintf("\n==== [%v] DIE: tid=%v tls=%v %s\n%s", pid, tls.tid(), tls.id(), s, debug.Stack())
+	s = fmt.Sprintf("\n==== [%v.%v] DIE: tls=%v %s\n%s", pid, tls.tid(), tls.id(), s, debug.Stack())
 	dbgFile.Write([]byte(s))
 	dbgFile.Sync()
 	panic(42)
@@ -88,7 +88,7 @@ func die(tls *TLS, s string, args ...any) {
 
 func Dbg(tls *TLS, s string, args ...any) {
 	s = fmt.Sprintf(s, args...)
-	s = fmt.Sprintf("\n==== [%v] DBG: tid=%v tls=%v %s (%v: %v: %v:)\n", pid, tls.tid(), tls.id(), s, origin(4), origin(3), origin(2))
+	s = fmt.Sprintf("\n==== [%v.%v] DBG: tls=%v %s (%v: %v: %v:)\n", pid, tls.tid(), tls.id(), s, origin(4), origin(3), origin(2))
 	dbgFile.Write([]byte(s))
 	// fmt.Println(s)
 }
