@@ -10761,8 +10761,11 @@ func XRectangle(tls *TLS, _hdc THDC, _left int32, _top int32, _right int32, _bot
 	return TWINBOOL(r0)
 }
 
+var procSetLastError = modkernel32.NewProc("SetLastError")
+
 // __attribute__((dllimport)) void SetLastError (DWORD dwErrCode);
 func XSetLastError(tls *TLS, _dwErrCode uint32) {
+	procSetLastError.Call(uintptr(_dwErrCode))
 	*(*int32)(unsafe.Pointer(tls.errnop)) = int32(_dwErrCode)
 }
 
