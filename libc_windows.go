@@ -7412,6 +7412,9 @@ func Xstrtoul(t *TLS, nptr, endptr uintptr, base int32) ulong {
 	if __ccgo_strace {
 		trc("t=%v endptr=%v base=%v, (%v:)", t, endptr, base, origin(2))
 	}
+	if base == 0 {
+		base = 10
+	}
 	var s uintptr = nptr
 	var acc ulong
 	var c byte
@@ -10979,6 +10982,9 @@ func XBitBlt(tls *TLS, _hdc THDC, _x int32, _y int32, _cx int32, _cy int32, _hdc
 
 // unsigned long long strtoull(const char *nptr, char **endptr, int base);
 func Xstrtoull(t *TLS, nptr, endptr uintptr, base int32) uint64 {
+	if base == 0 {
+		base = 10
+	}
 	var s uintptr = nptr
 	var acc uint64
 	var c byte
