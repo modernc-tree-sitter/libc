@@ -639,6 +639,10 @@ func parseLengthModifier(format uintptr) (_ uintptr, n int) {
 			n = modHH
 		}
 		return format, n
+	case 'I': // Windows
+		format++
+		n = modLL
+		return format, n
 	case 'l':
 		format++
 		n = modL
