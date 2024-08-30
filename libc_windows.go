@@ -3410,6 +3410,93 @@ func XCreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t,
 	return r0
 }
 
+// BOOL TerminateThread(
+//
+//	[in, out] HANDLE hThread,
+//	[in]      DWORD  dwExitCode
+//
+// );
+func XTerminateThread(t *TLS, hThread uintptr, dwExitCode uint32) int32 {
+	if __ccgo_strace {
+		trc("t=%v hThread=%v dwExitCode=%v, (%v:)", t, hThread, dwExitCode, origin(2))
+	}
+	r0, _, err := procTerminateThread.Call(hThread, uintptr(dwExitCode))
+	if r0 == 0 {
+		t.setErrno(err)
+	}
+	return int32(r0)
+}
+
+// // The calling convention for beginthread is cdecl -- but in this
+// // case we're just intercepting it and sending it through CreateThread which expects stdcall
+// // and gets that via the go callback. This is safe because the thread is calling into go
+// // not a cdecl function which would expect the stack setup of cdecl.
+// func X_beginthread(t *TLS, procAddr uintptr, stack_sz uint32, args uintptr) int32 {
+// 	if __ccgo_strace {
+// 		trc("t=%v procAddr=%v stack_sz=%v args=%v, (%v:)", t, procAddr, stack_sz, args, origin(2))
+// 	}
+// 	f := (*struct{ f func(*TLS, uintptr) uint32 })(unsafe.Pointer(&struct{ uintptr }{procAddr})).f
+// 	var tAdp = ThreadAdapter{threadFunc: f, tls: NewTLS(), param: args}
+// 	tAdp.token = addObject(&tAdp)
+//
+// 	r0, _, err := procCreateThread.Call(0, uintptr(stack_sz),
+// 		threadCallback, tAdp.token, 0, 0)
+// 	if r0 == 0 {
+// 		t.setErrno(err)
+// 	}
+// 	return int32(r0)
+// }
+
+// uintptr_t _beginthreadex( // NATIVE CODE
+//
+//	void *security,
+//	unsigned stack_size,
+//	unsigned ( __stdcall *start_address )( void * ),
+//	void *arglist,
+//	unsigned initflag,
+//	unsigned *thrdaddr
+//
+// );
+func X_beginthreadex(t *TLS, _ uintptr, stack_sz uint32, procAddr uintptr, args uintptr, initf uint32, thAddr uintptr) int32 {
+	f := (*struct{ f func(*TLS, uintptr) uint32 })(unsafe.Pointer(&struct{ uintptr }{procAddr})).f
+	var tAdp = ThreadAdapter{threadFunc: f, tls: NewTLS(), param: args}
+	tAdp.token = addObject(&tAdp)
+
+	r0, _, err := procCreateThread.Call(0, uintptr(stack_sz),
+		threadCallback, tAdp.token, uintptr(initf), thAddr)
+	if r0 == 0 {
+		t.setErrno(err)
+	}
+	return int32(r0)
+}
+
+func X_endthreadex(t *TLS, _ ...interface{}) {
+	// NOOP
+}
+
+// DWORD GetCurrentThreadId();
+func XGetCurrentThreadId(t *TLS) uint32 {
+	if __ccgo_strace {
+		trc("t=%v, (%v:)", t, origin(2))
+	}
+	r0, _, _ := procGetCurrentThreadId.Call()
+	return uint32(r0)
+}
+
+// BOOL GetExitCodeThread(
+//
+//	HANDLE  hThread,
+//	LPDWORD lpExitCode
+//
+// );
+func XGetExitCodeThread(t *TLS, hThread, lpExitCode uintptr) int32 {
+	if __ccgo_strace {
+		trc("t=%v lpExitCode=%v, (%v:)", t, lpExitCode, origin(2))
+	}
+	r0, _, _ := procGetExitCodeThread.Call(hThread, lpExitCode)
+	return int32(r0)
+}
+
 // BOOL SetThreadPriority(
 //
 //	HANDLE hThread,
@@ -3421,6 +3508,84 @@ func XSetThreadPriority(t *TLS, hThread uintptr, nPriority int32) int32 {
 		trc("t=%v hThread=%v nPriority=%v, (%v:)", t, hThread, nPriority, origin(2))
 	}
 	return 1
+}
+
+// BOOL OpenThreadToken(
+//
+//	HANDLE  ThreadHandle,
+//	DWORD   DesiredAccess,
+//	BOOL    OpenAsSelf,
+//	PHANDLE TokenHandle
+//
+// );
+func XOpenThreadToken(t *TLS, ThreadHandle uintptr, DesiredAccess uint32, OpenAsSelf int32, TokenHandle uintptr) int32 {
+	if __ccgo_strace {
+		trc("t=%v ThreadHandle=%v DesiredAccess=%v OpenAsSelf=%v TokenHandle=%v, (%v:)", t, ThreadHandle, DesiredAccess, OpenAsSelf, TokenHandle, origin(2))
+	}
+	r0, _, err := procOpenThreadToken.Call(ThreadHandle, uintptr(DesiredAccess), uintptr(OpenAsSelf), TokenHandle)
+	if r0 == 0 {
+		t.setErrno(err)
+	}
+	return int32(r0)
+}
+
+// HANDLE GetCurrentThread();
+func XGetCurrentThread(t *TLS) uintptr {
+	if __ccgo_strace {
+		trc("t=%v, (%v:)", t, origin(2))
+	}
+	r0, _, _ := procGetCurrentThread.Call()
+	return r0
+}
+
+// __attribute__((dllimport)) LCID GetThreadLocale (void);
+func XGetThreadLocale(tls *TLS) (r TLCID) {
+	if __ccgo_strace {
+		trc("")
+		defer func() { trc(`XGetThreadLocale->%+v`, r) }()
+	}
+	r0, _, _ := procGetThreadLocale.Call()
+	return TLCID(r0)
+}
+
+type TLPDWORD = uintptr
+
+// __attribute__((dllimport)) DWORD GetWindowThreadProcessId(HWND hWnd,LPDWORD lpdwProcessId);
+func XGetWindowThreadProcessId(tls *TLS, _hWnd THWND, _lpdwProcessId TLPDWORD) (r TDWORD) {
+	if __ccgo_strace {
+		trc("hWnd=%+v lpdwProcessId=%+v", _hWnd, _lpdwProcessId)
+		defer func() { trc(`XGetWindowThreadProcessId->%+v`, r) }()
+	}
+	r0, _, err := procGetWindowThreadProcessId.Call(_hWnd, _lpdwProcessId)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TDWORD(r0)
+}
+
+// BOOL CreateProcessW(
+//
+//	LPCWSTR               lpApplicationName,
+//	LPWSTR                lpCommandLine,
+//	LPSECURITY_ATTRIBUTES lpProcessAttributes,
+//	LPSECURITY_ATTRIBUTES lpThreadAttributes,
+//	BOOL                  bInheritHandles,
+//	DWORD                 dwCreationFlags,
+//	LPVOID                lpEnvironment,
+//	LPCWSTR               lpCurrentDirectory,
+//	LPSTARTUPINFOW        lpStartupInfo,
+//	LPPROCESS_INFORMATION lpProcessInformation
+//
+// );
+func XCreateProcessW(t *TLS, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes uintptr, bInheritHandles int32, dwCreationFlags uint32,
+	lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation uintptr) int32 {
+
+	r1, _, e1 := procCreateProcessW.Call(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes,
+		uintptr(bInheritHandles), uintptr(dwCreationFlags), lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation, 0, 0)
+	if r1 == 0 {
+		t.setErrno(e1)
+	}
+	return int32(r1)
 }
 
 // BOOL WINAPI SetConsoleMode(
@@ -4950,76 +5115,6 @@ func XGetEnvironmentVariableW(t *TLS, lpName, lpBuffer uintptr, nSize uint32) (r
 // 	return r0
 // }
 
-func X_endthreadex(t *TLS, _ ...interface{}) {
-	// NOOP
-}
-
-// // The calling convention for beginthread is cdecl -- but in this
-// // case we're just intercepting it and sending it through CreateThread which expects stdcall
-// // and gets that via the go callback. This is safe because the thread is calling into go
-// // not a cdecl function which would expect the stack setup of cdecl.
-// func X_beginthread(t *TLS, procAddr uintptr, stack_sz uint32, args uintptr) int32 {
-// 	if __ccgo_strace {
-// 		trc("t=%v procAddr=%v stack_sz=%v args=%v, (%v:)", t, procAddr, stack_sz, args, origin(2))
-// 	}
-// 	f := (*struct{ f func(*TLS, uintptr) uint32 })(unsafe.Pointer(&struct{ uintptr }{procAddr})).f
-// 	var tAdp = ThreadAdapter{threadFunc: f, tls: NewTLS(), param: args}
-// 	tAdp.token = addObject(&tAdp)
-//
-// 	r0, _, err := procCreateThread.Call(0, uintptr(stack_sz),
-// 		threadCallback, tAdp.token, 0, 0)
-// 	if r0 == 0 {
-// 		t.setErrno(err)
-// 	}
-// 	return int32(r0)
-// }
-
-// uintptr_t _beginthreadex( // NATIVE CODE
-//
-//	void *security,
-//	unsigned stack_size,
-//	unsigned ( __stdcall *start_address )( void * ),
-//	void *arglist,
-//	unsigned initflag,
-//	unsigned *thrdaddr
-//
-// );
-func X_beginthreadex(t *TLS, _ uintptr, stack_sz uint32, procAddr uintptr, args uintptr, initf uint32, thAddr uintptr) int32 {
-	f := (*struct{ f func(*TLS, uintptr) uint32 })(unsafe.Pointer(&struct{ uintptr }{procAddr})).f
-	var tAdp = ThreadAdapter{threadFunc: f, tls: NewTLS(), param: args}
-	tAdp.token = addObject(&tAdp)
-
-	r0, _, err := procCreateThread.Call(0, uintptr(stack_sz),
-		threadCallback, tAdp.token, uintptr(initf), thAddr)
-	if r0 == 0 {
-		t.setErrno(err)
-	}
-	return int32(r0)
-}
-
-// DWORD GetCurrentThreadId();
-func XGetCurrentThreadId(t *TLS) uint32 {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	r0, _, _ := procGetCurrentThreadId.Call()
-	return uint32(r0)
-}
-
-// BOOL GetExitCodeThread(
-//
-//	HANDLE  hThread,
-//	LPDWORD lpExitCode
-//
-// );
-func XGetExitCodeThread(t *TLS, hThread, lpExitCode uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v lpExitCode=%v, (%v:)", t, lpExitCode, origin(2))
-	}
-	r0, _, _ := procGetExitCodeThread.Call(hThread, lpExitCode)
-	return int32(r0)
-}
-
 // DWORD WaitForSingleObjectEx(
 //
 //	HANDLE hHandle,
@@ -5256,34 +5351,6 @@ func XImpersonateSelf(t *TLS, ImpersonationLevel int32) int32 {
 		t.setErrno(err)
 	}
 	return int32(r0)
-}
-
-// BOOL OpenThreadToken(
-//
-//	HANDLE  ThreadHandle,
-//	DWORD   DesiredAccess,
-//	BOOL    OpenAsSelf,
-//	PHANDLE TokenHandle
-//
-// );
-func XOpenThreadToken(t *TLS, ThreadHandle uintptr, DesiredAccess uint32, OpenAsSelf int32, TokenHandle uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v ThreadHandle=%v DesiredAccess=%v OpenAsSelf=%v TokenHandle=%v, (%v:)", t, ThreadHandle, DesiredAccess, OpenAsSelf, TokenHandle, origin(2))
-	}
-	r0, _, err := procOpenThreadToken.Call(ThreadHandle, uintptr(DesiredAccess), uintptr(OpenAsSelf), TokenHandle)
-	if r0 == 0 {
-		t.setErrno(err)
-	}
-	return int32(r0)
-}
-
-// HANDLE GetCurrentThread();
-func XGetCurrentThread(t *TLS) uintptr {
-	if __ccgo_strace {
-		trc("t=%v, (%v:)", t, origin(2))
-	}
-	r0, _, _ := procGetCurrentThread.Call()
-	return r0
 }
 
 // BOOL RevertToSelf();
@@ -5841,31 +5908,6 @@ func XCreatePipe(t *TLS, hReadPipe, hWritePipe, lpPipeAttributes uintptr, nSize 
 	return int32(r0)
 }
 
-// BOOL CreateProcessW(
-//
-//	LPCWSTR               lpApplicationName,
-//	LPWSTR                lpCommandLine,
-//	LPSECURITY_ATTRIBUTES lpProcessAttributes,
-//	LPSECURITY_ATTRIBUTES lpThreadAttributes,
-//	BOOL                  bInheritHandles,
-//	DWORD                 dwCreationFlags,
-//	LPVOID                lpEnvironment,
-//	LPCWSTR               lpCurrentDirectory,
-//	LPSTARTUPINFOW        lpStartupInfo,
-//	LPPROCESS_INFORMATION lpProcessInformation
-//
-// );
-func XCreateProcessW(t *TLS, lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes uintptr, bInheritHandles int32, dwCreationFlags uint32,
-	lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation uintptr) int32 {
-
-	r1, _, e1 := procCreateProcessW.Call(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes,
-		uintptr(bInheritHandles), uintptr(dwCreationFlags), lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation, 0, 0)
-	if r1 == 0 {
-		t.setErrno(e1)
-	}
-	return int32(r1)
-}
-
 // DWORD WaitForInputIdle(
 //
 //	HANDLE hProcess,
@@ -5956,23 +5998,6 @@ func X_InterlockedExchange(t *TLS, Target uintptr, Value long) long {
 	}
 	old := atomic.SwapInt32((*int32)(unsafe.Pointer(Target)), Value)
 	return old
-}
-
-// BOOL TerminateThread(
-//
-//	[in, out] HANDLE hThread,
-//	[in]      DWORD  dwExitCode
-//
-// );
-func XTerminateThread(t *TLS, hThread uintptr, dwExitCode uint32) int32 {
-	if __ccgo_strace {
-		trc("t=%v hThread=%v dwExitCode=%v, (%v:)", t, hThread, dwExitCode, origin(2))
-	}
-	r0, _, err := procTerminateThread.Call(hThread, uintptr(dwExitCode))
-	if r0 == 0 {
-		t.setErrno(err)
-	}
-	return int32(r0)
 }
 
 // BOOL GetComputerNameW(
@@ -7382,172 +7407,6 @@ type TSECURITY_INFORMATION = uint32
 // 	return types.Intptr_t(r0)
 // }
 
-/*-
- * Copyright (c) 1990 The Regents of the University of California.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the name of the University nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- */
-
-// long strtol(const char *nptr, char **endptr, int base);
-func Xstrtol(t *TLS, nptr, endptr uintptr, base int32) long {
-	if __ccgo_strace {
-		trc("t=%v endptr=%v base=%v, (%v:)", t, endptr, base, origin(2))
-	}
-
-	var s uintptr = nptr
-	var acc ulong
-	var c byte
-	var cutoff ulong
-	var neg int32
-	var any int32
-	var cutlim int32
-
-	/*
-	 * Skip white space and pick up leading +/- sign if any.
-	 * If base is 0, allow 0x for hex and 0 for octal, else
-	 * assume decimal; if base is already 16, allow 0x.
-	 */
-	for {
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-		var sp = strings.TrimSpace(string(c))
-		if len(sp) > 0 {
-			break
-		}
-	}
-
-	if c == '-' {
-		neg = 1
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-	} else if c == '+' {
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-	}
-
-	sp := *(*byte)(unsafe.Pointer(s))
-
-	if (base == 0 || base == 16) &&
-		c == '0' && (sp == 'x' || sp == 'X') {
-		PostIncUintptr(&s, 1)
-		c = *(*byte)(unsafe.Pointer(s)) //s[1];
-		PostIncUintptr(&s, 1)
-		base = 16
-	}
-	if base == 0 {
-		if c == '0' {
-			base = 0
-		} else {
-			base = 10
-		}
-	}
-	/*
-	 * Compute the cutoff value between legal numbers and illegal
-	 * numbers.  That is the largest legal value, divided by the
-	 * base.  An input number that is greater than this value, if
-	 * followed by a legal input character, is too big.  One that
-	 * is equal to this value may be valid or not; the limit
-	 * between valid and invalid numbers is then based on the last
-	 * digit.  For instance, if the range for longs is
-	 * [-2147483648..2147483647] and the input base is 10,
-	 * cutoff will be set to 214748364 and cutlim to either
-	 * 7 (neg==0) or 8 (neg==1), meaning that if we have accumulated
-	 * a value > 214748364, or equal but the next digit is > 7 (or 8),
-	 * the number is too big, and we will return a range error.
-	 *
-	 * Set any if any `digits' consumed; make it negative to indicate
-	 * overflow.
-	 */
-	var ULONG_MAX ulong = 0xFFFFFFFF
-	var LONG_MAX long = long(ULONG_MAX >> 1)
-	var LONG_MIN long = ^LONG_MAX
-
-	if neg == 1 {
-		cutoff = ulong(-1 * LONG_MIN)
-	} else {
-		cutoff = ulong(LONG_MAX)
-	}
-	cutlim = int32(cutoff % ulong(base))
-	cutoff = cutoff / ulong(base)
-
-	acc = 0
-	any = 0
-
-	for {
-		var cs = string(c)
-		if unicode.IsDigit([]rune(cs)[0]) {
-			c -= '0'
-		} else if unicode.IsLetter([]rune(cs)[0]) {
-			if unicode.IsUpper([]rune(cs)[0]) {
-				c -= 'A' - 10
-			} else {
-				c -= 'a' - 10
-			}
-		} else {
-			break
-		}
-
-		if int32(c) >= base {
-			break
-		}
-		if any < 0 || acc > cutoff || (acc == cutoff && int32(c) > cutlim) {
-			any = -1
-
-		} else {
-			any = 1
-			acc *= ulong(base)
-			acc += ulong(c)
-		}
-
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-	}
-
-	if any < 0 {
-		if neg == 1 {
-			acc = ulong(LONG_MIN)
-		} else {
-			acc = ulong(LONG_MAX)
-		}
-		t.setErrno(errno.ERANGE)
-	} else if neg == 1 {
-		acc = -acc
-	}
-
-	if endptr != 0 {
-		if any == 1 {
-			PostDecUintptr(&s, 1)
-			AssignPtrUintptr(endptr, s)
-		} else {
-			AssignPtrUintptr(endptr, nptr)
-		}
-	}
-	return long(acc)
-}
-
 // unsigned long int strtoul(const char *nptr, char **endptr, int base);
 func Xstrtoul(t *TLS, nptr, endptr uintptr, base int32) ulong {
 	if __ccgo_strace {
@@ -8222,10 +8081,6 @@ func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int
 	}
 	return Xvsnprintf(t, str, size, format, ap)
 }
-
-// func CreateThread(t *TLS, lpThreadAttributes uintptr, dwStackSize types.Size_t, lpStartAddress, lpParameter uintptr, dwCreationFlags uint32, lpThreadId uintptr) uintptr {
-// 	return XCreateThread(t, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
-// }
 
 var procWcsncpy = modcrt.NewProc("wcsncpy")
 var _ = procWcsncpy.Addr()
@@ -9152,31 +9007,6 @@ func XGetDlgCtrlID(tls *TLS, _hWnd THWND) (r int32) {
 		tls.setErrno(err)
 	}
 	return int32(r0)
-}
-
-// __attribute__((dllimport)) LCID GetThreadLocale (void);
-func XGetThreadLocale(tls *TLS) (r TLCID) {
-	if __ccgo_strace {
-		trc("")
-		defer func() { trc(`XGetThreadLocale->%+v`, r) }()
-	}
-	r0, _, _ := procGetThreadLocale.Call()
-	return TLCID(r0)
-}
-
-type TLPDWORD = uintptr
-
-// __attribute__((dllimport)) DWORD GetWindowThreadProcessId(HWND hWnd,LPDWORD lpdwProcessId);
-func XGetWindowThreadProcessId(tls *TLS, _hWnd THWND, _lpdwProcessId TLPDWORD) (r TDWORD) {
-	if __ccgo_strace {
-		trc("hWnd=%+v lpdwProcessId=%+v", _hWnd, _lpdwProcessId)
-		defer func() { trc(`XGetWindowThreadProcessId->%+v`, r) }()
-	}
-	r0, _, err := procGetWindowThreadProcessId.Call(_hWnd, _lpdwProcessId)
-	if r0 == 0 {
-		tls.setErrno(err)
-	}
-	return TDWORD(r0)
 }
 
 type THLOCAL = uintptr
@@ -12073,16 +11903,35 @@ func Xstrtok(tls *TLS, strToken, strDelimit uintptr) uintptr {
 	panic(todo(""))
 }
 
+var procstrtol = modcrt.NewProc("strtol")
+var _ = procstrtol.Addr()
+
+// long long __attribute__((__cdecl__)) strtoll(const char * __restrict__, char ** __restrict, int);
+func Xstrtol(tls *TLS, nptr, endptr uintptr, base int32) (r long) {
+	if __ccgo_strace {
+		trc("0=%+v 1=%+v 2=%+v", nptr, endptr, base)
+		defer func() { trc(`Xstrtoll->%+v`, r) }()
+	}
+	r0, _, err := procstrtol.Call(nptr, endptr, uintptr(base))
+	if err != windows.ERROR_SUCCESS {
+		tls.setErrno(err)
+	}
+	return long(r0)
+}
+
 var procstrtoll = modcrt.NewProc("strtoll")
 var _ = procstrtoll.Addr()
 
 // long long __attribute__((__cdecl__)) strtoll(const char * __restrict__, char ** __restrict, int);
-func Xstrtoll(tls *TLS, _0 uintptr, _1 uintptr, _2 int32) (r int64) {
+func Xstrtoll(tls *TLS, nptr, endptr uintptr, base int32) (r int64) {
 	if __ccgo_strace {
-		trc("0=%+v 1=%+v 2=%+v", _0, _1, _2)
+		trc("0=%+v 1=%+v 2=%+v", nptr, endptr, base)
 		defer func() { trc(`Xstrtoll->%+v`, r) }()
 	}
-	r0, _, _ := procstrtoll.Call(_0, _1, uintptr(_2))
+	r0, _, err := procstrtoll.Call(nptr, endptr, uintptr(base))
+	if err != windows.ERROR_SUCCESS {
+		tls.setErrno(err)
+	}
 	return int64(r0)
 }
 
