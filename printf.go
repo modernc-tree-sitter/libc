@@ -125,6 +125,7 @@ flags:
 
 	var str string
 
+more:
 	// Conversion specifiers
 	//
 	// A character that specifies the type of conversion to be applied.  The
@@ -295,7 +296,7 @@ flags:
 			case '2':
 				format++
 				mod = mod32
-				goto out
+				goto more
 			default:
 				panic(todo("%#U", c))
 			}
@@ -308,14 +309,13 @@ flags:
 			case '4':
 				format++
 				mod = mod64
-				goto out
+				goto more
 			default:
 				panic(todo("%#U", c))
 			}
 		default:
 			panic(todo("%#U", c))
 		}
-	out:
 		fallthrough
 	case 'X':
 		fallthrough
@@ -635,6 +635,42 @@ func parseLengthModifier(format uintptr) (_ uintptr, n int) {
 			n = modHH
 		}
 		return format, n
+	case 'I':
+		format++
+		switch c = *(*byte)(unsafe.Pointer(format)); c {
+		case 'x', 'X':
+			// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-wsprintfa
+			//
+			// Ix, IX
+			//
+			// 64-bit unsigned hexadecimal integer in lowercase or uppercase on 64-bit
+			// platforms, 32-bit unsigned hexadecimal integer in lowercase or uppercase on
+			// 32-bit platforms.
+			if unsafe.Sizeof(int(0)) == 4 {
+				return format, mod32
+			}
+		case '3':
+			// https://en.wikipedia.org/wiki/Printf_format_string#Length_field
+			//
+			// I32	For integer types, causes printf to expect a 32-bit (double word) integer argument.
+			format++
+			switch c = *(*byte)(unsafe.Pointer(format)); c {
+			case '2':
+				format++
+				return format, mod32
+			}
+		case '6':
+			// https://en.wikipedia.org/wiki/Printf_format_string#Length_field
+			//
+			// I64	For integer types, causes printf to expect a 64-bit (quad word) integer argument.
+			format++
+			switch c = *(*byte)(unsafe.Pointer(format)); c {
+			case '4':
+				format++
+				return format, mod64
+			}
+		}
+		panic(todo("%#U", c))
 	case 'l':
 		format++
 		n = modL

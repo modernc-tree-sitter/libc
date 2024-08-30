@@ -130,7 +130,7 @@ flags:
 					panic(todo(""))
 				}
 			}
-		case 'h', 'j', 'l', 'L', 'q', 't', 'z':
+		case 'h', 'I', 'j', 'l', 'L', 'q', 't', 'z':
 			format, mod = parseLengthModifier(format)
 		default:
 			break flags
@@ -213,7 +213,7 @@ flags:
 				v = -v
 			}
 			switch mod {
-			case modNone:
+			case modNone, mod32:
 				*(*int32)(unsafe.Pointer(arg)) = int32(v)
 			case modH:
 				*(*int16)(unsafe.Pointer(arg)) = int16(v)
@@ -221,7 +221,7 @@ flags:
 				*(*int8)(unsafe.Pointer(arg)) = int8(v)
 			case modL:
 				*(*long)(unsafe.Pointer(arg)) = long(v)
-			case modLL:
+			case modLL, mod64:
 				*(*int64)(unsafe.Pointer(arg)) = int64(v)
 			default:
 				panic(todo("", mod))
@@ -251,51 +251,6 @@ flags:
 		// unsigned int.
 		format++
 		panic(todo(""))
-	case 'I':
-		format++
-		switch c = *(*byte)(unsafe.Pointer(format)); c {
-		case 'x', 'X':
-			// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-wsprintfa
-			//
-			// Ix, IX
-			//
-			// 64-bit unsigned hexadecimal integer in lowercase or uppercase on 64-bit
-			// platforms, 32-bit unsigned hexadecimal integer in lowercase or uppercase on
-			// 32-bit platforms.
-			if unsafe.Sizeof(int(0)) == 4 {
-				mod = mod32
-			}
-		case '3':
-			// https://en.wikipedia.org/wiki/Printf_format_string#Length_field
-			//
-			// I32	For integer types, causes printf to expect a 32-bit (double word) integer argument.
-			format++
-			switch c = *(*byte)(unsafe.Pointer(format)); c {
-			case '2':
-				format++
-				mod = mod32
-				goto out
-			default:
-				panic(todo("%#U", c))
-			}
-		case '6':
-			// https://en.wikipedia.org/wiki/Printf_format_string#Length_field
-			//
-			// I64	For integer types, causes printf to expect a 64-bit (quad word) integer argument.
-			format++
-			switch c = *(*byte)(unsafe.Pointer(format)); c {
-			case '4':
-				format++
-				mod = mod64
-				goto out
-			default:
-				panic(todo("%#U", c))
-			}
-		default:
-			panic(todo("%#U", c))
-		}
-	out:
-		fallthrough
 	case 'x', 'X':
 		// Matches an unsigned hexadecimal integer; the next pointer must be a pointer
 		// to unsigned int.
@@ -359,7 +314,7 @@ flags:
 				*(*byte)(unsafe.Pointer(arg)) = byte(n)
 			case modL:
 				*(*ulong)(unsafe.Pointer(arg)) = ulong(n)
-			case mod64:
+			case modLL, mod64:
 				*(*uint64)(unsafe.Pointer(arg)) = n
 			default:
 				panic(todo(""))
