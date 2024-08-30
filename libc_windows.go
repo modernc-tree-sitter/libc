@@ -18,7 +18,6 @@ import (
 	"sync"
 	"sync/atomic"
 	gotime "time"
-	"unicode"
 	"unicode/utf16"
 	"unsafe"
 	//
@@ -7407,114 +7406,6 @@ type TSECURITY_INFORMATION = uint32
 // 	return types.Intptr_t(r0)
 // }
 
-// unsigned long int strtoul(const char *nptr, char **endptr, int base);
-func Xstrtoul(t *TLS, nptr, endptr uintptr, base int32) ulong {
-	if __ccgo_strace {
-		trc("t=%v endptr=%v base=%v, (%v:)", t, endptr, base, origin(2))
-	}
-	var s uintptr = nptr
-	var acc ulong
-	var c byte
-	var cutoff ulong
-	var neg int32
-	var any int32
-	var cutlim int32
-
-	/*
-	 * Skip white space and pick up leading +/- sign if any.
-	 * If base is 0, allow 0x for hex and 0 for octal, else
-	 * assume decimal; if base is already 16, allow 0x.
-	 */
-	for {
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-		var sp = strings.TrimSpace(string(c))
-		if len(sp) > 0 {
-			break
-		}
-	}
-
-	if c == '-' {
-		neg = 1
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-	} else if c == '+' {
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-	}
-
-	sp := *(*byte)(unsafe.Pointer(s))
-
-	if (base == 0 || base == 16) &&
-		c == '0' && (sp == 'x' || sp == 'X') {
-		PostIncUintptr(&s, 1)
-		c = *(*byte)(unsafe.Pointer(s)) //s[1];
-		PostIncUintptr(&s, 1)
-		base = 16
-	}
-	if base == 0 {
-		if c == '0' {
-			base = 0
-		} else {
-			base = 10
-		}
-	}
-	var ULONG_MAX ulong = 0xFFFFFFFF
-
-	cutoff = ULONG_MAX / ulong(base)
-	cutlim = int32(ULONG_MAX % ulong(base))
-
-	acc = 0
-	any = 0
-
-	for {
-		var cs = string(c)
-		if unicode.IsDigit([]rune(cs)[0]) {
-			c -= '0'
-		} else if unicode.IsLetter([]rune(cs)[0]) {
-			if unicode.IsUpper([]rune(cs)[0]) {
-				c -= 'A' - 10
-			} else {
-				c -= 'a' - 10
-			}
-		} else {
-			break
-		}
-
-		if int32(c) >= base {
-			break
-		}
-		if any < 0 || acc > cutoff || (acc == cutoff && int32(c) > cutlim) {
-			any = -1
-
-		} else {
-			any = 1
-			acc *= ulong(base)
-			acc += ulong(c)
-		}
-
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-	}
-
-	if any < 0 {
-		acc = ULONG_MAX
-		t.setErrno(errno.ERANGE)
-	} else if neg == 1 {
-		acc = -acc
-	}
-
-	if endptr != 0 {
-		if any == 1 {
-			PostDecUintptr(&s, 1)
-			AssignPtrUintptr(endptr, s)
-		} else {
-			AssignPtrUintptr(endptr, nptr)
-		}
-	}
-	return acc
-}
-
 // // int __isoc99_sscanf(const char *str, const char *format, ...);
 // func X__isoc99_sscanf(t *TLS, str, format, va uintptr) int32 {
 // 	if __ccgo_strace {
@@ -10977,110 +10868,6 @@ func XBitBlt(tls *TLS, _hdc THDC, _x int32, _y int32, _cx int32, _cy int32, _hdc
 	return TWINBOOL(r0)
 }
 
-// unsigned long long strtoull(const char *nptr, char **endptr, int base);
-func Xstrtoull(t *TLS, nptr, endptr uintptr, base int32) uint64 {
-	var s uintptr = nptr
-	var acc uint64
-	var c byte
-	var cutoff uint64
-	var neg int32
-	var any int32
-	var cutlim int32
-
-	/*
-	 * Skip white space and pick up leading +/- sign if any.
-	 * If base is 0, allow 0x for hex and 0 for octal, else
-	 * assume decimal; if base is already 16, allow 0x.
-	 */
-	for {
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-		var sp = strings.TrimSpace(string(c))
-		if len(sp) > 0 {
-			break
-		}
-	}
-
-	if c == '-' {
-		neg = 1
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-	} else if c == '+' {
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-	}
-
-	sp := *(*byte)(unsafe.Pointer(s))
-
-	if (base == 0 || base == 16) &&
-		c == '0' && (sp == 'x' || sp == 'X') {
-		PostIncUintptr(&s, 1)
-		c = *(*byte)(unsafe.Pointer(s)) //s[1];
-		PostIncUintptr(&s, 1)
-		base = 16
-	}
-	if base == 0 {
-		if c == '0' {
-			base = 0
-		} else {
-			base = 10
-		}
-	}
-
-	cutoff = math.MaxUint64 / uint64(base)
-	cutlim = int32(math.MaxUint64 % uint64(base))
-
-	acc = 0
-	any = 0
-
-	for {
-		var cs = string(c)
-		if unicode.IsDigit([]rune(cs)[0]) {
-			c -= '0'
-		} else if unicode.IsLetter([]rune(cs)[0]) {
-			if unicode.IsUpper([]rune(cs)[0]) {
-				c -= 'A' - 10
-			} else {
-				c -= 'a' - 10
-			}
-		} else {
-			break
-		}
-
-		if int32(c) >= base {
-			break
-		}
-		if any < 0 || acc > cutoff || (acc == cutoff && int32(c) > cutlim) {
-			any = -1
-
-		} else {
-			any = 1
-			acc *= uint64(base)
-			acc += uint64(c)
-		}
-
-		c = *(*byte)(unsafe.Pointer(s))
-		PostIncUintptr(&s, 1)
-	}
-
-	if any < 0 {
-		acc = math.MaxUint64
-		t.setErrno(errno.ERANGE)
-	} else if neg == 1 {
-		acc = -acc
-	}
-
-	if endptr != 0 {
-		if any == 1 {
-			PostDecUintptr(&s, 1)
-			AssignPtrUintptr(endptr, s)
-		} else {
-			AssignPtrUintptr(endptr, nptr)
-		}
-	}
-	return acc
-}
-
 var procGetFileSizeEx = modkernel32.NewProc("GetFileSizeEx")
 
 // __attribute__((dllimport)) WINBOOL GetFileSizeEx (HANDLE hFile, PLARGE_INTEGER lpFileSize);
@@ -11903,36 +11690,50 @@ func Xstrtok(tls *TLS, strToken, strDelimit uintptr) uintptr {
 	panic(todo(""))
 }
 
-var procstrtol = modcrt.NewProc("strtol")
-var _ = procstrtol.Addr()
+var procStrtol = modcrt.NewProc("strtol")
+var _ = procStrtol.Addr()
 
 // long long __attribute__((__cdecl__)) strtoll(const char * __restrict__, char ** __restrict, int);
 func Xstrtol(tls *TLS, nptr, endptr uintptr, base int32) (r long) {
-	if __ccgo_strace {
-		trc("0=%+v 1=%+v 2=%+v", nptr, endptr, base)
-		defer func() { trc(`Xstrtoll->%+v`, r) }()
-	}
-	r0, _, err := procstrtol.Call(nptr, endptr, uintptr(base))
+	r0, _, err := procStrtol.Call(nptr, endptr, uintptr(base))
 	if err != windows.ERROR_SUCCESS {
 		tls.setErrno(err)
 	}
 	return long(r0)
 }
 
-var procstrtoll = modcrt.NewProc("strtoll")
-var _ = procstrtoll.Addr()
+var procStrtoul = modcrt.NewProc("strtoul")
+var _ = procStrtoul.Addr()
+
+func Xstrtoul(tls *TLS, nptr, endptr uintptr, base int32) ulong {
+	r0, _, err := procStrtoul.Call(nptr, endptr, uintptr(base))
+	if err != windows.ERROR_SUCCESS {
+		tls.setErrno(err)
+	}
+	return ulong(r0)
+}
+
+var procStrtoll = modcrt.NewProc("strtoll")
+var _ = procStrtoll.Addr()
 
 // long long __attribute__((__cdecl__)) strtoll(const char * __restrict__, char ** __restrict, int);
 func Xstrtoll(tls *TLS, nptr, endptr uintptr, base int32) (r int64) {
-	if __ccgo_strace {
-		trc("0=%+v 1=%+v 2=%+v", nptr, endptr, base)
-		defer func() { trc(`Xstrtoll->%+v`, r) }()
-	}
-	r0, _, err := procstrtoll.Call(nptr, endptr, uintptr(base))
+	r0, _, err := procStrtoll.Call(nptr, endptr, uintptr(base))
 	if err != windows.ERROR_SUCCESS {
 		tls.setErrno(err)
 	}
 	return int64(r0)
+}
+
+var procStrtoull = modcrt.NewProc("strtoul")
+var _ = procStrtoull.Addr()
+
+func Xstrtoull(tls *TLS, nptr, endptr uintptr, base int32) uint64 {
+	r0, _, err := procStrtoull.Call(nptr, endptr, uintptr(base))
+	if err != windows.ERROR_SUCCESS {
+		tls.setErrno(err)
+	}
+	return uint64(r0)
 }
 
 var procGetWindowLongPtrA = moduser32.NewProc("GetWindowLongPtrA")
