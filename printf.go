@@ -125,7 +125,6 @@ flags:
 
 	var str string
 
-more:
 	// Conversion specifiers
 	//
 	// A character that specifies the type of conversion to be applied.  The
@@ -274,10 +273,6 @@ more:
 		f := spec + "b"
 		str = fmt.Sprintf(f, arg)
 	case 'I':
-		if !isWindows {
-			panic(todo("%#U", c))
-		}
-
 		format++
 		switch c = *(*byte)(unsafe.Pointer(format)); c {
 		case 'x', 'X':
@@ -300,7 +295,7 @@ more:
 			case '2':
 				format++
 				mod = mod32
-				goto more
+				goto out
 			default:
 				panic(todo("%#U", c))
 			}
@@ -313,13 +308,14 @@ more:
 			case '4':
 				format++
 				mod = mod64
-				goto more
+				goto out
 			default:
 				panic(todo("%#U", c))
 			}
 		default:
 			panic(todo("%#U", c))
 		}
+	out:
 		fallthrough
 	case 'X':
 		fallthrough
@@ -638,10 +634,6 @@ func parseLengthModifier(format uintptr) (_ uintptr, n int) {
 			format++
 			n = modHH
 		}
-		return format, n
-	case 'I': // Windows
-		format++
-		n = modLL
 		return format, n
 	case 'l':
 		format++
