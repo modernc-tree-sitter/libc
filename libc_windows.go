@@ -386,6 +386,84 @@ func XEnumWindows(tls *TLS, lpEnumFunc TWNDENUMPROC, lParam TLPARAM) (r TWINBOOL
 // );
 type wndEnumProc func(tls *TLS, hwnd THWND, lParam TLPARAM) TBOOL
 
+type TCHOOSECOLORW = struct {
+	FlStructSize    TDWORD
+	FhwndOwner      THWND
+	FhInstance      THWND
+	FrgbResult      TCOLORREF
+	FlpCustColors   uintptr
+	FFlags          TDWORD
+	FlCustData      TLPARAM
+	FlpfnHook       TLPCCHOOKPROC
+	FlpTemplateName TLPCWSTR
+}
+
+var procChooseColorW = modcomdlg32.NewProc("ChooseColorW")
+
+// __attribute__((dllimport)) WINBOOL ChooseColorW(LPCHOOSECOLORW);
+func XChooseColorW(tls *TLS, p TLPCHOOSECOLORW) (r TWINBOOL) {
+	if gofnp := (*TCHOOSECOLORW)(unsafe.Pointer(p)).FlpfnHook; gofnp != 0 {
+		f := (*struct{ f colorDlgHookProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
+		cb := func(hDlg THWND, uMsg TUINT, wParam TWPARAM, lParam TLPARAM) uintptr {
+			return uintptr(f(tls, hDlg, uMsg, wParam, lParam))
+		}
+		(*TCHOOSECOLORW)(unsafe.Pointer(p)).FlpfnHook = callbacks.register(tls, gofnp, cb)
+	}
+	r0, _, _ := procChooseColorW.Call(p)
+	return TWINBOOL(r0)
+}
+
+type colorDlgHookProc func(tls *TLS, hDlg THWND, uMsg TUINT, wParam TWPARAM, lParam TLPARAM) (r TUINT)
+
+type TLPCCHOOKPROC = uintptr
+
+type TLPCHOOSECOLORW = uintptr
+
+var procSetTimer = moduser32.NewProc("SetTimer")
+var _ = procSetTimer.Addr()
+
+// __attribute__((moduser32import)) UINT_PTR SetTimer(HWND hWnd,UINT_PTR nIDEvent,UINT uElapse,TIMERPROC lpTimerFunc);
+func XSetTimer(tls *TLS, hWnd THWND, nIDEvent TUINT_PTR, uElapse TUINT, lpTimerFunc TTIMERPROC) (r TUINT_PTR) {
+	if lpTimerFunc != 0 {
+		gofnp := lpTimerFunc
+		f := (*struct{ f timeProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
+		cb := func(hwnd THWND, u TUINT, p TUINT_PTR, d TDWORD) (r uintptr) {
+			f(tls, hwnd, u, p, d)
+			return 0
+		}
+		lpTimerFunc = callbacks.register(tls, gofnp, cb)
+	}
+	r0, _, err := procSetTimer.Call(hWnd, uintptr(nIDEvent), uintptr(uElapse), lpTimerFunc)
+	if r0 == 0 {
+		tls.setErrno(err)
+	}
+	return TUINT_PTR(r0)
+}
+
+type TTIMERPROC = uintptr
+
+type timeProc func(tls *TLS, hwnd THWND, u TUINT, p TUINT_PTR, d TDWORD)
+
+type TWNDENUMPROC = uintptr
+
+var procEnumChildWindows = moduser32.NewProc("EnumChildWindows")
+
+// __attribute__((dllimport)) WINBOOL EnumChildWindows(HWND hWndParent,WNDENUMPROC lpEnumFunc,LPARAM lParam);
+func XEnumChildWindows(tls *TLS, hWndParent THWND, lpEnumFunc TWNDENUMPROC, lParam TLPARAM) (r TWINBOOL) {
+	if lpEnumFunc != 0 {
+		gofnp := lpEnumFunc
+		f := (*struct{ f wndEnumProc })(unsafe.Pointer(&struct{ uintptr }{gofnp})).f
+		cb := func(hwnd THWND, lParam TLPARAM) (r uintptr) {
+			return uintptr(f(tls, hwnd, lParam))
+		}
+		lpEnumFunc = callbacks.register(tls, gofnp, cb)
+	}
+	r0, _, _ := procEnumChildWindows.Call(lpEnumFunc, uintptr(lParam))
+	return TWINBOOL(r0)
+}
+
+// ----------------------------------------------------------------------------
+
 func winGetObject(stream uintptr) interface{} {
 	if fd, ok := iobMap[stream]; ok {
 		f, _ := fdToFile(fd)
@@ -684,7 +762,6 @@ var (
 	procGetClassNameW               = moduser32.NewProc("GetClassNameW")
 	procFindWindowExW               = moduser32.NewProc("FindWindowExW")
 	procFindWindowA                 = moduser32.NewProc("FindWindowA")
-	procEnumChildWindows            = moduser32.NewProc("EnumChildWindows")
 	procUpdateWindow                = moduser32.NewProc("UpdateWindow")
 	procUnhookWindowsHookEx         = moduser32.NewProc("UnhookWindowsHookEx")
 	procGetKeyState                 = moduser32.NewProc("GetKeyState")
@@ -3510,6 +3587,21 @@ func XSetThreadPriority(t *TLS, hThread uintptr, nPriority int32) int32 {
 	return 1
 }
 
+// var procSetThreadPriority = modkernel32.NewProc("SetThreadPriority")
+//
+// // __attribute__((dllimport)) WINBOOL SetThreadPriority (HANDLE hThread, int nPriority);
+// func XSetThreadPriority(tls *libc.TLS, _hThread THANDLE, _nPriority int32) (r TWINBOOL) {
+// 	if __ccgo_strace {
+// 		trc("hThread=%+v nPriority=%+v", _hThread, _nPriority)
+// 		defer func() { trc(`XSetThreadPriority->%+v`, r) }()
+// 	}
+// 	r0, _, err := syscall.SyscallN(procSetThreadPriority.Addr(), _hThread, uintptr(_nPriority))
+// 	if r0 == 0 {
+// 		tls.setErrno(err)
+// 	}
+// 	return TWINBOOL(r0)
+// }
+
 // BOOL OpenThreadToken(
 //
 //	HANDLE  ThreadHandle,
@@ -5805,11 +5897,6 @@ func XPostMessageW(tls *TLS, _hWnd THWND, _Msg TUINT, _wParam TWPARAM, _lParam T
 		tls.setErrno(err)
 	}
 	return TWINBOOL(r0)
-}
-
-func XSetTimer(t *TLS, _ ...interface{}) int32 {
-	die(t, "")
-	panic(todo(""))
 }
 
 // HWND CreateWindowExW(
@@ -8594,14 +8681,6 @@ func XVariantClear(t *TLS, _ ...any) uintptr {
 	panic(todo(""))
 }
 
-type TWNDENUMPROC = uintptr
-
-// __attribute__((dllimport)) WINBOOL EnumChildWindows(HWND hWndParent,WNDENUMPROC lpEnumFunc,LPARAM lParam);
-func XEnumChildWindows(tls *TLS, _hWndParent THWND, _lpEnumFunc TWNDENUMPROC, _lParam TLPARAM) (r TWINBOOL) {
-	die(tls, "syscall with func pointer")
-	panic(todo(""))
-}
-
 // __attribute__((dllimport)) HHOOK SetWindowsHookExW (int idHook, HOOKPROC lpfn, HINSTANCE hmod, DWORD dwThreadId);
 func XSetWindowsHookExW(tls *TLS, _idHook int32, _lpfn THOOKPROC, _hmod THINSTANCE, _dwThreadId TDWORD) (r THHOOK) {
 	die(tls, "syscall with func pointer")
@@ -8713,16 +8792,6 @@ func XCallWindowProcW(tls *TLS, _lpPrevWndFunc TWNDPROC, _hWnd THWND, _Msg TUINT
 	die(tls, "syscall with func pointer")
 	panic(todo(""))
 }
-
-var procChooseColorW = modcomdlg32.NewProc("ChooseColorW")
-
-// __attribute__((dllimport)) WINBOOL ChooseColorW(LPCHOOSECOLORW);
-func XChooseColorW(tls *TLS, _0 TLPCHOOSECOLORW) (r TWINBOOL) {
-	die(tls, "syscall with func pointer")
-	panic(todo(""))
-}
-
-type TLPCHOOSECOLORW = uintptr
 
 var procChooseFontW = modcomdlg32.NewProc("ChooseFontW")
 
