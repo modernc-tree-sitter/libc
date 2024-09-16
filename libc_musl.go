@@ -119,6 +119,7 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
+	"time"
 	"unsafe"
 
 	guuid "github.com/google/uuid"
@@ -638,16 +639,56 @@ func ___synccall(tls *TLS, fn, ctx uintptr) {
 	(*(*func(*TLS, uintptr))(unsafe.Pointer(&struct{ uintptr }{fn})))(tls, ctx)
 }
 
+// func ___randname(tls *TLS, template uintptr) (r1 uintptr) {
+// 	bp := tls.Alloc(16)
+// 	defer tls.Free(16)
+// 	var i int32
+// 	var r uint64
+// 	var _ /* ts at bp+0 */ Ttimespec
+// 	X__clock_gettime(tls, CLOCK_REALTIME, bp)
+// 	goto _2
+// _2:
+// 	r = uint64((*(*Ttimespec)(unsafe.Pointer(bp))).Ftv_sec+(*(*Ttimespec)(unsafe.Pointer(bp))).Ftv_nsec) + uint64(tls.ID)*uint64(65537)
+// 	i = 0
+// 	for {
+// 		if !(i < int32(6)) {
+// 			break
+// 		}
+// 		*(*int8)(unsafe.Pointer(template + uintptr(i))) = int8(uint64('A') + r&uint64(15) + r&uint64(16)*uint64(2))
+// 		goto _3
+// 	_3:
+// 		i++
+// 		r >>= uint64(5)
+// 	}
+// 	return template
+// }
+
+// #include <time.h>
+// #include <stdint.h>
+// #include "pthread_impl.h"
+//
+// /* This assumes that a check for the
+//
+//	template size has already been made */
+//
+// char *__randname(char *template)
+//
+//	{
+//		int i;
+//		struct timespec ts;
+//		unsigned long r;
+//
+//		__clock_gettime(CLOCK_REALTIME, &ts);
+//		r = ts.tv_sec + ts.tv_nsec + __pthread_self()->tid * 65537UL;
+//		for (i=0; i<6; i++, r>>=5)
+//			template[i] = 'A'+(r&15)+(r&16)*2;
+//
+//		return template;
+//	}
 func ___randname(tls *TLS, template uintptr) (r1 uintptr) {
-	bp := tls.Alloc(16)
-	defer tls.Free(16)
 	var i int32
-	var r uint64
-	var _ /* ts at bp+0 */ Ttimespec
-	X__clock_gettime(tls, CLOCK_REALTIME, bp)
-	goto _2
-_2:
-	r = uint64((*(*Ttimespec)(unsafe.Pointer(bp))).Ftv_sec+int64((*(*Ttimespec)(unsafe.Pointer(bp))).Ftv_nsec)) + uint64(tls.ID)*uint64(65537)
+	ts := time.Now().UnixNano()
+	r := uint64(ts) + uint64(tls.ID)*65537
 	i = 0
 	for {
 		if !(i < int32(6)) {

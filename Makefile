@@ -114,15 +114,3 @@ work:
 surface:
 	surface > surface.new
 	surface surface.old surface.new > log-todo-surface || true
-
-w65:
-	rsync \
-		-avP \
-		--rsync-path='wsl rsync' \
-		--exclude *.gz \
-		--exclude .git/ \
-		--exclude include/ \
-		--exclude musl-* \
-		--exclude testdata/nsz.repo.hu/ \
-		.  \
-		win65:src/modernc.org/libc

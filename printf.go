@@ -125,6 +125,7 @@ flags:
 
 	var str string
 
+more:
 	// Conversion specifiers
 	//
 	// A character that specifies the type of conversion to be applied.  The
@@ -178,7 +179,7 @@ flags:
 			mod = modNone
 		}
 		switch mod {
-		case modNone, mod32:
+		case modNone:
 			arg = uint64(VaUint32(args))
 		case modL, modLL, mod64:
 			arg = VaUint64(args)
@@ -186,6 +187,8 @@ flags:
 			arg = uint64(uint16(VaInt32(args)))
 		case modHH:
 			arg = uint64(uint8(VaInt32(args)))
+		case mod32:
+			arg = uint64(VaInt32(args))
 		case modZ:
 			arg = uint64(VaInt64(args))
 		default:
@@ -214,7 +217,7 @@ flags:
 			mod = modNone
 		}
 		switch mod {
-		case modNone, mod32:
+		case modNone:
 			arg = uint64(VaUint32(args))
 		case modL, modLL, mod64:
 			arg = VaUint64(args)
@@ -222,6 +225,8 @@ flags:
 			arg = uint64(uint16(VaInt32(args)))
 		case modHH:
 			arg = uint64(uint8(VaInt32(args)))
+		case mod32:
+			arg = uint64(VaInt32(args))
 		default:
 			panic(todo("", mod))
 		}
@@ -244,7 +249,7 @@ flags:
 			mod = modNone
 		}
 		switch mod {
-		case modNone, mod32:
+		case modNone:
 			arg = uint64(VaUint32(args))
 		case modL, modLL, mod64:
 			arg = VaUint64(args)
@@ -252,6 +257,8 @@ flags:
 			arg = uint64(uint16(VaInt32(args)))
 		case modHH:
 			arg = uint64(uint8(VaInt32(args)))
+		case mod32:
+			arg = uint64(VaInt32(args))
 		default:
 			panic(todo("", mod))
 		}
@@ -266,6 +273,54 @@ flags:
 
 		f := spec + "b"
 		str = fmt.Sprintf(f, arg)
+	case 'I':
+		if !isWindows {
+			panic(todo("%#U", c))
+		}
+
+		format++
+		switch c = *(*byte)(unsafe.Pointer(format)); c {
+		case 'x', 'X':
+			// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-wsprintfa
+			//
+			// Ix, IX
+			//
+			// 64-bit unsigned hexadecimal integer in lowercase or uppercase on 64-bit
+			// platforms, 32-bit unsigned hexadecimal integer in lowercase or uppercase on
+			// 32-bit platforms.
+			if unsafe.Sizeof(int(0)) == 4 {
+				mod = mod32
+			}
+		case '3':
+			// https://en.wikipedia.org/wiki/Printf_format_string#Length_field
+			//
+			// I32	For integer types, causes printf to expect a 32-bit (double word) integer argument.
+			format++
+			switch c = *(*byte)(unsafe.Pointer(format)); c {
+			case '2':
+				format++
+				mod = mod32
+				goto more
+			default:
+				panic(todo("%#U", c))
+			}
+		case '6':
+			// https://en.wikipedia.org/wiki/Printf_format_string#Length_field
+			//
+			// I64	For integer types, causes printf to expect a 64-bit (quad word) integer argument.
+			format++
+			switch c = *(*byte)(unsafe.Pointer(format)); c {
+			case '4':
+				format++
+				mod = mod64
+				goto more
+			default:
+				panic(todo("%#U", c))
+			}
+		default:
+			panic(todo("%#U", c))
+		}
+		fallthrough
 	case 'X':
 		fallthrough
 	case 'x':
@@ -281,7 +336,7 @@ flags:
 			mod = modNone
 		}
 		switch mod {
-		case modNone, mod32:
+		case modNone:
 			arg = uint64(VaUint32(args))
 		case modL, modLL, mod64:
 			arg = VaUint64(args)
@@ -289,6 +344,8 @@ flags:
 			arg = uint64(uint16(VaInt32(args)))
 		case modHH:
 			arg = uint64(uint8(VaInt32(args)))
+		case mod32:
+			arg = uint64(VaInt32(args))
 		case modZ:
 			arg = uint64(VaInt64(args))
 		default:
@@ -610,42 +667,8 @@ func parseLengthModifier(format uintptr) (_ uintptr, n int) {
 	case 't':
 		format++
 		return format, modT
-	case 'I':
-		format++
-		switch c := *(*byte)(unsafe.Pointer(format)); c {
-		case '3':
-			// https://en.wikipedia.org/wiki/Printf_format_string#Length_field
-			//
-			// I32	For integer types, causes printf to expect a 32-bit (double word) integer argument.
-			format++
-			switch c = *(*byte)(unsafe.Pointer(format)); c {
-			case '2':
-				format++
-				return format, mod32
-			default:
-				panic(todo("%#U", c))
-			}
-		case '6':
-			// https://en.wikipedia.org/wiki/Printf_format_string#Length_field
-			//
-			// I64	For integer types, causes printf to expect a 64-bit (quad word) integer argument.
-			format++
-			switch c = *(*byte)(unsafe.Pointer(format)); c {
-			case '4':
-				format++
-				return format, mod64
-			default:
-				panic(todo("%#U", c))
-			}
-		default:
-			if unsafe.Sizeof(uintptr(0)) == 8 {
-				return format, mod64
-			}
-
-			return format, mod32
-		}
 	default:
-		return format, modNone
+		return format, 0
 	}
 }
 

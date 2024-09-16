@@ -13,14 +13,6 @@ import (
 	"unsafe"
 )
 
-type TWPARAM = uint64
-
-type TLPARAM = int64
-
-type TLRESULT = int64
-
-type TPLARGE_INTEGER = uintptr
-
 // int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
 func Xsigaction(t *TLS, signum int32, act, oldact uintptr) int32 {
 	if __ccgo_strace {
@@ -227,32 +219,32 @@ func Xftruncate64(t *TLS, fd int32, length types.Off_t) int32 {
 	// return 0
 }
 
-// // off64_t lseek64(int fd, off64_t offset, int whence);
-// func Xlseek64(t *TLS, fd int32, offset types.Off_t, whence int32) types.Off_t {
-// 	if __ccgo_strace {
-// 		trc("t=%v fd=%v offset=%v whence=%v, (%v:)", t, fd, offset, whence, origin(2))
-// 	}
-//
-// 	f, ok := fdToFile(fd)
-// 	if !ok {
-// 		t.setErrno(errno.EBADF)
-// 		return -1
-// 	}
-//
-// 	n, err := windows.Seek(f.Handle, offset, int(whence))
-// 	if err != nil {
-// 		if dmesgs {
-// 			dmesg("%v: fd %v, off %#x, whence %v: %v", origin(1), f._fd, offset, whenceStr(whence), n)
-// 		}
-// 		t.setErrno(err)
-// 		return -1
-// 	}
-//
-// 	if dmesgs {
-// 		dmesg("%v: fd %v, off %#x, whence %v: ok", origin(1), f._fd, offset, whenceStr(whence))
-// 	}
-// 	return n
-// }
+// off64_t lseek64(int fd, off64_t offset, int whence);
+func Xlseek64(t *TLS, fd int32, offset types.Off_t, whence int32) types.Off_t {
+	if __ccgo_strace {
+		trc("t=%v fd=%v offset=%v whence=%v, (%v:)", t, fd, offset, whence, origin(2))
+	}
+
+	f, ok := fdToFile(fd)
+	if !ok {
+		t.setErrno(errno.EBADF)
+		return -1
+	}
+
+	n, err := windows.Seek(f.Handle, offset, int(whence))
+	if err != nil {
+		if dmesgs {
+			dmesg("%v: fd %v, off %#x, whence %v: %v", origin(1), f._fd, offset, whenceStr(whence), n)
+		}
+		t.setErrno(err)
+		return -1
+	}
+
+	if dmesgs {
+		dmesg("%v: fd %v, off %#x, whence %v: ok", origin(1), f._fd, offset, whenceStr(whence))
+	}
+	return n
+}
 
 // int utime(const char *filename, const struct utimbuf *times);
 func Xutime(t *TLS, filename, times uintptr) int32 {
@@ -591,6 +583,22 @@ func Xaccept(t *TLS, sockfd uint64, addr uintptr, addrlen uintptr) uint64 {
 	if __ccgo_strace {
 		trc("t=%v sockfd=%v addr=%v addrlen=%v, (%v:)", t, sockfd, addr, addrlen, origin(2))
 	}
+	panic(todo(""))
+}
+
+// LRESULT LRESULT DefWindowProcW(
+//
+//	HWND   hWnd,
+//	UINT   Msg,
+//	WPARAM wParam,
+//	LPARAM lParam
+//
+// );
+func XDefWindowProcW(t *TLS, _ ...interface{}) int64 {
+	panic(todo(""))
+}
+
+func XSendMessageTimeoutW(t *TLS, _ ...interface{}) int64 {
 	panic(todo(""))
 }
 

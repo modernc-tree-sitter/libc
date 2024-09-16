@@ -130,7 +130,7 @@ flags:
 					panic(todo(""))
 				}
 			}
-		case 'h', 'I', 'j', 'l', 'L', 'q', 't', 'z':
+		case 'h', 'j', 'l', 'L', 'q', 't', 'z':
 			format, mod = parseLengthModifier(format)
 		default:
 			break flags
@@ -213,7 +213,7 @@ flags:
 				v = -v
 			}
 			switch mod {
-			case modNone, mod32:
+			case modNone:
 				*(*int32)(unsafe.Pointer(arg)) = int32(v)
 			case modH:
 				*(*int16)(unsafe.Pointer(arg)) = int16(v)
@@ -221,7 +221,7 @@ flags:
 				*(*int8)(unsafe.Pointer(arg)) = int8(v)
 			case modL:
 				*(*long)(unsafe.Pointer(arg)) = long(v)
-			case modLL, mod64:
+			case modLL:
 				*(*int64)(unsafe.Pointer(arg)) = int64(v)
 			default:
 				panic(todo("", mod))
@@ -306,7 +306,7 @@ flags:
 		if !discard {
 			arg := VaUintptr(args)
 			switch mod {
-			case modNone, mod32:
+			case modNone:
 				*(*uint32)(unsafe.Pointer(arg)) = uint32(n)
 			case modH:
 				*(*uint16)(unsafe.Pointer(arg)) = uint16(n)
@@ -314,8 +314,6 @@ flags:
 				*(*byte)(unsafe.Pointer(arg)) = byte(n)
 			case modL:
 				*(*ulong)(unsafe.Pointer(arg)) = ulong(n)
-			case modLL, mod64:
-				*(*uint64)(unsafe.Pointer(arg)) = n
 			default:
 				panic(todo(""))
 			}
@@ -502,18 +500,17 @@ flags:
 			panic(todo("", err))
 		}
 
-		var digit, n uint64
 		if c == '0' {
 			if c, err = r.ReadByte(); err != nil {
-				goto donePtr
+				panic(todo("", err))
 			}
 
 			if c != 'x' && c != 'X' {
-				match = true
 				r.UnreadByte()
 			}
 		}
 
+		var digit, n uint64
 	ptr:
 		for ; width != 0; width-- {
 			c, err := r.ReadByte()
@@ -547,7 +544,6 @@ flags:
 			break
 		}
 
-	donePtr:
 		if !discard {
 			arg := VaUintptr(args)
 			*(*uintptr)(unsafe.Pointer(arg)) = uintptr(n)

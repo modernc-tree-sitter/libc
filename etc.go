@@ -171,7 +171,6 @@ func removeObject(t uintptr) {
 }
 
 func (t *TLS) setErrno(err interface{}) {
-	Dbg(t, "%T(%v) (%v: %v: %v:)", err, err, origin(4), origin(3), origin(2)) //TODO-DBG
 	if t == nil {
 		panic("nil TLS")
 	}
