@@ -264,8 +264,10 @@ func main() {
 		switch target {
 		case "linux/s390x":
 			args = append(args, "-hide", "__mmap")
-		case "linux/386", "linux/arm":
+		case "linux/386":
 			args = append(args, "-hide", "pread,pwrite")
+		case "linux/arm":
+			args = append(args, "-hide", "pread,pwrite,ftruncate,read,write")
 		}
 		if s := cc.LongDouble64Flag(goos, goarch); s != "" {
 			args = append(args, s)
