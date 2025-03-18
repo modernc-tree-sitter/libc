@@ -22,14 +22,26 @@ type pthreadCleanupItem struct {
 	routine, arg uintptr
 }
 
-// C version is 40 bytes (64b) and 24 bytes (32b).
-type pthreadMutex struct { // 64b        32b
-	sync.Mutex            //  0	8    0     8
-	count      int32      //  8	4    8     4
-	mType      uint32     // 12	4   12     4
-	outer      sync.Mutex // 16	8   16     8
-	owner      int32      // 24	4   24     4
-	//			 28         28
+// C original, unpatched version
+//
+// include/alltypes.h.in:86:TYPEDEF struct {
+//	union {
+//		int __i[sizeof(long)==8?10:6];
+//		volatile int __vi[sizeof(long)==8?10:6];
+//		volatile void *volatile __p[sizeof(long)==8?5:6];
+//	} __u;
+// } pthread_mutex_t;
+
+// C patched version of pthread_mutex_t is 44 bytes (64b) and 28 bytes (32b).
+// We overlay the C version with our version below. It must not be larger than
+// the C patched version.
+type pthreadMutex struct { //    gc   64b       32b        | tinygo   64b       32b
+	sync.Mutex            //        0    8    0    4   |            0   16    0    8
+	count      int32      //        8    4    4    4   |           16    4    8    4
+	mType      uint32     //       12    4    8    4   |           20    4   12    4
+	outer      sync.Mutex //       16    8   12    4   |           24   16   16    8
+	owner      int32      //       24    4   16    4   |           40    4   24    4
+	//                             28        20        |           44        28
 }
 
 type pthreadConds struct {
@@ -39,7 +51,6 @@ type pthreadConds struct {
 
 var (
 	// Ensure there's enough space for unsafe type conversions.
-	_ [unsafe.Sizeof(sync.Mutex{}) - __CCGO_SIZEOF_GO_MUTEX]byte
 	_ [unsafe.Sizeof(Tpthread_mutex_t{}) - unsafe.Sizeof(pthreadMutex{})]byte
 	_ [unsafe.Sizeof(Tpthread_attr_t{}) - unsafe.Sizeof(pthreadAttr{})]byte
 
