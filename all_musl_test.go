@@ -553,8 +553,8 @@ func (p *parallel) run(path string) {
 	}()
 
 	bin := path + ".bin"
-	if out, err := shell(10*time.Minute, "go", "build", "-o", bin, path); err != nil {
-		p.t.Logf("%v: BUILD FAIL err=%v out=%s", path, err, out)
+	if _, err := shell(10*time.Minute, "go", "build", "-o", bin, path); err != nil {
+		// p.t.Logf("%v: BUILD FAIL err=%v out=%s", path, err, out)
 		switch _, ok := p.blacklist[path]; {
 		case ok:
 			p.skip.Add(1)
@@ -574,7 +574,7 @@ func (p *parallel) run(path string) {
 
 			p.skip.Add(1)
 		default:
-			p.t.Logf("%v: EXEC FAIL err=%v out=%s", path, err, out)
+			// p.t.Logf("%v: EXEC FAIL err=%v out=%s", path, err, out)
 			switch _, ok := p.blacklist[path]; {
 			case ok:
 				p.skip.Add(1)
@@ -2626,4 +2626,6 @@ func TestLibc(t *testing.T) {
 	// 202403051424 all_musl_test.go:650:  files=476 buildFails=244 skip=16  execFails=19 pass=197
 	// 202403151750 all_musl_test.go:1213: files=476 buildFails=  0 skip=273 execFails= 0 pass=203
 	// 202403211526 all_musl_test.go:1214: files=477 buildFails=  0 skip=274 execFails= 0 pass=203
+	// 202504172309 all_musl_test.go:2613: files=477 buildFails=  0 skip=273 execFails= 0 pass=204
+
 }
