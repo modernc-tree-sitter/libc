@@ -259,6 +259,7 @@ func main() {
 			"-eval-all-macros",
 			"-extended-errors",
 			"-ignore-asm-errors",
+			"-ignore-unsupported-alignment",
 			"-isystem", "",
 		}
 		switch target {
