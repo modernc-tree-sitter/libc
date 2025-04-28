@@ -23,7 +23,6 @@ import (
 	"unsafe"
 
 	guuid "github.com/google/uuid"
-	"modernc.org/memory"
 	"golang.org/x/sys/unix"
 	"modernc.org/libc/errno"
 	"modernc.org/libc/fcntl"
@@ -43,6 +42,7 @@ import (
 	"modernc.org/libc/unistd"
 	"modernc.org/libc/uuid/uuid"
 	"modernc.org/libc/wctype"
+	"modernc.org/memory"
 )
 
 const (
