@@ -2779,3 +2779,16 @@ func Xdup(tls *TLS, fd int32) (r int32) {
 func X__builtin_ctz(t *TLS, n uint32) int32 {
 	return int32(mbits.TrailingZeros32(n))
 }
+
+// int clock_gettime(clockid_t clockid, struct timespec *tp);
+func Xclock_gettime(tls *TLS, clk clockid_t, ts uintptr) (r int32) {
+	if __ccgo_strace {
+		trc("tls=%v clk=%v ts=%v, (%v:)", tls, clk, ts, origin(2))
+		defer func() { trc("-> %v", r) }()
+	}
+
+	t := gotime.Now()
+	(*timespec)(unsafe.Pointer(ts)).Ftv_sec = time_t(t.Second() + t.Minute()*60 + t.Hour()*3600)
+	(*timespec)(unsafe.Pointer(ts)).Ftv_nsec = time_t(t.Nanosecond())
+	return 0
+}
