@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"golang.org/x/sys/windows"
 	"math"
+	mbits "math/bits"
 	"os"
 	"os/exec"
 	"os/user"
@@ -7608,4 +7609,8 @@ func X_strnicmp(tls *TLS, __Str1 uintptr, __Str2 uintptr, __MaxCount types.Size_
 		tls.setErrno(int32(err.(windows.Errno)))
 	}
 	return int32(r0)
+}
+
+func X__builtin_ctz(t *TLS, n uint32) int32 {
+	return int32(mbits.TrailingZeros32(n))
 }
