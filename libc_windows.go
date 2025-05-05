@@ -7614,3 +7614,11 @@ func X_strnicmp(tls *TLS, __Str1 uintptr, __Str2 uintptr, __MaxCount types.Size_
 func X__builtin_ctz(t *TLS, n uint32) int32 {
 	return int32(mbits.TrailingZeros32(n))
 }
+
+// int clock_gettime(clockid_t clk_id, struct timespec *tp);
+func Xclock_gettime(t *TLS, clk_id int32, tp uintptr) int32 {
+	if __ccgo_strace {
+		trc("t=%v clk_id=%v tp=%v, (%v:)", t, clk_id, tp, origin(2))
+	}
+	panic(todo(""))
+}

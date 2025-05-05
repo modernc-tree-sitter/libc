@@ -2312,14 +2312,6 @@ func Xwcwidth(t *TLS, c wchar_t) int32 {
 	panic(todo(""))
 }
 
-// int clock_gettime(clockid_t clk_id, struct timespec *tp);
-func Xclock_gettime(t *TLS, clk_id int32, tp uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v clk_id=%v tp=%v, (%v:)", t, clk_id, tp, origin(2))
-	}
-	panic(todo(""))
-}
-
 // AtExit will attempt to run f at process exit. The execution cannot be
 // guaranteed, neither its ordering with respect to any other handlers
 // registered by AtExit.
