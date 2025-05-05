@@ -724,7 +724,6 @@ func Xgettimeofday(t *TLS, tv, tz uintptr) int32 {
 			dmesg("%v: %v FAIL", origin(1), err)
 		}
 		t.setErrno(err)
-		trc("FAIL: %v", err)
 		return -1
 	}
 
