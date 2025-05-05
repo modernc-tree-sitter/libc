@@ -380,6 +380,9 @@ func Xlocaltime(_ *TLS, timep uintptr) uintptr {
 	localtime.Ftm_wday = int32(t.Weekday())
 	localtime.Ftm_yday = int32(t.YearDay())
 	localtime.Ftm_isdst = Bool32(isTimeDST(t))
+	_, off := t.Zone()
+	localtime.Ftm_gmtoff = int64(off)
+	localtime.Ftm_zone = 0
 	return uintptr(unsafe.Pointer(&localtime))
 }
 
@@ -397,6 +400,9 @@ func Xlocaltime_r(_ *TLS, timep, result uintptr) uintptr {
 	(*time.Tm)(unsafe.Pointer(result)).Ftm_wday = int32(t.Weekday())
 	(*time.Tm)(unsafe.Pointer(result)).Ftm_yday = int32(t.YearDay())
 	(*time.Tm)(unsafe.Pointer(result)).Ftm_isdst = Bool32(isTimeDST(t))
+	_, off := t.Zone()
+	(*time.Tm)(unsafe.Pointer(result)).Ftm_gmtoff = int64(off)
+	(*time.Tm)(unsafe.Pointer(result)).Ftm_zone = 0
 	return result
 }
 
@@ -718,6 +724,7 @@ func Xgettimeofday(t *TLS, tv, tz uintptr) int32 {
 			dmesg("%v: %v FAIL", origin(1), err)
 		}
 		t.setErrno(err)
+		trc("FAIL: %v", err)
 		return -1
 	}
 
@@ -2778,17 +2785,4 @@ func Xdup(tls *TLS, fd int32) (r int32) {
 
 func X__builtin_ctz(t *TLS, n uint32) int32 {
 	return int32(mbits.TrailingZeros32(n))
-}
-
-// int clock_gettime(clockid_t clockid, struct timespec *tp);
-func Xclock_gettime(tls *TLS, clk clockid_t, ts uintptr) (r int32) {
-	if __ccgo_strace {
-		trc("tls=%v clk=%v ts=%v, (%v:)", tls, clk, ts, origin(2))
-		defer func() { trc("-> %v", r) }()
-	}
-
-	t := gotime.Now()
-	(*timespec)(unsafe.Pointer(ts)).Ftv_sec = time_t(t.Second() + t.Minute()*60 + t.Hour()*3600)
-	(*timespec)(unsafe.Pointer(ts)).Ftv_nsec = time_t(t.Nanosecond())
-	return 0
 }
