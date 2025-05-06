@@ -1950,7 +1950,7 @@ func getLocalLocation() (loc *gotime.Location) {
 }
 
 // time_t mktime(struct tm *tm);
-func Xmktime(t *TLS, ptm uintptr) time.Time_t {
+func Xmktime(t *TLS, ptm uintptr) (r time.Time_t) {
 	if __ccgo_strace {
 		trc("t=%v ptm=%v, (%v:)", t, ptm, origin(2))
 	}
@@ -1967,7 +1967,8 @@ func Xmktime(t *TLS, ptm uintptr) time.Time_t {
 	)
 	(*time.Tm)(unsafe.Pointer(ptm)).Ftm_wday = int32(tt.Weekday())
 	(*time.Tm)(unsafe.Pointer(ptm)).Ftm_yday = int32(tt.YearDay() - 1)
-	return time.Time_t(tt.Unix())
+	r = time.Time_t(tt.Unix())
+	return r
 }
 
 // char *strpbrk(const char *s, const char *accept);
