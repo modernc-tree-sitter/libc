@@ -886,8 +886,8 @@ func Xclock_gettime(t *TLS, clk_id int32, tp uintptr) int32 {
 	}
 	var u64 uint64 // [100ns]
 	procGetSystemTimeAsFileTime.Call(uintptr(unsafe.Pointer(&u64)), 0, 0)
-	(*Timespec)(unsafe.Pointer(tp)).Ftv_sec = time.Time_t((u64/10-11644473600000000)/1e6)
-	(*Timespec)(unsafe.Pointer(tp)).Ftv_nsec = int32((u64*100)%1e9)
+	(*Timespec)(unsafe.Pointer(tp)).Ftv_sec = time.Time_t((u64/10 - 11644473600000000) / 1e6)
+	(*Timespec)(unsafe.Pointer(tp)).Ftv_nsec = int32((u64 * 100) % 1e9)
 	return 0
 }
 
@@ -7487,8 +7487,6 @@ func AtomicLoadNUint8(ptr uintptr, memorder int32) uint8 {
 	return byte(a_load_8(ptr))
 }
 
-
-
 // struct tm *gmtime( const time_t *sourceTime );
 // func Xgmtime(t *TLS, sourceTime uintptr) uintptr {
 // 	if __ccgo_strace {
@@ -7512,7 +7510,6 @@ func Xgmtime(tls *TLS, t uintptr) (r uintptr) { // /tmp/libc/musl-master/src/tim
 	r = Xgmtime_r(tls, t, uintptr(unsafe.Pointer(&_tm)))
 	return r
 }
-
 
 var _days_in_month = [12]int8{
 	0:  int8(31),
@@ -7617,7 +7614,6 @@ func x___secs_to_tm(tls *TLS, t int64, tm uintptr) (r int32) {
 	(*time.Tm)(unsafe.Pointer(tm)).Ftm_sec = remsecs % int32(60)
 	return 0
 }
-
 
 // size_t strftime(
 //
