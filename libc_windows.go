@@ -7167,7 +7167,7 @@ func Xrint(tls *TLS, x float64) float64 {
 		}
 		return v1
 	}
-	return y	
+	return y
 }
 
 // FILE *fdopen(int fd, const char *mode);
