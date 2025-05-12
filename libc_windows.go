@@ -43,6 +43,9 @@ var X_iob [stdio.X_IOB_ENTRIES]stdio.FILE
 var Xin6addr_any [16]byte
 var Xtimezone long // extern long timezone;
 
+
+type Tsize_t = types.Size_t
+
 var (
 	iobMap     = map[uintptr]int32{} // &_iob[fd] -> fd
 	wenvValid  bool

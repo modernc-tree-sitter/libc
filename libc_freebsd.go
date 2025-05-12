@@ -69,6 +69,8 @@ func X__runes_for_locale(t *TLS, l locale_t, p uintptr) uintptr {
 	panic(todo(""))
 }
 
+type Tsize_t = types.Size_t
+
 type syscallErrno = unix.Errno
 
 type file uintptr
