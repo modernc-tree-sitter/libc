@@ -12,6 +12,7 @@ import (
 	"testing"
 
 	ccgo "modernc.org/ccgo/v4/lib"
+	_ "modernc.org/gc/v3" // genasm.go
 )
 
 var (

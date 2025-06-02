@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	mbits "math/bits"
 	"os"
 	"os/exec"
 	gosignal "os/signal"
@@ -41,6 +42,7 @@ import (
 	"modernc.org/libc/unistd"
 	"modernc.org/libc/uuid/uuid"
 	"modernc.org/libc/wctype"
+	"modernc.org/memory"
 )
 
 const (
@@ -51,15 +53,13 @@ const (
 // 	in6_addr_any in.In6_addr
 // )
 
+type Tsize_t = types.Size_t
+
 type (
 	syscallErrno = unix.Errno
 	long         = types.User_long_t
 	ulong        = types.User_ulong_t
 )
-
-type pthreadAttr struct {
-	detachState int32
-}
 
 // // Keep these outside of the var block otherwise go generate will miss them.
 var X__stderrp = Xstdout
@@ -96,6 +96,18 @@ func (f file) setErr() {
 	(*stdio.FILE)(unsafe.Pointer(f)).F_flags |= 1
 }
 
+func (f file) clearErr() {
+	(*stdio.FILE)(unsafe.Pointer(f)).F_flags &^= 3
+}
+
+func (f file) eof() bool {
+	return (*stdio.FILE)(unsafe.Pointer(f)).F_flags&2 != 0
+}
+
+func (f file) setEOF() {
+	(*stdio.FILE)(unsafe.Pointer(f)).F_flags |= 2
+}
+
 func (f file) close(t *TLS) int32 {
 	r := Xclose(t, f.fd())
 	Xfree(t, uintptr(f))
@@ -125,6 +137,19 @@ func fwrite(fd int32, b []byte) (int, error) {
 		dmesg("%v: fd %v: %s", origin(1), fd, hex.Dump(b))
 	}
 	return unix.Write(int(fd), b)
+}
+
+func Xclearerr(tls *TLS, f uintptr) {
+	file(f).clearErr()
+}
+
+func Xfeof(t *TLS, f uintptr) (r int32) {
+	if __ccgo_strace {
+		trc("t=%v f=%v, (%v:)", t, f, origin(2))
+		defer func() { trc("-> %v", r) }()
+	}
+	r = BoolInt32(file(f).eof())
+	return r
 }
 
 func X__inline_isnand(t *TLS, x float64) int32 {
@@ -357,6 +382,9 @@ func Xlocaltime(_ *TLS, timep uintptr) uintptr {
 	localtime.Ftm_wday = int32(t.Weekday())
 	localtime.Ftm_yday = int32(t.YearDay())
 	localtime.Ftm_isdst = Bool32(isTimeDST(t))
+	_, off := t.Zone()
+	localtime.Ftm_gmtoff = int64(off)
+	localtime.Ftm_zone = 0
 	return uintptr(unsafe.Pointer(&localtime))
 }
 
@@ -374,6 +402,9 @@ func Xlocaltime_r(_ *TLS, timep, result uintptr) uintptr {
 	(*time.Tm)(unsafe.Pointer(result)).Ftm_wday = int32(t.Weekday())
 	(*time.Tm)(unsafe.Pointer(result)).Ftm_yday = int32(t.YearDay())
 	(*time.Tm)(unsafe.Pointer(result)).Ftm_isdst = Bool32(isTimeDST(t))
+	_, off := t.Zone()
+	(*time.Tm)(unsafe.Pointer(result)).Ftm_gmtoff = int64(off)
+	(*time.Tm)(unsafe.Pointer(result)).Ftm_zone = 0
 	return result
 }
 
@@ -1541,6 +1572,9 @@ func Xfread(t *TLS, ptr uintptr, size, nmemb types.Size_t, stream uintptr) types
 		n, err = unix.Read(int(fd), nil)
 	default:
 		n, err = unix.Read(int(fd), (*RawMem)(unsafe.Pointer(ptr))[:count:count])
+		if n == 0 {
+			file(stream).setEOF()
+		}
 		if dmesgs && err == nil {
 			dmesg("%v: fd %v, n %#x\n%s", origin(1), fd, n, hex.Dump((*RawMem)(unsafe.Pointer(ptr))[:n:n]))
 		}
@@ -1672,12 +1706,11 @@ func Xfputs(t *TLS, s, stream uintptr) int32 {
 	if __ccgo_strace {
 		trc("t=%v stream=%v, (%v:)", t, stream, origin(2))
 	}
-	panic(todo(""))
-	// if _, _, err := unix.Syscall(unix.SYS_WRITE, uintptr(file(stream).fd()), s, uintptr(Xstrlen(t, s))); err != 0 {
-	// 	return -1
-	// }
+	if _, _, err := unix.Syscall(unix.SYS_WRITE, uintptr(file(stream).fd()), s, uintptr(Xstrlen(t, s))); err != 0 {
+		return -1
+	}
 
-	// return 0
+	return 0
 }
 
 var getservbynameStaticResult netdb.Servent
@@ -2176,11 +2209,13 @@ func Xpthread_attr_getdetachstate(tls *TLS, a uintptr, state uintptr) int32 {
 	panic(todo(""))
 }
 
-func Xpthread_attr_setdetachstate(tls *TLS, a uintptr, state int32) int32 {
-	if __ccgo_strace {
-		trc("tls=%v a=%v state=%v, (%v:)", tls, a, state, origin(2))
+func Xpthread_attr_setdetachstate(tls *TLS, a uintptr, state int32) (r int32) {
+	if uint32(state) > 1 {
+		return errno.EINVAL
 	}
-	panic(todo(""))
+
+	(*pthreadAttr)(unsafe.Pointer(a)).detachState = state
+	return 0
 }
 
 func Xpthread_mutexattr_destroy(tls *TLS, a uintptr) int32 {
@@ -2449,11 +2484,20 @@ func Xnanosleep(t *TLS, req, rem uintptr) int32 {
 // }
 
 // size_t malloc_size(const void *ptr);
-func Xmalloc_size(t *TLS, ptr uintptr) types.Size_t {
+func Xmalloc_size(t *TLS, p uintptr) (r types.Size_t) {
 	if __ccgo_strace {
-		trc("t=%v ptr=%v, (%v:)", t, ptr, origin(2))
+		trc("t=%v p=%v, (%v:)", t, p, origin(2))
+		defer func() { trc("-> %v", r) }()
 	}
-	panic(todo(""))
+	if p == 0 {
+		return 0
+	}
+
+	allocMu.Lock()
+
+	defer allocMu.Unlock()
+
+	return types.Size_t(memory.UintptrUsableSize(p))
 }
 
 // int open(const char *pathname, int flags, ...);
@@ -2680,4 +2724,66 @@ func Xftw(tls *TLS, path uintptr, fn uintptr, fd_limit int32) (r int32) {
 		},
 		int(fd_limit),
 	))
+}
+
+func Xexecve(tls *TLS, path uintptr, argv uintptr, envp uintptr) (r int32) {
+	goPath := GoString(path)
+	var goArgv, goEnvp []string
+	for p := *(*uintptr)(unsafe.Pointer(argv)); p != 0; p = *(*uintptr)(unsafe.Pointer(argv)) {
+		goArgv = append(goArgv, GoString(p))
+		argv += unsafe.Sizeof(uintptr(0))
+	}
+	for p := *(*uintptr)(unsafe.Pointer(envp)); p != 0; p = *(*uintptr)(unsafe.Pointer(envp)) {
+		goEnvp = append(goEnvp, GoString(p))
+		envp += unsafe.Sizeof(uintptr(0))
+	}
+	if err := unix.Exec(goPath, goArgv, goEnvp); err != nil {
+		tls.setErrno(err)
+		return -1
+	}
+	panic("unreachable")
+}
+
+func Xsetuid(tls *TLS, uid uint32) (r int32) {
+	if __ccgo_strace {
+		trc("tls=%v uid=%v, (%v:)", tls, uid, origin(2))
+		defer func() { trc("-> %v", r) }()
+	}
+	if err := unix.Setuid(int(uid)); err != nil {
+		tls.setErrno(err)
+		return -1
+	}
+
+	return 0
+}
+
+func Xsetgid(tls *TLS, gid uint32) (r int32) {
+	if __ccgo_strace {
+		trc("tls=%v gid=%v, (%v:)", tls, gid, origin(2))
+		defer func() { trc("-> %v", r) }()
+	}
+	if err := unix.Setgid(int(gid)); err != nil {
+		tls.setErrno(err)
+		return -1
+	}
+
+	return 0
+}
+
+func Xdup(tls *TLS, fd int32) (r int32) {
+	if __ccgo_strace {
+		trc("tls=%v fd=%v, (%v:)", tls, fd, origin(2))
+		defer func() { trc("-> %v", r) }()
+	}
+	nfd, err := unix.Dup(int(fd))
+	if err != nil {
+		tls.setErrno(err)
+		return -1
+	}
+
+	return int32(nfd)
+}
+
+func X__builtin_ctz(t *TLS, n uint32) int32 {
+	return int32(mbits.TrailingZeros32(n))
 }
