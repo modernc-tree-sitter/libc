@@ -341,11 +341,14 @@ func main() {
 			}
 		}
 	}
+	switch target {
+	case "linux/amd64":
+		util.MustShell(true, nil, "go", "run", "genasm.go")
+	}
 	if format {
 		util.MustShell(true, nil, "sh", "-c", "gofmt -w *.go")
 	}
 	util.MustShell(true, nil, "go", "test", "-run", "@")
-	util.Shell(nil, "git", "status")
 }
 
 // func Xaio_fsync(tls *TLS, op int32, cb uintptr) (r int32) {

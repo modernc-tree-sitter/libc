@@ -11,6 +11,7 @@ import (
 	"runtime"
 	"testing"
 
+	_ "golang.org/x/tools/go/packages" // genasm.go
 	ccgo "modernc.org/ccgo/v4/lib"
 )
 
