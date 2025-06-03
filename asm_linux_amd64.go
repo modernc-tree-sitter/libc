@@ -1,4 +1,4 @@
-// Code generated  for linux/amd64 by 'genasm []', DO NOT EDIT.
+// Code generated for linux/amd64 by 'genasm', DO NOT EDIT.
 
 package libc
 

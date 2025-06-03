@@ -17,5 +17,5 @@ TEXT ·TLSFree(SB),$16-16
 	MOVQ AX, 0(SP)
 	MOVQ p1+8(FP), AX
 	MOVQ AX, 8(SP)
-	CALL ·tlsAlloc(SB)
+	CALL ·tlsFree(SB)
 	RET
