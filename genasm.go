@@ -191,7 +191,7 @@ func main() {
 	var y, a buf // yproto_os_arch.go a_os_arch.s
 	args := strings.Join(os.Args[1:], " ")
 	if args != "" {
-		args = " "+args
+		args = " " + args
 	}
 	s := fmt.Sprintf("// %s for %s/%s by '%s%v'%s\n",
 		generatedFilePrefix, goos, goarch, filepath.Base(os.Args[0]), args, generatedFileSuffix)
