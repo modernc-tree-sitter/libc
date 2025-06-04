@@ -249,9 +249,12 @@ var (
 	procFindnext32      = moducrt.NewProc("_findnext32")
 	procStat64i32       = moducrt.NewProc("_stat64i32")
 	procWchmod          = moducrt.NewProc("_wchmod")
+	procWfindfirst32    = moducrt.NewProc("_wfindfirst32")
 	procWfindfirst64i32 = moducrt.NewProc("_wfindfirst64i32")
+	procWfindnext32     = moducrt.NewProc("_wfindnext32")
 	procWfindnext64i32  = moducrt.NewProc("_wfindnext64i32")
 	procWmkdir          = moducrt.NewProc("_wmkdir")
+	procWstat32         = moducrt.NewProc("_wstat32")
 	procWstat64i32      = moducrt.NewProc("_wstat64i32")
 )
 
@@ -7791,8 +7794,8 @@ func X_wfindfirst64i32(tls *TLS, filespec, fileinfo uintptr) (r types.Intptr_t) 
 }
 
 // int _wfindnext64i32(intptr_t handle, struct _wfinddata64i32_t *fileinfo);
-func X_wfindnext64i32(tls *TLS, handle, fileinfo uintptr) (r int32) {
-	r0, _, err := procWfindnext64i32.Call(handle, fileinfo)
+func X_wfindnext64i32(tls *TLS, handle types.Intptr_t, fileinfo uintptr) (r int32) {
+	r0, _, err := procWfindnext64i32.Call(uintptr(handle), fileinfo)
 	if err != windows.NOERROR {
 		tls.setErrno(int32(err.(windows.Errno)))
 	}
@@ -7820,6 +7823,33 @@ func X_wmkdir(tls *TLS, dirname uintptr) (r int32) {
 // int _wstat64i32(const wchar_t *path, struct _stat64i32 *buffer);
 func X_wstat64i32(tls *TLS, path, buffer uintptr) (r int32) {
 	r0, _, err := procWstat64i32.Call(path, buffer)
+	if err != windows.NOERROR {
+		tls.setErrno(int32(err.(windows.Errno)))
+	}
+	return int32(r0)
+}
+
+// intptr_t _wfindfirst32(const wchar_t *filespec, struct _wfinddata32_t *fileinfo);
+func X_wfindfirst32(tls *TLS, filespec, fileinfo uintptr) (r types.Intptr_t) {
+	r0, _, err := procWfindfirst32.Call(filespec, fileinfo)
+	if err != windows.NOERROR {
+		tls.setErrno(int32(err.(windows.Errno)))
+	}
+	return types.Intptr_t(r0)
+}
+
+// int _wfindnext32(intptr_t handle, struct _wfinddata32_t *fileinfo);
+func X_wfindnext32(tls *TLS, handle types.Intptr_t, fileinfo uintptr) (r int32) {
+	r0, _, err := procWfindnext32.Call(uintptr(handle), fileinfo)
+	if err != windows.NOERROR {
+		tls.setErrno(int32(err.(windows.Errno)))
+	}
+	return int32(r0)
+}
+
+// int _wstat32(const wchar_t *path, struct __stat32 *buffer);
+func X_wstat32(tls *TLS, path, buffer uintptr) (r int32) {
+	r0, _, err := procWstat32.Call(path, buffer)
 	if err != windows.NOERROR {
 		tls.setErrno(int32(err.(windows.Errno)))
 	}
