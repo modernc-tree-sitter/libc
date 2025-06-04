@@ -7803,7 +7803,7 @@ func X_wfindnext64i32(tls *TLS, handle, fileinfo uintptr) (r int32) {
 func X_wchmod(tls *TLS, filename uintptr, pmode int32) (r int32) {
 	r0, _, err := procWchmod.Call(filename, uintptr(pmode))
 	if err != windows.NOERROR {
-			tls.setErrno(int32(err.(windows.Errno)))
+		tls.setErrno(int32(err.(windows.Errno)))
 	}
 	return int32(r0)
 }
@@ -7812,7 +7812,7 @@ func X_wchmod(tls *TLS, filename uintptr, pmode int32) (r int32) {
 func X_wmkdir(tls *TLS, dirname uintptr) (r int32) {
 	r0, _, err := procWmkdir.Call(dirname)
 	if err != windows.NOERROR {
-			tls.setErrno(int32(err.(windows.Errno)))
+		tls.setErrno(int32(err.(windows.Errno)))
 	}
 	return int32(r0)
 }
@@ -7821,7 +7821,7 @@ func X_wmkdir(tls *TLS, dirname uintptr) (r int32) {
 func X_wstat64i32(tls *TLS, path, buffer uintptr) (r int32) {
 	r0, _, err := procWstat64i32.Call(path, buffer)
 	if err != windows.NOERROR {
-			tls.setErrno(int32(err.(windows.Errno)))
+		tls.setErrno(int32(err.(windows.Errno)))
 	}
 	return int32(r0)
 }
