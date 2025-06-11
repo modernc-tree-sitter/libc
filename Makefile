@@ -39,6 +39,10 @@ editor:
 	go test -c -o /dev/null
 	go build -o /dev/null -v generator*.go
 	go build -o /dev/null -v genasm.go
+<<<<<<< HEAD
+=======
+	go vet 2>&1 | tee grep asm*
+>>>>>>> ok
 
 generate: download
 	mkdir -p $(DIR) || true
