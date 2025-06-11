@@ -11,20 +11,18 @@ require (
 	github.com/ncruces/go-strftime v0.1.9
 	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0
 	golang.org/x/sys v0.33.0
+	golang.org/x/tools v0.33.0
 	modernc.org/cc/v4 v4.26.1
 	modernc.org/ccgo/v4 v4.28.0
-	modernc.org/fileutil v1.3.2
-	modernc.org/gc/v3 v3.1.0
+	modernc.org/fileutil v1.3.3
 	modernc.org/mathutil v1.7.1
 	modernc.org/memory v1.11.0
 )
 
 require (
-	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	golang.org/x/mod v0.24.0 // indirect
 	golang.org/x/sync v0.14.0 // indirect
-	golang.org/x/tools v0.33.0 // indirect
 	modernc.org/gc/v2 v2.6.5 // indirect
 	modernc.org/opt v0.1.4 // indirect
 	modernc.org/sortutil v1.2.1 // indirect
