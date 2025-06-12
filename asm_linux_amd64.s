@@ -2,15646 +2,3950 @@
 
 #include "textflag.h"
 
-TEXT ·Ya64l(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xa64l(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ya64l(tls *TLS, s uintptr) (r int64)
+TEXT ·Ya64l(SB),$24-40
 
+// func Yabort(tls *TLS)
 TEXT ·Yabort(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xabort(SB)
-	RET
 
-TEXT ·Yabs(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xabs(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yabs(tls *TLS, a int32) (r int32)
+TEXT ·Yabs(SB),$24-32
 
-TEXT ·Yaccept(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xaccept(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yaccept(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32)
+TEXT ·Yaccept(SB),$40-68
 
-TEXT ·Yaccept4(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xaccept4(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yaccept4(tls *TLS, fd int32, addr uintptr, len1 uintptr, flg int32) (r1 int32)
+TEXT ·Yaccept4(SB),$48-80
 
-TEXT ·Yaccess(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xaccess(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yaccess(tls *TLS, filename uintptr, amode int32) (r int32)
+TEXT ·Yaccess(SB),$32-48
 
-TEXT ·Yacct(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xacct(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yacct(tls *TLS, filename uintptr) (r int32)
+TEXT ·Yacct(SB),$24-36
 
-TEXT ·Yacos(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xacos(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yacos(tls *TLS, x float64) (r float64)
+TEXT ·Yacos(SB),$24-40
 
-TEXT ·Yacosf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xacosf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yacosf(tls *TLS, x float32) (r float32)
+TEXT ·Yacosf(SB),$24-32
 
-TEXT ·Yacosh(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xacosh(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yacosh(tls *TLS, x float64) (r float64)
+TEXT ·Yacosh(SB),$24-40
 
-TEXT ·Yacoshf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xacoshf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yacoshf(tls *TLS, x float32) (r float32)
+TEXT ·Yacoshf(SB),$24-32
 
-TEXT ·Yacoshl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xacoshl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yacoshl(tls *TLS, x float64) (r float64)
+TEXT ·Yacoshl(SB),$24-40
 
-TEXT ·Yacosl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xacosl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yacosl(tls *TLS, x float64) (r float64)
+TEXT ·Yacosl(SB),$24-40
 
-TEXT ·Yaddmntent(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xaddmntent(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yaddmntent(tls *TLS, f uintptr, mnt uintptr) (r int32)
+TEXT ·Yaddmntent(SB),$32-52
 
-TEXT ·Yadjtime(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xadjtime(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yadjtime(tls *TLS, in uintptr, out uintptr) (r int32)
+TEXT ·Yadjtime(SB),$32-52
 
-TEXT ·Yadjtimex(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xadjtimex(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yadjtimex(tls *TLS, tx uintptr) (r int32)
+TEXT ·Yadjtimex(SB),$24-36
 
-TEXT ·Yalarm(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xalarm(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yalarm(tls *TLS, seconds uint32) (r uint32)
+TEXT ·Yalarm(SB),$24-32
 
-TEXT ·Yalloca(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xalloca(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yalloca(tls *TLS, size Tsize_t) uintptr
+TEXT ·Yalloca(SB),$24-40
 
-TEXT ·Yalphasort(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xalphasort(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yalphasort(tls *TLS, a uintptr, b uintptr) (r int32)
+TEXT ·Yalphasort(SB),$32-52
 
-TEXT ·Yarch_prctl(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xarch_prctl(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yarch_prctl(tls *TLS, code int32, addr uint64) (r int32)
+TEXT ·Yarch_prctl(SB),$32-52
 
-TEXT ·Yasctime(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xasctime(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yasctime(tls *TLS, tm uintptr) (r uintptr)
+TEXT ·Yasctime(SB),$24-40
 
-TEXT ·Yasctime_r(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xasctime_r(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yasctime_r(tls *TLS, tm uintptr, buf uintptr) (r uintptr)
+TEXT ·Yasctime_r(SB),$32-56
 
-TEXT ·Yasin(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xasin(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yasin(tls *TLS, x float64) (r1 float64)
+TEXT ·Yasin(SB),$24-40
 
-TEXT ·Yasinf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xasinf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yasinf(tls *TLS, x float32) (r float32)
+TEXT ·Yasinf(SB),$24-32
 
-TEXT ·Yasinh(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xasinh(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yasinh(tls *TLS, x3 float64) (r float64)
+TEXT ·Yasinh(SB),$24-40
 
-TEXT ·Yasinhf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xasinhf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yasinhf(tls *TLS, x3 float32) (r float32)
+TEXT ·Yasinhf(SB),$24-32
 
-TEXT ·Yasinhl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xasinhl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yasinhl(tls *TLS, x float64) (r float64)
+TEXT ·Yasinhl(SB),$24-40
 
-TEXT ·Yasinl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xasinl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yasinl(tls *TLS, x float64) (r float64)
+TEXT ·Yasinl(SB),$24-40
 
-TEXT ·Yasprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xasprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yasprintf(tls *TLS, s uintptr, fmt uintptr, va uintptr) (r int32)
+TEXT ·Yasprintf(SB),$40-68
 
-TEXT ·Yat_quick_exit(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xat_quick_exit(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yat_quick_exit(tls *TLS, func1 uintptr) (r1 int32)
+TEXT ·Yat_quick_exit(SB),$24-36
 
-TEXT ·Yatan(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xatan(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yatan(tls *TLS, x3 float64) (r float64)
+TEXT ·Yatan(SB),$24-40
 
-TEXT ·Yatan2(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xatan2(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yatan2(tls *TLS, y float64, x float64) (r float64)
+TEXT ·Yatan2(SB),$32-56
 
-TEXT ·Yatan2f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xatan2f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yatan2f(tls *TLS, y float32, x float32) (r float32)
+TEXT ·Yatan2f(SB),$24-36
 
-TEXT ·Yatan2l(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xatan2l(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yatan2l(tls *TLS, y float64, x float64) (r float64)
+TEXT ·Yatan2l(SB),$32-56
 
-TEXT ·Yatanf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xatanf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yatanf(tls *TLS, x3 float32) (r float32)
+TEXT ·Yatanf(SB),$24-32
 
-TEXT ·Yatanh(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xatanh(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yatanh(tls *TLS, x3 float64) (r float64)
+TEXT ·Yatanh(SB),$24-40
 
-TEXT ·Yatanhf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xatanhf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yatanhf(tls *TLS, x3 float32) (r float32)
+TEXT ·Yatanhf(SB),$24-32
 
-TEXT ·Yatanhl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xatanhl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yatanhl(tls *TLS, x float64) (r float64)
+TEXT ·Yatanhl(SB),$24-40
 
-TEXT ·Yatanl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xatanl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yatanl(tls *TLS, x float64) (r float64)
+TEXT ·Yatanl(SB),$24-40
 
-TEXT ·Yatexit(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xatexit(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yatexit(tls *TLS, func_ uintptr) (r int32)
+TEXT ·Yatexit(SB),$24-36
 
-TEXT ·Yatof(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xatof(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yatof(tls *TLS, s uintptr) (r float64)
+TEXT ·Yatof(SB),$24-40
 
-TEXT ·Yatoi(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xatoi(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yatoi(tls *TLS, s uintptr) (r int32)
+TEXT ·Yatoi(SB),$24-36
 
-TEXT ·Yatol(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xatol(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yatol(tls *TLS, s uintptr) (r int64)
+TEXT ·Yatol(SB),$24-40
 
-TEXT ·Yatoll(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xatoll(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yatoll(tls *TLS, s uintptr) (r int64)
+TEXT ·Yatoll(SB),$24-40
 
-TEXT ·Ybacktrace(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xbacktrace(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ybacktrace(t *TLS, buf uintptr, size int32) int32
+TEXT ·Ybacktrace(SB),$32-48
 
+// func Ybacktrace_symbols_fd(t *TLS, buffer uintptr, size, fd int32)
 TEXT ·Ybacktrace_symbols_fd(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	CALL ·Xbacktrace_symbols_fd(SB)
-	RET
 
-TEXT ·Ybasename(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xbasename(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ybasename(tls *TLS, s uintptr) (r uintptr)
+TEXT ·Ybasename(SB),$24-40
 
-TEXT ·Ybcmp(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xbcmp(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ybcmp(tls *TLS, s1 uintptr, s2 uintptr, n Tsize_t) (r int32)
+TEXT ·Ybcmp(SB),$40-68
 
+// func Ybcopy(tls *TLS, s1 uintptr, s2 uintptr, n Tsize_t)
 TEXT ·Ybcopy(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xbcopy(SB)
-	RET
 
-TEXT ·Ybind(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xbind(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ybind(tls *TLS, fd int32, addr uintptr, len1 Tsocklen_t) (r1 int32)
+TEXT ·Ybind(SB),$40-64
 
-TEXT ·Ybind_textdomain_codeset(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xbind_textdomain_codeset(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ybind_textdomain_codeset(tls *TLS, domainname uintptr, codeset uintptr) (r uintptr)
+TEXT ·Ybind_textdomain_codeset(SB),$32-56
 
-TEXT ·Ybindtextdomain(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xbindtextdomain(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ybindtextdomain(tls *TLS, domainname uintptr, dirname uintptr) (r uintptr)
+TEXT ·Ybindtextdomain(SB),$32-56
 
-TEXT ·Ybrk(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xbrk(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ybrk(tls *TLS, end uintptr) (r int32)
+TEXT ·Ybrk(SB),$24-36
 
-TEXT ·Ybsearch(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xbsearch(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
+// func Ybsearch(tls *TLS, key uintptr, base uintptr, nel Tsize_t, width Tsize_t, cmp uintptr) (r uintptr)
+TEXT ·Ybsearch(SB),$56-104
 
-TEXT ·Ybtowc(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xbtowc(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ybtowc(tls *TLS, c int32) (r Twint_t)
+TEXT ·Ybtowc(SB),$24-32
 
+// func Ybzero(tls *TLS, s uintptr, n Tsize_t)
 TEXT ·Ybzero(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xbzero(SB)
-	RET
 
-TEXT ·Yc16rtomb(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVW p2+16(FP), AX
-	MOVW AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xc16rtomb(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yc16rtomb(tls *TLS, s uintptr, c16 Tchar16_t, ps uintptr) (r Tsize_t)
+TEXT ·Yc16rtomb(SB),$40-72
 
-TEXT ·Yc32rtomb(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xc32rtomb(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yc32rtomb(tls *TLS, s uintptr, c32 Tchar32_t, ps uintptr) (r Tsize_t)
+TEXT ·Yc32rtomb(SB),$40-72
 
-TEXT ·Ycabs(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcabs(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ycabs(tls *TLS, z complex128) (r float64)
+TEXT ·Ycabs(SB),$32-56
 
-TEXT ·Ycabsf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcabsf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ycabsf(tls *TLS, z complex64) (r float32)
+TEXT ·Ycabsf(SB),$24-36
 
-TEXT ·Ycabsl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcabsl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ycabsl(tls *TLS, z complex128) (r float64)
+TEXT ·Ycabsl(SB),$32-56
 
-TEXT ·Ycacos(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcacos(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycacos(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycacos(SB),$40-64
 
-TEXT ·Ycacosf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcacosf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ycacosf(tls *TLS, z complex64) (r complex64)
+TEXT ·Ycacosf(SB),$24-40
 
-TEXT ·Ycacosh(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcacosh(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycacosh(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycacosh(SB),$40-64
 
-TEXT ·Ycacoshf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcacoshf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ycacoshf(tls *TLS, z complex64) (r complex64)
+TEXT ·Ycacoshf(SB),$24-40
 
-TEXT ·Ycacoshl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcacoshl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycacoshl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycacoshl(SB),$40-64
 
-TEXT ·Ycacosl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcacosl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycacosl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycacosl(SB),$40-64
 
-TEXT ·Ycalloc(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcalloc(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ycalloc(tls *TLS, m Tsize_t, n Tsize_t) (r uintptr)
+TEXT ·Ycalloc(SB),$32-56
 
-TEXT ·Ycapget(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcapget(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ycapget(tls *TLS, a uintptr, b uintptr) (r int32)
+TEXT ·Ycapget(SB),$32-52
 
-TEXT ·Ycapset(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcapset(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ycapset(tls *TLS, a uintptr, b uintptr) (r int32)
+TEXT ·Ycapset(SB),$32-52
 
-TEXT ·Ycarg(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcarg(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ycarg(tls *TLS, z complex128) (r float64)
+TEXT ·Ycarg(SB),$32-56
 
-TEXT ·Ycargf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcargf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ycargf(tls *TLS, z complex64) (r float32)
+TEXT ·Ycargf(SB),$24-36
 
-TEXT ·Ycargl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcargl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ycargl(tls *TLS, z complex128) (r float64)
+TEXT ·Ycargl(SB),$32-56
 
-TEXT ·Ycasin(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcasin(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycasin(tls *TLS, z complex128) (r1 complex128)
+TEXT ·Ycasin(SB),$40-64
 
-TEXT ·Ycasinf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcasinf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ycasinf(tls *TLS, z complex64) (r1 complex64)
+TEXT ·Ycasinf(SB),$24-40
 
-TEXT ·Ycasinh(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcasinh(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycasinh(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycasinh(SB),$40-64
 
-TEXT ·Ycasinhf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcasinhf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ycasinhf(tls *TLS, z complex64) (r complex64)
+TEXT ·Ycasinhf(SB),$24-40
 
-TEXT ·Ycasinhl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcasinhl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycasinhl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycasinhl(SB),$40-64
 
-TEXT ·Ycasinl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcasinl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycasinl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycasinl(SB),$40-64
 
-TEXT ·Ycatan(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcatan(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycatan(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycatan(SB),$40-64
 
-TEXT ·Ycatanf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcatanf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ycatanf(tls *TLS, z complex64) (r complex64)
+TEXT ·Ycatanf(SB),$24-40
 
-TEXT ·Ycatanh(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcatanh(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycatanh(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycatanh(SB),$40-64
 
-TEXT ·Ycatanhf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcatanhf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ycatanhf(tls *TLS, z complex64) (r complex64)
+TEXT ·Ycatanhf(SB),$24-40
 
-TEXT ·Ycatanhl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcatanhl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycatanhl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycatanhl(SB),$40-64
 
-TEXT ·Ycatanl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcatanl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycatanl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycatanl(SB),$40-64
 
-TEXT ·Ycatclose(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcatclose(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ycatclose(tls *TLS, catd Tnl_catd) (r int32)
+TEXT ·Ycatclose(SB),$24-36
 
-TEXT ·Ycatgets(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xcatgets(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycatgets(tls *TLS, catd Tnl_catd, set_id int32, msg_id int32, s uintptr) (r uintptr)
+TEXT ·Ycatgets(SB),$40-72
 
-TEXT ·Ycatopen(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xcatopen(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ycatopen(tls *TLS, name uintptr, oflag int32) (r Tnl_catd)
+TEXT ·Ycatopen(SB),$32-52
 
-TEXT ·Ycbrt(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcbrt(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ycbrt(tls *TLS, x float64) (r1 float64)
+TEXT ·Ycbrt(SB),$24-40
 
-TEXT ·Ycbrtf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xcbrtf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ycbrtf(tls *TLS, x float32) (r1 float32)
+TEXT ·Ycbrtf(SB),$24-32
 
-TEXT ·Ycbrtl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcbrtl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ycbrtl(tls *TLS, x float64) (r float64)
+TEXT ·Ycbrtl(SB),$24-40
 
-TEXT ·Yccos(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xccos(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yccos(tls *TLS, z complex128) (r complex128)
+TEXT ·Yccos(SB),$40-64
 
-TEXT ·Yccosf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xccosf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yccosf(tls *TLS, z complex64) (r complex64)
+TEXT ·Yccosf(SB),$24-40
 
-TEXT ·Yccosh(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xccosh(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yccosh(tls *TLS, z complex128) (r complex128)
+TEXT ·Yccosh(SB),$40-64
 
-TEXT ·Yccoshf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xccoshf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yccoshf(tls *TLS, z complex64) (r complex64)
+TEXT ·Yccoshf(SB),$24-40
 
-TEXT ·Yccoshl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xccoshl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yccoshl(tls *TLS, z complex128) (r complex128)
+TEXT ·Yccoshl(SB),$40-64
 
-TEXT ·Yccosl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xccosl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yccosl(tls *TLS, z complex128) (r complex128)
+TEXT ·Yccosl(SB),$40-64
 
-TEXT ·Yceil(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xceil(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yceil(tls *TLS, x3 float64) (r float64)
+TEXT ·Yceil(SB),$24-40
 
-TEXT ·Yceilf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xceilf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yceilf(tls *TLS, x3 float32) (r float32)
+TEXT ·Yceilf(SB),$24-32
 
-TEXT ·Yceill(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xceill(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yceill(tls *TLS, x float64) (r float64)
+TEXT ·Yceill(SB),$24-40
 
-TEXT ·Ycexp(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcexp(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycexp(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycexp(SB),$40-64
 
-TEXT ·Ycexpf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcexpf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ycexpf(tls *TLS, z complex64) (r complex64)
+TEXT ·Ycexpf(SB),$24-40
 
-TEXT ·Ycexpl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcexpl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ycexpl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycexpl(SB),$40-64
 
-TEXT ·Ycfgetispeed(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcfgetispeed(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ycfgetispeed(tls *TLS, tio uintptr) (r Tspeed_t)
+TEXT ·Ycfgetispeed(SB),$24-36
 
-TEXT ·Ycfgetospeed(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcfgetospeed(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ycfgetospeed(tls *TLS, tio uintptr) (r Tspeed_t)
+TEXT ·Ycfgetospeed(SB),$24-36
 
+// func Ycfmakeraw(tls *TLS, t uintptr)
 TEXT ·Ycfmakeraw(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcfmakeraw(SB)
-	RET
 
-TEXT ·Ycfsetispeed(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xcfsetispeed(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ycfsetispeed(tls *TLS, tio uintptr, speed Tspeed_t) (r int32)
+TEXT ·Ycfsetispeed(SB),$32-48
 
-TEXT ·Ycfsetospeed(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xcfsetospeed(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ycfsetospeed(tls *TLS, tio uintptr, speed Tspeed_t) (r int32)
+TEXT ·Ycfsetospeed(SB),$32-48
 
-TEXT ·Ycfsetspeed(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xcfsetspeed(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ycfsetspeed(tls *TLS, tio uintptr, speed Tspeed_t) (r int32)
+TEXT ·Ycfsetspeed(SB),$32-48
 
-TEXT ·Ychdir(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xchdir(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ychdir(tls *TLS, path uintptr) (r int32)
+TEXT ·Ychdir(SB),$24-36
 
-TEXT ·Ychmod(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xchmod(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ychmod(tls *TLS, path uintptr, mode Tmode_t) (r int32)
+TEXT ·Ychmod(SB),$32-48
 
-TEXT ·Ychown(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	CALL ·Xchown(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ychown(tls *TLS, path uintptr, uid Tuid_t, gid Tgid_t) (r int32)
+TEXT ·Ychown(SB),$32-52
 
-TEXT ·Ychroot(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xchroot(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ychroot(tls *TLS, path uintptr) (r int32)
+TEXT ·Ychroot(SB),$24-36
 
-TEXT ·Ycimag(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcimag(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ycimag(tls *TLS, z complex128) (r float64)
+TEXT ·Ycimag(SB),$32-56
 
-TEXT ·Ycimagf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcimagf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ycimagf(tls *TLS, z complex64) (r float32)
+TEXT ·Ycimagf(SB),$24-36
 
-TEXT ·Ycimagl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcimagl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ycimagl(tls *TLS, z complex128) (r float64)
+TEXT ·Ycimagl(SB),$32-56
 
-TEXT ·Yclearenv(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xclearenv(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Yclearenv(tls *TLS) (r int32)
+TEXT ·Yclearenv(SB),$16-20
 
+// func Yclearerr(tls *TLS, f uintptr)
 TEXT ·Yclearerr(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xclearerr(SB)
-	RET
 
+// func Yclearerr_unlocked(tls *TLS, f uintptr)
 TEXT ·Yclearerr_unlocked(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xclearerr_unlocked(SB)
-	RET
 
-TEXT ·Yclock(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xclock(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
+// func Yclock(tls *TLS) (r Tclock_t)
+TEXT ·Yclock(SB),$16-24
 
-TEXT ·Yclock_adjtime(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xclock_adjtime(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yclock_adjtime(tls *TLS, clock_id Tclockid_t, utx uintptr) (r1 int32)
+TEXT ·Yclock_adjtime(SB),$32-52
 
-TEXT ·Yclock_getcpuclockid(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xclock_getcpuclockid(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yclock_getcpuclockid(tls *TLS, pid Tpid_t, clk uintptr) (r int32)
+TEXT ·Yclock_getcpuclockid(SB),$32-52
 
-TEXT ·Yclock_getres(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xclock_getres(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yclock_getres(tls *TLS, clk Tclockid_t, ts uintptr) (r int32)
+TEXT ·Yclock_getres(SB),$32-52
 
-TEXT ·Yclock_gettime(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xclock_gettime(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yclock_gettime(tls *TLS, clk Tclockid_t, ts uintptr) (r int32)
+TEXT ·Yclock_gettime(SB),$32-52
 
-TEXT ·Yclock_nanosleep(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xclock_nanosleep(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yclock_nanosleep(tls *TLS, clk Tclockid_t, flags int32, req uintptr, rem uintptr) (r int32)
+TEXT ·Yclock_nanosleep(SB),$40-68
 
-TEXT ·Yclock_settime(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xclock_settime(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yclock_settime(tls *TLS, clk Tclockid_t, ts uintptr) (r int32)
+TEXT ·Yclock_settime(SB),$32-52
 
-TEXT ·Yclog(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xclog(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yclog(tls *TLS, z complex128) (r1 complex128)
+TEXT ·Yclog(SB),$40-64
 
-TEXT ·Yclogf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xclogf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yclogf(tls *TLS, z complex64) (r1 complex64)
+TEXT ·Yclogf(SB),$24-40
 
-TEXT ·Yclogl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xclogl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yclogl(tls *TLS, z complex128) (r complex128)
+TEXT ·Yclogl(SB),$40-64
 
-TEXT ·Yclose(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xclose(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yclose(tls *TLS, fd int32) (r1 int32)
+TEXT ·Yclose(SB),$24-32
 
-TEXT ·Yclosedir(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xclosedir(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yclosedir(tls *TLS, dir uintptr) (r int32)
+TEXT ·Yclosedir(SB),$24-36
 
+// func Ycloselog(tls *TLS)
 TEXT ·Ycloselog(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xcloselog(SB)
-	RET
-
-TEXT ·Yconfstr(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xconfstr(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yconj(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xconj(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yconjf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xconjf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yconjl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xconjl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yconnect(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xconnect(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ycopy_file_range(SB),$64-64
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVL p6+48(FP), AX
-	MOVL AX, 48(SP)
-	CALL ·Xcopy_file_range(SB)
-	MOVQ 56(SP), AX
-	MOVQ AX, ret+56(FP)
-	RET
-
-TEXT ·Ycopysign(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcopysign(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ycopysignf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xcopysignf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ycopysignl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcopysignl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ycos(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcos(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ycosf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xcosf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ycosh(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcosh(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ycoshf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xcoshf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ycoshl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcoshl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ycosl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcosl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ycpow(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p2+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p2+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xcpow(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ycpowf(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcpowf(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ycpowl(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p2+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p2+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xcpowl(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ycproj(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcproj(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ycprojf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcprojf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ycprojl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcprojl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ycreal(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcreal(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ycrealf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcrealf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ycreall(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcreall(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ycreat(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xcreat(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ycrypt(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcrypt(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ycrypt_r(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xcrypt_r(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ycsin(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcsin(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ycsinf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcsinf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ycsinh(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcsinh(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ycsinhf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcsinhf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ycsinhl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcsinhl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ycsinl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcsinl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ycsqrt(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcsqrt(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ycsqrtf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcsqrtf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ycsqrtl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xcsqrtl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yctan(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xctan(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yctanf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xctanf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yctanh(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xctanh(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yctanhf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xctanhf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yctanhl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xctanhl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yctanl(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xctanl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yctermid(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xctermid(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yctime(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xctime(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yctime_r(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xctime_r(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ycuserid(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xcuserid(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ydcgettext(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xdcgettext(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ydcngettext(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xdcngettext(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ydelete_module(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xdelete_module(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ydgettext(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xdgettext(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ydifftime(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xdifftime(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ydirfd(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xdirfd(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ydirname(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xdirname(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ydiv(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xdiv(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ydlclose(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xdlclose(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ydlerror(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xdlerror(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ydlopen(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xdlopen(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ydlsym(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xdlsym(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ydn_comp(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xdn_comp(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ydn_expand(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xdn_expand(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ydn_skipname(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xdn_skipname(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ydngettext(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xdngettext(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ydprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xdprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ydrand48(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xdrand48(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ydrem(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xdrem(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ydremf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xdremf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ydup(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xdup(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ydup2(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xdup2(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ydup3(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVL p3+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xdup3(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yduplocale(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xduplocale(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yeaccess(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xeaccess(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yecvt(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xecvt(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Yencrypt(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xencrypt(SB)
-	RET
 
+// func Yconfstr(tls *TLS, name int32, buf uintptr, len1 Tsize_t) (r Tsize_t)
+TEXT ·Yconfstr(SB),$40-72
+
+// func Yconj(tls *TLS, z complex128) (r complex128)
+TEXT ·Yconj(SB),$40-64
+
+// func Yconjf(tls *TLS, z complex64) (r complex64)
+TEXT ·Yconjf(SB),$24-40
+
+// func Yconjl(tls *TLS, z complex128) (r complex128)
+TEXT ·Yconjl(SB),$40-64
+
+// func Yconnect(tls *TLS, fd int32, addr uintptr, len1 Tsocklen_t) (r1 int32)
+TEXT ·Yconnect(SB),$40-64
+
+// func Ycopy_file_range(tls *TLS, fd_in int32, off_in uintptr, fd_out int32, off_out uintptr, len1 Tsize_t, flags uint32) (r Tssize_t)
+TEXT ·Ycopy_file_range(SB),$64-116
+
+// func Ycopysign(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Ycopysign(SB),$32-56
+
+// func Ycopysignf(tls *TLS, x float32, y float32) (r float32)
+TEXT ·Ycopysignf(SB),$24-36
+
+// func Ycopysignl(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Ycopysignl(SB),$32-56
+
+// func Ycos(tls *TLS, x3 float64) (r float64)
+TEXT ·Ycos(SB),$24-40
+
+// func Ycosf(tls *TLS, x3 float32) (r float32)
+TEXT ·Ycosf(SB),$24-32
+
+// func Ycosh(tls *TLS, x3 float64) (r float64)
+TEXT ·Ycosh(SB),$24-40
+
+// func Ycoshf(tls *TLS, x3 float32) (r float32)
+TEXT ·Ycoshf(SB),$24-32
+
+// func Ycoshl(tls *TLS, x float64) (r float64)
+TEXT ·Ycoshl(SB),$24-40
+
+// func Ycosl(tls *TLS, x float64) (r float64)
+TEXT ·Ycosl(SB),$24-40
+
+// func Ycpow(tls *TLS, z complex128, c complex128) (r complex128)
+TEXT ·Ycpow(SB),$56-96
+
+// func Ycpowf(tls *TLS, z complex64, c complex64) (r complex64)
+TEXT ·Ycpowf(SB),$32-56
+
+// func Ycpowl(tls *TLS, z complex128, c complex128) (r complex128)
+TEXT ·Ycpowl(SB),$56-96
+
+// func Ycproj(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycproj(SB),$40-64
+
+// func Ycprojf(tls *TLS, z complex64) (r complex64)
+TEXT ·Ycprojf(SB),$24-40
+
+// func Ycprojl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycprojl(SB),$40-64
+
+// func Ycreal(tls *TLS, z complex128) (r float64)
+TEXT ·Ycreal(SB),$32-56
+
+// func Ycrealf(tls *TLS, z complex64) (r float32)
+TEXT ·Ycrealf(SB),$24-36
+
+// func Ycreall(tls *TLS, z complex128) (r float64)
+TEXT ·Ycreall(SB),$32-56
+
+// func Ycreat(tls *TLS, filename uintptr, mode Tmode_t) (r int32)
+TEXT ·Ycreat(SB),$32-48
+
+// func Ycrypt(tls *TLS, key uintptr, salt uintptr) (r uintptr)
+TEXT ·Ycrypt(SB),$32-56
+
+// func Ycrypt_r(tls *TLS, key uintptr, salt uintptr, data uintptr) (r uintptr)
+TEXT ·Ycrypt_r(SB),$40-72
+
+// func Ycsin(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycsin(SB),$40-64
+
+// func Ycsinf(tls *TLS, z complex64) (r complex64)
+TEXT ·Ycsinf(SB),$24-40
+
+// func Ycsinh(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycsinh(SB),$40-64
+
+// func Ycsinhf(tls *TLS, z complex64) (r complex64)
+TEXT ·Ycsinhf(SB),$24-40
+
+// func Ycsinhl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycsinhl(SB),$40-64
+
+// func Ycsinl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycsinl(SB),$40-64
+
+// func Ycsqrt(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycsqrt(SB),$40-64
+
+// func Ycsqrtf(tls *TLS, z complex64) (r complex64)
+TEXT ·Ycsqrtf(SB),$24-40
+
+// func Ycsqrtl(tls *TLS, z complex128) (r complex128)
+TEXT ·Ycsqrtl(SB),$40-64
+
+// func Yctan(tls *TLS, z complex128) (r complex128)
+TEXT ·Yctan(SB),$40-64
+
+// func Yctanf(tls *TLS, z complex64) (r complex64)
+TEXT ·Yctanf(SB),$24-40
+
+// func Yctanh(tls *TLS, z complex128) (r complex128)
+TEXT ·Yctanh(SB),$40-64
+
+// func Yctanhf(tls *TLS, z complex64) (r complex64)
+TEXT ·Yctanhf(SB),$24-40
+
+// func Yctanhl(tls *TLS, z complex128) (r complex128)
+TEXT ·Yctanhl(SB),$40-64
+
+// func Yctanl(tls *TLS, z complex128) (r complex128)
+TEXT ·Yctanl(SB),$40-64
+
+// func Yctermid(tls *TLS, s uintptr) (r uintptr)
+TEXT ·Yctermid(SB),$24-40
+
+// func Yctime(tls *TLS, t uintptr) (r uintptr)
+TEXT ·Yctime(SB),$24-40
+
+// func Yctime_r(tls *TLS, t uintptr, buf uintptr) (r uintptr)
+TEXT ·Yctime_r(SB),$32-56
+
+// func Ycuserid(tls *TLS, buf uintptr) (r uintptr)
+TEXT ·Ycuserid(SB),$24-40
+
+// func Ydcgettext(tls *TLS, domainname uintptr, msgid uintptr, category int32) (r uintptr)
+TEXT ·Ydcgettext(SB),$40-68
+
+// func Ydcngettext(tls *TLS, domainname uintptr, msgid1 uintptr, msgid2 uintptr, n uint64, category int32) (r1 uintptr)
+TEXT ·Ydcngettext(SB),$56-100
+
+// func Ydelete_module(tls *TLS, a uintptr, b uint32) (r int32)
+TEXT ·Ydelete_module(SB),$32-48
+
+// func Ydgettext(tls *TLS, domainname uintptr, msgid uintptr) (r uintptr)
+TEXT ·Ydgettext(SB),$32-56
+
+// func Ydifftime(tls *TLS, t1 Ttime_t, t0 Ttime_t) (r float64)
+TEXT ·Ydifftime(SB),$32-56
+
+// func Ydirfd(tls *TLS, d uintptr) (r int32)
+TEXT ·Ydirfd(SB),$24-36
+
+// func Ydirname(tls *TLS, s uintptr) (r uintptr)
+TEXT ·Ydirname(SB),$24-40
+
+// func Ydiv(tls *TLS, num int32, den int32) (r Tdiv_t)
+TEXT ·Ydiv(SB),$24-40
+
+// func Ydlclose(t *TLS, handle uintptr) int32
+TEXT ·Ydlclose(SB),$24-36
+
+// func Ydlerror(t *TLS) uintptr
+TEXT ·Ydlerror(SB),$16-24
+
+// func Ydlopen(t *TLS, filename uintptr, flags int32) uintptr
+TEXT ·Ydlopen(SB),$32-52
+
+// func Ydlsym(t *TLS, handle, symbol uintptr) uintptr
+TEXT ·Ydlsym(SB),$32-56
+
+// func Ydn_comp(tls *TLS, src uintptr, dst uintptr, space int32, dnptrs uintptr, lastdnptr uintptr) (r int32)
+TEXT ·Ydn_comp(SB),$56-100
+
+// func Ydn_expand(tls *TLS, base uintptr, end uintptr, src uintptr, dest uintptr, space int32) (r int32)
+TEXT ·Ydn_expand(SB),$56-96
+
+// func Ydn_skipname(tls *TLS, s uintptr, end uintptr) (r int32)
+TEXT ·Ydn_skipname(SB),$32-52
+
+// func Ydngettext(tls *TLS, domainname uintptr, msgid1 uintptr, msgid2 uintptr, n uint64) (r uintptr)
+TEXT ·Ydngettext(SB),$48-88
+
+// func Ydprintf(tls *TLS, fd int32, fmt uintptr, va uintptr) (r int32)
+TEXT ·Ydprintf(SB),$40-68
+
+// func Ydrand48(tls *TLS) (r float64)
+TEXT ·Ydrand48(SB),$16-24
+
+// func Ydrem(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Ydrem(SB),$32-56
+
+// func Ydremf(tls *TLS, x float32, y float32) (r float32)
+TEXT ·Ydremf(SB),$24-36
+
+// func Ydup(tls *TLS, fd int32) (r int32)
+TEXT ·Ydup(SB),$24-32
+
+// func Ydup2(tls *TLS, old int32, new1 int32) (r1 int32)
+TEXT ·Ydup2(SB),$24-36
+
+// func Ydup3(tls *TLS, old int32, new1 int32, flags int32) (r int32)
+TEXT ·Ydup3(SB),$32-48
+
+// func Yduplocale(tls *TLS, old Tlocale_t) (r Tlocale_t)
+TEXT ·Yduplocale(SB),$24-40
+
+// func Yeaccess(tls *TLS, filename uintptr, amode int32) (r int32)
+TEXT ·Yeaccess(SB),$32-48
+
+// func Yecvt(tls *TLS, x float64, n int32, dp uintptr, sign uintptr) (r uintptr)
+TEXT ·Yecvt(SB),$48-88
+
+// func Yencrypt(tls *TLS, block uintptr, edflag int32)
+TEXT ·Yencrypt(SB),$24-20
+
+// func Yendgrent(tls *TLS)
 TEXT ·Yendgrent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xendgrent(SB)
-	RET
 
+// func Yendhostent(tls *TLS)
 TEXT ·Yendhostent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xendhostent(SB)
-	RET
 
-TEXT ·Yendmntent(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xendmntent(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yendmntent(tls *TLS, f uintptr) (r int32)
+TEXT ·Yendmntent(SB),$24-36
 
+// func Yendnetent(tls *TLS)
 TEXT ·Yendnetent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xendnetent(SB)
-	RET
 
+// func Yendprotoent(tls *TLS)
 TEXT ·Yendprotoent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xendprotoent(SB)
-	RET
 
+// func Yendpwent(tls *TLS)
 TEXT ·Yendpwent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xendpwent(SB)
-	RET
 
+// func Yendservent(tls *TLS)
 TEXT ·Yendservent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xendservent(SB)
-	RET
 
+// func Yendspent(tls *TLS)
 TEXT ·Yendspent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xendspent(SB)
-	RET
 
+// func Yendusershell(tls *TLS)
 TEXT ·Yendusershell(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xendusershell(SB)
-	RET
 
+// func Yendutent(tls *TLS)
 TEXT ·Yendutent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xendutent(SB)
-	RET
 
+// func Yendutxent(tls *TLS)
 TEXT ·Yendutxent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xendutxent(SB)
-	RET
 
-TEXT ·Yepoll_create(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xepoll_create(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yepoll_create(tls *TLS, size int32) (r int32)
+TEXT ·Yepoll_create(SB),$24-32
 
-TEXT ·Yepoll_create1(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xepoll_create1(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yepoll_create1(tls *TLS, flags int32) (r1 int32)
+TEXT ·Yepoll_create1(SB),$24-32
 
-TEXT ·Yepoll_ctl(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVL p3+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xepoll_ctl(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yepoll_ctl(tls *TLS, fd int32, op int32, fd2 int32, ev uintptr) (r int32)
+TEXT ·Yepoll_ctl(SB),$40-68
 
-TEXT ·Yepoll_pwait(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	MOVQ p5+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xepoll_pwait(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yepoll_pwait(tls *TLS, fd int32, ev uintptr, cnt int32, to int32, sigs uintptr) (r1 int32)
+TEXT ·Yepoll_pwait(SB),$48-84
 
-TEXT ·Yepoll_wait(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	CALL ·Xepoll_wait(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yepoll_wait(tls *TLS, fd int32, ev uintptr, cnt int32, to int32) (r int32)
+TEXT ·Yepoll_wait(SB),$40-68
 
-TEXT ·Yerand48(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xerand48(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yerand48(tls *TLS, s uintptr) (r float64)
+TEXT ·Yerand48(SB),$24-40
 
-TEXT ·Yerf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xerf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yerf(tls *TLS, x float64) (r1 float64)
+TEXT ·Yerf(SB),$24-40
 
-TEXT ·Yerfc(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xerfc(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yerfc(tls *TLS, x float64) (r1 float64)
+TEXT ·Yerfc(SB),$24-40
 
-TEXT ·Yerfcf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xerfcf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yerfcf(tls *TLS, x float32) (r1 float32)
+TEXT ·Yerfcf(SB),$24-32
 
-TEXT ·Yerfcl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xerfcl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yerfcl(tls *TLS, x float64) (r float64)
+TEXT ·Yerfcl(SB),$24-40
 
-TEXT ·Yerff(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xerff(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yerff(tls *TLS, x float32) (r1 float32)
+TEXT ·Yerff(SB),$24-32
 
-TEXT ·Yerfl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xerfl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yerfl(tls *TLS, x float64) (r float64)
+TEXT ·Yerfl(SB),$24-40
 
+// func Yerr(tls *TLS, status int32, fmt uintptr, va uintptr)
 TEXT ·Yerr(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xerr(SB)
-	RET
 
+// func Yerrx(tls *TLS, status int32, fmt uintptr, va uintptr)
 TEXT ·Yerrx(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xerrx(SB)
-	RET
 
-TEXT ·Yether_aton(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xether_aton(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yether_aton(tls *TLS, x uintptr) (r uintptr)
+TEXT ·Yether_aton(SB),$24-40
 
-TEXT ·Yether_aton_r(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xether_aton_r(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yether_aton_r(tls *TLS, x uintptr, p_a uintptr) (r uintptr)
+TEXT ·Yether_aton_r(SB),$32-56
 
-TEXT ·Yether_hostton(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xether_hostton(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yether_hostton(tls *TLS, hostname uintptr, e uintptr) (r int32)
+TEXT ·Yether_hostton(SB),$32-52
 
-TEXT ·Yether_line(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xether_line(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yether_line(tls *TLS, l uintptr, e uintptr, hostname uintptr) (r int32)
+TEXT ·Yether_line(SB),$40-68
 
-TEXT ·Yether_ntoa(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xether_ntoa(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yether_ntoa(tls *TLS, p_a uintptr) (r uintptr)
+TEXT ·Yether_ntoa(SB),$24-40
 
-TEXT ·Yether_ntoa_r(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xether_ntoa_r(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yether_ntoa_r(tls *TLS, p_a uintptr, x uintptr) (r uintptr)
+TEXT ·Yether_ntoa_r(SB),$32-56
 
-TEXT ·Yether_ntohost(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xether_ntohost(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yether_ntohost(tls *TLS, hostname uintptr, e uintptr) (r int32)
+TEXT ·Yether_ntohost(SB),$32-52
 
-TEXT ·Yeuidaccess(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xeuidaccess(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yeuidaccess(tls *TLS, filename uintptr, amode int32) (r int32)
+TEXT ·Yeuidaccess(SB),$32-48
 
-TEXT ·Yeventfd(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xeventfd(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yeventfd(tls *TLS, count uint32, flags int32) (r1 int32)
+TEXT ·Yeventfd(SB),$24-36
 
-TEXT ·Yeventfd_read(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xeventfd_read(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yeventfd_read(tls *TLS, fd int32, value uintptr) (r int32)
+TEXT ·Yeventfd_read(SB),$32-52
 
-TEXT ·Yeventfd_write(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xeventfd_write(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yeventfd_write(tls *TLS, fd int32, _value Teventfd_t) (r int32)
+TEXT ·Yeventfd_write(SB),$32-52
 
-TEXT ·Yexecl(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xexecl(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yexecl(tls *TLS, path uintptr, argv0 uintptr, va uintptr) (r int32)
+TEXT ·Yexecl(SB),$40-68
 
-TEXT ·Yexecle(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xexecle(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yexecle(tls *TLS, path uintptr, argv0 uintptr, va uintptr) (r int32)
+TEXT ·Yexecle(SB),$40-68
 
-TEXT ·Yexeclp(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xexeclp(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yexeclp(tls *TLS, file uintptr, argv0 uintptr, va uintptr) (r int32)
+TEXT ·Yexeclp(SB),$40-68
 
-TEXT ·Yexecv(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xexecv(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yexecv(tls *TLS, path uintptr, argv uintptr) (r int32)
+TEXT ·Yexecv(SB),$32-52
 
-TEXT ·Yexecve(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xexecve(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yexecve(tls *TLS, path uintptr, argv uintptr, envp uintptr) (r int32)
+TEXT ·Yexecve(SB),$40-68
 
-TEXT ·Yexecvp(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xexecvp(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yexecvp(tls *TLS, file uintptr, argv uintptr) (r int32)
+TEXT ·Yexecvp(SB),$32-52
 
-TEXT ·Yexecvpe(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xexecvpe(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yexecvpe(tls *TLS, file uintptr, argv uintptr, envp uintptr) (r int32)
+TEXT ·Yexecvpe(SB),$40-68
 
-TEXT ·Yexit(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xexit(SB)
-	RET
+// func Yexit(tls *TLS, code int32)
+TEXT ·Yexit(SB),$16-12
 
-TEXT ·Yexp(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xexp(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yexp(tls *TLS, x1 float64) (r1 float64)
+TEXT ·Yexp(SB),$24-40
 
-TEXT ·Yexp10(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xexp10(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yexp10(tls *TLS, x float64) (r float64)
+TEXT ·Yexp10(SB),$24-40
 
-TEXT ·Yexp10f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xexp10f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yexp10f(tls *TLS, x float32) (r float32)
+TEXT ·Yexp10f(SB),$24-32
 
-TEXT ·Yexp10l(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xexp10l(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yexp10l(tls *TLS, x float64) (r float64)
+TEXT ·Yexp10l(SB),$24-40
 
-TEXT ·Yexp2(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xexp2(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yexp2(tls *TLS, x1 float64) (r1 float64)
+TEXT ·Yexp2(SB),$24-40
 
-TEXT ·Yexp2f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xexp2f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yexp2f(tls *TLS, x2 float32) (r1 float32)
+TEXT ·Yexp2f(SB),$24-32
 
-TEXT ·Yexp2l(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xexp2l(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yexp2l(tls *TLS, x float64) (r float64)
+TEXT ·Yexp2l(SB),$24-40
 
-TEXT ·Yexpf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xexpf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yexpf(tls *TLS, x2 float32) (r1 float32)
+TEXT ·Yexpf(SB),$24-32
 
-TEXT ·Yexpl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xexpl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yexpl(tls *TLS, x float64) (r float64)
+TEXT ·Yexpl(SB),$24-40
 
+// func Yexplicit_bzero(tls *TLS, d uintptr, n Tsize_t)
 TEXT ·Yexplicit_bzero(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xexplicit_bzero(SB)
-	RET
 
-TEXT ·Yexpm1(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xexpm1(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yexpm1(tls *TLS, x3 float64) (r float64)
+TEXT ·Yexpm1(SB),$24-40
 
-TEXT ·Yexpm1f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xexpm1f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yexpm1f(tls *TLS, x3 float32) (r float32)
+TEXT ·Yexpm1f(SB),$24-32
 
-TEXT ·Yexpm1l(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xexpm1l(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yexpm1l(tls *TLS, x float64) (r float64)
+TEXT ·Yexpm1l(SB),$24-40
 
-TEXT ·Yfabs(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfabs(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yfabs(tls *TLS, x float64) (r float64)
+TEXT ·Yfabs(SB),$24-40
 
-TEXT ·Yfabsf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xfabsf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfabsf(tls *TLS, x float32) (r float32)
+TEXT ·Yfabsf(SB),$24-32
 
-TEXT ·Yfabsl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfabsl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yfabsl(tls *TLS, x float64) (r float64)
+TEXT ·Yfabsl(SB),$24-40
 
-TEXT ·Yfaccessat(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	CALL ·Xfaccessat(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yfaccessat(tls *TLS, fd int32, filename uintptr, amode int32, flag int32) (r int32)
+TEXT ·Yfaccessat(SB),$40-68
 
-TEXT ·Yfallocate(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfallocate(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yfallocate(tls *TLS, fd int32, mode int32, base Toff_t, len1 Toff_t) (r int32)
+TEXT ·Yfallocate(SB),$40-68
 
-TEXT ·Yfanotify_init(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xfanotify_init(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfanotify_init(tls *TLS, flags uint32, event_f_flags uint32) (r int32)
+TEXT ·Yfanotify_init(SB),$24-36
 
-TEXT ·Yfanotify_mark(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p4+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p5+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xfanotify_mark(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yfanotify_mark(tls *TLS, fanotify_fd int32, flags uint32, mask uint64, dfd int32, pathname uintptr) (r int32)
+TEXT ·Yfanotify_mark(SB),$48-84
 
-TEXT ·Yfchdir(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xfchdir(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfchdir(tls *TLS, fd int32) (r int32)
+TEXT ·Yfchdir(SB),$24-32
 
-TEXT ·Yfchmod(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xfchmod(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfchmod(tls *TLS, fd int32, mode Tmode_t) (r int32)
+TEXT ·Yfchmod(SB),$24-36
 
-TEXT ·Yfchmodat(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	CALL ·Xfchmodat(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yfchmodat(tls *TLS, fd int32, path uintptr, mode Tmode_t, flag int32) (r int32)
+TEXT ·Yfchmodat(SB),$40-68
 
-TEXT ·Yfchown(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVL p3+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xfchown(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfchown(tls *TLS, fd int32, uid Tuid_t, gid Tgid_t) (r int32)
+TEXT ·Yfchown(SB),$32-48
 
-TEXT ·Yfchownat(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	MOVL p5+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xfchownat(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yfchownat(tls *TLS, fd int32, path uintptr, uid Tuid_t, gid Tgid_t, flag int32) (r int32)
+TEXT ·Yfchownat(SB),$48-80
 
-TEXT ·Yfclose(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfclose(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfclose(tls *TLS, f uintptr) (r1 int32)
+TEXT ·Yfclose(SB),$24-36
 
-TEXT ·Yfcntl(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfcntl(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfcntl(tls *TLS, fd int32, cmd int32, va uintptr) (r int32)
+TEXT ·Yfcntl(SB),$32-52
 
-TEXT ·Yfcntl64(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfcntl64(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfcntl64(tls *TLS, fd int32, cmd int32, va uintptr) (r int32)
+TEXT ·Yfcntl64(SB),$32-52
 
-TEXT ·Yfcvt(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xfcvt(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Yfcvt(tls *TLS, x float64, n int32, dp uintptr, sign uintptr) (r uintptr)
+TEXT ·Yfcvt(SB),$48-88
 
-TEXT ·Yfdatasync(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xfdatasync(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfdatasync(tls *TLS, fd int32) (r int32)
+TEXT ·Yfdatasync(SB),$24-32
 
-TEXT ·Yfdim(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfdim(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfdim(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yfdim(SB),$32-56
 
-TEXT ·Yfdimf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xfdimf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfdimf(tls *TLS, x float32, y float32) (r float32)
+TEXT ·Yfdimf(SB),$24-36
 
-TEXT ·Yfdiml(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfdiml(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfdiml(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yfdiml(SB),$32-56
 
-TEXT ·Yfdopen(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfdopen(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfdopen(tls *TLS, fd int32, mode uintptr) (r uintptr)
+TEXT ·Yfdopen(SB),$32-56
 
-TEXT ·Yfdopendir(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xfdopendir(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yfdopendir(tls *TLS, fd int32) (r uintptr)
+TEXT ·Yfdopendir(SB),$24-36
 
-TEXT ·Yfeclearexcept(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xfeclearexcept(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfeclearexcept(tls *TLS, mask int32) (r int32)
+TEXT ·Yfeclearexcept(SB),$24-32
 
-TEXT ·Yfegetenv(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfegetenv(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfegetenv(tls *TLS, envp uintptr) (r int32)
+TEXT ·Yfegetenv(SB),$24-36
 
-TEXT ·Yfegetround(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xfegetround(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Yfegetround(tls *TLS) (r int32)
+TEXT ·Yfegetround(SB),$16-20
 
-TEXT ·Yfeof(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfeof(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfeof(tls *TLS, f uintptr) (r int32)
+TEXT ·Yfeof(SB),$24-36
 
-TEXT ·Yfeof_unlocked(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfeof_unlocked(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfeof_unlocked(tls *TLS, f uintptr) (r int32)
+TEXT ·Yfeof_unlocked(SB),$24-36
 
-TEXT ·Yferaiseexcept(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xferaiseexcept(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yferaiseexcept(tls *TLS, mask int32) (r int32)
+TEXT ·Yferaiseexcept(SB),$24-32
 
-TEXT ·Yferror(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xferror(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yferror(tls *TLS, f uintptr) (r int32)
+TEXT ·Yferror(SB),$24-36
 
-TEXT ·Yferror_unlocked(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xferror_unlocked(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yferror_unlocked(tls *TLS, f uintptr) (r int32)
+TEXT ·Yferror_unlocked(SB),$24-36
 
-TEXT ·Yfesetenv(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfesetenv(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfesetenv(tls *TLS, envp uintptr) (r int32)
+TEXT ·Yfesetenv(SB),$24-36
 
-TEXT ·Yfetestexcept(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xfetestexcept(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfetestexcept(tls *TLS, mask int32) (r int32)
+TEXT ·Yfetestexcept(SB),$24-32
 
-TEXT ·Yfexecve(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfexecve(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yfexecve(tls *TLS, fd int32, argv uintptr, envp uintptr) (r1 int32)
+TEXT ·Yfexecve(SB),$40-68
 
-TEXT ·Yfflush(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfflush(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfflush(tls *TLS, f uintptr) (r1 int32)
+TEXT ·Yfflush(SB),$24-36
 
-TEXT ·Yfflush_unlocked(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfflush_unlocked(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfflush_unlocked(tls *TLS, f uintptr) (r int32)
+TEXT ·Yfflush_unlocked(SB),$24-36
 
-TEXT ·Yffs(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xffs(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yffs(tls *TLS, i int32) (r int32)
+TEXT ·Yffs(SB),$24-32
 
-TEXT ·Yffsl(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xffsl(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yffsl(tls *TLS, i int64) (r int32)
+TEXT ·Yffsl(SB),$24-36
 
-TEXT ·Yffsll(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xffsll(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yffsll(tls *TLS, i int64) (r int32)
+TEXT ·Yffsll(SB),$24-36
 
-TEXT ·Yfgetc(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfgetc(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfgetc(tls *TLS, f1 uintptr) (r int32)
+TEXT ·Yfgetc(SB),$24-36
 
-TEXT ·Yfgetc_unlocked(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfgetc_unlocked(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfgetc_unlocked(tls *TLS, f uintptr) (r int32)
+TEXT ·Yfgetc_unlocked(SB),$24-36
 
-TEXT ·Yfgetgrent(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfgetgrent(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yfgetgrent(tls *TLS, f uintptr) (r uintptr)
+TEXT ·Yfgetgrent(SB),$24-40
 
-TEXT ·Yfgetln(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfgetln(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfgetln(tls *TLS, f uintptr, plen uintptr) (r uintptr)
+TEXT ·Yfgetln(SB),$32-56
 
-TEXT ·Yfgetpos(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfgetpos(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfgetpos(tls *TLS, f uintptr, pos uintptr) (r int32)
+TEXT ·Yfgetpos(SB),$32-52
 
-TEXT ·Yfgetpwent(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfgetpwent(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yfgetpwent(tls *TLS, f uintptr) (r uintptr)
+TEXT ·Yfgetpwent(SB),$24-40
 
-TEXT ·Yfgets(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfgets(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yfgets(tls *TLS, s uintptr, n int32, f uintptr) (r uintptr)
+TEXT ·Yfgets(SB),$40-72
 
-TEXT ·Yfgets_unlocked(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfgets_unlocked(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yfgets_unlocked(tls *TLS, s uintptr, n int32, f uintptr) (r uintptr)
+TEXT ·Yfgets_unlocked(SB),$40-72
 
-TEXT ·Yfgetwc(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfgetwc(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfgetwc(tls *TLS, f uintptr) (r Twint_t)
+TEXT ·Yfgetwc(SB),$24-36
 
-TEXT ·Yfgetwc_unlocked(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfgetwc_unlocked(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfgetwc_unlocked(tls *TLS, f uintptr) (r Twint_t)
+TEXT ·Yfgetwc_unlocked(SB),$24-36
 
-TEXT ·Yfgetws(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfgetws(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yfgetws(tls *TLS, s uintptr, n int32, f uintptr) (r uintptr)
+TEXT ·Yfgetws(SB),$40-72
 
-TEXT ·Yfgetws_unlocked(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfgetws_unlocked(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yfgetws_unlocked(tls *TLS, s uintptr, n int32, f uintptr) (r uintptr)
+TEXT ·Yfgetws_unlocked(SB),$40-72
 
-TEXT ·Yfgetxattr(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xfgetxattr(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Yfgetxattr(tls *TLS, filedes int32, name uintptr, value uintptr, size Tsize_t) (r Tssize_t)
+TEXT ·Yfgetxattr(SB),$48-88
 
-TEXT ·Yfileno(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfileno(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfileno(tls *TLS, f uintptr) (r int32)
+TEXT ·Yfileno(SB),$24-36
 
-TEXT ·Yfileno_unlocked(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfileno_unlocked(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfileno_unlocked(tls *TLS, f uintptr) (r int32)
+TEXT ·Yfileno_unlocked(SB),$24-36
 
-TEXT ·Yfinite(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfinite(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfinite(tls *TLS, x float64) (r int32)
+TEXT ·Yfinite(SB),$24-36
 
-TEXT ·Yfinitef(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xfinitef(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfinitef(tls *TLS, x float32) (r int32)
+TEXT ·Yfinitef(SB),$24-32
 
-TEXT ·Yflistxattr(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xflistxattr(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yflistxattr(tls *TLS, filedes int32, list uintptr, size Tsize_t) (r Tssize_t)
+TEXT ·Yflistxattr(SB),$40-72
 
-TEXT ·Yflock(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xflock(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yflock(tls *TLS, fd int32, op int32) (r int32)
+TEXT ·Yflock(SB),$24-36
 
+// func Yflockfile(tls *TLS, f uintptr)
 TEXT ·Yflockfile(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xflockfile(SB)
-	RET
 
-TEXT ·Yfloor(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfloor(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yfloor(tls *TLS, x3 float64) (r float64)
+TEXT ·Yfloor(SB),$24-40
 
-TEXT ·Yfloorf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xfloorf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfloorf(tls *TLS, x3 float32) (r float32)
+TEXT ·Yfloorf(SB),$24-32
 
-TEXT ·Yfloorl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfloorl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yfloorl(tls *TLS, x float64) (r float64)
+TEXT ·Yfloorl(SB),$24-40
 
-TEXT ·Yfma(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfma(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yfma(tls *TLS, x1 float64, y float64, z float64) (r1 float64)
+TEXT ·Yfma(SB),$40-72
 
-TEXT ·Yfmal(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfmal(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yfmal(tls *TLS, x float64, y float64, z float64) (r float64)
+TEXT ·Yfmal(SB),$40-72
 
-TEXT ·Yfmax(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfmax(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfmax(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yfmax(SB),$32-56
 
-TEXT ·Yfmaxf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xfmaxf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfmaxf(tls *TLS, x float32, y float32) (r float32)
+TEXT ·Yfmaxf(SB),$24-36
 
-TEXT ·Yfmaxl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfmaxl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfmaxl(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yfmaxl(SB),$32-56
 
-TEXT ·Yfmemopen(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfmemopen(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yfmemopen(tls *TLS, buf uintptr, size Tsize_t, mode uintptr) (r uintptr)
+TEXT ·Yfmemopen(SB),$40-72
 
-TEXT ·Yfmin(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfmin(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfmin(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yfmin(SB),$32-56
 
-TEXT ·Yfminf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xfminf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfminf(tls *TLS, x float32, y float32) (r float32)
+TEXT ·Yfminf(SB),$24-36
 
-TEXT ·Yfminl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfminl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfminl(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yfminl(SB),$32-56
 
-TEXT ·Yfmod(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfmod(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfmod(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yfmod(SB),$32-56
 
-TEXT ·Yfmodf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xfmodf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfmodf(tls *TLS, x float32, y float32) (r float32)
+TEXT ·Yfmodf(SB),$24-36
 
-TEXT ·Yfmodl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfmodl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfmodl(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yfmodl(SB),$32-56
 
-TEXT ·Yfmtmsg(SB),$60-60
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVQ p6+48(FP), AX
-	MOVQ AX, 48(SP)
-	CALL ·Xfmtmsg(SB)
-	MOVL 56(SP), AX
-	MOVL AX, ret+56(FP)
-	RET
+// func Yfmtmsg(tls *TLS, classification int64, label uintptr, severity int32, text uintptr, action uintptr, tag uintptr) (r int32)
+TEXT ·Yfmtmsg(SB),$64-116
 
-TEXT ·Yfnmatch(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xfnmatch(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yfnmatch(tls *TLS, pat uintptr, str uintptr, flags int32) (r int32)
+TEXT ·Yfnmatch(SB),$40-64
 
-TEXT ·Yfopen(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfopen(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfopen(tls *TLS, filename uintptr, mode uintptr) (r uintptr)
+TEXT ·Yfopen(SB),$32-56
 
-TEXT ·Yfopen64(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfopen64(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfopen64(tls *TLS, filename uintptr, mode uintptr) (r uintptr)
+TEXT ·Yfopen64(SB),$32-56
 
-TEXT ·Yfopencookie(SB),$72-72
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p3+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVQ p3+48(FP), AX
-	MOVQ AX, 48(SP)
-	MOVQ p3+56(FP), AX
-	MOVQ AX, 56(SP)
-	CALL ·Xfopencookie(SB)
-	MOVQ 64(SP), AX
-	MOVQ AX, ret+64(FP)
-	RET
+// func Yfopencookie(tls *TLS, cookie uintptr, mode uintptr, iofuncs Tcookie_io_functions_t) (r uintptr)
+TEXT ·Yfopencookie(SB),$64-120
 
-TEXT ·Yfork(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xfork(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Yfork(t *TLS) int32
+TEXT ·Yfork(SB),$16-20
 
-TEXT ·Yfpathconf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xfpathconf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yfpathconf(tls *TLS, fd int32, name int32) (r int64)
+TEXT ·Yfpathconf(SB),$24-40
 
-TEXT ·Yfprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yfprintf(tls *TLS, f uintptr, fmt uintptr, va uintptr) (r int32)
+TEXT ·Yfprintf(SB),$40-68
 
-TEXT ·Yfpurge(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfpurge(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfpurge(tls *TLS, f uintptr) (r int32)
+TEXT ·Yfpurge(SB),$24-36
 
-TEXT ·Yfputc(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfputc(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfputc(tls *TLS, c1 int32, f1 uintptr) (r int32)
+TEXT ·Yfputc(SB),$32-52
 
-TEXT ·Yfputc_unlocked(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfputc_unlocked(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfputc_unlocked(tls *TLS, c int32, f uintptr) (r int32)
+TEXT ·Yfputc_unlocked(SB),$32-52
 
-TEXT ·Yfputs(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfputs(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfputs(tls *TLS, s uintptr, f uintptr) (r int32)
+TEXT ·Yfputs(SB),$32-52
 
-TEXT ·Yfputs_unlocked(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfputs_unlocked(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfputs_unlocked(tls *TLS, s uintptr, f uintptr) (r int32)
+TEXT ·Yfputs_unlocked(SB),$32-52
 
-TEXT ·Yfputwc(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfputwc(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfputwc(tls *TLS, c Twchar_t, f uintptr) (r Twint_t)
+TEXT ·Yfputwc(SB),$32-52
 
-TEXT ·Yfputwc_unlocked(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfputwc_unlocked(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfputwc_unlocked(tls *TLS, c Twchar_t, f uintptr) (r Twint_t)
+TEXT ·Yfputwc_unlocked(SB),$32-52
 
-TEXT ·Yfputws(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfputws(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfputws(tls *TLS, _ws uintptr, f uintptr) (r int32)
+TEXT ·Yfputws(SB),$32-52
 
-TEXT ·Yfputws_unlocked(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfputws_unlocked(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfputws_unlocked(tls *TLS, _ws uintptr, f uintptr) (r int32)
+TEXT ·Yfputws_unlocked(SB),$32-52
 
-TEXT ·Yfread(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xfread(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Yfread(tls *TLS, destv uintptr, size Tsize_t, nmemb Tsize_t, f uintptr) (r Tsize_t)
+TEXT ·Yfread(SB),$48-88
 
-TEXT ·Yfread_unlocked(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xfread_unlocked(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Yfread_unlocked(tls *TLS, destv uintptr, size Tsize_t, nmemb Tsize_t, f uintptr) (r Tsize_t)
+TEXT ·Yfread_unlocked(SB),$48-88
 
+// func Yfree(tls *TLS, p uintptr)
 TEXT ·Yfree(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfree(SB)
-	RET
 
+// func Yfreeaddrinfo(tls *TLS, p uintptr)
 TEXT ·Yfreeaddrinfo(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfreeaddrinfo(SB)
-	RET
 
+// func Yfreeifaddrs(tls *TLS, ifp uintptr)
 TEXT ·Yfreeifaddrs(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfreeifaddrs(SB)
-	RET
 
+// func Yfreelocale(tls *TLS, l Tlocale_t)
 TEXT ·Yfreelocale(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfreelocale(SB)
-	RET
 
-TEXT ·Yfremovexattr(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfremovexattr(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfremovexattr(tls *TLS, fd int32, name uintptr) (r int32)
+TEXT ·Yfremovexattr(SB),$32-52
 
-TEXT ·Yfreopen(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfreopen(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yfreopen(tls *TLS, filename uintptr, mode uintptr, f uintptr) (r uintptr)
+TEXT ·Yfreopen(SB),$40-72
 
-TEXT ·Yfrexp(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfrexp(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfrexp(tls *TLS, x float64, e uintptr) (r float64)
+TEXT ·Yfrexp(SB),$32-56
 
-TEXT ·Yfrexpf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfrexpf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfrexpf(tls *TLS, x float32, e uintptr) (r float32)
+TEXT ·Yfrexpf(SB),$32-52
 
-TEXT ·Yfrexpl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfrexpl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yfrexpl(tls *TLS, x float64, e uintptr) (r float64)
+TEXT ·Yfrexpl(SB),$32-56
 
-TEXT ·Yfscanf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfscanf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yfscanf(tls *TLS, f uintptr, fmt uintptr, va uintptr) (r int32)
+TEXT ·Yfscanf(SB),$40-68
 
-TEXT ·Yfseek(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xfseek(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yfseek(tls *TLS, f uintptr, off int64, whence int32) (r int32)
+TEXT ·Yfseek(SB),$40-64
 
-TEXT ·Yfseeko(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xfseeko(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yfseeko(tls *TLS, f uintptr, off Toff_t, whence int32) (r int32)
+TEXT ·Yfseeko(SB),$40-64
 
-TEXT ·Yfsetpos(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfsetpos(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfsetpos(tls *TLS, f uintptr, pos uintptr) (r int32)
+TEXT ·Yfsetpos(SB),$32-52
 
-TEXT ·Yfsetxattr(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xfsetxattr(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
+// func Yfsetxattr(tls *TLS, filedes int32, name uintptr, value uintptr, size Tsize_t, flags int32) (r int32)
+TEXT ·Yfsetxattr(SB),$56-96
 
-TEXT ·Yfstat(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfstat(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfstat(tls *TLS, fd int32, st uintptr) (r int32)
+TEXT ·Yfstat(SB),$32-52
 
-TEXT ·Yfstat64(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfstat64(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfstat64(tls *TLS, fd int32, st uintptr) (r int32)
+TEXT ·Yfstat64(SB),$32-52
 
-TEXT ·Yfstatat(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xfstatat(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yfstatat(tls *TLS, fd int32, path uintptr, st uintptr, flag int32) (r int32)
+TEXT ·Yfstatat(SB),$48-80
 
-TEXT ·Yfstatfs(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfstatfs(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfstatfs(tls *TLS, fd int32, buf uintptr) (r int32)
+TEXT ·Yfstatfs(SB),$32-52
 
-TEXT ·Yfstatvfs(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfstatvfs(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yfstatvfs(tls *TLS, fd int32, buf uintptr) (r int32)
+TEXT ·Yfstatvfs(SB),$32-52
 
-TEXT ·Yfsync(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xfsync(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfsync(tls *TLS, fd int32) (r int32)
+TEXT ·Yfsync(SB),$24-32
 
-TEXT ·Yftell(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xftell(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yftell(tls *TLS, f uintptr) (r int64)
+TEXT ·Yftell(SB),$24-40
 
-TEXT ·Yftello(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xftello(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yftello(tls *TLS, f uintptr) (r Toff_t)
+TEXT ·Yftello(SB),$24-40
 
-TEXT ·Yftime(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xftime(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yftime(tls *TLS, tp uintptr) (r int32)
+TEXT ·Yftime(SB),$24-36
 
-TEXT ·Yftok(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xftok(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yftok(tls *TLS, path uintptr, id int32) (r Tkey_t)
+TEXT ·Yftok(SB),$32-48
 
-TEXT ·Yftruncate(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xftruncate(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yftruncate(tls *TLS, fd int32, length Toff_t) (r int32)
+TEXT ·Yftruncate(SB),$32-52
 
-TEXT ·Yftruncate64(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xftruncate64(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yftruncate64(tls *TLS, fd int32, length Toff_t) (r int32)
+TEXT ·Yftruncate64(SB),$32-52
 
-TEXT ·Yftrylockfile(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xftrylockfile(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yftrylockfile(tls *TLS, f uintptr) (r int32)
+TEXT ·Yftrylockfile(SB),$24-36
 
-TEXT ·Yfts64_close(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfts64_close(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfts64_close(t *TLS, ftsp uintptr) int32
+TEXT ·Yfts64_close(SB),$24-36
 
-TEXT ·Yfts64_open(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfts64_open(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yfts64_open(t *TLS, path_argv uintptr, options int32, compar uintptr) uintptr
+TEXT ·Yfts64_open(SB),$40-72
 
-TEXT ·Yfts64_read(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfts64_read(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yfts64_read(t *TLS, ftsp uintptr) uintptr
+TEXT ·Yfts64_read(SB),$24-40
 
-TEXT ·Yfts_close(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfts_close(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yfts_close(t *TLS, ftsp uintptr) int32
+TEXT ·Yfts_close(SB),$24-36
 
-TEXT ·Yfts_open(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfts_open(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yfts_open(t *TLS, path_argv uintptr, options int32, compar uintptr) uintptr
+TEXT ·Yfts_open(SB),$40-72
 
-TEXT ·Yfts_read(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfts_read(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yfts_read(t *TLS, ftsp uintptr) uintptr
+TEXT ·Yfts_read(SB),$24-40
 
-TEXT ·Yftw(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xftw(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yftw(tls *TLS, path uintptr, fn uintptr, fd_limit int32) (r int32)
+TEXT ·Yftw(SB),$40-64
 
+// func Yfunlockfile(tls *TLS, f uintptr)
 TEXT ·Yfunlockfile(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xfunlockfile(SB)
-	RET
-
-TEXT ·Yfutimens(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfutimens(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yfutimes(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xfutimes(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yfutimesat(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfutimesat(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Yfwide(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xfwide(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yfwprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfwprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Yfwrite(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xfwrite(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Yfwrite_unlocked(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xfwrite_unlocked(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Yfwscanf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xfwscanf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ygai_strerror(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xgai_strerror(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygcvt(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xgcvt(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yget_avphys_pages(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xget_avphys_pages(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Yget_current_dir_name(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xget_current_dir_name(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Yget_nprocs(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xget_nprocs(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Yget_nprocs_conf(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xget_nprocs_conf(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Yget_phys_pages(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xget_phys_pages(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetaddrinfo(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xgetaddrinfo(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
-
-TEXT ·Ygetauxval(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetauxval(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetc(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetc(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetc_unlocked(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetc_unlocked(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetchar(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetchar(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetchar_unlocked(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetchar_unlocked(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetcwd(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgetcwd(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetdate(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetdate(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetdelim(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xgetdelim(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ygetdents(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xgetdents(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ygetdomainname(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgetdomainname(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetdtablesize(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetdtablesize(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetegid(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetegid(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetentropy(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgetentropy(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetenv(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetenv(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygeteuid(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgeteuid(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetgid(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetgid(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetgrent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetgrent(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetgrgid(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xgetgrgid(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetgrgid_r(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xgetgrgid_r(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ygetgrnam(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetgrnam(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetgrnam_r(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xgetgrnam_r(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ygetgrouplist(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xgetgrouplist(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
-
-TEXT ·Ygetgroups(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgetgroups(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygethostbyaddr(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	CALL ·Xgethostbyaddr(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ygethostbyaddr_r(SB),$68-68
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p5+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p6+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVQ p7+48(FP), AX
-	MOVQ AX, 48(SP)
-	MOVQ p8+56(FP), AX
-	MOVQ AX, 56(SP)
-	CALL ·Xgethostbyaddr_r(SB)
-	MOVL 64(SP), AX
-	MOVL AX, ret+64(FP)
-	RET
-
-TEXT ·Ygethostbyname(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgethostbyname(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygethostbyname2(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xgethostbyname2(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ygethostbyname2_r(SB),$68-68
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVQ p6+48(FP), AX
-	MOVQ AX, 48(SP)
-	MOVQ p7+56(FP), AX
-	MOVQ AX, 56(SP)
-	CALL ·Xgethostbyname2_r(SB)
-	MOVL 64(SP), AX
-	MOVL AX, ret+64(FP)
-	RET
-
-TEXT ·Ygethostbyname_r(SB),$60-60
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVQ p6+48(FP), AX
-	MOVQ AX, 48(SP)
-	CALL ·Xgethostbyname_r(SB)
-	MOVL 56(SP), AX
-	MOVL AX, ret+56(FP)
-	RET
-
-TEXT ·Ygethostent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgethostent(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygethostid(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgethostid(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygethostname(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgethostname(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetifaddrs(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetifaddrs(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetitimer(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgetitimer(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetline(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xgetline(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ygetloadavg(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xgetloadavg(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetlogin(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetlogin(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetlogin_r(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgetlogin_r(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetmntent(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetmntent(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetmntent_r(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xgetmntent_r(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ygetnameinfo(SB),$60-60
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVL p6+48(FP), AX
-	MOVL AX, 48(SP)
-	MOVL p7+52(FP), AX
-	MOVL AX, 52(SP)
-	CALL ·Xgetnameinfo(SB)
-	MOVL 56(SP), AX
-	MOVL AX, ret+56(FP)
-	RET
-
-TEXT ·Ygetnetbyaddr(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xgetnetbyaddr(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetnetbyname(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetnetbyname(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetnetent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetnetent(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetopt(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xgetopt(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ygetopt_long(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xgetopt_long(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ygetopt_long_only(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xgetopt_long_only(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ygetpagesize(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetpagesize(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetpass(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetpass(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetpeername(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xgetpeername(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ygetpgid(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xgetpgid(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetpgrp(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetpgrp(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetpid(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetpid(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetppid(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetppid(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetpriority(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xgetpriority(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetprotobyname(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetprotobyname(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetprotobynumber(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xgetprotobynumber(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetprotoent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetprotoent(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetpwent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetpwent(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetpwnam(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetpwnam(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetpwnam_r(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xgetpwnam_r(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ygetpwuid(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xgetpwuid(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetpwuid_r(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xgetpwuid_r(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ygetrandom(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xgetrandom(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ygetresgid(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xgetresgid(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ygetresuid(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xgetresuid(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ygetrlimit(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgetrlimit(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetrlimit64(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgetrlimit64(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetrusage(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgetrusage(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygets(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgets(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetservbyname(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgetservbyname(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetservbyname_r(SB),$60-60
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVQ p6+48(FP), AX
-	MOVQ AX, 48(SP)
-	CALL ·Xgetservbyname_r(SB)
-	MOVL 56(SP), AX
-	MOVL AX, ret+56(FP)
-	RET
-
-TEXT ·Ygetservent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetservent(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetsid(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xgetsid(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetsockname(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xgetsockname(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ygetsockopt(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVL p3+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p5+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xgetsockopt(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
-
-TEXT ·Ygetspent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetspent(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetsubopt(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xgetsubopt(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ygettext(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgettext(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygettimeofday(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgettimeofday(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ygetuid(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetuid(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetusershell(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetusershell(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetutent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetutent(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetutid(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetutid(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetutline(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetutline(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetutxent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetutxent(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetutxid(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetutxid(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetutxline(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetutxline(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetw(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetw(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetwc(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetwc(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetwc_unlocked(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgetwc_unlocked(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ygetwchar(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetwchar(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetwchar_unlocked(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xgetwchar_unlocked(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ygetxattr(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xgetxattr(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Yglob(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xglob(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
 
+// func Yfutimens(tls *TLS, fd int32, times uintptr) (r int32)
+TEXT ·Yfutimens(SB),$32-52
+
+// func Yfutimes(tls *TLS, fd int32, tv uintptr) (r int32)
+TEXT ·Yfutimes(SB),$32-52
+
+// func Yfutimesat(tls *TLS, dirfd int32, pathname uintptr, times uintptr) (r int32)
+TEXT ·Yfutimesat(SB),$40-68
+
+// func Yfwide(tls *TLS, f uintptr, mode int32) (r int32)
+TEXT ·Yfwide(SB),$32-48
+
+// func Yfwprintf(tls *TLS, f uintptr, fmt uintptr, va uintptr) (r int32)
+TEXT ·Yfwprintf(SB),$40-68
+
+// func Yfwrite(tls *TLS, src uintptr, size Tsize_t, nmemb Tsize_t, f uintptr) (r Tsize_t)
+TEXT ·Yfwrite(SB),$48-88
+
+// func Yfwrite_unlocked(tls *TLS, src uintptr, size Tsize_t, nmemb Tsize_t, f uintptr) (r Tsize_t)
+TEXT ·Yfwrite_unlocked(SB),$48-88
+
+// func Yfwscanf(tls *TLS, f uintptr, fmt uintptr, va uintptr) (r int32)
+TEXT ·Yfwscanf(SB),$40-68
+
+// func Ygai_strerror(tls *TLS, ecode int32) (r uintptr)
+TEXT ·Ygai_strerror(SB),$24-36
+
+// func Ygcvt(tls *TLS, x float64, n int32, b uintptr) (r uintptr)
+TEXT ·Ygcvt(SB),$40-72
+
+// func Yget_avphys_pages(tls *TLS) (r int64)
+TEXT ·Yget_avphys_pages(SB),$16-24
+
+// func Yget_current_dir_name(tls *TLS) (r uintptr)
+TEXT ·Yget_current_dir_name(SB),$16-24
+
+// func Yget_nprocs(tls *TLS) (r int32)
+TEXT ·Yget_nprocs(SB),$16-20
+
+// func Yget_nprocs_conf(tls *TLS) (r int32)
+TEXT ·Yget_nprocs_conf(SB),$16-20
+
+// func Yget_phys_pages(tls *TLS) (r int64)
+TEXT ·Yget_phys_pages(SB),$16-24
+
+// func Ygetaddrinfo(tls *TLS, host uintptr, serv uintptr, hint uintptr, res uintptr) (r1 int32)
+TEXT ·Ygetaddrinfo(SB),$48-84
+
+// func Ygetauxval(tls *TLS, item uint64) (r uint64)
+TEXT ·Ygetauxval(SB),$24-40
+
+// func Ygetc(tls *TLS, f1 uintptr) (r int32)
+TEXT ·Ygetc(SB),$24-36
+
+// func Ygetc_unlocked(tls *TLS, f uintptr) (r int32)
+TEXT ·Ygetc_unlocked(SB),$24-36
+
+// func Ygetchar(tls *TLS) (r int32)
+TEXT ·Ygetchar(SB),$16-20
+
+// func Ygetchar_unlocked(tls *TLS) (r int32)
+TEXT ·Ygetchar_unlocked(SB),$16-20
+
+// func Ygetcwd(tls *TLS, buf uintptr, size Tsize_t) (r uintptr)
+TEXT ·Ygetcwd(SB),$32-56
+
+// func Ygetdate(tls *TLS, s uintptr) (r uintptr)
+TEXT ·Ygetdate(SB),$24-40
+
+// func Ygetdelim(tls *TLS, s uintptr, n uintptr, delim int32, f uintptr) (r Tssize_t)
+TEXT ·Ygetdelim(SB),$48-88
+
+// func Ygetdents(tls *TLS, fd int32, buf uintptr, len1 Tsize_t) (r int32)
+TEXT ·Ygetdents(SB),$40-68
+
+// func Ygetdomainname(tls *TLS, name uintptr, len1 Tsize_t) (r int32)
+TEXT ·Ygetdomainname(SB),$32-52
+
+// func Ygetdtablesize(tls *TLS) (r int32)
+TEXT ·Ygetdtablesize(SB),$16-20
+
+// func Ygetegid(tls *TLS) (r Tgid_t)
+TEXT ·Ygetegid(SB),$16-20
+
+// func Ygetentropy(tls *TLS, buffer uintptr, len1 Tsize_t) (r int32)
+TEXT ·Ygetentropy(SB),$32-52
+
+// func Ygetenv(tls *TLS, name uintptr) (r uintptr)
+TEXT ·Ygetenv(SB),$24-40
+
+// func Ygeteuid(tls *TLS) (r Tuid_t)
+TEXT ·Ygeteuid(SB),$16-20
+
+// func Ygetgid(tls *TLS) (r Tgid_t)
+TEXT ·Ygetgid(SB),$16-20
+
+// func Ygetgrent(tls *TLS) (r uintptr)
+TEXT ·Ygetgrent(SB),$16-24
+
+// func Ygetgrgid(tls *TLS, gid Tgid_t) (r uintptr)
+TEXT ·Ygetgrgid(SB),$24-36
+
+// func Ygetgrgid_r(tls *TLS, gid Tgid_t, gr uintptr, buf uintptr, size Tsize_t, res uintptr) (r int32)
+TEXT ·Ygetgrgid_r(SB),$56-100
+
+// func Ygetgrnam(tls *TLS, name uintptr) (r uintptr)
+TEXT ·Ygetgrnam(SB),$24-40
+
+// func Ygetgrnam_r(tls *TLS, name uintptr, gr uintptr, buf uintptr, size Tsize_t, res uintptr) (r int32)
+TEXT ·Ygetgrnam_r(SB),$56-100
+
+// func Ygetgrouplist(tls *TLS, user uintptr, gid Tgid_t, groups uintptr, ngroups uintptr) (r int32)
+TEXT ·Ygetgrouplist(SB),$48-84
+
+// func Ygetgroups(tls *TLS, count int32, list uintptr) (r int32)
+TEXT ·Ygetgroups(SB),$32-52
+
+// func Ygethostbyaddr(tls *TLS, a uintptr, l Tsocklen_t, af int32) (r uintptr)
+TEXT ·Ygethostbyaddr(SB),$32-56
+
+// func Ygethostbyaddr_r(tls *TLS, a uintptr, l Tsocklen_t, af int32, h uintptr, buf uintptr, buflen Tsize_t, res uintptr, err uintptr) (r int32)
+TEXT ·Ygethostbyaddr_r(SB),$72-132
+
+// func Ygethostbyname(tls *TLS, name uintptr) (r uintptr)
+TEXT ·Ygethostbyname(SB),$24-40
+
+// func Ygethostbyname2(tls *TLS, name uintptr, af int32) (r uintptr)
+TEXT ·Ygethostbyname2(SB),$32-52
+
+// func Ygethostbyname2_r(tls *TLS, name uintptr, af int32, h uintptr, buf uintptr, buflen Tsize_t, res uintptr, err uintptr) (r int32)
+TEXT ·Ygethostbyname2_r(SB),$72-132
+
+// func Ygethostbyname_r(tls *TLS, name uintptr, h uintptr, buf uintptr, buflen Tsize_t, res uintptr, err uintptr) (r int32)
+TEXT ·Ygethostbyname_r(SB),$64-116
+
+// func Ygethostent(tls *TLS) (r uintptr)
+TEXT ·Ygethostent(SB),$16-24
+
+// func Ygethostid(tls *TLS) (r int64)
+TEXT ·Ygethostid(SB),$16-24
+
+// func Ygethostname(tls *TLS, name uintptr, len1 Tsize_t) (r int32)
+TEXT ·Ygethostname(SB),$32-52
+
+// func Ygetifaddrs(tls *TLS, ifap uintptr) (r1 int32)
+TEXT ·Ygetifaddrs(SB),$24-36
+
+// func Ygetitimer(tls *TLS, which int32, old uintptr) (r1 int32)
+TEXT ·Ygetitimer(SB),$32-52
+
+// func Ygetline(tls *TLS, s uintptr, n uintptr, f uintptr) (r Tssize_t)
+TEXT ·Ygetline(SB),$40-72
+
+// func Ygetloadavg(tls *TLS, a uintptr, n int32) (r int32)
+TEXT ·Ygetloadavg(SB),$32-48
+
+// func Ygetlogin(tls *TLS) (r uintptr)
+TEXT ·Ygetlogin(SB),$16-24
+
+// func Ygetlogin_r(tls *TLS, name uintptr, size Tsize_t) (r int32)
+TEXT ·Ygetlogin_r(SB),$32-52
+
+// func Ygetmntent(tls *TLS, f uintptr) (r uintptr)
+TEXT ·Ygetmntent(SB),$24-40
+
+// func Ygetmntent_r(tls *TLS, f uintptr, mnt uintptr, linebuf uintptr, buflen int32) (r uintptr)
+TEXT ·Ygetmntent_r(SB),$48-84
+
+// func Ygetnameinfo(tls *TLS, sa uintptr, sl Tsocklen_t, node uintptr, nodelen Tsocklen_t, serv uintptr, servlen Tsocklen_t, flags int32) (r int32)
+TEXT ·Ygetnameinfo(SB),$64-116
+
+// func Ygetnetbyaddr(tls *TLS, net Tuint32_t, type1 int32) (r uintptr)
+TEXT ·Ygetnetbyaddr(SB),$24-40
+
+// func Ygetnetbyname(tls *TLS, name uintptr) (r uintptr)
+TEXT ·Ygetnetbyname(SB),$24-40
+
+// func Ygetnetent(tls *TLS) (r uintptr)
+TEXT ·Ygetnetent(SB),$16-24
+
+// func Ygetopt(tls *TLS, argc int32, argv uintptr, optstring uintptr) (r int32)
+TEXT ·Ygetopt(SB),$40-68
+
+// func Ygetopt_long(tls *TLS, argc int32, argv uintptr, optstring uintptr, longopts uintptr, idx uintptr) (r int32)
+TEXT ·Ygetopt_long(SB),$56-100
+
+// func Ygetopt_long_only(tls *TLS, argc int32, argv uintptr, optstring uintptr, longopts uintptr, idx uintptr) (r int32)
+TEXT ·Ygetopt_long_only(SB),$56-100
+
+// func Ygetpagesize(tls *TLS) (r int32)
+TEXT ·Ygetpagesize(SB),$16-20
+
+// func Ygetpass(tls *TLS, prompt uintptr) (r uintptr)
+TEXT ·Ygetpass(SB),$24-40
+
+// func Ygetpeername(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32)
+TEXT ·Ygetpeername(SB),$40-68
+
+// func Ygetpgid(tls *TLS, pid Tpid_t) (r Tpid_t)
+TEXT ·Ygetpgid(SB),$24-32
+
+// func Ygetpgrp(tls *TLS) (r Tpid_t)
+TEXT ·Ygetpgrp(SB),$16-20
+
+// func Ygetpid(tls *TLS) (r Tpid_t)
+TEXT ·Ygetpid(SB),$16-20
+
+// func Ygetppid(tls *TLS) (r Tpid_t)
+TEXT ·Ygetppid(SB),$16-20
+
+// func Ygetpriority(tls *TLS, which int32, who Tid_t) (r int32)
+TEXT ·Ygetpriority(SB),$24-36
+
+// func Ygetprotobyname(tls *TLS, name uintptr) (r uintptr)
+TEXT ·Ygetprotobyname(SB),$24-40
+
+// func Ygetprotobynumber(tls *TLS, num int32) (r uintptr)
+TEXT ·Ygetprotobynumber(SB),$24-36
+
+// func Ygetprotoent(tls *TLS) (r uintptr)
+TEXT ·Ygetprotoent(SB),$16-24
+
+// func Ygetpwent(tls *TLS) (r uintptr)
+TEXT ·Ygetpwent(SB),$16-24
+
+// func Ygetpwnam(tls *TLS, name uintptr) (r uintptr)
+TEXT ·Ygetpwnam(SB),$24-40
+
+// func Ygetpwnam_r(tls *TLS, name uintptr, pw uintptr, buf uintptr, size Tsize_t, res uintptr) (r int32)
+TEXT ·Ygetpwnam_r(SB),$56-100
+
+// func Ygetpwuid(tls *TLS, uid Tuid_t) (r uintptr)
+TEXT ·Ygetpwuid(SB),$24-36
+
+// func Ygetpwuid_r(tls *TLS, uid Tuid_t, pw uintptr, buf uintptr, size Tsize_t, res uintptr) (r int32)
+TEXT ·Ygetpwuid_r(SB),$56-100
+
+// func Ygetrandom(tls *TLS, buf uintptr, buflen Tsize_t, flags uint32) (r Tssize_t)
+TEXT ·Ygetrandom(SB),$40-68
+
+// func Ygetresgid(tls *TLS, rgid uintptr, egid uintptr, sgid uintptr) (r int32)
+TEXT ·Ygetresgid(SB),$40-68
+
+// func Ygetresuid(tls *TLS, ruid uintptr, euid uintptr, suid uintptr) (r int32)
+TEXT ·Ygetresuid(SB),$40-68
+
+// func Ygetrlimit(tls *TLS, resource int32, rlim uintptr) (r int32)
+TEXT ·Ygetrlimit(SB),$32-52
+
+// func Ygetrlimit64(tls *TLS, resource int32, rlim uintptr) (r int32)
+TEXT ·Ygetrlimit64(SB),$32-52
+
+// func Ygetrusage(tls *TLS, who int32, ru uintptr) (r1 int32)
+TEXT ·Ygetrusage(SB),$32-52
+
+// func Ygets(tls *TLS, s uintptr) (r uintptr)
+TEXT ·Ygets(SB),$24-40
+
+// func Ygetservbyname(tls *TLS, name uintptr, prots uintptr) (r uintptr)
+TEXT ·Ygetservbyname(SB),$32-56
+
+// func Ygetservbyname_r(tls *TLS, name uintptr, prots uintptr, se uintptr, buf uintptr, buflen Tsize_t, res uintptr) (r int32)
+TEXT ·Ygetservbyname_r(SB),$64-116
+
+// func Ygetservent(tls *TLS) (r uintptr)
+TEXT ·Ygetservent(SB),$16-24
+
+// func Ygetsid(tls *TLS, pid Tpid_t) (r Tpid_t)
+TEXT ·Ygetsid(SB),$24-32
+
+// func Ygetsockname(tls *TLS, fd int32, addr uintptr, len1 uintptr) (r1 int32)
+TEXT ·Ygetsockname(SB),$40-68
+
+// func Ygetsockopt(tls *TLS, fd int32, level int32, optname int32, optval uintptr, optlen uintptr) (r2 int32)
+TEXT ·Ygetsockopt(SB),$48-84
+
+// func Ygetspent(tls *TLS) (r uintptr)
+TEXT ·Ygetspent(SB),$16-24
+
+// func Ygetsubopt(tls *TLS, opt uintptr, keys uintptr, val uintptr) (r int32)
+TEXT ·Ygetsubopt(SB),$40-68
+
+// func Ygettext(tls *TLS, msgid uintptr) (r uintptr)
+TEXT ·Ygettext(SB),$24-40
+
+// func Ygettimeofday(tls *TLS, tv uintptr, tz uintptr) (r int32)
+TEXT ·Ygettimeofday(SB),$32-52
+
+// func Ygetuid(tls *TLS) (r Tuid_t)
+TEXT ·Ygetuid(SB),$16-20
+
+// func Ygetusershell(tls *TLS) (r uintptr)
+TEXT ·Ygetusershell(SB),$16-24
+
+// func Ygetutent(tls *TLS) (r uintptr)
+TEXT ·Ygetutent(SB),$16-24
+
+// func Ygetutid(tls *TLS, ut uintptr) (r uintptr)
+TEXT ·Ygetutid(SB),$24-40
+
+// func Ygetutline(tls *TLS, ut uintptr) (r uintptr)
+TEXT ·Ygetutline(SB),$24-40
+
+// func Ygetutxent(tls *TLS) (r uintptr)
+TEXT ·Ygetutxent(SB),$16-24
+
+// func Ygetutxid(tls *TLS, ut uintptr) (r uintptr)
+TEXT ·Ygetutxid(SB),$24-40
+
+// func Ygetutxline(tls *TLS, ut uintptr) (r uintptr)
+TEXT ·Ygetutxline(SB),$24-40
+
+// func Ygetw(tls *TLS, f uintptr) (r int32)
+TEXT ·Ygetw(SB),$24-36
+
+// func Ygetwc(tls *TLS, f uintptr) (r Twint_t)
+TEXT ·Ygetwc(SB),$24-36
+
+// func Ygetwc_unlocked(tls *TLS, f uintptr) (r Twint_t)
+TEXT ·Ygetwc_unlocked(SB),$24-36
+
+// func Ygetwchar(tls *TLS) (r Twint_t)
+TEXT ·Ygetwchar(SB),$16-20
+
+// func Ygetwchar_unlocked(tls *TLS) (r Twint_t)
+TEXT ·Ygetwchar_unlocked(SB),$16-20
+
+// func Ygetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_t) (r Tssize_t)
+TEXT ·Ygetxattr(SB),$48-88
+
+// func Yglob(tls *TLS, pat uintptr, flags int32, errfunc uintptr, g uintptr) (r int32)
+TEXT ·Yglob(SB),$48-84
+
+// func Yglobfree(tls *TLS, g uintptr)
 TEXT ·Yglobfree(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xglobfree(SB)
-	RET
 
-TEXT ·Ygmtime(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xgmtime(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ygmtime(tls *TLS, t uintptr) (r uintptr)
+TEXT ·Ygmtime(SB),$24-40
 
-TEXT ·Ygmtime_r(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xgmtime_r(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ygmtime_r(tls *TLS, t uintptr, tm uintptr) (r uintptr)
+TEXT ·Ygmtime_r(SB),$32-56
 
-TEXT ·Ygrantpt(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xgrantpt(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ygrantpt(tls *TLS, fd int32) (r int32)
+TEXT ·Ygrantpt(SB),$24-32
 
-TEXT ·Yhasmntopt(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xhasmntopt(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yhasmntopt(tls *TLS, mnt uintptr, opt uintptr) (r uintptr)
+TEXT ·Yhasmntopt(SB),$32-56
 
-TEXT ·Yhcreate(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xhcreate(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yhcreate(tls *TLS, nel Tsize_t) (r int32)
+TEXT ·Yhcreate(SB),$24-36
 
+// func Yhdestroy(tls *TLS)
 TEXT ·Yhdestroy(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xhdestroy(SB)
-	RET
 
+// func Yherror(tls *TLS, msg uintptr)
 TEXT ·Yherror(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xherror(SB)
-	RET
 
-TEXT ·Yhsearch(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p1+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p2+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xhsearch(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Yhsearch(tls *TLS, item TENTRY, action TACTION) (r uintptr)
+TEXT ·Yhsearch(SB),$40-68
 
-TEXT ·Yhstrerror(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xhstrerror(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yhstrerror(tls *TLS, ecode int32) (r uintptr)
+TEXT ·Yhstrerror(SB),$24-36
 
-TEXT ·Yhtonl(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xhtonl(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yhtonl(tls *TLS, n Tuint32_t) (r Tuint32_t)
+TEXT ·Yhtonl(SB),$24-32
 
-TEXT ·Yhtons(SB),$18-18
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVW p1+8(FP), AX
-	MOVW AX, 8(SP)
-	CALL ·Xhtons(SB)
-	MOVW 16(SP), AX
-	MOVW AX, ret+16(FP)
-	RET
+// func Yhtons(tls *TLS, n Tuint16_t) (r Tuint16_t)
+TEXT ·Yhtons(SB),$24-28
 
-TEXT ·Yhypot(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xhypot(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yhypot(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yhypot(SB),$32-56
 
-TEXT ·Yhypotf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xhypotf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yhypotf(tls *TLS, x float32, y float32) (r float32)
+TEXT ·Yhypotf(SB),$24-36
 
-TEXT ·Yhypotl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xhypotl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yhypotl(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yhypotl(SB),$32-56
 
-TEXT ·Yiconv(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xiconv(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
+// func Yiconv(tls *TLS, cd Ticonv_t, in uintptr, inb uintptr, out uintptr, outb uintptr) (r Tsize_t)
+TEXT ·Yiconv(SB),$56-104
 
-TEXT ·Yiconv_close(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xiconv_close(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yiconv_close(tls *TLS, cd Ticonv_t) (r int32)
+TEXT ·Yiconv_close(SB),$24-36
 
-TEXT ·Yiconv_open(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiconv_open(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yiconv_open(tls *TLS, to uintptr, from uintptr) (r Ticonv_t)
+TEXT ·Yiconv_open(SB),$32-56
 
+// func Yif_freenameindex(tls *TLS, idx uintptr)
 TEXT ·Yif_freenameindex(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xif_freenameindex(SB)
-	RET
 
-TEXT ·Yif_indextoname(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xif_indextoname(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yif_indextoname(tls *TLS, index uint32, name uintptr) (r1 uintptr)
+TEXT ·Yif_indextoname(SB),$32-56
 
-TEXT ·Yif_nameindex(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xif_nameindex(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
+// func Yif_nameindex(tls *TLS) (r uintptr)
+TEXT ·Yif_nameindex(SB),$16-24
 
-TEXT ·Yif_nametoindex(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xif_nametoindex(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yif_nametoindex(tls *TLS, name uintptr) (r1 uint32)
+TEXT ·Yif_nametoindex(SB),$24-36
 
-TEXT ·Yilogb(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xilogb(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yilogb(tls *TLS, x3 float64) (r int32)
+TEXT ·Yilogb(SB),$24-36
 
-TEXT ·Yilogbf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xilogbf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yilogbf(tls *TLS, x3 float32) (r int32)
+TEXT ·Yilogbf(SB),$24-32
 
-TEXT ·Yilogbl(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xilogbl(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yilogbl(tls *TLS, x float64) (r int32)
+TEXT ·Yilogbl(SB),$24-36
 
-TEXT ·Yimaxabs(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Ximaxabs(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yimaxabs(tls *TLS, a Tintmax_t) (r Tintmax_t)
+TEXT ·Yimaxabs(SB),$24-40
 
-TEXT ·Yimaxdiv(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Ximaxdiv(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yimaxdiv(tls *TLS, num Tintmax_t, den Tintmax_t) (r Timaxdiv_t)
+TEXT ·Yimaxdiv(SB),$40-64
 
-TEXT ·Yindex(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xindex(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yindex(tls *TLS, s uintptr, c int32) (r uintptr)
+TEXT ·Yindex(SB),$32-52
 
-TEXT ·Yinet_addr(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xinet_addr(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yinet_addr(tls *TLS, p uintptr) (r Tin_addr_t)
+TEXT ·Yinet_addr(SB),$24-36
 
-TEXT ·Yinet_aton(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xinet_aton(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yinet_aton(tls *TLS, s0 uintptr, dest uintptr) (r int32)
+TEXT ·Yinet_aton(SB),$32-52
 
-TEXT ·Yinet_lnaof(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xinet_lnaof(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yinet_lnaof(tls *TLS, in Tin_addr) (r Tin_addr_t)
+TEXT ·Yinet_lnaof(SB),$24-32
 
-TEXT ·Yinet_makeaddr(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xinet_makeaddr(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yinet_makeaddr(tls *TLS, n Tin_addr_t, h Tin_addr_t) (r Tin_addr)
+TEXT ·Yinet_makeaddr(SB),$24-36
 
-TEXT ·Yinet_netof(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xinet_netof(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yinet_netof(tls *TLS, in Tin_addr) (r Tin_addr_t)
+TEXT ·Yinet_netof(SB),$24-32
 
-TEXT ·Yinet_network(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xinet_network(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yinet_network(tls *TLS, p uintptr) (r Tin_addr_t)
+TEXT ·Yinet_network(SB),$24-36
 
-TEXT ·Yinet_ntoa(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xinet_ntoa(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yinet_ntoa(tls *TLS, _in Tin_addr) (r uintptr)
+TEXT ·Yinet_ntoa(SB),$24-36
 
-TEXT ·Yinet_ntop(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xinet_ntop(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Yinet_ntop(tls *TLS, af int32, a0 uintptr, s uintptr, l Tsocklen_t) (r uintptr)
+TEXT ·Yinet_ntop(SB),$48-84
 
-TEXT ·Yinet_pton(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xinet_pton(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yinet_pton(tls *TLS, af int32, s uintptr, a0 uintptr) (r int32)
+TEXT ·Yinet_pton(SB),$40-68
 
-TEXT ·Yinit_module(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xinit_module(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yinit_module(tls *TLS, a uintptr, b uint64, c uintptr) (r int32)
+TEXT ·Yinit_module(SB),$40-68
 
-TEXT ·Yinitstate(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xinitstate(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yinitstate(tls *TLS, seed uint32, state uintptr, size Tsize_t) (r uintptr)
+TEXT ·Yinitstate(SB),$40-72
 
-TEXT ·Yinitstate_r(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xinitstate_r(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yinitstate_r(t *TLS, seed uint32, statebuf uintptr, statelen Tsize_t, buf uintptr) int32
+TEXT ·Yinitstate_r(SB),$48-84
 
-TEXT ·Yinotify_add_watch(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xinotify_add_watch(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yinotify_add_watch(tls *TLS, fd int32, pathname uintptr, mask Tuint32_t) (r int32)
+TEXT ·Yinotify_add_watch(SB),$40-64
 
-TEXT ·Yinotify_init(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xinotify_init(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Yinotify_init(tls *TLS) (r int32)
+TEXT ·Yinotify_init(SB),$16-20
 
-TEXT ·Yinotify_init1(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xinotify_init1(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yinotify_init1(tls *TLS, flags int32) (r1 int32)
+TEXT ·Yinotify_init1(SB),$24-32
 
-TEXT ·Yinotify_rm_watch(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xinotify_rm_watch(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yinotify_rm_watch(tls *TLS, fd int32, wd int32) (r int32)
+TEXT ·Yinotify_rm_watch(SB),$24-36
 
+// func Yinsque(tls *TLS, element uintptr, pred uintptr)
 TEXT ·Yinsque(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xinsque(SB)
-	RET
-
-TEXT ·Yioctl(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xioctl(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yioperm(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xioperm(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Yiopl(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiopl(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisalnum(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisalnum(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisalnum_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xisalnum_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yisalpha(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisalpha(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisalpha_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xisalpha_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yisascii(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisascii(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisastream(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisastream(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisatty(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisatty(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisblank(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisblank(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisblank_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xisblank_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiscntrl(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiscntrl(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiscntrl_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiscntrl_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yisdigit(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisdigit(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisdigit_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xisdigit_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yisgraph(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisgraph(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisgraph_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xisgraph_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yislower(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xislower(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yislower_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xislower_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yisnan(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xisnan(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisnanf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisnanf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisnanl(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xisnanl(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisprint(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisprint(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisprint_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xisprint_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yispunct(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xispunct(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yispunct_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xispunct_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yissetugid(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xissetugid(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Yisspace(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisspace(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisspace_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xisspace_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yisupper(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisupper(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisupper_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xisupper_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswalnum(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswalnum(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswalnum_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswalnum_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswalpha(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswalpha(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswalpha_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswalpha_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswblank(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswblank(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswblank_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswblank_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswcntrl(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswcntrl(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswcntrl_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswcntrl_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswctype(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswctype(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswctype_l(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xiswctype_l(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Yiswdigit(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswdigit(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswdigit_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswdigit_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswgraph(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswgraph(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswgraph_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswgraph_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswlower(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswlower(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswlower_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswlower_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswprint(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswprint(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswprint_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswprint_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswpunct(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswpunct(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswpunct_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswpunct_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswspace(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswspace(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswspace_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswspace_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswupper(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswupper(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswupper_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswupper_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yiswxdigit(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xiswxdigit(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yiswxdigit_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xiswxdigit_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yisxdigit(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xisxdigit(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yisxdigit_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xisxdigit_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yj0(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xj0(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yj0f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xj0f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yj1(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xj1(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yj1f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xj1f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yjn(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xjn(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Yjnf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xjnf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yjrand48(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xjrand48(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ykill(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xkill(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ykillpg(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xkillpg(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yklogctl(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xklogctl(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Yl64a(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xl64a(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylabs(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlabs(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylchmod(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xlchmod(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ylchown(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	CALL ·Xlchown(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ylckpwdf(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xlckpwdf(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
 
+// func Yioctl(tls *TLS, fd int32, req int32, va uintptr) (r1 int32)
+TEXT ·Yioctl(SB),$32-52
+
+// func Yioperm(tls *TLS, from uint64, num uint64, turn_on int32) (r int32)
+TEXT ·Yioperm(SB),$40-64
+
+// func Yiopl(tls *TLS, level int32) (r int32)
+TEXT ·Yiopl(SB),$24-32
+
+// func Yisalnum(tls *TLS, c int32) (r int32)
+TEXT ·Yisalnum(SB),$24-32
+
+// func Yisalnum_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yisalnum_l(SB),$32-52
+
+// func Yisalpha(tls *TLS, c int32) (r int32)
+TEXT ·Yisalpha(SB),$24-32
+
+// func Yisalpha_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yisalpha_l(SB),$32-52
+
+// func Yisascii(tls *TLS, c int32) (r int32)
+TEXT ·Yisascii(SB),$24-32
+
+// func Yisastream(tls *TLS, fd int32) (r int32)
+TEXT ·Yisastream(SB),$24-32
+
+// func Yisatty(tls *TLS, fd int32) (r1 int32)
+TEXT ·Yisatty(SB),$24-32
+
+// func Yisblank(tls *TLS, c int32) (r int32)
+TEXT ·Yisblank(SB),$24-32
+
+// func Yisblank_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yisblank_l(SB),$32-52
+
+// func Yiscntrl(tls *TLS, c int32) (r int32)
+TEXT ·Yiscntrl(SB),$24-32
+
+// func Yiscntrl_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yiscntrl_l(SB),$32-52
+
+// func Yisdigit(tls *TLS, c int32) (r int32)
+TEXT ·Yisdigit(SB),$24-32
+
+// func Yisdigit_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yisdigit_l(SB),$32-52
+
+// func Yisgraph(tls *TLS, c int32) (r int32)
+TEXT ·Yisgraph(SB),$24-32
+
+// func Yisgraph_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yisgraph_l(SB),$32-52
+
+// func Yislower(tls *TLS, c int32) (r int32)
+TEXT ·Yislower(SB),$24-32
+
+// func Yislower_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yislower_l(SB),$32-52
+
+// func Yisnan(t *TLS, x float64) int32
+TEXT ·Yisnan(SB),$24-36
+
+// func Yisnanf(t *TLS, arg float32) int32
+TEXT ·Yisnanf(SB),$24-32
+
+// func Yisnanl(t *TLS, arg float64) int32
+TEXT ·Yisnanl(SB),$24-36
+
+// func Yisprint(tls *TLS, c int32) (r int32)
+TEXT ·Yisprint(SB),$24-32
+
+// func Yisprint_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yisprint_l(SB),$32-52
+
+// func Yispunct(tls *TLS, c int32) (r int32)
+TEXT ·Yispunct(SB),$24-32
+
+// func Yispunct_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yispunct_l(SB),$32-52
+
+// func Yissetugid(tls *TLS) (r int32)
+TEXT ·Yissetugid(SB),$16-20
+
+// func Yisspace(tls *TLS, c int32) (r int32)
+TEXT ·Yisspace(SB),$24-32
+
+// func Yisspace_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yisspace_l(SB),$32-52
+
+// func Yisupper(tls *TLS, c int32) (r int32)
+TEXT ·Yisupper(SB),$24-32
+
+// func Yisupper_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yisupper_l(SB),$32-52
+
+// func Yiswalnum(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswalnum(SB),$24-32
+
+// func Yiswalnum_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswalnum_l(SB),$32-52
+
+// func Yiswalpha(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswalpha(SB),$24-32
+
+// func Yiswalpha_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswalpha_l(SB),$32-52
+
+// func Yiswblank(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswblank(SB),$24-32
+
+// func Yiswblank_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswblank_l(SB),$32-52
+
+// func Yiswcntrl(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswcntrl(SB),$24-32
+
+// func Yiswcntrl_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswcntrl_l(SB),$32-52
+
+// func Yiswctype(tls *TLS, wc Twint_t, type1 Twctype_t) (r int32)
+TEXT ·Yiswctype(SB),$32-52
+
+// func Yiswctype_l(tls *TLS, c Twint_t, t Twctype_t, l Tlocale_t) (r int32)
+TEXT ·Yiswctype_l(SB),$40-68
+
+// func Yiswdigit(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswdigit(SB),$24-32
+
+// func Yiswdigit_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswdigit_l(SB),$32-52
+
+// func Yiswgraph(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswgraph(SB),$24-32
+
+// func Yiswgraph_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswgraph_l(SB),$32-52
+
+// func Yiswlower(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswlower(SB),$24-32
+
+// func Yiswlower_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswlower_l(SB),$32-52
+
+// func Yiswprint(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswprint(SB),$24-32
+
+// func Yiswprint_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswprint_l(SB),$32-52
+
+// func Yiswpunct(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswpunct(SB),$24-32
+
+// func Yiswpunct_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswpunct_l(SB),$32-52
+
+// func Yiswspace(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswspace(SB),$24-32
+
+// func Yiswspace_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswspace_l(SB),$32-52
+
+// func Yiswupper(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswupper(SB),$24-32
+
+// func Yiswupper_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswupper_l(SB),$32-52
+
+// func Yiswxdigit(tls *TLS, wc Twint_t) (r int32)
+TEXT ·Yiswxdigit(SB),$24-32
+
+// func Yiswxdigit_l(tls *TLS, c Twint_t, l Tlocale_t) (r int32)
+TEXT ·Yiswxdigit_l(SB),$32-52
+
+// func Yisxdigit(tls *TLS, c int32) (r int32)
+TEXT ·Yisxdigit(SB),$24-32
+
+// func Yisxdigit_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Yisxdigit_l(SB),$32-52
+
+// func Yj0(tls *TLS, x float64) (r1 float64)
+TEXT ·Yj0(SB),$24-40
+
+// func Yj0f(tls *TLS, x float32) (r1 float32)
+TEXT ·Yj0f(SB),$24-32
+
+// func Yj1(tls *TLS, x float64) (r1 float64)
+TEXT ·Yj1(SB),$24-40
+
+// func Yj1f(tls *TLS, x float32) (r1 float32)
+TEXT ·Yj1f(SB),$24-32
+
+// func Yjn(tls *TLS, n int32, x float64) (r float64)
+TEXT ·Yjn(SB),$32-56
+
+// func Yjnf(tls *TLS, n int32, x float32) (r float32)
+TEXT ·Yjnf(SB),$24-36
+
+// func Yjrand48(tls *TLS, s uintptr) (r int64)
+TEXT ·Yjrand48(SB),$24-40
+
+// func Ykill(tls *TLS, pid Tpid_t, sig int32) (r int32)
+TEXT ·Ykill(SB),$24-36
+
+// func Ykillpg(tls *TLS, pgid Tpid_t, sig int32) (r int32)
+TEXT ·Ykillpg(SB),$24-36
+
+// func Yklogctl(tls *TLS, type1 int32, buf uintptr, len1 int32) (r int32)
+TEXT ·Yklogctl(SB),$40-64
+
+// func Yl64a(tls *TLS, x0 int64) (r uintptr)
+TEXT ·Yl64a(SB),$24-40
+
+// func Ylabs(tls *TLS, a int64) (r int64)
+TEXT ·Ylabs(SB),$24-40
+
+// func Ylchmod(tls *TLS, path uintptr, mode Tmode_t) (r int32)
+TEXT ·Ylchmod(SB),$32-48
+
+// func Ylchown(tls *TLS, path uintptr, uid Tuid_t, gid Tgid_t) (r int32)
+TEXT ·Ylchown(SB),$32-52
+
+// func Ylckpwdf(tls *TLS) (r int32)
+TEXT ·Ylckpwdf(SB),$16-20
+
+// func Ylcong48(tls *TLS, p uintptr)
 TEXT ·Ylcong48(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlcong48(SB)
-	RET
-
-TEXT ·Yldexp(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xldexp(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Yldexpf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xldexpf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yldexpl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xldexpl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Yldiv(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xldiv(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ylfind(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xlfind(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ylgamma(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlgamma(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylgamma_r(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlgamma_r(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ylgammaf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xlgammaf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ylgammaf_r(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlgammaf_r(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ylgammal(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlgammal(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylgammal_r(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlgammal_r(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ylgetxattr(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xlgetxattr(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ylink(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlink(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ylinkat(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xlinkat(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ylisten(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xlisten(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ylistxattr(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xlistxattr(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yllabs(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xllabs(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylldiv(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlldiv(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yllistxattr(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xllistxattr(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Yllrint(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xllrint(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yllrintf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xllrintf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yllrintl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xllrintl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yllround(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xllround(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yllroundf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xllroundf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yllroundl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xllroundl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylocaleconv(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xlocaleconv(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ylocaltime(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlocaltime(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylocaltime_r(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlocaltime_r(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ylockf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlockf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ylog(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlog(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylog10(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlog10(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylog10f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xlog10f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ylog10l(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlog10l(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylog1p(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlog1p(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylog1pf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xlog1pf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ylog1pl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlog1pl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylog2(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlog2(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylog2f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xlog2f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ylog2l(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlog2l(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylogb(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlogb(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylogbf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xlogbf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ylogbl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlogbl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylogf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xlogf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ylogin_tty(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xlogin_tty(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ylogl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlogl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylongjmp(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xlongjmp(SB)
-	RET
-
-TEXT ·Ylrand48(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xlrand48(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ylremovexattr(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlremovexattr(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ylrint(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlrint(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylrintf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xlrintf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylrintl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlrintl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylround(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlround(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylroundf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xlroundf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylroundl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xlroundl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ylsearch(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xlsearch(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ylseek(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xlseek(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ylseek64(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xlseek64(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ylsetxattr(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xlsetxattr(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ylstat(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlstat(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ylstat64(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlstat64(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ylutimes(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xlutimes(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymadvise(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xmadvise(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ymalloc(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xmalloc(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ymalloc_usable_size(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xmalloc_usable_size(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ymblen(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xmblen(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymbrlen(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmbrlen(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ymbrtoc16(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xmbrtoc16(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ymbrtoc32(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xmbrtoc32(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ymbrtowc(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xmbrtowc(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ymbsinit(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xmbsinit(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ymbsnrtowcs(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xmbsnrtowcs(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ymbsrtowcs(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xmbsrtowcs(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ymbstowcs(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmbstowcs(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ymbtowc(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmbtowc(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ymemccpy(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xmemccpy(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ymemchr(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmemchr(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ymemcmp(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmemcmp(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ymemcpy(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmemcpy(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ymemfd_create(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xmemfd_create(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymemmem(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xmemmem(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ymemmove(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmemmove(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ymempcpy(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmempcpy(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ymemrchr(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmemrchr(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ymemset(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmemset(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ymincore(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmincore(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ymkdir(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xmkdir(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymkdirat(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xmkdirat(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ymkdtemp(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xmkdtemp(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ymkfifo(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xmkfifo(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymkfifoat(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xmkfifoat(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ymknod(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xmknod(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ymknodat(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xmknodat(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
-
-TEXT ·Ymkostemp(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xmkostemp(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymkostemps(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	CALL ·Xmkostemps(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymkstemp(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xmkstemp(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ymkstemp64(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xmkstemp64(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ymkstemps(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xmkstemps(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymkstemps64(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xmkstemps64(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymktemp(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xmktemp(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ymktime(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xmktime(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ymlock(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xmlock(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymlock2(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xmlock2(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ymlockall(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xmlockall(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ymmap(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	MOVL p5+32(FP), AX
-	MOVL AX, 32(SP)
-	MOVQ p6+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xmmap(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ymmap64(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	MOVL p5+32(FP), AX
-	MOVL AX, 32(SP)
-	MOVQ p6+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xmmap64(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ymodf(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xmodf(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ymodff(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xmodff(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymodfl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xmodfl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ymount(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xmount(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ymprotect(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xmprotect(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ymrand48(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xmrand48(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
-
-TEXT ·Ymremap(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xmremap(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ymsgctl(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xmsgctl(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymsgget(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xmsgget(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ymsgrcv(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xmsgrcv(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ymsgsnd(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xmsgsnd(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
-
-TEXT ·Ymsync(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xmsync(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ymunlock(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xmunlock(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ymunlockall(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xmunlockall(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
-
-TEXT ·Ymunmap(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xmunmap(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yname_to_handle_at(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xname_to_handle_at(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Ynan(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xnan(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ynanf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xnanf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ynanl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xnanl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ynanosleep(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xnanosleep(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ynewlocale(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xnewlocale(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ynextafter(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xnextafter(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ynextafterf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xnextafterf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ynextafterl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xnextafterl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ynexttoward(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xnexttoward(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ynexttowardf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xnexttowardf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ynexttowardl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xnexttowardl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ynftw(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	CALL ·Xnftw(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Yngettext(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xngettext(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ynice(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xnice(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ynl_langinfo(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xnl_langinfo(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ynl_langinfo_l(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xnl_langinfo_l(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ynrand48(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xnrand48(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yns_get16(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xns_get16(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yns_get32(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xns_get32(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yns_initparse(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xns_initparse(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Yns_name_uncompress(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xns_name_uncompress(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
-
-TEXT ·Yns_parserr(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xns_parserr(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
 
+// func Yldexp(tls *TLS, x float64, n int32) (r float64)
+TEXT ·Yldexp(SB),$32-52
+
+// func Yldexpf(tls *TLS, x float32, n int32) (r float32)
+TEXT ·Yldexpf(SB),$24-36
+
+// func Yldexpl(tls *TLS, x float64, n int32) (r float64)
+TEXT ·Yldexpl(SB),$32-52
+
+// func Yldiv(tls *TLS, num int64, den int64) (r Tldiv_t)
+TEXT ·Yldiv(SB),$40-64
+
+// func Ylfind(tls *TLS, key uintptr, base uintptr, nelp uintptr, width Tsize_t, compar uintptr) (r uintptr)
+TEXT ·Ylfind(SB),$56-104
+
+// func Ylgamma(tls *TLS, x float64) (r float64)
+TEXT ·Ylgamma(SB),$24-40
+
+// func Ylgamma_r(tls *TLS, x float64, signgamp uintptr) (r float64)
+TEXT ·Ylgamma_r(SB),$32-56
+
+// func Ylgammaf(tls *TLS, x float32) (r float32)
+TEXT ·Ylgammaf(SB),$24-32
+
+// func Ylgammaf_r(tls *TLS, x float32, signgamp uintptr) (r float32)
+TEXT ·Ylgammaf_r(SB),$32-52
+
+// func Ylgammal(tls *TLS, x float64) (r float64)
+TEXT ·Ylgammal(SB),$24-40
+
+// func Ylgammal_r(tls *TLS, x float64, sg uintptr) (r float64)
+TEXT ·Ylgammal_r(SB),$32-56
+
+// func Ylgetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_t) (r Tssize_t)
+TEXT ·Ylgetxattr(SB),$48-88
+
+// func Ylink(tls *TLS, existing uintptr, new1 uintptr) (r int32)
+TEXT ·Ylink(SB),$32-52
+
+// func Ylinkat(tls *TLS, fd1 int32, existing uintptr, fd2 int32, new1 uintptr, flag int32) (r int32)
+TEXT ·Ylinkat(SB),$56-96
+
+// func Ylisten(tls *TLS, fd int32, backlog int32) (r1 int32)
+TEXT ·Ylisten(SB),$24-36
+
+// func Ylistxattr(tls *TLS, path uintptr, list uintptr, size Tsize_t) (r Tssize_t)
+TEXT ·Ylistxattr(SB),$40-72
+
+// func Yllabs(tls *TLS, a int64) (r int64)
+TEXT ·Yllabs(SB),$24-40
+
+// func Ylldiv(tls *TLS, num int64, den int64) (r Tlldiv_t)
+TEXT ·Ylldiv(SB),$40-64
+
+// func Yllistxattr(tls *TLS, path uintptr, list uintptr, size Tsize_t) (r Tssize_t)
+TEXT ·Yllistxattr(SB),$40-72
+
+// func Yllrint(tls *TLS, x float64) (r int64)
+TEXT ·Yllrint(SB),$24-40
+
+// func Yllrintf(tls *TLS, x float32) (r int64)
+TEXT ·Yllrintf(SB),$24-36
+
+// func Yllrintl(tls *TLS, x float64) (r int64)
+TEXT ·Yllrintl(SB),$24-40
+
+// func Yllround(tls *TLS, x float64) (r int64)
+TEXT ·Yllround(SB),$24-40
+
+// func Yllroundf(tls *TLS, x float32) (r int64)
+TEXT ·Yllroundf(SB),$24-36
+
+// func Yllroundl(tls *TLS, x float64) (r int64)
+TEXT ·Yllroundl(SB),$24-40
+
+// func Ylocaleconv(tls *TLS) (r uintptr)
+TEXT ·Ylocaleconv(SB),$16-24
+
+// func Ylocaltime(tls *TLS, t uintptr) (r uintptr)
+TEXT ·Ylocaltime(SB),$24-40
+
+// func Ylocaltime_r(tls *TLS, t uintptr, tm uintptr) (r uintptr)
+TEXT ·Ylocaltime_r(SB),$32-56
+
+// func Ylockf(tls *TLS, fd int32, op int32, size Toff_t) (r int32)
+TEXT ·Ylockf(SB),$32-52
+
+// func Ylog(tls *TLS, x1 float64) (r1 float64)
+TEXT ·Ylog(SB),$24-40
+
+// func Ylog10(tls *TLS, x float64) (r float64)
+TEXT ·Ylog10(SB),$24-40
+
+// func Ylog10f(tls *TLS, x float32) (r float32)
+TEXT ·Ylog10f(SB),$24-32
+
+// func Ylog10l(tls *TLS, x float64) (r float64)
+TEXT ·Ylog10l(SB),$24-40
+
+// func Ylog1p(tls *TLS, x3 float64) (r float64)
+TEXT ·Ylog1p(SB),$24-40
+
+// func Ylog1pf(tls *TLS, x3 float32) (r float32)
+TEXT ·Ylog1pf(SB),$24-32
+
+// func Ylog1pl(tls *TLS, x float64) (r float64)
+TEXT ·Ylog1pl(SB),$24-40
+
+// func Ylog2(tls *TLS, x1 float64) (r1 float64)
+TEXT ·Ylog2(SB),$24-40
+
+// func Ylog2f(tls *TLS, x1 float32) (r1 float32)
+TEXT ·Ylog2f(SB),$24-32
+
+// func Ylog2l(tls *TLS, x float64) (r float64)
+TEXT ·Ylog2l(SB),$24-40
+
+// func Ylogb(tls *TLS, x float64) (r float64)
+TEXT ·Ylogb(SB),$24-40
+
+// func Ylogbf(tls *TLS, x float32) (r float32)
+TEXT ·Ylogbf(SB),$24-32
+
+// func Ylogbl(tls *TLS, x float64) (r float64)
+TEXT ·Ylogbl(SB),$24-40
+
+// func Ylogf(tls *TLS, x1 float32) (r1 float32)
+TEXT ·Ylogf(SB),$24-32
+
+// func Ylogin_tty(tls *TLS, fd int32) (r int32)
+TEXT ·Ylogin_tty(SB),$24-32
+
+// func Ylogl(tls *TLS, x float64) (r float64)
+TEXT ·Ylogl(SB),$24-40
+
+// func Ylongjmp(t *TLS, env uintptr, val int32)
+TEXT ·Ylongjmp(SB),$24-20
+
+// func Ylrand48(tls *TLS) (r int64)
+TEXT ·Ylrand48(SB),$16-24
+
+// func Ylremovexattr(tls *TLS, path uintptr, name uintptr) (r int32)
+TEXT ·Ylremovexattr(SB),$32-52
+
+// func Ylrint(tls *TLS, x float64) (r int64)
+TEXT ·Ylrint(SB),$24-40
+
+// func Ylrintf(tls *TLS, x float32) (r int64)
+TEXT ·Ylrintf(SB),$24-36
+
+// func Ylrintl(tls *TLS, x float64) (r int64)
+TEXT ·Ylrintl(SB),$24-40
+
+// func Ylround(tls *TLS, x float64) (r int64)
+TEXT ·Ylround(SB),$24-40
+
+// func Ylroundf(tls *TLS, x float32) (r int64)
+TEXT ·Ylroundf(SB),$24-36
+
+// func Ylroundl(tls *TLS, x float64) (r int64)
+TEXT ·Ylroundl(SB),$24-40
+
+// func Ylsearch(tls *TLS, key uintptr, base uintptr, nelp uintptr, width Tsize_t, compar uintptr) (r uintptr)
+TEXT ·Ylsearch(SB),$56-104
+
+// func Ylseek(tls *TLS, fd int32, offset Toff_t, whence int32) (r Toff_t)
+TEXT ·Ylseek(SB),$40-68
+
+// func Ylseek64(tls *TLS, fd int32, offset Toff_t, whence int32) (r Toff_t)
+TEXT ·Ylseek64(SB),$40-68
+
+// func Ylsetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_t, flags int32) (r int32)
+TEXT ·Ylsetxattr(SB),$56-96
+
+// func Ylstat(tls *TLS, path uintptr, buf uintptr) (r int32)
+TEXT ·Ylstat(SB),$32-52
+
+// func Ylstat64(tls *TLS, path uintptr, buf uintptr) (r int32)
+TEXT ·Ylstat64(SB),$32-52
+
+// func Ylutimes(tls *TLS, filename uintptr, tv uintptr) (r int32)
+TEXT ·Ylutimes(SB),$32-52
+
+// func Ymadvise(tls *TLS, addr uintptr, len1 Tsize_t, advice int32) (r int32)
+TEXT ·Ymadvise(SB),$40-64
+
+// func Ymalloc(tls *TLS, n Tsize_t) (r uintptr)
+TEXT ·Ymalloc(SB),$24-40
+
+// func Ymalloc_usable_size(tls *TLS, p uintptr) (r Tsize_t)
+TEXT ·Ymalloc_usable_size(SB),$24-40
+
+// func Ymblen(tls *TLS, s uintptr, n Tsize_t) (r int32)
+TEXT ·Ymblen(SB),$32-52
+
+// func Ymbrlen(tls *TLS, s uintptr, n Tsize_t, st uintptr) (r Tsize_t)
+TEXT ·Ymbrlen(SB),$40-72
+
+// func Ymbrtoc16(tls *TLS, pc16 uintptr, s uintptr, n Tsize_t, ps uintptr) (r Tsize_t)
+TEXT ·Ymbrtoc16(SB),$48-88
+
+// func Ymbrtoc32(tls *TLS, pc32 uintptr, s uintptr, n Tsize_t, ps uintptr) (r Tsize_t)
+TEXT ·Ymbrtoc32(SB),$48-88
+
+// func Ymbrtowc(tls *TLS, wc uintptr, src uintptr, n Tsize_t, st uintptr) (r Tsize_t)
+TEXT ·Ymbrtowc(SB),$48-88
+
+// func Ymbsinit(tls *TLS, st uintptr) (r int32)
+TEXT ·Ymbsinit(SB),$24-36
+
+// func Ymbsnrtowcs(tls *TLS, wcs uintptr, src uintptr, n Tsize_t, wn Tsize_t, st uintptr) (r Tsize_t)
+TEXT ·Ymbsnrtowcs(SB),$56-104
+
+// func Ymbsrtowcs(tls *TLS, ws uintptr, src uintptr, wn Tsize_t, st uintptr) (r Tsize_t)
+TEXT ·Ymbsrtowcs(SB),$48-88
+
+// func Ymbstowcs(tls *TLS, ws uintptr, _s uintptr, wn Tsize_t) (r Tsize_t)
+TEXT ·Ymbstowcs(SB),$40-72
+
+// func Ymbtowc(tls *TLS, wc uintptr, src uintptr, n Tsize_t) (r int32)
+TEXT ·Ymbtowc(SB),$40-68
+
+// func Ymemccpy(tls *TLS, dest uintptr, src uintptr, c int32, n Tsize_t) (r uintptr)
+TEXT ·Ymemccpy(SB),$48-88
+
+// func Ymemchr(tls *TLS, src uintptr, c int32, n Tsize_t) (r uintptr)
+TEXT ·Ymemchr(SB),$40-72
+
+// func Ymemcmp(tls *TLS, vl uintptr, vr uintptr, n Tsize_t) (r1 int32)
+TEXT ·Ymemcmp(SB),$40-68
+
+// func Ymemcpy(tls *TLS, dest uintptr, src uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ymemcpy(SB),$40-72
+
+// func Ymemfd_create(tls *TLS, name uintptr, flags uint32) (r int32)
+TEXT ·Ymemfd_create(SB),$32-48
+
+// func Ymemmem(tls *TLS, h0 uintptr, k Tsize_t, n0 uintptr, l Tsize_t) (r uintptr)
+TEXT ·Ymemmem(SB),$48-88
+
+// func Ymemmove(tls *TLS, dest uintptr, src uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ymemmove(SB),$40-72
+
+// func Ymempcpy(tls *TLS, dest uintptr, src uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ymempcpy(SB),$40-72
+
+// func Ymemrchr(tls *TLS, m uintptr, c int32, n Tsize_t) (r uintptr)
+TEXT ·Ymemrchr(SB),$40-72
+
+// func Ymemset(tls *TLS, dest uintptr, c int32, n Tsize_t) (r uintptr)
+TEXT ·Ymemset(SB),$40-72
+
+// func Ymincore(tls *TLS, addr uintptr, len1 Tsize_t, vec uintptr) (r int32)
+TEXT ·Ymincore(SB),$40-68
+
+// func Ymkdir(tls *TLS, path uintptr, mode Tmode_t) (r int32)
+TEXT ·Ymkdir(SB),$32-48
+
+// func Ymkdirat(tls *TLS, fd int32, path uintptr, mode Tmode_t) (r int32)
+TEXT ·Ymkdirat(SB),$40-64
+
+// func Ymkdtemp(tls *TLS, template uintptr) (r uintptr)
+TEXT ·Ymkdtemp(SB),$24-40
+
+// func Ymkfifo(tls *TLS, path uintptr, mode Tmode_t) (r int32)
+TEXT ·Ymkfifo(SB),$32-48
+
+// func Ymkfifoat(tls *TLS, fd int32, path uintptr, mode Tmode_t) (r int32)
+TEXT ·Ymkfifoat(SB),$40-64
+
+// func Ymknod(tls *TLS, path uintptr, mode Tmode_t, dev Tdev_t) (r int32)
+TEXT ·Ymknod(SB),$40-68
+
+// func Ymknodat(tls *TLS, fd int32, path uintptr, mode Tmode_t, dev Tdev_t) (r int32)
+TEXT ·Ymknodat(SB),$48-84
+
+// func Ymkostemp(tls *TLS, template uintptr, flags int32) (r int32)
+TEXT ·Ymkostemp(SB),$32-48
+
+// func Ymkostemps(tls *TLS, template uintptr, len1 int32, flags int32) (r int32)
+TEXT ·Ymkostemps(SB),$32-52
+
+// func Ymkstemp(tls *TLS, template uintptr) (r int32)
+TEXT ·Ymkstemp(SB),$24-36
+
+// func Ymkstemp64(tls *TLS, template uintptr) (r int32)
+TEXT ·Ymkstemp64(SB),$24-36
+
+// func Ymkstemps(tls *TLS, template uintptr, len1 int32) (r int32)
+TEXT ·Ymkstemps(SB),$32-48
+
+// func Ymkstemps64(tls *TLS, template uintptr, len1 int32) (r int32)
+TEXT ·Ymkstemps64(SB),$32-48
+
+// func Ymktemp(tls *TLS, template uintptr) (r uintptr)
+TEXT ·Ymktemp(SB),$24-40
+
+// func Ymktime(tls *TLS, tm uintptr) (r Ttime_t)
+TEXT ·Ymktime(SB),$24-40
+
+// func Ymlock(tls *TLS, addr uintptr, len1 Tsize_t) (r int32)
+TEXT ·Ymlock(SB),$32-52
+
+// func Ymlock2(tls *TLS, addr uintptr, len1 Tsize_t, flags uint32) (r int32)
+TEXT ·Ymlock2(SB),$40-64
+
+// func Ymlockall(tls *TLS, flags int32) (r int32)
+TEXT ·Ymlockall(SB),$24-32
+
+// func Ymmap(tls *TLS, start uintptr, len1 Tsize_t, prot int32, flags int32, fd int32, off Toff_t) (r uintptr)
+TEXT ·Ymmap(SB),$56-104
+
+// func Ymmap64(tls *TLS, start uintptr, len1 Tsize_t, prot int32, flags int32, fd int32, off Toff_t) (r uintptr)
+TEXT ·Ymmap64(SB),$56-104
+
+// func Ymodf(tls *TLS, x float64, iptr uintptr) (r float64)
+TEXT ·Ymodf(SB),$32-56
+
+// func Ymodff(tls *TLS, x float32, iptr uintptr) (r float32)
+TEXT ·Ymodff(SB),$32-52
+
+// func Ymodfl(tls *TLS, x float64, iptr uintptr) (r1 float64)
+TEXT ·Ymodfl(SB),$32-56
+
+// func Ymount(tls *TLS, special uintptr, dir uintptr, fstype uintptr, flags uint64, data uintptr) (r int32)
+TEXT ·Ymount(SB),$56-100
+
+// func Ymprotect(tls *TLS, addr uintptr, len1 Tsize_t, prot int32) (r int32)
+TEXT ·Ymprotect(SB),$40-64
+
+// func Ymrand48(tls *TLS) (r int64)
+TEXT ·Ymrand48(SB),$16-24
+
+// func Ymremap(tls *TLS, old_addr uintptr, old_len Tsize_t, new_len Tsize_t, flags int32, va uintptr) (r uintptr)
+TEXT ·Ymremap(SB),$56-104
+
+// func Ymsgctl(tls *TLS, q int32, cmd int32, buf uintptr) (r1 int32)
+TEXT ·Ymsgctl(SB),$32-52
+
+// func Ymsgget(tls *TLS, k Tkey_t, flag int32) (r int32)
+TEXT ·Ymsgget(SB),$24-36
+
+// func Ymsgrcv(tls *TLS, q int32, m uintptr, len1 Tsize_t, type1 int64, flag int32) (r Tssize_t)
+TEXT ·Ymsgrcv(SB),$56-100
+
+// func Ymsgsnd(tls *TLS, q int32, m uintptr, len1 Tsize_t, flag int32) (r int32)
+TEXT ·Ymsgsnd(SB),$48-80
+
+// func Ymsync(tls *TLS, start uintptr, len1 Tsize_t, flags int32) (r int32)
+TEXT ·Ymsync(SB),$40-64
+
+// func Ymunlock(tls *TLS, addr uintptr, len1 Tsize_t) (r int32)
+TEXT ·Ymunlock(SB),$32-52
+
+// func Ymunlockall(tls *TLS) (r int32)
+TEXT ·Ymunlockall(SB),$16-20
+
+// func Ymunmap(tls *TLS, start uintptr, len1 Tsize_t) (r int32)
+TEXT ·Ymunmap(SB),$32-52
+
+// func Yname_to_handle_at(tls *TLS, dirfd int32, pathname uintptr, handle uintptr, mount_id uintptr, flags int32) (r int32)
+TEXT ·Yname_to_handle_at(SB),$56-96
+
+// func Ynan(tls *TLS, s uintptr) (r float64)
+TEXT ·Ynan(SB),$24-40
+
+// func Ynanf(tls *TLS, s uintptr) (r float32)
+TEXT ·Ynanf(SB),$24-36
+
+// func Ynanl(tls *TLS, s uintptr) (r float64)
+TEXT ·Ynanl(SB),$24-40
+
+// func Ynanosleep(tls *TLS, req uintptr, rem uintptr) (r int32)
+TEXT ·Ynanosleep(SB),$32-52
+
+// func Ynewlocale(tls *TLS, mask int32, name uintptr, loc Tlocale_t) (r Tlocale_t)
+TEXT ·Ynewlocale(SB),$40-72
+
+// func Ynextafter(tls *TLS, x3 float64, y3 float64) (r float64)
+TEXT ·Ynextafter(SB),$32-56
+
+// func Ynextafterf(tls *TLS, x3 float32, y3 float32) (r float32)
+TEXT ·Ynextafterf(SB),$24-36
+
+// func Ynextafterl(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Ynextafterl(SB),$32-56
+
+// func Ynexttoward(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Ynexttoward(SB),$32-56
+
+// func Ynexttowardf(tls *TLS, x3 float32, y3 float64) (r float32)
+TEXT ·Ynexttowardf(SB),$32-52
+
+// func Ynexttowardl(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Ynexttowardl(SB),$32-56
+
+// func Ynftw(tls *TLS, path uintptr, fn uintptr, fd_limit int32, flags int32) (r1 int32)
+TEXT ·Ynftw(SB),$40-68
+
+// func Yngettext(tls *TLS, msgid1 uintptr, msgid2 uintptr, n uint64) (r uintptr)
+TEXT ·Yngettext(SB),$40-72
+
+// func Ynice(tls *TLS, inc int32) (r int32)
+TEXT ·Ynice(SB),$24-32
+
+// func Ynl_langinfo(tls *TLS, item Tnl_item) (r uintptr)
+TEXT ·Ynl_langinfo(SB),$24-36
+
+// func Ynl_langinfo_l(tls *TLS, item Tnl_item, loc Tlocale_t) (r uintptr)
+TEXT ·Ynl_langinfo_l(SB),$32-56
+
+// func Ynrand48(tls *TLS, s uintptr) (r int64)
+TEXT ·Ynrand48(SB),$24-40
+
+// func Yns_get16(tls *TLS, cp uintptr) (r uint32)
+TEXT ·Yns_get16(SB),$24-36
+
+// func Yns_get32(tls *TLS, cp uintptr) (r uint64)
+TEXT ·Yns_get32(SB),$24-40
+
+// func Yns_initparse(tls *TLS, msg uintptr, msglen int32, handle uintptr) (r1 int32)
+TEXT ·Yns_initparse(SB),$40-68
+
+// func Yns_name_uncompress(tls *TLS, msg uintptr, eom uintptr, src uintptr, dst uintptr, dstsiz Tsize_t) (r1 int32)
+TEXT ·Yns_name_uncompress(SB),$56-100
+
+// func Yns_parserr(tls *TLS, handle uintptr, section Tns_sect, rrnum int32, rr uintptr) (r1 int32)
+TEXT ·Yns_parserr(SB),$40-68
+
+// func Yns_put16(tls *TLS, s uint32, cp uintptr)
 TEXT ·Yns_put16(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xns_put16(SB)
-	RET
 
+// func Yns_put32(tls *TLS, l uint64, cp uintptr)
 TEXT ·Yns_put32(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xns_put32(SB)
-	RET
 
-TEXT ·Yns_skiprr(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	CALL ·Xns_skiprr(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yns_skiprr(tls *TLS, ptr uintptr, eom uintptr, section Tns_sect, count int32) (r1 int32)
+TEXT ·Yns_skiprr(SB),$40-68
 
-TEXT ·Yntohl(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xntohl(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yntohl(tls *TLS, n Tuint32_t) (r Tuint32_t)
+TEXT ·Yntohl(SB),$24-32
 
-TEXT ·Yntohs(SB),$18-18
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVW p1+8(FP), AX
-	MOVW AX, 8(SP)
-	CALL ·Xntohs(SB)
-	MOVW 16(SP), AX
-	MOVW AX, ret+16(FP)
-	RET
+// func Yntohs(tls *TLS, n Tuint16_t) (r Tuint16_t)
+TEXT ·Yntohs(SB),$24-28
 
+// func Yobstack_free(t *TLS, obstack, obj uintptr)
 TEXT ·Yobstack_free(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xobstack_free(SB)
-	RET
 
-TEXT ·Yobstack_vprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xobstack_vprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yobstack_vprintf(t *TLS, obstack, template, va uintptr) int32
+TEXT ·Yobstack_vprintf(SB),$40-68
 
-TEXT ·Yopen(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xopen(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yopen(tls *TLS, filename uintptr, flags int32, va uintptr) (r int32)
+TEXT ·Yopen(SB),$40-68
 
-TEXT ·Yopen64(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xopen64(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yopen64(tls *TLS, filename uintptr, flags int32, va uintptr) (r int32)
+TEXT ·Yopen64(SB),$40-68
 
-TEXT ·Yopen_by_handle_at(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xopen_by_handle_at(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yopen_by_handle_at(tls *TLS, mount_fd int32, handle uintptr, flags int32) (r int32)
+TEXT ·Yopen_by_handle_at(SB),$40-64
 
-TEXT ·Yopen_memstream(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xopen_memstream(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yopen_memstream(tls *TLS, bufp uintptr, sizep uintptr) (r uintptr)
+TEXT ·Yopen_memstream(SB),$32-56
 
-TEXT ·Yopen_wmemstream(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xopen_wmemstream(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yopen_wmemstream(tls *TLS, bufp uintptr, sizep uintptr) (r uintptr)
+TEXT ·Yopen_wmemstream(SB),$32-56
 
-TEXT ·Yopenat(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xopenat(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yopenat(tls *TLS, fd int32, filename uintptr, flags int32, va uintptr) (r int32)
+TEXT ·Yopenat(SB),$48-84
 
-TEXT ·Yopendir(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xopendir(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yopendir(tls *TLS, name uintptr) (r uintptr)
+TEXT ·Yopendir(SB),$24-40
 
+// func Yopenlog(tls *TLS, ident uintptr, opt int32, facility int32)
 TEXT ·Yopenlog(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	CALL ·Xopenlog(SB)
-	RET
 
-TEXT ·Yopenpty(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xopenpty(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
+// func Yopenpty(tls *TLS, pm uintptr, ps uintptr, name uintptr, tio uintptr, ws uintptr) (r int32)
+TEXT ·Yopenpty(SB),$56-100
 
-TEXT ·Ypathconf(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xpathconf(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ypathconf(tls *TLS, path uintptr, name int32) (r int64)
+TEXT ·Ypathconf(SB),$32-52
 
-TEXT ·Ypause(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xpause(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Ypause(tls *TLS) (r int32)
+TEXT ·Ypause(SB),$16-20
 
-TEXT ·Ypclose(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpclose(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypclose(tls *TLS, f uintptr) (r1 int32)
+TEXT ·Ypclose(SB),$24-36
 
+// func Yperror(tls *TLS, msg uintptr)
 TEXT ·Yperror(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xperror(SB)
-	RET
 
-TEXT ·Ypersonality(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpersonality(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypersonality(tls *TLS, persona uint64) (r int32)
+TEXT ·Ypersonality(SB),$24-36
 
-TEXT ·Ypipe(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpipe(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypipe(tls *TLS, fd uintptr) (r int32)
+TEXT ·Ypipe(SB),$24-36
 
-TEXT ·Ypipe2(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xpipe2(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypipe2(tls *TLS, fd uintptr, flag int32) (r int32)
+TEXT ·Ypipe2(SB),$32-48
 
-TEXT ·Ypivot_root(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpivot_root(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypivot_root(tls *TLS, new1 uintptr, old uintptr) (r int32)
+TEXT ·Ypivot_root(SB),$32-52
 
-TEXT ·Ypoll(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xpoll(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ypoll(tls *TLS, fds uintptr, n Tnfds_t, timeout int32) (r int32)
+TEXT ·Ypoll(SB),$40-64
 
-TEXT ·Ypopen(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpopen(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ypopen(t *TLS, command, type1 uintptr) uintptr
+TEXT ·Ypopen(SB),$32-56
 
-TEXT ·Yposix_close(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xposix_close(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yposix_close(tls *TLS, fd int32, flags int32) (r int32)
+TEXT ·Yposix_close(SB),$24-36
 
-TEXT ·Yposix_fadvise(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xposix_fadvise(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yposix_fadvise(tls *TLS, fd int32, base Toff_t, len1 Toff_t, advice int32) (r int32)
+TEXT ·Yposix_fadvise(SB),$48-80
 
-TEXT ·Yposix_fallocate(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xposix_fallocate(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yposix_fallocate(tls *TLS, fd int32, base Toff_t, len1 Toff_t) (r int32)
+TEXT ·Yposix_fallocate(SB),$40-68
 
-TEXT ·Yposix_madvise(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xposix_madvise(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yposix_madvise(tls *TLS, addr uintptr, len1 Tsize_t, advice int32) (r int32)
+TEXT ·Yposix_madvise(SB),$40-64
 
-TEXT ·Yposix_openpt(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xposix_openpt(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yposix_openpt(tls *TLS, flags int32) (r1 int32)
+TEXT ·Yposix_openpt(SB),$24-32
 
-TEXT ·Yposix_spawn_file_actions_addchdir_np(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xposix_spawn_file_actions_addchdir_np(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawn_file_actions_addchdir_np(tls *TLS, fa uintptr, path uintptr) (r int32)
+TEXT ·Yposix_spawn_file_actions_addchdir_np(SB),$32-52
 
-TEXT ·Yposix_spawn_file_actions_addclose(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xposix_spawn_file_actions_addclose(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawn_file_actions_addclose(tls *TLS, fa uintptr, fd int32) (r int32)
+TEXT ·Yposix_spawn_file_actions_addclose(SB),$32-48
 
-TEXT ·Yposix_spawn_file_actions_adddup2(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	CALL ·Xposix_spawn_file_actions_adddup2(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawn_file_actions_adddup2(tls *TLS, fa uintptr, srcfd int32, fd int32) (r int32)
+TEXT ·Yposix_spawn_file_actions_adddup2(SB),$32-52
 
-TEXT ·Yposix_spawn_file_actions_addfchdir_np(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xposix_spawn_file_actions_addfchdir_np(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawn_file_actions_addfchdir_np(tls *TLS, fa uintptr, fd int32) (r int32)
+TEXT ·Yposix_spawn_file_actions_addfchdir_np(SB),$32-48
 
-TEXT ·Yposix_spawn_file_actions_addopen(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	MOVL p5+36(FP), AX
-	MOVL AX, 36(SP)
-	CALL ·Xposix_spawn_file_actions_addopen(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yposix_spawn_file_actions_addopen(tls *TLS, fa uintptr, fd int32, path uintptr, flags int32, mode Tmode_t) (r int32)
+TEXT ·Yposix_spawn_file_actions_addopen(SB),$48-84
 
-TEXT ·Yposix_spawn_file_actions_destroy(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xposix_spawn_file_actions_destroy(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yposix_spawn_file_actions_destroy(tls *TLS, fa uintptr) (r int32)
+TEXT ·Yposix_spawn_file_actions_destroy(SB),$24-36
 
-TEXT ·Yposix_spawn_file_actions_init(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xposix_spawn_file_actions_init(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yposix_spawn_file_actions_init(tls *TLS, fa uintptr) (r int32)
+TEXT ·Yposix_spawn_file_actions_init(SB),$24-36
 
-TEXT ·Yposix_spawnattr_destroy(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xposix_spawnattr_destroy(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yposix_spawnattr_destroy(tls *TLS, attr uintptr) (r int32)
+TEXT ·Yposix_spawnattr_destroy(SB),$24-36
 
-TEXT ·Yposix_spawnattr_getflags(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xposix_spawnattr_getflags(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_getflags(tls *TLS, attr uintptr, flags uintptr) (r int32)
+TEXT ·Yposix_spawnattr_getflags(SB),$32-52
 
-TEXT ·Yposix_spawnattr_getpgroup(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xposix_spawnattr_getpgroup(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_getpgroup(tls *TLS, attr uintptr, pgrp uintptr) (r int32)
+TEXT ·Yposix_spawnattr_getpgroup(SB),$32-52
 
-TEXT ·Yposix_spawnattr_getschedparam(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xposix_spawnattr_getschedparam(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_getschedparam(tls *TLS, attr uintptr, schedparam uintptr) (r int32)
+TEXT ·Yposix_spawnattr_getschedparam(SB),$32-52
 
-TEXT ·Yposix_spawnattr_getschedpolicy(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xposix_spawnattr_getschedpolicy(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_getschedpolicy(tls *TLS, attr uintptr, policy uintptr) (r int32)
+TEXT ·Yposix_spawnattr_getschedpolicy(SB),$32-52
 
-TEXT ·Yposix_spawnattr_getsigdefault(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xposix_spawnattr_getsigdefault(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_getsigdefault(tls *TLS, attr uintptr, def uintptr) (r int32)
+TEXT ·Yposix_spawnattr_getsigdefault(SB),$32-52
 
-TEXT ·Yposix_spawnattr_getsigmask(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xposix_spawnattr_getsigmask(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_getsigmask(tls *TLS, attr uintptr, mask uintptr) (r int32)
+TEXT ·Yposix_spawnattr_getsigmask(SB),$32-52
 
-TEXT ·Yposix_spawnattr_init(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xposix_spawnattr_init(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yposix_spawnattr_init(tls *TLS, attr uintptr) (r int32)
+TEXT ·Yposix_spawnattr_init(SB),$24-36
 
-TEXT ·Yposix_spawnattr_setflags(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVW p2+16(FP), AX
-	MOVW AX, 16(SP)
-	CALL ·Xposix_spawnattr_setflags(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_setflags(tls *TLS, attr uintptr, flags int16) (r int32)
+TEXT ·Yposix_spawnattr_setflags(SB),$32-46
 
-TEXT ·Yposix_spawnattr_setpgroup(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xposix_spawnattr_setpgroup(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_setpgroup(tls *TLS, attr uintptr, pgrp Tpid_t) (r int32)
+TEXT ·Yposix_spawnattr_setpgroup(SB),$32-48
 
-TEXT ·Yposix_spawnattr_setschedparam(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xposix_spawnattr_setschedparam(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_setschedparam(tls *TLS, attr uintptr, schedparam uintptr) (r int32)
+TEXT ·Yposix_spawnattr_setschedparam(SB),$32-52
 
-TEXT ·Yposix_spawnattr_setschedpolicy(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xposix_spawnattr_setschedpolicy(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_setschedpolicy(tls *TLS, attr uintptr, policy int32) (r int32)
+TEXT ·Yposix_spawnattr_setschedpolicy(SB),$32-48
 
-TEXT ·Yposix_spawnattr_setsigdefault(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xposix_spawnattr_setsigdefault(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_setsigdefault(tls *TLS, attr uintptr, def uintptr) (r int32)
+TEXT ·Yposix_spawnattr_setsigdefault(SB),$32-52
 
-TEXT ·Yposix_spawnattr_setsigmask(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xposix_spawnattr_setsigmask(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yposix_spawnattr_setsigmask(tls *TLS, attr uintptr, mask uintptr) (r int32)
+TEXT ·Yposix_spawnattr_setsigmask(SB),$32-52
 
-TEXT ·Ypow(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpow(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ypow(tls *TLS, x1 float64, y1 float64) (r float64)
+TEXT ·Ypow(SB),$32-56
 
-TEXT ·Ypow10(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpow10(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ypow10(tls *TLS, x float64) (r float64)
+TEXT ·Ypow10(SB),$24-40
 
-TEXT ·Ypow10f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xpow10f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypow10f(tls *TLS, x float32) (r float32)
+TEXT ·Ypow10f(SB),$24-32
 
-TEXT ·Ypow10l(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpow10l(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ypow10l(tls *TLS, x float64) (r float64)
+TEXT ·Ypow10l(SB),$24-40
 
-TEXT ·Ypowf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xpowf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypowf(tls *TLS, x1 float32, y1 float32) (r float32)
+TEXT ·Ypowf(SB),$24-36
 
-TEXT ·Ypowl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpowl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ypowl(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Ypowl(SB),$32-56
 
-TEXT ·Yppoll(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xppoll(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yppoll(tls *TLS, fds uintptr, n Tnfds_t, to uintptr, mask uintptr) (r int32)
+TEXT ·Yppoll(SB),$48-84
 
-TEXT ·Yprctl(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xprctl(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yprctl(tls *TLS, op int32, va uintptr) (r int32)
+TEXT ·Yprctl(SB),$32-52
 
-TEXT ·Ypread(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xpread(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Ypread(tls *TLS, fd int32, buf uintptr, size Tsize_t, ofs Toff_t) (r Tssize_t)
+TEXT ·Ypread(SB),$48-88
 
-TEXT ·Ypreadv(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xpreadv(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Ypreadv(tls *TLS, fd int32, iov uintptr, count int32, ofs Toff_t) (r Tssize_t)
+TEXT ·Ypreadv(SB),$48-88
 
-TEXT ·Ypreadv2(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xpreadv2(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
+// func Ypreadv2(tls *TLS, fd int32, iov uintptr, count int32, ofs Toff_t, flags int32) (r Tssize_t)
+TEXT ·Ypreadv2(SB),$56-100
 
-TEXT ·Yprintf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xprintf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yprintf(tls *TLS, fmt uintptr, va uintptr) (r int32)
+TEXT ·Yprintf(SB),$32-52
 
-TEXT ·Yprlimit(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xprlimit(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yprlimit(tls *TLS, pid Tpid_t, resource int32, new_limit uintptr, old_limit uintptr) (r1 int32)
+TEXT ·Yprlimit(SB),$40-68
 
-TEXT ·Yprocess_vm_readv(SB),$64-64
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVQ p6+48(FP), AX
-	MOVQ AX, 48(SP)
-	CALL ·Xprocess_vm_readv(SB)
-	MOVQ 56(SP), AX
-	MOVQ AX, ret+56(FP)
-	RET
+// func Yprocess_vm_readv(tls *TLS, pid Tpid_t, lvec uintptr, liovcnt uint64, rvec uintptr, riovcnt uint64, flags uint64) (r Tssize_t)
+TEXT ·Yprocess_vm_readv(SB),$64-120
 
-TEXT ·Yprocess_vm_writev(SB),$64-64
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVQ p6+48(FP), AX
-	MOVQ AX, 48(SP)
-	CALL ·Xprocess_vm_writev(SB)
-	MOVQ 56(SP), AX
-	MOVQ AX, ret+56(FP)
-	RET
+// func Yprocess_vm_writev(tls *TLS, pid Tpid_t, lvec uintptr, liovcnt uint64, rvec uintptr, riovcnt uint64, flags uint64) (r Tssize_t)
+TEXT ·Yprocess_vm_writev(SB),$64-120
 
-TEXT ·Ypselect(SB),$60-60
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVQ p6+48(FP), AX
-	MOVQ AX, 48(SP)
-	CALL ·Xpselect(SB)
-	MOVL 56(SP), AX
-	MOVL AX, ret+56(FP)
-	RET
+// func Ypselect(tls *TLS, n int32, rfds uintptr, wfds uintptr, efds uintptr, ts uintptr, mask uintptr) (r int32)
+TEXT ·Ypselect(SB),$64-116
 
+// func Ypsiginfo(tls *TLS, si uintptr, msg uintptr)
 TEXT ·Ypsiginfo(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpsiginfo(SB)
-	RET
 
+// func Ypsignal(tls *TLS, sig int32, msg uintptr)
 TEXT ·Ypsignal(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpsignal(SB)
-	RET
 
-TEXT ·Ypthread_atfork(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xpthread_atfork(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ypthread_atfork(tls *TLS, prepare, parent, child uintptr) int32
+TEXT ·Ypthread_atfork(SB),$40-68
 
-TEXT ·Ypthread_attr_destroy(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_attr_destroy(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_attr_destroy(tls *TLS, a uintptr) int32
+TEXT ·Ypthread_attr_destroy(SB),$24-36
 
-TEXT ·Ypthread_attr_getdetachstate(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_attr_getdetachstate(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_attr_getdetachstate(tls *TLS, a uintptr, state uintptr) int32
+TEXT ·Ypthread_attr_getdetachstate(SB),$32-52
 
-TEXT ·Ypthread_attr_init(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_attr_init(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_attr_init(tls *TLS, a uintptr) int32
+TEXT ·Ypthread_attr_init(SB),$24-36
 
-TEXT ·Ypthread_attr_setdetachstate(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xpthread_attr_setdetachstate(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_attr_setdetachstate(tls *TLS, a uintptr, state int32) (r int32)
+TEXT ·Ypthread_attr_setdetachstate(SB),$32-48
 
-TEXT ·Ypthread_attr_setscope(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xpthread_attr_setscope(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_attr_setscope(tls *TLS, a uintptr, scope int32) int32
+TEXT ·Ypthread_attr_setscope(SB),$32-48
 
-TEXT ·Ypthread_attr_setstacksize(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_attr_setstacksize(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_attr_setstacksize(tls *TLS, a uintptr, stacksite Tsize_t) int32
+TEXT ·Ypthread_attr_setstacksize(SB),$32-52
 
-TEXT ·Ypthread_cleanup_pop(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xpthread_cleanup_pop(SB)
-	RET
+// func Ypthread_cleanup_pop(tls *TLS, run int32)
+TEXT ·Ypthread_cleanup_pop(SB),$16-12
 
+// func Ypthread_cleanup_push(tls *TLS, f, x uintptr)
 TEXT ·Ypthread_cleanup_push(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_cleanup_push(SB)
-	RET
 
-TEXT ·Ypthread_cond_broadcast(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_cond_broadcast(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_cond_broadcast(tls *TLS, c uintptr) int32
+TEXT ·Ypthread_cond_broadcast(SB),$24-36
 
-TEXT ·Ypthread_cond_destroy(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_cond_destroy(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_cond_destroy(tls *TLS, c uintptr) int32
+TEXT ·Ypthread_cond_destroy(SB),$24-36
 
-TEXT ·Ypthread_cond_init(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_cond_init(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_cond_init(tls *TLS, c, a uintptr) int32
+TEXT ·Ypthread_cond_init(SB),$32-52
 
-TEXT ·Ypthread_cond_signal(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_cond_signal(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_cond_signal(tls *TLS, c uintptr) int32
+TEXT ·Ypthread_cond_signal(SB),$24-36
 
-TEXT ·Ypthread_cond_timedwait(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xpthread_cond_timedwait(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ypthread_cond_timedwait(tls *TLS, c, m, ts uintptr) (r int32)
+TEXT ·Ypthread_cond_timedwait(SB),$40-68
 
-TEXT ·Ypthread_cond_wait(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_cond_wait(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_cond_wait(tls *TLS, c, m uintptr) int32
+TEXT ·Ypthread_cond_wait(SB),$32-52
 
-TEXT ·Ypthread_create(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xpthread_create(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Ypthread_create(tls *TLS, res, attrp, entry, arg uintptr) int32
+TEXT ·Ypthread_create(SB),$48-84
 
-TEXT ·Ypthread_detach(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_detach(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_detach(tls *TLS, t uintptr) int32
+TEXT ·Ypthread_detach(SB),$24-36
 
-TEXT ·Ypthread_equal(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_equal(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_equal(tls *TLS, t, u uintptr) int32
+TEXT ·Ypthread_equal(SB),$32-52
 
+// func Ypthread_exit(tls *TLS, result uintptr)
 TEXT ·Ypthread_exit(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_exit(SB)
-	RET
 
-TEXT ·Ypthread_getspecific(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xpthread_getspecific(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ypthread_getspecific(tls *TLS, k Tpthread_key_t) uintptr
+TEXT ·Ypthread_getspecific(SB),$24-36
 
-TEXT ·Ypthread_join(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_join(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_join(tls *TLS, t Tpthread_t, res uintptr) (r int32)
+TEXT ·Ypthread_join(SB),$32-52
 
-TEXT ·Ypthread_key_create(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_key_create(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_key_create(tls *TLS, k uintptr, dtor uintptr) int32
+TEXT ·Ypthread_key_create(SB),$32-52
 
-TEXT ·Ypthread_key_delete(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xpthread_key_delete(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_key_delete(tls *TLS, k Tpthread_key_t) int32
+TEXT ·Ypthread_key_delete(SB),$24-32
 
-TEXT ·Ypthread_mutex_destroy(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_mutex_destroy(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_mutex_destroy(tls *TLS, m uintptr) int32
+TEXT ·Ypthread_mutex_destroy(SB),$24-36
 
-TEXT ·Ypthread_mutex_init(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_mutex_init(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_mutex_init(tls *TLS, m, a uintptr) int32
+TEXT ·Ypthread_mutex_init(SB),$32-52
 
-TEXT ·Ypthread_mutex_lock(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_mutex_lock(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_mutex_lock(tls *TLS, m uintptr) int32
+TEXT ·Ypthread_mutex_lock(SB),$24-36
 
-TEXT ·Ypthread_mutex_trylock(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_mutex_trylock(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_mutex_trylock(tls *TLS, m uintptr) int32
+TEXT ·Ypthread_mutex_trylock(SB),$24-36
 
-TEXT ·Ypthread_mutex_unlock(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_mutex_unlock(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_mutex_unlock(tls *TLS, m uintptr) int32
+TEXT ·Ypthread_mutex_unlock(SB),$24-36
 
-TEXT ·Ypthread_mutexattr_destroy(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_mutexattr_destroy(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_mutexattr_destroy(tls *TLS, a uintptr) int32
+TEXT ·Ypthread_mutexattr_destroy(SB),$24-36
 
-TEXT ·Ypthread_mutexattr_init(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpthread_mutexattr_init(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ypthread_mutexattr_init(tls *TLS, a uintptr) int32
+TEXT ·Ypthread_mutexattr_init(SB),$24-36
 
-TEXT ·Ypthread_mutexattr_settype(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xpthread_mutexattr_settype(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_mutexattr_settype(tls *TLS, a uintptr, typ int32) int32
+TEXT ·Ypthread_mutexattr_settype(SB),$32-48
 
-TEXT ·Ypthread_self(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xpthread_self(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
+// func Ypthread_self(tls *TLS) uintptr
+TEXT ·Ypthread_self(SB),$16-24
 
-TEXT ·Ypthread_setcancelstate(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_setcancelstate(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_setcancelstate(tls *TLS, new int32, old uintptr) int32
+TEXT ·Ypthread_setcancelstate(SB),$32-52
 
-TEXT ·Ypthread_setspecific(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xpthread_setspecific(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ypthread_setspecific(tls *TLS, k Tpthread_key_t, x uintptr) int32
+TEXT ·Ypthread_setspecific(SB),$32-52
 
-TEXT ·Ypthread_sigmask(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xpthread_sigmask(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ypthread_sigmask(tls *TLS, now int32, set, old uintptr) int32
+TEXT ·Ypthread_sigmask(SB),$40-68
 
-TEXT ·Yptrace(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xptrace(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yptrace(tls *TLS, req int32, va uintptr) (r int64)
+TEXT ·Yptrace(SB),$32-56
 
-TEXT ·Yptsname(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xptsname(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yptsname(tls *TLS, fd int32) (r uintptr)
+TEXT ·Yptsname(SB),$24-36
 
-TEXT ·Yptsname_r(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xptsname_r(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yptsname_r(tls *TLS, fd int32, buf uintptr, len1 Tsize_t) (r int32)
+TEXT ·Yptsname_r(SB),$40-68
 
-TEXT ·Yputc(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xputc(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yputc(tls *TLS, c1 int32, f1 uintptr) (r int32)
+TEXT ·Yputc(SB),$32-52
 
-TEXT ·Yputc_unlocked(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xputc_unlocked(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yputc_unlocked(tls *TLS, c int32, f uintptr) (r int32)
+TEXT ·Yputc_unlocked(SB),$32-52
 
-TEXT ·Yputchar(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xputchar(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yputchar(tls *TLS, c1 int32) (r int32)
+TEXT ·Yputchar(SB),$24-32
 
-TEXT ·Yputchar_unlocked(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xputchar_unlocked(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yputchar_unlocked(tls *TLS, c int32) (r int32)
+TEXT ·Yputchar_unlocked(SB),$24-32
 
-TEXT ·Yputenv(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xputenv(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yputenv(tls *TLS, s uintptr) (r int32)
+TEXT ·Yputenv(SB),$24-36
 
-TEXT ·Yputgrent(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xputgrent(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yputgrent(tls *TLS, gr uintptr, f uintptr) (r1 int32)
+TEXT ·Yputgrent(SB),$32-52
 
-TEXT ·Yputpwent(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xputpwent(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yputpwent(tls *TLS, pw uintptr, f uintptr) (r int32)
+TEXT ·Yputpwent(SB),$32-52
 
-TEXT ·Yputs(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xputs(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yputs(tls *TLS, s uintptr) (r1 int32)
+TEXT ·Yputs(SB),$24-36
 
-TEXT ·Yputspent(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xputspent(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yputspent(tls *TLS, sp uintptr, f uintptr) (r int32)
+TEXT ·Yputspent(SB),$32-52
 
-TEXT ·Ypututline(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpututline(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ypututline(tls *TLS, ut uintptr) (r uintptr)
+TEXT ·Ypututline(SB),$24-40
 
-TEXT ·Ypututxline(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xpututxline(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ypututxline(tls *TLS, ut uintptr) (r uintptr)
+TEXT ·Ypututxline(SB),$24-40
 
-TEXT ·Yputw(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xputw(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yputw(tls *TLS, _x int32, f uintptr) (r int32)
+TEXT ·Yputw(SB),$32-52
 
-TEXT ·Yputwc(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xputwc(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yputwc(tls *TLS, c Twchar_t, f uintptr) (r Twint_t)
+TEXT ·Yputwc(SB),$32-52
 
-TEXT ·Yputwc_unlocked(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xputwc_unlocked(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yputwc_unlocked(tls *TLS, c Twchar_t, f uintptr) (r Twint_t)
+TEXT ·Yputwc_unlocked(SB),$32-52
 
-TEXT ·Yputwchar(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xputwchar(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yputwchar(tls *TLS, c Twchar_t) (r Twint_t)
+TEXT ·Yputwchar(SB),$24-32
 
-TEXT ·Yputwchar_unlocked(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xputwchar_unlocked(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yputwchar_unlocked(tls *TLS, c Twchar_t) (r Twint_t)
+TEXT ·Yputwchar_unlocked(SB),$24-32
 
-TEXT ·Ypwrite(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xpwrite(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Ypwrite(tls *TLS, fd int32, buf uintptr, size Tsize_t, ofs Toff_t) (r Tssize_t)
+TEXT ·Ypwrite(SB),$48-88
 
-TEXT ·Ypwritev(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xpwritev(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Ypwritev(tls *TLS, fd int32, iov uintptr, count int32, ofs Toff_t) (r Tssize_t)
+TEXT ·Ypwritev(SB),$48-88
 
-TEXT ·Ypwritev2(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xpwritev2(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
+// func Ypwritev2(tls *TLS, fd int32, iov uintptr, count int32, ofs Toff_t, flags int32) (r Tssize_t)
+TEXT ·Ypwritev2(SB),$56-100
 
+// func Yqsort(tls *TLS, base uintptr, nel Tsize_t, width Tsize_t, cmp Tcmpfun)
 TEXT ·Yqsort(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xqsort(SB)
-	RET
 
+// func Yqsort_r(tls *TLS, base uintptr, nel Tsize_t, width Tsize_t, cmp Tcmpfun, arg uintptr)
 TEXT ·Yqsort_r(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xqsort_r(SB)
-	RET
 
-TEXT ·Yquick_exit(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xquick_exit(SB)
-	RET
+// func Yquick_exit(tls *TLS, code int32)
+TEXT ·Yquick_exit(SB),$16-12
 
-TEXT ·Yquotactl(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xquotactl(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yquotactl(tls *TLS, cmd int32, special uintptr, id int32, addr uintptr) (r int32)
+TEXT ·Yquotactl(SB),$48-84
 
-TEXT ·Yraise(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xraise(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yraise(tls *TLS, sig int32) (r int32)
+TEXT ·Yraise(SB),$24-32
 
-TEXT ·Yrand(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xrand(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Yrand(tls *TLS) (r int32)
+TEXT ·Yrand(SB),$16-20
 
-TEXT ·Yrand_r(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xrand_r(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yrand_r(tls *TLS, seed uintptr) (r int32)
+TEXT ·Yrand_r(SB),$24-36
 
-TEXT ·Yrandom(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xrandom(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
+// func Yrandom(tls *TLS) (r int64)
+TEXT ·Yrandom(SB),$16-24
 
-TEXT ·Yrandom_r(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xrandom_r(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yrandom_r(t *TLS, buf, result uintptr) int32
+TEXT ·Yrandom_r(SB),$32-52
 
-TEXT ·Yread(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xread(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yread(tls *TLS, fd int32, buf uintptr, count Tsize_t) (r Tssize_t)
+TEXT ·Yread(SB),$40-72
 
-TEXT ·Yreadahead(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xreadahead(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yreadahead(tls *TLS, fd int32, pos Toff_t, len1 Tsize_t) (r Tssize_t)
+TEXT ·Yreadahead(SB),$40-72
 
-TEXT ·Yreaddir(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xreaddir(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yreaddir(tls *TLS, dir uintptr) (r uintptr)
+TEXT ·Yreaddir(SB),$24-40
 
-TEXT ·Yreaddir64(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xreaddir64(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yreaddir64(tls *TLS, dir uintptr) (r uintptr)
+TEXT ·Yreaddir64(SB),$24-40
 
-TEXT ·Yreaddir_r(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xreaddir_r(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yreaddir_r(tls *TLS, dir uintptr, buf uintptr, result uintptr) (r int32)
+TEXT ·Yreaddir_r(SB),$40-68
 
-TEXT ·Yreadlink(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xreadlink(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yreadlink(tls *TLS, path uintptr, buf uintptr, bufsize Tsize_t) (r1 Tssize_t)
+TEXT ·Yreadlink(SB),$40-72
 
-TEXT ·Yreadlinkat(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xreadlinkat(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Yreadlinkat(tls *TLS, fd int32, path uintptr, buf uintptr, bufsize Tsize_t) (r1 Tssize_t)
+TEXT ·Yreadlinkat(SB),$48-88
 
-TEXT ·Yreadv(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xreadv(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yreadv(tls *TLS, fd int32, iov uintptr, count int32) (r Tssize_t)
+TEXT ·Yreadv(SB),$40-68
 
-TEXT ·Yrealloc(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xrealloc(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yrealloc(tls *TLS, p uintptr, n Tsize_t) (r uintptr)
+TEXT ·Yrealloc(SB),$32-56
 
-TEXT ·Yreallocarray(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xreallocarray(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yreallocarray(tls *TLS, ptr uintptr, m Tsize_t, n Tsize_t) (r uintptr)
+TEXT ·Yreallocarray(SB),$40-72
 
-TEXT ·Yrealpath(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xrealpath(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yrealpath(tls *TLS, filename uintptr, resolved uintptr) (r uintptr)
+TEXT ·Yrealpath(SB),$32-56
 
-TEXT ·Yreboot(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xreboot(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yreboot(tls *TLS, type1 int32) (r int32)
+TEXT ·Yreboot(SB),$24-32
 
-TEXT ·Yrecv(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xrecv(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Yrecv(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32) (r Tssize_t)
+TEXT ·Yrecv(SB),$48-84
 
-TEXT ·Yrecvfrom(SB),$64-64
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVQ p6+48(FP), AX
-	MOVQ AX, 48(SP)
-	CALL ·Xrecvfrom(SB)
-	MOVQ 56(SP), AX
-	MOVQ AX, ret+56(FP)
-	RET
+// func Yrecvfrom(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32, addr uintptr, alen uintptr) (r1 Tssize_t)
+TEXT ·Yrecvfrom(SB),$64-120
 
-TEXT ·Yrecvmmsg(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	MOVQ p5+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xrecvmmsg(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yrecvmmsg(tls *TLS, fd int32, msgvec uintptr, vlen uint32, flags uint32, timeout uintptr) (r int32)
+TEXT ·Yrecvmmsg(SB),$48-84
 
-TEXT ·Yrecvmsg(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xrecvmsg(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yrecvmsg(tls *TLS, fd int32, msg uintptr, flags int32) (r2 Tssize_t)
+TEXT ·Yrecvmsg(SB),$40-68
 
-TEXT ·Yregcomp(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xregcomp(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yregcomp(tls *TLS, preg uintptr, regex uintptr, cflags int32) (r int32)
+TEXT ·Yregcomp(SB),$40-64
 
-TEXT ·Yregerror(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xregerror(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Yregerror(tls *TLS, e int32, preg uintptr, buf uintptr, size Tsize_t) (r Tsize_t)
+TEXT ·Yregerror(SB),$48-88
 
-TEXT ·Yregexec(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xregexec(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
+// func Yregexec(tls *TLS, preg uintptr, string1 uintptr, nmatch Tsize_t, pmatch uintptr, eflags int32) (r int32)
+TEXT ·Yregexec(SB),$56-96
 
+// func Yregfree(tls *TLS, preg uintptr)
 TEXT ·Yregfree(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xregfree(SB)
-	RET
 
-TEXT ·Yremainder(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xremainder(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yremainder(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yremainder(SB),$32-56
 
-TEXT ·Yremainderf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xremainderf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yremainderf(tls *TLS, x float32, y float32) (r float32)
+TEXT ·Yremainderf(SB),$24-36
 
-TEXT ·Yremainderl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xremainderl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yremainderl(tls *TLS, x float64, y float64) (r float64)
+TEXT ·Yremainderl(SB),$32-56
 
-TEXT ·Yremap_file_pages(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xremap_file_pages(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
+// func Yremap_file_pages(tls *TLS, addr uintptr, size Tsize_t, prot int32, pgoff Tsize_t, flags int32) (r int32)
+TEXT ·Yremap_file_pages(SB),$56-96
 
-TEXT ·Yremove(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xremove(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yremove(tls *TLS, path uintptr) (r1 int32)
+TEXT ·Yremove(SB),$24-36
 
-TEXT ·Yremovexattr(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xremovexattr(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yremovexattr(tls *TLS, path uintptr, name uintptr) (r int32)
+TEXT ·Yremovexattr(SB),$32-52
 
+// func Yremque(tls *TLS, element uintptr)
 TEXT ·Yremque(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xremque(SB)
-	RET
 
-TEXT ·Yremquo(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xremquo(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yremquo(tls *TLS, x float64, y float64, quo uintptr) (r float64)
+TEXT ·Yremquo(SB),$40-72
 
-TEXT ·Yremquof(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xremquof(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yremquof(tls *TLS, x float32, y float32, quo uintptr) (r float32)
+TEXT ·Yremquof(SB),$32-52
 
-TEXT ·Yremquol(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xremquol(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yremquol(tls *TLS, x float64, y float64, quo uintptr) (r float64)
+TEXT ·Yremquol(SB),$40-72
 
-TEXT ·Yrename(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xrename(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yrename(tls *TLS, old uintptr, new1 uintptr) (r int32)
+TEXT ·Yrename(SB),$32-52
 
-TEXT ·Yrenameat(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xrenameat(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yrenameat(tls *TLS, oldfd int32, old uintptr, newfd int32, new1 uintptr) (r int32)
+TEXT ·Yrenameat(SB),$48-84
 
-TEXT ·Yrenameat2(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xrenameat2(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
+// func Yrenameat2(t *TLS, olddirfd int32, oldpath uintptr, newdirfd int32, newpath uintptr, flags int32) int32
+TEXT ·Yrenameat2(SB),$56-96
 
-TEXT ·Yres_init(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xres_init(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Yres_init(tls *TLS) (r int32)
+TEXT ·Yres_init(SB),$16-20
 
-TEXT ·Yres_mkquery(SB),$76-76
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	MOVQ p5+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p6+40(FP), AX
-	MOVL AX, 40(SP)
-	MOVQ p7+48(FP), AX
-	MOVQ AX, 48(SP)
-	MOVQ p8+56(FP), AX
-	MOVQ AX, 56(SP)
-	MOVL p9+64(FP), AX
-	MOVL AX, 64(SP)
-	CALL ·Xres_mkquery(SB)
-	MOVL 72(SP), AX
-	MOVL AX, ret+72(FP)
-	RET
+// func Yres_mkquery(tls *TLS, op int32, dname uintptr, class int32, type1 int32, data uintptr, datalen int32, newrr uintptr, buf uintptr, buflen int32) (r int32)
+TEXT ·Yres_mkquery(SB),$80-144
 
-TEXT ·Yres_send(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xres_send(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yres_send(tls *TLS, _msg uintptr, _msglen int32, _answer uintptr, _anslen int32) (r int32)
+TEXT ·Yres_send(SB),$48-80
 
+// func Yrewind(tls *TLS, f uintptr)
 TEXT ·Yrewind(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xrewind(SB)
-	RET
 
+// func Yrewinddir(tls *TLS, dir uintptr)
 TEXT ·Yrewinddir(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xrewinddir(SB)
-	RET
 
-TEXT ·Yrindex(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xrindex(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yrindex(tls *TLS, s uintptr, c int32) (r uintptr)
+TEXT ·Yrindex(SB),$32-52
 
-TEXT ·Yrint(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xrint(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yrint(tls *TLS, x float64) (r float64)
+TEXT ·Yrint(SB),$24-40
 
-TEXT ·Yrintf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xrintf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yrintf(tls *TLS, x float32) (r float32)
+TEXT ·Yrintf(SB),$24-32
 
-TEXT ·Yrintl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xrintl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yrintl(tls *TLS, x float64) (r float64)
+TEXT ·Yrintl(SB),$24-40
 
-TEXT ·Yrmdir(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xrmdir(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yrmdir(tls *TLS, path uintptr) (r int32)
+TEXT ·Yrmdir(SB),$24-36
 
-TEXT ·Yround(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xround(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yround(tls *TLS, x3 float64) (r float64)
+TEXT ·Yround(SB),$24-40
 
-TEXT ·Yroundf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xroundf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yroundf(tls *TLS, x3 float32) (r float32)
+TEXT ·Yroundf(SB),$24-32
 
-TEXT ·Yroundl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xroundl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yroundl(tls *TLS, x float64) (r float64)
+TEXT ·Yroundl(SB),$24-40
 
-TEXT ·Ysbrk(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsbrk(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysbrk(tls *TLS, inc Tintptr_t) (r uintptr)
+TEXT ·Ysbrk(SB),$24-40
 
-TEXT ·Yscalb(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xscalb(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yscalb(tls *TLS, x float64, fn float64) (r float64)
+TEXT ·Yscalb(SB),$32-56
 
-TEXT ·Yscalbf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xscalbf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yscalbf(tls *TLS, x float32, fn float32) (r float32)
+TEXT ·Yscalbf(SB),$24-36
 
-TEXT ·Yscalbln(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xscalbln(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yscalbln(tls *TLS, x float64, n int64) (r float64)
+TEXT ·Yscalbln(SB),$32-56
 
-TEXT ·Yscalblnf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xscalblnf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yscalblnf(tls *TLS, x float32, n int64) (r float32)
+TEXT ·Yscalblnf(SB),$32-52
 
-TEXT ·Yscalblnl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xscalblnl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yscalblnl(tls *TLS, x float64, n int64) (r float64)
+TEXT ·Yscalblnl(SB),$32-56
 
-TEXT ·Yscalbn(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xscalbn(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yscalbn(tls *TLS, x float64, n int32) (r float64)
+TEXT ·Yscalbn(SB),$32-52
 
-TEXT ·Yscalbnf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xscalbnf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yscalbnf(tls *TLS, x float32, n int32) (r float32)
+TEXT ·Yscalbnf(SB),$24-36
 
-TEXT ·Yscalbnl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xscalbnl(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yscalbnl(tls *TLS, x float64, n int32) (r float64)
+TEXT ·Yscalbnl(SB),$32-52
 
-TEXT ·Yscandir(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xscandir(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yscandir(tls *TLS, path uintptr, res uintptr, sel uintptr, cmp uintptr) (r int32)
+TEXT ·Yscandir(SB),$48-84
 
-TEXT ·Yscanf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xscanf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yscanf(tls *TLS, fmt uintptr, va uintptr) (r int32)
+TEXT ·Yscanf(SB),$32-52
 
-TEXT ·Ysched_yield(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xsched_yield(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Ysched_yield(tls *TLS) int32
+TEXT ·Ysched_yield(SB),$16-20
 
-TEXT ·Ysecure_getenv(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsecure_getenv(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysecure_getenv(tls *TLS, name uintptr) (r uintptr)
+TEXT ·Ysecure_getenv(SB),$24-40
 
-TEXT ·Yseed48(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xseed48(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yseed48(tls *TLS, s uintptr) (r uintptr)
+TEXT ·Yseed48(SB),$24-40
 
+// func Yseekdir(tls *TLS, dir uintptr, off int64)
 TEXT ·Yseekdir(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xseekdir(SB)
-	RET
 
-TEXT ·Yselect(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xselect(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
+// func Yselect(tls *TLS, n int32, rfds uintptr, wfds uintptr, efds uintptr, tv uintptr) (r int32)
+TEXT ·Yselect(SB),$56-100
 
-TEXT ·Ysemctl(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVL p3+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsemctl(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysemctl(tls *TLS, id int32, num int32, cmd int32, va uintptr) (r1 int32)
+TEXT ·Ysemctl(SB),$40-68
 
-TEXT ·Ysemget(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVL p3+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xsemget(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysemget(tls *TLS, key Tkey_t, n int32, fl int32) (r int32)
+TEXT ·Ysemget(SB),$32-48
 
-TEXT ·Ysemop(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsemop(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysemop(tls *TLS, id int32, buf uintptr, n Tsize_t) (r int32)
+TEXT ·Ysemop(SB),$40-68
 
-TEXT ·Ysemtimedop(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xsemtimedop(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Ysemtimedop(tls *TLS, id int32, buf uintptr, n Tsize_t, ts uintptr) (r int32)
+TEXT ·Ysemtimedop(SB),$48-84
 
-TEXT ·Ysend(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xsend(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Ysend(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32) (r Tssize_t)
+TEXT ·Ysend(SB),$48-84
 
-TEXT ·Ysendfile(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsendfile(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ysendfile(tls *TLS, out_fd int32, in_fd int32, ofs uintptr, count Tsize_t) (r Tssize_t)
+TEXT ·Ysendfile(SB),$40-72
 
-TEXT ·Ysendmmsg(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	CALL ·Xsendmmsg(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysendmmsg(tls *TLS, fd int32, msgvec uintptr, vlen uint32, flags uint32) (r1 int32)
+TEXT ·Ysendmmsg(SB),$40-68
 
-TEXT ·Ysendmsg(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xsendmsg(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ysendmsg(tls *TLS, fd int32, msg uintptr, flags int32) (r1 Tssize_t)
+TEXT ·Ysendmsg(SB),$40-68
 
-TEXT ·Ysendto(SB),$64-64
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVL p6+48(FP), AX
-	MOVL AX, 48(SP)
-	CALL ·Xsendto(SB)
-	MOVQ 56(SP), AX
-	MOVQ AX, ret+56(FP)
-	RET
+// func Ysendto(tls *TLS, fd int32, buf uintptr, len1 Tsize_t, flags int32, addr uintptr, alen Tsocklen_t) (r1 Tssize_t)
+TEXT ·Ysendto(SB),$64-116
 
+// func Ysetbuf(tls *TLS, f uintptr, buf uintptr)
 TEXT ·Ysetbuf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsetbuf(SB)
-	RET
 
+// func Ysetbuffer(tls *TLS, f uintptr, buf uintptr, size Tsize_t)
 TEXT ·Ysetbuffer(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsetbuffer(SB)
-	RET
 
-TEXT ·Ysetdomainname(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsetdomainname(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysetdomainname(tls *TLS, name uintptr, len1 Tsize_t) (r int32)
+TEXT ·Ysetdomainname(SB),$32-52
 
-TEXT ·Ysetenv(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xsetenv(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysetenv(tls *TLS, var1 uintptr, value uintptr, overwrite int32) (r int32)
+TEXT ·Ysetenv(SB),$40-64
 
-TEXT ·Ysetfsgid(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsetfsgid(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysetfsgid(tls *TLS, gid Tgid_t) (r int32)
+TEXT ·Ysetfsgid(SB),$24-32
 
-TEXT ·Ysetfsuid(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsetfsuid(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysetfsuid(tls *TLS, uid Tuid_t) (r int32)
+TEXT ·Ysetfsuid(SB),$24-32
 
-TEXT ·Ysetgid(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsetgid(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysetgid(tls *TLS, gid Tgid_t) (r int32)
+TEXT ·Ysetgid(SB),$24-32
 
+// func Ysetgrent(tls *TLS)
 TEXT ·Ysetgrent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xsetgrent(SB)
-	RET
 
-TEXT ·Ysethostent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsethostent(SB)
-	RET
+// func Ysethostent(tls *TLS, x int32)
+TEXT ·Ysethostent(SB),$16-12
 
-TEXT ·Ysethostname(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsethostname(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysethostname(tls *TLS, name uintptr, len1 Tsize_t) (r int32)
+TEXT ·Ysethostname(SB),$32-52
 
-TEXT ·Ysetitimer(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsetitimer(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysetitimer(tls *TLS, which int32, new1 uintptr, old uintptr) (r1 int32)
+TEXT ·Ysetitimer(SB),$40-68
 
-TEXT ·Ysetjmp(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsetjmp(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysetjmp(t *TLS, env uintptr) int32
+TEXT ·Ysetjmp(SB),$24-36
 
+// func Ysetkey(tls *TLS, key uintptr)
 TEXT ·Ysetkey(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsetkey(SB)
-	RET
 
+// func Ysetlinebuf(tls *TLS, f uintptr)
 TEXT ·Ysetlinebuf(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsetlinebuf(SB)
-	RET
 
-TEXT ·Ysetlocale(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsetlocale(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ysetlocale(tls *TLS, cat int32, name uintptr) (r uintptr)
+TEXT ·Ysetlocale(SB),$32-56
 
-TEXT ·Ysetlogmask(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsetlogmask(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysetlogmask(tls *TLS, maskpri int32) (r int32)
+TEXT ·Ysetlogmask(SB),$24-32
 
-TEXT ·Ysetmntent(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsetmntent(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ysetmntent(tls *TLS, name uintptr, mode uintptr) (r uintptr)
+TEXT ·Ysetmntent(SB),$32-56
 
-TEXT ·Ysetnetent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsetnetent(SB)
-	RET
+// func Ysetnetent(tls *TLS, x int32)
+TEXT ·Ysetnetent(SB),$16-12
 
-TEXT ·Ysetns(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xsetns(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysetns(tls *TLS, fd int32, nstype int32) (r int32)
+TEXT ·Ysetns(SB),$24-36
 
-TEXT ·Ysetpgid(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xsetpgid(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysetpgid(tls *TLS, pid Tpid_t, pgid Tpid_t) (r int32)
+TEXT ·Ysetpgid(SB),$24-36
 
-TEXT ·Ysetpgrp(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xsetpgrp(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Ysetpgrp(tls *TLS) (r Tpid_t)
+TEXT ·Ysetpgrp(SB),$16-20
 
-TEXT ·Ysetpriority(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVL p3+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xsetpriority(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysetpriority(tls *TLS, which int32, who Tid_t, prio int32) (r int32)
+TEXT ·Ysetpriority(SB),$32-48
 
-TEXT ·Ysetprotoent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsetprotoent(SB)
-	RET
+// func Ysetprotoent(tls *TLS, stayopen int32)
+TEXT ·Ysetprotoent(SB),$16-12
 
+// func Ysetpwent(tls *TLS)
 TEXT ·Ysetpwent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xsetpwent(SB)
-	RET
 
-TEXT ·Ysetrlimit(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsetrlimit(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysetrlimit(tls *TLS, resource int32, rlim uintptr) (r int32)
+TEXT ·Ysetrlimit(SB),$32-52
 
-TEXT ·Ysetrlimit64(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsetrlimit64(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysetrlimit64(tls *TLS, resource int32, rlim uintptr) (r int32)
+TEXT ·Ysetrlimit64(SB),$32-52
 
-TEXT ·Ysetservent(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsetservent(SB)
-	RET
+// func Ysetservent(tls *TLS, stayopen int32)
+TEXT ·Ysetservent(SB),$16-12
 
-TEXT ·Ysetsid(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xsetsid(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Ysetsid(tls *TLS) (r Tpid_t)
+TEXT ·Ysetsid(SB),$16-20
 
-TEXT ·Ysetsockopt(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVL p3+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p5+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xsetsockopt(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Ysetsockopt(tls *TLS, fd int32, level int32, optname int32, optval uintptr, optlen Tsocklen_t) (r2 int32)
+TEXT ·Ysetsockopt(SB),$48-80
 
+// func Ysetspent(tls *TLS)
 TEXT ·Ysetspent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xsetspent(SB)
-	RET
 
-TEXT ·Ysetstate(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsetstate(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysetstate(tls *TLS, state uintptr) (r uintptr)
+TEXT ·Ysetstate(SB),$24-40
 
-TEXT ·Ysettimeofday(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsettimeofday(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysettimeofday(tls *TLS, tv uintptr, tz uintptr) (r int32)
+TEXT ·Ysettimeofday(SB),$32-52
 
-TEXT ·Ysetuid(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsetuid(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysetuid(tls *TLS, uid Tuid_t) (r int32)
+TEXT ·Ysetuid(SB),$24-32
 
+// func Ysetusershell(tls *TLS)
 TEXT ·Ysetusershell(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xsetusershell(SB)
-	RET
 
+// func Ysetutent(tls *TLS)
 TEXT ·Ysetutent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xsetutent(SB)
-	RET
 
+// func Ysetutxent(tls *TLS)
 TEXT ·Ysetutxent(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xsetutxent(SB)
-	RET
 
-TEXT ·Ysetvbuf(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xsetvbuf(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Ysetvbuf(tls *TLS, f uintptr, buf uintptr, type1 int32, size Tsize_t) (r int32)
+TEXT ·Ysetvbuf(SB),$48-84
 
-TEXT ·Ysetxattr(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVL p5+40(FP), AX
-	MOVL AX, 40(SP)
-	CALL ·Xsetxattr(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
+// func Ysetxattr(tls *TLS, path uintptr, name uintptr, value uintptr, size Tsize_t, flags int32) (r int32)
+TEXT ·Ysetxattr(SB),$56-96
 
-TEXT ·Yshm_open(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVL p3+20(FP), AX
-	MOVL AX, 20(SP)
-	CALL ·Xshm_open(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yshm_open(tls *TLS, name uintptr, flag int32, mode Tmode_t) (r int32)
+TEXT ·Yshm_open(SB),$32-52
 
-TEXT ·Yshm_unlink(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xshm_unlink(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yshm_unlink(tls *TLS, name uintptr) (r int32)
+TEXT ·Yshm_unlink(SB),$24-36
 
-TEXT ·Yshmat(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xshmat(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Yshmat(tls *TLS, id int32, addr uintptr, flag int32) (r uintptr)
+TEXT ·Yshmat(SB),$40-68
 
-TEXT ·Yshmctl(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xshmctl(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yshmctl(tls *TLS, id int32, cmd int32, buf uintptr) (r1 int32)
+TEXT ·Yshmctl(SB),$32-52
 
-TEXT ·Yshmdt(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xshmdt(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yshmdt(tls *TLS, addr uintptr) (r int32)
+TEXT ·Yshmdt(SB),$24-36
 
-TEXT ·Yshmget(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xshmget(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yshmget(tls *TLS, key Tkey_t, size Tsize_t, flag int32) (r int32)
+TEXT ·Yshmget(SB),$40-64
 
-TEXT ·Yshutdown(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xshutdown(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yshutdown(tls *TLS, fd int32, how int32) (r1 int32)
+TEXT ·Yshutdown(SB),$24-36
 
-TEXT ·Ysigaction(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsigaction(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysigaction(tls *TLS, sig int32, sa uintptr, old uintptr) (r int32)
+TEXT ·Ysigaction(SB),$40-68
 
-TEXT ·Ysigaddset(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xsigaddset(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysigaddset(tls *TLS, set uintptr, sig int32) (r int32)
+TEXT ·Ysigaddset(SB),$32-48
 
-TEXT ·Ysigaltstack(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsigaltstack(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysigaltstack(tls *TLS, ss uintptr, old uintptr) (r int32)
+TEXT ·Ysigaltstack(SB),$32-52
 
-TEXT ·Ysigandset(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsigandset(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysigandset(tls *TLS, dest uintptr, left uintptr, right uintptr) (r1 int32)
+TEXT ·Ysigandset(SB),$40-68
 
-TEXT ·Ysigdelset(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xsigdelset(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysigdelset(tls *TLS, set uintptr, sig int32) (r int32)
+TEXT ·Ysigdelset(SB),$32-48
 
-TEXT ·Ysigemptyset(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsigemptyset(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysigemptyset(tls *TLS, set uintptr) (r int32)
+TEXT ·Ysigemptyset(SB),$24-36
 
-TEXT ·Ysigfillset(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsigfillset(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysigfillset(tls *TLS, set uintptr) (r int32)
+TEXT ·Ysigfillset(SB),$24-36
 
-TEXT ·Ysigisemptyset(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsigisemptyset(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysigisemptyset(tls *TLS, set uintptr) (r int32)
+TEXT ·Ysigisemptyset(SB),$24-36
 
-TEXT ·Ysigismember(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xsigismember(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysigismember(tls *TLS, set uintptr, sig int32) (r int32)
+TEXT ·Ysigismember(SB),$32-48
 
-TEXT ·Ysignal(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsignal(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ysignal(tls *TLS, signum int32, handler uintptr) (r uintptr)
+TEXT ·Ysignal(SB),$32-56
 
-TEXT ·Ysignalfd(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xsignalfd(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysignalfd(tls *TLS, fd int32, sigs uintptr, flags int32) (r int32)
+TEXT ·Ysignalfd(SB),$40-64
 
-TEXT ·Ysignificand(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsignificand(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysignificand(tls *TLS, x float64) (r float64)
+TEXT ·Ysignificand(SB),$24-40
 
-TEXT ·Ysignificandf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsignificandf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysignificandf(tls *TLS, x float32) (r float32)
+TEXT ·Ysignificandf(SB),$24-32
 
-TEXT ·Ysigorset(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsigorset(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysigorset(tls *TLS, dest uintptr, left uintptr, right uintptr) (r1 int32)
+TEXT ·Ysigorset(SB),$40-68
 
-TEXT ·Ysigpending(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsigpending(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysigpending(tls *TLS, set uintptr) (r int32)
+TEXT ·Ysigpending(SB),$24-36
 
-TEXT ·Ysigprocmask(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsigprocmask(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysigprocmask(tls *TLS, how int32, set uintptr, old uintptr) (r1 int32)
+TEXT ·Ysigprocmask(SB),$40-68
 
-TEXT ·Ysigqueue(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsigqueue(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysigqueue(tls *TLS, pid Tpid_t, sig int32, value Tsigval) (r1 int32)
+TEXT ·Ysigqueue(SB),$32-52
 
-TEXT ·Ysigsuspend(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsigsuspend(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysigsuspend(tls *TLS, mask uintptr) (r int32)
+TEXT ·Ysigsuspend(SB),$24-36
 
-TEXT ·Ysigtimedwait(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsigtimedwait(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysigtimedwait(tls *TLS, mask uintptr, si uintptr, timeout uintptr) (r int32)
+TEXT ·Ysigtimedwait(SB),$40-68
 
-TEXT ·Ysigwait(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsigwait(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysigwait(tls *TLS, mask uintptr, sig uintptr) (r int32)
+TEXT ·Ysigwait(SB),$32-52
 
-TEXT ·Ysigwaitinfo(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsigwaitinfo(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysigwaitinfo(tls *TLS, mask uintptr, si uintptr) (r int32)
+TEXT ·Ysigwaitinfo(SB),$32-52
 
-TEXT ·Ysin(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsin(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysin(tls *TLS, x3 float64) (r float64)
+TEXT ·Ysin(SB),$24-40
 
+// func Ysincos(tls *TLS, x3 float64, sin uintptr, cos uintptr)
 TEXT ·Ysincos(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsincos(SB)
-	RET
 
+// func Ysincosf(tls *TLS, x3 float32, sin uintptr, cos uintptr)
 TEXT ·Ysincosf(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsincosf(SB)
-	RET
 
+// func Ysincosl(tls *TLS, x float64, sin uintptr, cos uintptr)
 TEXT ·Ysincosl(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsincosl(SB)
-	RET
 
-TEXT ·Ysinf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsinf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysinf(tls *TLS, x3 float32) (r float32)
+TEXT ·Ysinf(SB),$24-32
 
-TEXT ·Ysinh(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsinh(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysinh(tls *TLS, x float64) (r float64)
+TEXT ·Ysinh(SB),$24-40
 
-TEXT ·Ysinhf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsinhf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysinhf(tls *TLS, x float32) (r float32)
+TEXT ·Ysinhf(SB),$24-32
 
-TEXT ·Ysinhl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsinhl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysinhl(tls *TLS, x float64) (r float64)
+TEXT ·Ysinhl(SB),$24-40
 
-TEXT ·Ysinl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsinl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysinl(tls *TLS, x float64) (r float64)
+TEXT ·Ysinl(SB),$24-40
 
-TEXT ·Ysleep(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsleep(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysleep(tls *TLS, seconds uint32) (r uint32)
+TEXT ·Ysleep(SB),$24-32
 
-TEXT ·Ysnprintf(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xsnprintf(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Ysnprintf(tls *TLS, s uintptr, n Tsize_t, fmt uintptr, va uintptr) (r int32)
+TEXT ·Ysnprintf(SB),$48-84
 
-TEXT ·Ysockatmark(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsockatmark(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysockatmark(tls *TLS, s int32) (r int32)
+TEXT ·Ysockatmark(SB),$24-32
 
-TEXT ·Ysocket(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVL p3+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xsocket(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysocket(tls *TLS, domain int32, type1 int32, protocol int32) (r1 int32)
+TEXT ·Ysocket(SB),$32-48
 
-TEXT ·Ysocketpair(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVL p3+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsocketpair(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysocketpair(tls *TLS, domain int32, type1 int32, protocol int32, fd uintptr) (r2 int32)
+TEXT ·Ysocketpair(SB),$40-68
 
-TEXT ·Ysplice(SB),$64-64
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	MOVL p6+48(FP), AX
-	MOVL AX, 48(SP)
-	CALL ·Xsplice(SB)
-	MOVQ 56(SP), AX
-	MOVQ AX, ret+56(FP)
-	RET
+// func Ysplice(tls *TLS, fd_in int32, off_in uintptr, fd_out int32, off_out uintptr, len1 Tsize_t, flags uint32) (r Tssize_t)
+TEXT ·Ysplice(SB),$64-116
 
-TEXT ·Ysprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysprintf(tls *TLS, s uintptr, fmt uintptr, va uintptr) (r int32)
+TEXT ·Ysprintf(SB),$40-68
 
-TEXT ·Ysqrt(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsqrt(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysqrt(tls *TLS, x1 float64) (r1 float64)
+TEXT ·Ysqrt(SB),$24-40
 
-TEXT ·Ysqrtf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsqrtf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysqrtf(tls *TLS, x1 float32) (r1 float32)
+TEXT ·Ysqrtf(SB),$24-32
 
-TEXT ·Ysqrtl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsqrtl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysqrtl(tls *TLS, x float64) (r float64)
+TEXT ·Ysqrtl(SB),$24-40
 
-TEXT ·Ysrand(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsrand(SB)
-	RET
+// func Ysrand(tls *TLS, s uint32)
+TEXT ·Ysrand(SB),$16-12
 
+// func Ysrand48(tls *TLS, seed int64)
 TEXT ·Ysrand48(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsrand48(SB)
-	RET
 
-TEXT ·Ysrandom(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsrandom(SB)
-	RET
+// func Ysrandom(tls *TLS, seed uint32)
+TEXT ·Ysrandom(SB),$16-12
 
-TEXT ·Ysscanf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsscanf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysscanf(tls *TLS, s uintptr, fmt uintptr, va uintptr) (r int32)
+TEXT ·Ysscanf(SB),$40-68
 
-TEXT ·Ystat(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstat(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ystat(tls *TLS, path uintptr, buf uintptr) (r int32)
+TEXT ·Ystat(SB),$32-52
 
-TEXT ·Ystat64(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstat64(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ystat64(tls *TLS, path uintptr, buf uintptr) (r int32)
+TEXT ·Ystat64(SB),$32-52
 
-TEXT ·Ystatvfs(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstatvfs(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ystatvfs(tls *TLS, path uintptr, buf uintptr) (r int32)
+TEXT ·Ystatvfs(SB),$32-52
 
-TEXT ·Ystatx(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVL p4+28(FP), AX
-	MOVL AX, 28(SP)
-	MOVQ p5+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xstatx(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Ystatx(tls *TLS, dirfd int32, path uintptr, flags int32, mask uint32, stx uintptr) (r int32)
+TEXT ·Ystatx(SB),$48-84
 
-TEXT ·Ystime(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xstime(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ystime(tls *TLS, t uintptr) (r int32)
+TEXT ·Ystime(SB),$24-36
 
-TEXT ·Ystpcpy(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstpcpy(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystpcpy(tls *TLS, d uintptr, s uintptr) (r uintptr)
+TEXT ·Ystpcpy(SB),$32-56
 
-TEXT ·Ystpncpy(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstpncpy(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystpncpy(tls *TLS, d uintptr, s uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ystpncpy(SB),$40-72
 
-TEXT ·Ystrcasecmp(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrcasecmp(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ystrcasecmp(tls *TLS, _l uintptr, _r uintptr) (r1 int32)
+TEXT ·Ystrcasecmp(SB),$32-52
 
-TEXT ·Ystrcasecmp_l(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrcasecmp_l(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ystrcasecmp_l(tls *TLS, l uintptr, r uintptr, loc Tlocale_t) (r1 int32)
+TEXT ·Ystrcasecmp_l(SB),$40-68
 
-TEXT ·Ystrcasestr(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrcasestr(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrcasestr(tls *TLS, h uintptr, n uintptr) (r uintptr)
+TEXT ·Ystrcasestr(SB),$32-56
 
-TEXT ·Ystrcat(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrcat(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrcat(tls *TLS, dest uintptr, src uintptr) (r uintptr)
+TEXT ·Ystrcat(SB),$32-56
 
-TEXT ·Ystrchr(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xstrchr(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrchr(tls *TLS, s uintptr, c int32) (r1 uintptr)
+TEXT ·Ystrchr(SB),$32-52
 
-TEXT ·Ystrchrnul(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xstrchrnul(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrchrnul(tls *TLS, s uintptr, c int32) (r uintptr)
+TEXT ·Ystrchrnul(SB),$32-52
 
-TEXT ·Ystrcmp(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrcmp(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ystrcmp(tls *TLS, l uintptr, r uintptr) (r1 int32)
+TEXT ·Ystrcmp(SB),$32-52
 
-TEXT ·Ystrcoll(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrcoll(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ystrcoll(tls *TLS, l uintptr, r uintptr) (r1 int32)
+TEXT ·Ystrcoll(SB),$32-52
 
-TEXT ·Ystrcoll_l(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrcoll_l(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ystrcoll_l(tls *TLS, l uintptr, r uintptr, loc Tlocale_t) (r1 int32)
+TEXT ·Ystrcoll_l(SB),$40-68
 
-TEXT ·Ystrcpy(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrcpy(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrcpy(tls *TLS, dest uintptr, src uintptr) (r uintptr)
+TEXT ·Ystrcpy(SB),$32-56
 
-TEXT ·Ystrcspn(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrcspn(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrcspn(tls *TLS, s uintptr, c uintptr) (r Tsize_t)
+TEXT ·Ystrcspn(SB),$32-56
 
-TEXT ·Ystrdup(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xstrdup(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ystrdup(tls *TLS, s uintptr) (r uintptr)
+TEXT ·Ystrdup(SB),$24-40
 
-TEXT ·Ystrerror(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xstrerror(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ystrerror(tls *TLS, e int32) (r uintptr)
+TEXT ·Ystrerror(SB),$24-36
 
-TEXT ·Ystrerror_l(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrerror_l(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrerror_l(tls *TLS, e int32, loc Tlocale_t) (r uintptr)
+TEXT ·Ystrerror_l(SB),$32-56
 
-TEXT ·Ystrerror_r(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrerror_r(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ystrerror_r(tls *TLS, err int32, buf uintptr, buflen Tsize_t) (r int32)
+TEXT ·Ystrerror_r(SB),$40-68
 
-TEXT ·Ystrfmon(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xstrfmon(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Ystrfmon(tls *TLS, s uintptr, n Tsize_t, fmt uintptr, va uintptr) (r Tssize_t)
+TEXT ·Ystrfmon(SB),$48-88
 
-TEXT ·Ystrfmon_l(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xstrfmon_l(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
+// func Ystrfmon_l(tls *TLS, s uintptr, n Tsize_t, loc Tlocale_t, fmt uintptr, va uintptr) (r Tssize_t)
+TEXT ·Ystrfmon_l(SB),$56-104
 
-TEXT ·Ystrftime(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xstrftime(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Ystrftime(tls *TLS, s uintptr, n Tsize_t, f uintptr, tm uintptr) (r Tsize_t)
+TEXT ·Ystrftime(SB),$48-88
 
-TEXT ·Ystrftime_l(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xstrftime_l(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
+// func Ystrftime_l(tls *TLS, s uintptr, n Tsize_t, f uintptr, tm uintptr, loc Tlocale_t) (r Tsize_t)
+TEXT ·Ystrftime_l(SB),$56-104
 
-TEXT ·Ystrlcat(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrlcat(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrlcat(tls *TLS, d uintptr, s uintptr, n Tsize_t) (r Tsize_t)
+TEXT ·Ystrlcat(SB),$40-72
 
-TEXT ·Ystrlcpy(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrlcpy(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrlcpy(tls *TLS, d uintptr, s uintptr, n Tsize_t) (r Tsize_t)
+TEXT ·Ystrlcpy(SB),$40-72
 
-TEXT ·Ystrlen(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xstrlen(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ystrlen(tls *TLS, s uintptr) (r Tsize_t)
+TEXT ·Ystrlen(SB),$24-40
 
-TEXT ·Ystrncasecmp(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrncasecmp(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ystrncasecmp(tls *TLS, _l uintptr, _r uintptr, n Tsize_t) (r1 int32)
+TEXT ·Ystrncasecmp(SB),$40-68
 
-TEXT ·Ystrncasecmp_l(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xstrncasecmp_l(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Ystrncasecmp_l(tls *TLS, l uintptr, r uintptr, n Tsize_t, loc Tlocale_t) (r1 int32)
+TEXT ·Ystrncasecmp_l(SB),$48-84
 
-TEXT ·Ystrncat(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrncat(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrncat(tls *TLS, d uintptr, s uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ystrncat(SB),$40-72
 
-TEXT ·Ystrncmp(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrncmp(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ystrncmp(tls *TLS, _l uintptr, _r uintptr, n Tsize_t) (r1 int32)
+TEXT ·Ystrncmp(SB),$40-68
 
-TEXT ·Ystrncpy(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrncpy(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrncpy(tls *TLS, d uintptr, s uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ystrncpy(SB),$40-72
 
-TEXT ·Ystrndup(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrndup(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrndup(tls *TLS, s uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ystrndup(SB),$32-56
 
-TEXT ·Ystrnlen(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrnlen(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrnlen(tls *TLS, s uintptr, n Tsize_t) (r Tsize_t)
+TEXT ·Ystrnlen(SB),$32-56
 
-TEXT ·Ystrpbrk(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrpbrk(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrpbrk(tls *TLS, s uintptr, b uintptr) (r uintptr)
+TEXT ·Ystrpbrk(SB),$32-56
 
-TEXT ·Ystrptime(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrptime(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrptime(tls *TLS, s uintptr, f uintptr, tm uintptr) (r uintptr)
+TEXT ·Ystrptime(SB),$40-72
 
-TEXT ·Ystrrchr(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xstrrchr(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrrchr(tls *TLS, s uintptr, c int32) (r uintptr)
+TEXT ·Ystrrchr(SB),$32-52
 
-TEXT ·Ystrsep(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrsep(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrsep(tls *TLS, str uintptr, sep uintptr) (r uintptr)
+TEXT ·Ystrsep(SB),$32-56
 
-TEXT ·Ystrsignal(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xstrsignal(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ystrsignal(tls *TLS, signum int32) (r uintptr)
+TEXT ·Ystrsignal(SB),$24-36
 
-TEXT ·Ystrspn(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrspn(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrspn(tls *TLS, s uintptr, c uintptr) (r Tsize_t)
+TEXT ·Ystrspn(SB),$32-56
 
-TEXT ·Ystrstr(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrstr(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrstr(tls *TLS, h uintptr, n uintptr) (r uintptr)
+TEXT ·Ystrstr(SB),$32-56
 
-TEXT ·Ystrtod(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrtod(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrtod(tls *TLS, s uintptr, p uintptr) (r float64)
+TEXT ·Ystrtod(SB),$32-56
 
-TEXT ·Ystrtod_l(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrtod_l(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrtod_l(tls *TLS, s uintptr, p uintptr, l Tlocale_t) (r float64)
+TEXT ·Ystrtod_l(SB),$40-72
 
-TEXT ·Ystrtof(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrtof(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ystrtof(tls *TLS, s uintptr, p uintptr) (r float32)
+TEXT ·Ystrtof(SB),$32-52
 
-TEXT ·Ystrtof_l(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrtof_l(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ystrtof_l(tls *TLS, s uintptr, p uintptr, l Tlocale_t) (r float32)
+TEXT ·Ystrtof_l(SB),$40-68
 
-TEXT ·Ystrtoimax(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xstrtoimax(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrtoimax(tls *TLS, s uintptr, p uintptr, base int32) (r Tintmax_t)
+TEXT ·Ystrtoimax(SB),$40-68
 
-TEXT ·Ystrtok(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrtok(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrtok(tls *TLS, s uintptr, sep uintptr) (r uintptr)
+TEXT ·Ystrtok(SB),$32-56
 
-TEXT ·Ystrtok_r(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrtok_r(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrtok_r(tls *TLS, s uintptr, sep uintptr, p uintptr) (r uintptr)
+TEXT ·Ystrtok_r(SB),$40-72
 
-TEXT ·Ystrtol(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xstrtol(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrtol(tls *TLS, s uintptr, p uintptr, base int32) (r int64)
+TEXT ·Ystrtol(SB),$40-68
 
-TEXT ·Ystrtold(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrtold(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ystrtold(tls *TLS, s uintptr, p uintptr) (r float64)
+TEXT ·Ystrtold(SB),$32-56
 
-TEXT ·Ystrtold_l(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrtold_l(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrtold_l(tls *TLS, s uintptr, p uintptr, l Tlocale_t) (r float64)
+TEXT ·Ystrtold_l(SB),$40-72
 
-TEXT ·Ystrtoll(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xstrtoll(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrtoll(tls *TLS, s uintptr, p uintptr, base int32) (r int64)
+TEXT ·Ystrtoll(SB),$40-68
 
-TEXT ·Ystrtoul(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xstrtoul(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrtoul(tls *TLS, s uintptr, p uintptr, base int32) (r uint64)
+TEXT ·Ystrtoul(SB),$40-68
 
-TEXT ·Ystrtoull(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xstrtoull(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrtoull(tls *TLS, s uintptr, p uintptr, base int32) (r uint64)
+TEXT ·Ystrtoull(SB),$40-68
 
-TEXT ·Ystrtoumax(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xstrtoumax(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrtoumax(tls *TLS, s uintptr, p uintptr, base int32) (r Tuintmax_t)
+TEXT ·Ystrtoumax(SB),$40-68
 
-TEXT ·Ystrverscmp(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xstrverscmp(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ystrverscmp(tls *TLS, l0 uintptr, r0 uintptr) (r1 int32)
+TEXT ·Ystrverscmp(SB),$32-52
 
-TEXT ·Ystrxfrm(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xstrxfrm(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ystrxfrm(tls *TLS, dest uintptr, src uintptr, n Tsize_t) (r Tsize_t)
+TEXT ·Ystrxfrm(SB),$40-72
 
-TEXT ·Ystrxfrm_l(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xstrxfrm_l(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Ystrxfrm_l(tls *TLS, dest uintptr, src uintptr, n Tsize_t, loc Tlocale_t) (r Tsize_t)
+TEXT ·Ystrxfrm_l(SB),$48-88
 
+// func Yswab(tls *TLS, _src uintptr, _dest uintptr, n Tssize_t)
 TEXT ·Yswab(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xswab(SB)
-	RET
 
-TEXT ·Yswapoff(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xswapoff(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yswapoff(tls *TLS, path uintptr) (r int32)
+TEXT ·Yswapoff(SB),$24-36
 
-TEXT ·Yswapon(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xswapon(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yswapon(tls *TLS, path uintptr, flags int32) (r int32)
+TEXT ·Yswapon(SB),$32-48
 
-TEXT ·Yswprintf(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xswprintf(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yswprintf(tls *TLS, s uintptr, n Tsize_t, fmt uintptr, va uintptr) (r int32)
+TEXT ·Yswprintf(SB),$48-84
 
-TEXT ·Yswscanf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xswscanf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yswscanf(tls *TLS, s uintptr, fmt uintptr, va uintptr) (r int32)
+TEXT ·Yswscanf(SB),$40-68
 
-TEXT ·Ysymlink(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsymlink(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ysymlink(tls *TLS, existing uintptr, new1 uintptr) (r int32)
+TEXT ·Ysymlink(SB),$32-52
 
-TEXT ·Ysymlinkat(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsymlinkat(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ysymlinkat(tls *TLS, existing uintptr, fd int32, new1 uintptr) (r int32)
+TEXT ·Ysymlinkat(SB),$40-68
 
+// func Ysync(tls *TLS)
 TEXT ·Ysync(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xsync(SB)
-	RET
 
-TEXT ·Ysync_file_range(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xsync_file_range(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Ysync_file_range(tls *TLS, fd int32, pos Toff_t, len1 Toff_t, flags uint32) (r int32)
+TEXT ·Ysync_file_range(SB),$48-80
 
-TEXT ·Ysyncfs(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsyncfs(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysyncfs(tls *TLS, fd int32) (r int32)
+TEXT ·Ysyncfs(SB),$24-32
 
-TEXT ·Ysyscall(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xsyscall(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ysyscall(tls *TLS, n int64, va uintptr) (r int64)
+TEXT ·Ysyscall(SB),$32-56
 
-TEXT ·Ysysconf(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xsysconf(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ysysconf(tls *TLS, name int32) (r int64)
+TEXT ·Ysysconf(SB),$24-36
 
-TEXT ·Ysysctlbyname(SB),$52-52
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xsysctlbyname(SB)
-	MOVL 48(SP), AX
-	MOVL AX, ret+48(FP)
-	RET
+// func Ysysctlbyname(t *TLS, name, oldp, oldlenp, newp uintptr, newlen Tsize_t) int32
+TEXT ·Ysysctlbyname(SB),$56-100
 
-TEXT ·Ysysinfo(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsysinfo(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysysinfo(tls *TLS, info uintptr) (r int32)
+TEXT ·Ysysinfo(SB),$24-36
 
+// func Ysyslog(tls *TLS, priority int32, message uintptr, va uintptr)
 TEXT ·Ysyslog(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xsyslog(SB)
-	RET
 
-TEXT ·Ysystem(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xsystem(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ysystem(t *TLS, command uintptr) int32
+TEXT ·Ysystem(SB),$24-36
 
-TEXT ·Ytan(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtan(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytan(tls *TLS, x3 float64) (r float64)
+TEXT ·Ytan(SB),$24-40
 
-TEXT ·Ytanf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtanf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytanf(tls *TLS, x3 float32) (r float32)
+TEXT ·Ytanf(SB),$24-32
 
-TEXT ·Ytanh(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtanh(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytanh(tls *TLS, x3 float64) (r float64)
+TEXT ·Ytanh(SB),$24-40
 
-TEXT ·Ytanhf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtanhf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytanhf(tls *TLS, x3 float32) (r float32)
+TEXT ·Ytanhf(SB),$24-32
 
-TEXT ·Ytanhl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtanhl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytanhl(tls *TLS, x float64) (r float64)
+TEXT ·Ytanhl(SB),$24-40
 
-TEXT ·Ytanl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtanl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytanl(tls *TLS, x float64) (r float64)
+TEXT ·Ytanl(SB),$24-40
 
-TEXT ·Ytcdrain(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtcdrain(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytcdrain(tls *TLS, fd int32) (r int32)
+TEXT ·Ytcdrain(SB),$24-32
 
-TEXT ·Ytcflow(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xtcflow(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytcflow(tls *TLS, fd int32, action int32) (r int32)
+TEXT ·Ytcflow(SB),$24-36
 
-TEXT ·Ytcflush(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xtcflush(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytcflush(tls *TLS, fd int32, queue int32) (r int32)
+TEXT ·Ytcflush(SB),$24-36
 
-TEXT ·Ytcgetattr(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtcgetattr(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytcgetattr(tls *TLS, fd int32, tio uintptr) (r int32)
+TEXT ·Ytcgetattr(SB),$32-52
 
-TEXT ·Ytcgetpgrp(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtcgetpgrp(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytcgetpgrp(tls *TLS, fd int32) (r Tpid_t)
+TEXT ·Ytcgetpgrp(SB),$24-32
 
-TEXT ·Ytcgetsid(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtcgetsid(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytcgetsid(tls *TLS, fd int32) (r Tpid_t)
+TEXT ·Ytcgetsid(SB),$24-32
 
-TEXT ·Ytcgetwinsize(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtcgetwinsize(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytcgetwinsize(tls *TLS, fd int32, wsz uintptr) (r int32)
+TEXT ·Ytcgetwinsize(SB),$32-52
 
-TEXT ·Ytcsendbreak(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xtcsendbreak(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytcsendbreak(tls *TLS, fd int32, dur int32) (r int32)
+TEXT ·Ytcsendbreak(SB),$24-36
 
-TEXT ·Ytcsetattr(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtcsetattr(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytcsetattr(tls *TLS, fd int32, act int32, tio uintptr) (r int32)
+TEXT ·Ytcsetattr(SB),$32-52
 
-TEXT ·Ytcsetpgrp(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xtcsetpgrp(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytcsetpgrp(tls *TLS, fd int32, pgrp Tpid_t) (r int32)
+TEXT ·Ytcsetpgrp(SB),$24-36
 
-TEXT ·Ytcsetwinsize(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtcsetwinsize(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytcsetwinsize(tls *TLS, fd int32, wsz uintptr) (r int32)
+TEXT ·Ytcsetwinsize(SB),$32-52
 
-TEXT ·Ytdelete(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xtdelete(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ytdelete(tls *TLS, key uintptr, rootp uintptr, cmp uintptr) (r uintptr)
+TEXT ·Ytdelete(SB),$40-72
 
+// func Ytdestroy(tls *TLS, root uintptr, freekey uintptr)
 TEXT ·Ytdestroy(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtdestroy(SB)
-	RET
 
-TEXT ·Ytee(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p4+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xtee(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ytee(tls *TLS, src int32, dest int32, len1 Tsize_t, flags uint32) (r Tssize_t)
+TEXT ·Ytee(SB),$40-68
 
-TEXT ·Ytelldir(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtelldir(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytelldir(tls *TLS, dir uintptr) (r int64)
+TEXT ·Ytelldir(SB),$24-40
 
-TEXT ·Ytempnam(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtempnam(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Ytempnam(tls *TLS, dir uintptr, pfx uintptr) (r1 uintptr)
+TEXT ·Ytempnam(SB),$32-56
 
-TEXT ·Ytextdomain(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtextdomain(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytextdomain(tls *TLS, domainname uintptr) (r uintptr)
+TEXT ·Ytextdomain(SB),$24-40
 
-TEXT ·Ytfind(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xtfind(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ytfind(tls *TLS, key uintptr, rootp uintptr, cmp uintptr) (r uintptr)
+TEXT ·Ytfind(SB),$40-72
 
-TEXT ·Ytgamma(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtgamma(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytgamma(tls *TLS, x3 float64) (r1 float64)
+TEXT ·Ytgamma(SB),$24-40
 
-TEXT ·Ytgammaf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtgammaf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytgammaf(tls *TLS, x float32) (r float32)
+TEXT ·Ytgammaf(SB),$24-32
 
-TEXT ·Ytgammal(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtgammal(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytgammal(tls *TLS, x float64) (r float64)
+TEXT ·Ytgammal(SB),$24-40
 
-TEXT ·Ytime(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtime(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytime(tls *TLS, t uintptr) (r Ttime_t)
+TEXT ·Ytime(SB),$24-40
 
-TEXT ·Ytimegm(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtimegm(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytimegm(tls *TLS, tm uintptr) (r Ttime_t)
+TEXT ·Ytimegm(SB),$24-40
 
-TEXT ·Ytimer_delete(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtimer_delete(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytimer_delete(tls *TLS, t Ttimer_t) (r int32)
+TEXT ·Ytimer_delete(SB),$24-36
 
-TEXT ·Ytimer_getoverrun(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtimer_getoverrun(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytimer_getoverrun(tls *TLS, t Ttimer_t) (r int32)
+TEXT ·Ytimer_getoverrun(SB),$24-36
 
-TEXT ·Ytimer_gettime(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtimer_gettime(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytimer_gettime(tls *TLS, t Ttimer_t, val uintptr) (r int32)
+TEXT ·Ytimer_gettime(SB),$32-52
 
-TEXT ·Ytimer_settime(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xtimer_settime(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Ytimer_settime(tls *TLS, t Ttimer_t, flags int32, val uintptr, old uintptr) (r int32)
+TEXT ·Ytimer_settime(SB),$48-84
 
-TEXT ·Ytimerfd_create(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xtimerfd_create(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytimerfd_create(tls *TLS, clockid int32, flags int32) (r int32)
+TEXT ·Ytimerfd_create(SB),$24-36
 
-TEXT ·Ytimerfd_gettime(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtimerfd_gettime(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytimerfd_gettime(tls *TLS, fd int32, cur uintptr) (r int32)
+TEXT ·Ytimerfd_gettime(SB),$32-52
 
-TEXT ·Ytimerfd_settime(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p4+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xtimerfd_settime(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ytimerfd_settime(tls *TLS, fd int32, flags int32, new1 uintptr, old uintptr) (r int32)
+TEXT ·Ytimerfd_settime(SB),$40-68
 
-TEXT ·Ytimes(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtimes(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytimes(tls *TLS, tms uintptr) (r Tclock_t)
+TEXT ·Ytimes(SB),$24-40
 
-TEXT ·Ytimespec_get(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xtimespec_get(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytimespec_get(tls *TLS, ts uintptr, base int32) (r int32)
+TEXT ·Ytimespec_get(SB),$32-48
 
-TEXT ·Ytmpfile(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xtmpfile(SB)
-	MOVQ 8(SP), AX
-	MOVQ AX, ret+8(FP)
-	RET
+// func Ytmpfile(tls *TLS) (r uintptr)
+TEXT ·Ytmpfile(SB),$16-24
 
-TEXT ·Ytmpnam(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtmpnam(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytmpnam(tls *TLS, buf uintptr) (r1 uintptr)
+TEXT ·Ytmpnam(SB),$24-40
 
-TEXT ·Ytoascii(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtoascii(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytoascii(tls *TLS, c int32) (r int32)
+TEXT ·Ytoascii(SB),$24-32
 
-TEXT ·Ytolower(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtolower(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytolower(tls *TLS, c int32) (r int32)
+TEXT ·Ytolower(SB),$24-32
 
-TEXT ·Ytolower_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtolower_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytolower_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Ytolower_l(SB),$32-52
 
-TEXT ·Ytoupper(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtoupper(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytoupper(tls *TLS, c int32) (r int32)
+TEXT ·Ytoupper(SB),$24-32
 
-TEXT ·Ytoupper_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtoupper_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytoupper_l(tls *TLS, c int32, l Tlocale_t) (r int32)
+TEXT ·Ytoupper_l(SB),$32-52
 
-TEXT ·Ytowctrans(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtowctrans(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytowctrans(tls *TLS, wc Twint_t, trans Twctrans_t) (r Twint_t)
+TEXT ·Ytowctrans(SB),$32-52
 
-TEXT ·Ytowctrans_l(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xtowctrans_l(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ytowctrans_l(tls *TLS, c Twint_t, t Twctrans_t, l Tlocale_t) (r Twint_t)
+TEXT ·Ytowctrans_l(SB),$40-68
 
-TEXT ·Ytowlower(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtowlower(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytowlower(tls *TLS, wc Twint_t) (r Twint_t)
+TEXT ·Ytowlower(SB),$24-32
 
-TEXT ·Ytowlower_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtowlower_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytowlower_l(tls *TLS, c Twint_t, l Tlocale_t) (r Twint_t)
+TEXT ·Ytowlower_l(SB),$32-52
 
-TEXT ·Ytowupper(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtowupper(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytowupper(tls *TLS, wc Twint_t) (r Twint_t)
+TEXT ·Ytowupper(SB),$24-32
 
-TEXT ·Ytowupper_l(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtowupper_l(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytowupper_l(tls *TLS, c Twint_t, l Tlocale_t) (r Twint_t)
+TEXT ·Ytowupper_l(SB),$32-52
 
-TEXT ·Ytrunc(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtrunc(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytrunc(tls *TLS, x3 float64) (r float64)
+TEXT ·Ytrunc(SB),$24-40
 
-TEXT ·Ytruncate(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtruncate(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Ytruncate(tls *TLS, path uintptr, length Toff_t) (r int32)
+TEXT ·Ytruncate(SB),$32-52
 
-TEXT ·Ytruncf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xtruncf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ytruncf(tls *TLS, x3 float32) (r float32)
+TEXT ·Ytruncf(SB),$24-32
 
-TEXT ·Ytruncl(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xtruncl(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Ytruncl(tls *TLS, x float64) (r float64)
+TEXT ·Ytruncl(SB),$24-40
 
-TEXT ·Ytsearch(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xtsearch(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
+// func Ytsearch(tls *TLS, key uintptr, rootp uintptr, cmp uintptr) (r1 uintptr)
+TEXT ·Ytsearch(SB),$40-72
 
-TEXT ·Yttyname(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xttyname(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yttyname(tls *TLS, fd int32) (r uintptr)
+TEXT ·Yttyname(SB),$24-36
 
-TEXT ·Yttyname_r(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xttyname_r(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yttyname_r(tls *TLS, fd int32, name uintptr, size Tsize_t) (r int32)
+TEXT ·Yttyname_r(SB),$40-68
 
+// func Ytwalk(tls *TLS, root uintptr, action uintptr)
 TEXT ·Ytwalk(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xtwalk(SB)
-	RET
 
+// func Ytzset(tls *TLS)
 TEXT ·Ytzset(SB),$8-8
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xtzset(SB)
-	RET
 
-TEXT ·Yualarm(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xualarm(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yualarm(tls *TLS, value uint32, interval uint32) (r uint32)
+TEXT ·Yualarm(SB),$24-36
 
-TEXT ·Yulckpwdf(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xulckpwdf(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Yulckpwdf(tls *TLS) (r int32)
+TEXT ·Yulckpwdf(SB),$16-20
 
-TEXT ·Yulimit(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xulimit(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
+// func Yulimit(tls *TLS, cmd int32, va uintptr) (r int64)
+TEXT ·Yulimit(SB),$32-56
 
-TEXT ·Yumask(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xumask(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yumask(tls *TLS, mode Tmode_t) (r Tmode_t)
+TEXT ·Yumask(SB),$24-32
 
-TEXT ·Yumount(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xumount(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yumount(tls *TLS, special uintptr) (r int32)
+TEXT ·Yumount(SB),$24-36
 
-TEXT ·Yumount2(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xumount2(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yumount2(tls *TLS, special uintptr, flags int32) (r int32)
+TEXT ·Yumount2(SB),$32-48
 
-TEXT ·Yuname(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xuname(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yuname(tls *TLS, uts uintptr) (r int32)
+TEXT ·Yuname(SB),$24-36
 
-TEXT ·Yungetc(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xungetc(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yungetc(tls *TLS, c int32, f uintptr) (r int32)
+TEXT ·Yungetc(SB),$32-52
 
-TEXT ·Yungetwc(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xungetwc(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yungetwc(tls *TLS, c Twint_t, f uintptr) (r Twint_t)
+TEXT ·Yungetwc(SB),$32-52
 
-TEXT ·Yunlink(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xunlink(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yunlink(tls *TLS, path uintptr) (r int32)
+TEXT ·Yunlink(SB),$24-36
 
-TEXT ·Yunlinkat(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xunlinkat(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yunlinkat(tls *TLS, fd int32, path uintptr, flag int32) (r int32)
+TEXT ·Yunlinkat(SB),$40-64
 
-TEXT ·Yunlockpt(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xunlockpt(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yunlockpt(tls *TLS, fd int32) (r int32)
+TEXT ·Yunlockpt(SB),$24-32
 
-TEXT ·Yunsetenv(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xunsetenv(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yunsetenv(tls *TLS, name uintptr) (r int32)
+TEXT ·Yunsetenv(SB),$24-36
 
-TEXT ·Yunshare(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xunshare(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yunshare(tls *TLS, flags int32) (r int32)
+TEXT ·Yunshare(SB),$24-32
 
+// func Yupdwtmp(tls *TLS, f uintptr, u uintptr)
 TEXT ·Yupdwtmp(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xupdwtmp(SB)
-	RET
 
+// func Yupdwtmpx(tls *TLS, f uintptr, u uintptr)
 TEXT ·Yupdwtmpx(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xupdwtmpx(SB)
-	RET
 
-TEXT ·Yuselocale(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xuselocale(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
+// func Yuselocale(tls *TLS, new1 Tlocale_t) (r Tlocale_t)
+TEXT ·Yuselocale(SB),$24-40
 
-TEXT ·Yusleep(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xusleep(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Yusleep(tls *TLS, useconds uint32) (r int32)
+TEXT ·Yusleep(SB),$24-32
 
-TEXT ·Yutime(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xutime(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yutime(tls *TLS, path uintptr, times uintptr) (r int32)
+TEXT ·Yutime(SB),$32-52
 
-TEXT ·Yutimensat(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xutimensat(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yutimensat(tls *TLS, fd int32, path uintptr, times uintptr, flags int32) (r1 int32)
+TEXT ·Yutimensat(SB),$48-80
 
-TEXT ·Yutimes(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xutimes(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yutimes(tls *TLS, path uintptr, times uintptr) (r int32)
+TEXT ·Yutimes(SB),$32-52
 
+// func Yuuid_copy(t *TLS, dst, src uintptr)
 TEXT ·Yuuid_copy(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xuuid_copy(SB)
-	RET
 
+// func Yuuid_generate_random(t *TLS, out uintptr)
 TEXT ·Yuuid_generate_random(SB),$16-16
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xuuid_generate_random(SB)
-	RET
 
-TEXT ·Yuuid_parse(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xuuid_parse(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yuuid_parse(t *TLS, in uintptr, uu uintptr) int32
+TEXT ·Yuuid_parse(SB),$32-52
 
+// func Yuuid_unparse(t *TLS, uu, out uintptr)
 TEXT ·Yuuid_unparse(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xuuid_unparse(SB)
-	RET
 
-TEXT ·Yvasprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xvasprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yvasprintf(tls *TLS, s uintptr, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvasprintf(SB),$40-68
 
-TEXT ·Yvdprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xvdprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yvdprintf(tls *TLS, fd int32, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvdprintf(SB),$40-68
 
+// func Yverr(tls *TLS, status int32, fmt uintptr, ap Tva_list)
 TEXT ·Yverr(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xverr(SB)
-	RET
 
+// func Yverrx(tls *TLS, status int32, fmt uintptr, ap Tva_list)
 TEXT ·Yverrx(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xverrx(SB)
-	RET
 
-TEXT ·Yversionsort(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xversionsort(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yversionsort(tls *TLS, a uintptr, b uintptr) (r int32)
+TEXT ·Yversionsort(SB),$32-52
 
-TEXT ·Yvfork(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xvfork(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Yvfork(tls *TLS) (r Tpid_t)
+TEXT ·Yvfork(SB),$16-20
 
-TEXT ·Yvfprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xvfprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yvfprintf(tls *TLS, f uintptr, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvfprintf(SB),$40-68
 
-TEXT ·Yvfscanf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xvfscanf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yvfscanf(tls *TLS, f uintptr, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvfscanf(SB),$40-68
 
-TEXT ·Yvfwprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xvfwprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yvfwprintf(tls *TLS, f uintptr, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvfwprintf(SB),$40-68
 
-TEXT ·Yvfwscanf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xvfwscanf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yvfwscanf(tls *TLS, f uintptr, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvfwscanf(SB),$40-68
 
-TEXT ·Yvhangup(SB),$12-12
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	CALL ·Xvhangup(SB)
-	MOVL 8(SP), AX
-	MOVL AX, ret+8(FP)
-	RET
+// func Yvhangup(tls *TLS) (r int32)
+TEXT ·Yvhangup(SB),$16-20
 
-TEXT ·Yvmsplice(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVL p4+32(FP), AX
-	MOVL AX, 32(SP)
-	CALL ·Xvmsplice(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
+// func Yvmsplice(tls *TLS, fd int32, iov uintptr, cnt Tsize_t, flags uint32) (r Tssize_t)
+TEXT ·Yvmsplice(SB),$48-84
 
-TEXT ·Yvprintf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xvprintf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yvprintf(tls *TLS, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvprintf(SB),$32-52
 
-TEXT ·Yvscanf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xvscanf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yvscanf(tls *TLS, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvscanf(SB),$32-52
 
-TEXT ·Yvsnprintf(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xvsnprintf(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yvsnprintf(tls *TLS, s uintptr, n Tsize_t, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvsnprintf(SB),$48-84
 
-TEXT ·Yvsprintf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xvsprintf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yvsprintf(tls *TLS, s uintptr, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvsprintf(SB),$40-68
 
-TEXT ·Yvsscanf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xvsscanf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yvsscanf(tls *TLS, s uintptr, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvsscanf(SB),$40-68
 
-TEXT ·Yvswprintf(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xvswprintf(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Yvswprintf(tls *TLS, s uintptr, n Tsize_t, fmt uintptr, ap Tva_list) (r1 int32)
+TEXT ·Yvswprintf(SB),$48-84
 
-TEXT ·Yvswscanf(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xvswscanf(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Yvswscanf(tls *TLS, s uintptr, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvswscanf(SB),$40-68
 
+// func Yvwarn(tls *TLS, fmt uintptr, ap Tva_list)
 TEXT ·Yvwarn(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xvwarn(SB)
-	RET
 
+// func Yvwarnx(tls *TLS, fmt uintptr, ap Tva_list)
 TEXT ·Yvwarnx(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xvwarnx(SB)
-	RET
 
-TEXT ·Yvwprintf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xvwprintf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yvwprintf(tls *TLS, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvwprintf(SB),$32-52
 
-TEXT ·Yvwscanf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xvwscanf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
+// func Yvwscanf(tls *TLS, fmt uintptr, ap Tva_list) (r int32)
+TEXT ·Yvwscanf(SB),$32-52
 
-TEXT ·Ywait(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xwait(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+// func Ywait(tls *TLS, status uintptr) (r Tpid_t)
+TEXT ·Ywait(SB),$24-36
 
-TEXT ·Ywait3(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwait3(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ywait3(tls *TLS, status uintptr, options int32, usage uintptr) (r Tpid_t)
+TEXT ·Ywait3(SB),$40-68
 
-TEXT ·Ywait4(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xwait4(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
+// func Ywait4(tls *TLS, pid Tpid_t, status uintptr, options int32, ru uintptr) (r1 Tpid_t)
+TEXT ·Ywait4(SB),$48-84
 
-TEXT ·Ywaitid(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	MOVQ p3+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p4+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xwaitid(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ywaitid(tls *TLS, type1 Tidtype_t, id Tid_t, info uintptr, options int32) (r int32)
+TEXT ·Ywaitid(SB),$40-64
 
-TEXT ·Ywaitpid(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xwaitpid(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
+// func Ywaitpid(tls *TLS, pid Tpid_t, status uintptr, options int32) (r Tpid_t)
+TEXT ·Ywaitpid(SB),$40-64
 
+// func Ywarn(tls *TLS, fmt uintptr, va uintptr)
 TEXT ·Ywarn(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwarn(SB)
-	RET
 
+// func Ywarnx(tls *TLS, fmt uintptr, va uintptr)
 TEXT ·Ywarnx(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwarnx(SB)
-	RET
-
-TEXT ·Ywcpcpy(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcpcpy(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcpncpy(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcpncpy(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcrtomb(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcrtomb(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcscasecmp(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcscasecmp(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcscasecmp_l(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcscasecmp_l(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcscat(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcscat(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcschr(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xwcschr(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcscmp(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcscmp(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcscoll(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcscoll(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcscoll_l(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcscoll_l(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcscpy(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcscpy(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcscspn(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcscspn(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcsdup(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xwcsdup(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ywcsftime(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xwcsftime(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ywcsftime_l(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xwcsftime_l(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ywcslen(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xwcslen(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ywcsncasecmp(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcsncasecmp(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcsncasecmp_l(SB),$44-44
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xwcsncasecmp_l(SB)
-	MOVL 40(SP), AX
-	MOVL AX, ret+40(FP)
-	RET
-
-TEXT ·Ywcsncat(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcsncat(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcsncmp(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcsncmp(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcsncpy(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcsncpy(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcsnlen(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcsnlen(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcsnrtombs(SB),$56-56
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	MOVQ p5+40(FP), AX
-	MOVQ AX, 40(SP)
-	CALL ·Xwcsnrtombs(SB)
-	MOVQ 48(SP), AX
-	MOVQ AX, ret+48(FP)
-	RET
-
-TEXT ·Ywcspbrk(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcspbrk(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcsrchr(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xwcsrchr(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcsrtombs(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xwcsrtombs(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ywcsspn(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcsspn(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcsstr(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcsstr(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcstod(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcstod(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcstof(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcstof(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcstoimax(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xwcstoimax(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcstok(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcstok(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcstol(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xwcstol(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcstold(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcstold(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcstoll(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xwcstoll(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcstombs(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcstombs(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcstoul(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xwcstoul(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcstoull(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xwcstoull(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcstoumax(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xwcstoumax(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcswcs(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcswcs(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcswidth(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwcswidth(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcsxfrm(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwcsxfrm(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywcsxfrm_l(SB),$48-48
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	MOVQ p4+32(FP), AX
-	MOVQ AX, 32(SP)
-	CALL ·Xwcsxfrm_l(SB)
-	MOVQ 40(SP), AX
-	MOVQ AX, ret+40(FP)
-	RET
-
-TEXT ·Ywctob(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xwctob(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ywctomb(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	CALL ·Xwctomb(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ywctrans(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xwctrans(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ywctrans_l(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwctrans_l(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywctype(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xwctype(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Ywctype_l(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwctype_l(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Ywcwidth(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xwcwidth(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Ywmemchr(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwmemchr(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywmemcmp(SB),$36-36
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwmemcmp(SB)
-	MOVL 32(SP), AX
-	MOVL AX, ret+32(FP)
-	RET
-
-TEXT ·Ywmemcpy(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwmemcpy(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywmemmove(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwmemmove(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywmemset(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVL p2+16(FP), AX
-	MOVL AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwmemset(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywprintf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwprintf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Ywrite(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVQ p3+24(FP), AX
-	MOVQ AX, 24(SP)
-	CALL ·Xwrite(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywritev(SB),$40-40
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	MOVL p3+24(FP), AX
-	MOVL AX, 24(SP)
-	CALL ·Xwritev(SB)
-	MOVQ 32(SP), AX
-	MOVQ AX, ret+32(FP)
-	RET
-
-TEXT ·Ywscanf(SB),$28-28
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xwscanf(SB)
-	MOVL 24(SP), AX
-	MOVL AX, ret+24(FP)
-	RET
-
-TEXT ·Yy0(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xy0(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yy0f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xy0f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yy1(SB),$24-24
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ p1+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·Xy1(SB)
-	MOVQ 16(SP), AX
-	MOVQ AX, ret+16(FP)
-	RET
-
-TEXT ·Yy1f(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	CALL ·Xy1f(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
-
-TEXT ·Yyn(SB),$32-32
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVQ p2+16(FP), AX
-	MOVQ AX, 16(SP)
-	CALL ·Xyn(SB)
-	MOVQ 24(SP), AX
-	MOVQ AX, ret+24(FP)
-	RET
-
-TEXT ·Yynf(SB),$20-20
-	MOVQ p0+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVL p1+8(FP), AX
-	MOVL AX, 8(SP)
-	MOVL p2+12(FP), AX
-	MOVL AX, 12(SP)
-	CALL ·Xynf(SB)
-	MOVL 16(SP), AX
-	MOVL AX, ret+16(FP)
-	RET
+
+// func Ywcpcpy(tls *TLS, d uintptr, s uintptr) (r uintptr)
+TEXT ·Ywcpcpy(SB),$32-56
+
+// func Ywcpncpy(tls *TLS, d uintptr, s uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ywcpncpy(SB),$40-72
+
+// func Ywcrtomb(tls *TLS, s uintptr, wc Twchar_t, st uintptr) (r Tsize_t)
+TEXT ·Ywcrtomb(SB),$40-72
+
+// func Ywcscasecmp(tls *TLS, l uintptr, r uintptr) (r1 int32)
+TEXT ·Ywcscasecmp(SB),$32-52
+
+// func Ywcscasecmp_l(tls *TLS, l uintptr, r uintptr, locale Tlocale_t) (r1 int32)
+TEXT ·Ywcscasecmp_l(SB),$40-68
+
+// func Ywcscat(tls *TLS, dest uintptr, src uintptr) (r uintptr)
+TEXT ·Ywcscat(SB),$32-56
+
+// func Ywcschr(tls *TLS, s uintptr, c Twchar_t) (r uintptr)
+TEXT ·Ywcschr(SB),$32-52
+
+// func Ywcscmp(tls *TLS, l uintptr, r uintptr) (r1 int32)
+TEXT ·Ywcscmp(SB),$32-52
+
+// func Ywcscoll(tls *TLS, l uintptr, r uintptr) (r1 int32)
+TEXT ·Ywcscoll(SB),$32-52
+
+// func Ywcscoll_l(tls *TLS, l uintptr, r uintptr, locale Tlocale_t) (r1 int32)
+TEXT ·Ywcscoll_l(SB),$40-68
+
+// func Ywcscpy(tls *TLS, d uintptr, s uintptr) (r uintptr)
+TEXT ·Ywcscpy(SB),$32-56
+
+// func Ywcscspn(tls *TLS, s uintptr, c uintptr) (r Tsize_t)
+TEXT ·Ywcscspn(SB),$32-56
+
+// func Ywcsdup(tls *TLS, s uintptr) (r uintptr)
+TEXT ·Ywcsdup(SB),$24-40
+
+// func Ywcsftime(tls *TLS, wcs uintptr, n Tsize_t, f uintptr, tm uintptr) (r Tsize_t)
+TEXT ·Ywcsftime(SB),$48-88
+
+// func Ywcsftime_l(tls *TLS, s uintptr, n Tsize_t, f uintptr, tm uintptr, loc Tlocale_t) (r Tsize_t)
+TEXT ·Ywcsftime_l(SB),$56-104
+
+// func Ywcslen(tls *TLS, s uintptr) (r Tsize_t)
+TEXT ·Ywcslen(SB),$24-40
+
+// func Ywcsncasecmp(tls *TLS, l uintptr, r uintptr, n Tsize_t) (r1 int32)
+TEXT ·Ywcsncasecmp(SB),$40-68
+
+// func Ywcsncasecmp_l(tls *TLS, l uintptr, r uintptr, n Tsize_t, locale Tlocale_t) (r1 int32)
+TEXT ·Ywcsncasecmp_l(SB),$48-84
+
+// func Ywcsncat(tls *TLS, d uintptr, s uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ywcsncat(SB),$40-72
+
+// func Ywcsncmp(tls *TLS, l uintptr, r uintptr, n Tsize_t) (r1 int32)
+TEXT ·Ywcsncmp(SB),$40-68
+
+// func Ywcsncpy(tls *TLS, d uintptr, s uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ywcsncpy(SB),$40-72
+
+// func Ywcsnlen(tls *TLS, s uintptr, n Tsize_t) (r Tsize_t)
+TEXT ·Ywcsnlen(SB),$32-56
+
+// func Ywcsnrtombs(tls *TLS, dst uintptr, wcs uintptr, wn Tsize_t, n Tsize_t, st uintptr) (r Tsize_t)
+TEXT ·Ywcsnrtombs(SB),$56-104
+
+// func Ywcspbrk(tls *TLS, s uintptr, b uintptr) (r uintptr)
+TEXT ·Ywcspbrk(SB),$32-56
+
+// func Ywcsrchr(tls *TLS, s uintptr, c Twchar_t) (r uintptr)
+TEXT ·Ywcsrchr(SB),$32-52
+
+// func Ywcsrtombs(tls *TLS, s uintptr, ws uintptr, n Tsize_t, st uintptr) (r Tsize_t)
+TEXT ·Ywcsrtombs(SB),$48-88
+
+// func Ywcsspn(tls *TLS, s uintptr, c uintptr) (r Tsize_t)
+TEXT ·Ywcsspn(SB),$32-56
+
+// func Ywcsstr(tls *TLS, h uintptr, n uintptr) (r uintptr)
+TEXT ·Ywcsstr(SB),$32-56
+
+// func Ywcstod(tls *TLS, s uintptr, p uintptr) (r float64)
+TEXT ·Ywcstod(SB),$32-56
+
+// func Ywcstof(tls *TLS, s uintptr, p uintptr) (r float32)
+TEXT ·Ywcstof(SB),$32-52
+
+// func Ywcstoimax(tls *TLS, s uintptr, p uintptr, base int32) (r Tintmax_t)
+TEXT ·Ywcstoimax(SB),$40-68
+
+// func Ywcstok(tls *TLS, s uintptr, sep uintptr, p uintptr) (r uintptr)
+TEXT ·Ywcstok(SB),$40-72
+
+// func Ywcstol(tls *TLS, s uintptr, p uintptr, base int32) (r int64)
+TEXT ·Ywcstol(SB),$40-68
+
+// func Ywcstold(tls *TLS, s uintptr, p uintptr) (r float64)
+TEXT ·Ywcstold(SB),$32-56
+
+// func Ywcstoll(tls *TLS, s uintptr, p uintptr, base int32) (r int64)
+TEXT ·Ywcstoll(SB),$40-68
+
+// func Ywcstombs(tls *TLS, s uintptr, ws uintptr, n Tsize_t) (r Tsize_t)
+TEXT ·Ywcstombs(SB),$40-72
+
+// func Ywcstoul(tls *TLS, s uintptr, p uintptr, base int32) (r uint64)
+TEXT ·Ywcstoul(SB),$40-68
+
+// func Ywcstoull(tls *TLS, s uintptr, p uintptr, base int32) (r uint64)
+TEXT ·Ywcstoull(SB),$40-68
+
+// func Ywcstoumax(tls *TLS, s uintptr, p uintptr, base int32) (r Tuintmax_t)
+TEXT ·Ywcstoumax(SB),$40-68
+
+// func Ywcswcs(tls *TLS, haystack uintptr, needle uintptr) (r uintptr)
+TEXT ·Ywcswcs(SB),$32-56
+
+// func Ywcswidth(tls *TLS, wcs uintptr, n Tsize_t) (r int32)
+TEXT ·Ywcswidth(SB),$32-52
+
+// func Ywcsxfrm(tls *TLS, dest uintptr, src uintptr, n Tsize_t) (r Tsize_t)
+TEXT ·Ywcsxfrm(SB),$40-72
+
+// func Ywcsxfrm_l(tls *TLS, dest uintptr, src uintptr, n Tsize_t, loc Tlocale_t) (r Tsize_t)
+TEXT ·Ywcsxfrm_l(SB),$48-88
+
+// func Ywctob(tls *TLS, c Twint_t) (r int32)
+TEXT ·Ywctob(SB),$24-32
+
+// func Ywctomb(tls *TLS, s uintptr, wc Twchar_t) (r int32)
+TEXT ·Ywctomb(SB),$32-48
+
+// func Ywctrans(tls *TLS, class uintptr) (r Twctrans_t)
+TEXT ·Ywctrans(SB),$24-40
+
+// func Ywctrans_l(tls *TLS, s uintptr, l Tlocale_t) (r Twctrans_t)
+TEXT ·Ywctrans_l(SB),$32-56
+
+// func Ywctype(tls *TLS, s uintptr) (r Twctype_t)
+TEXT ·Ywctype(SB),$24-40
+
+// func Ywctype_l(tls *TLS, s uintptr, l Tlocale_t) (r Twctype_t)
+TEXT ·Ywctype_l(SB),$32-56
+
+// func Ywcwidth(tls *TLS, wc Twchar_t) (r int32)
+TEXT ·Ywcwidth(SB),$24-32
+
+// func Ywmemchr(tls *TLS, s uintptr, c Twchar_t, n Tsize_t) (r uintptr)
+TEXT ·Ywmemchr(SB),$40-72
+
+// func Ywmemcmp(tls *TLS, l uintptr, r uintptr, n Tsize_t) (r1 int32)
+TEXT ·Ywmemcmp(SB),$40-68
+
+// func Ywmemcpy(tls *TLS, d uintptr, s uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ywmemcpy(SB),$40-72
+
+// func Ywmemmove(tls *TLS, d uintptr, s uintptr, n Tsize_t) (r uintptr)
+TEXT ·Ywmemmove(SB),$40-72
+
+// func Ywmemset(tls *TLS, d uintptr, c Twchar_t, n Tsize_t) (r uintptr)
+TEXT ·Ywmemset(SB),$40-72
+
+// func Ywprintf(tls *TLS, fmt uintptr, va uintptr) (r int32)
+TEXT ·Ywprintf(SB),$32-52
+
+// func Ywrite(tls *TLS, fd int32, buf uintptr, count Tsize_t) (r Tssize_t)
+TEXT ·Ywrite(SB),$40-72
+
+// func Ywritev(tls *TLS, fd int32, iov uintptr, count int32) (r Tssize_t)
+TEXT ·Ywritev(SB),$40-68
+
+// func Ywscanf(tls *TLS, fmt uintptr, va uintptr) (r int32)
+TEXT ·Ywscanf(SB),$32-52
+
+// func Yy0(tls *TLS, x float64) (r float64)
+TEXT ·Yy0(SB),$24-40
+
+// func Yy0f(tls *TLS, x float32) (r float32)
+TEXT ·Yy0f(SB),$24-32
+
+// func Yy1(tls *TLS, x float64) (r float64)
+TEXT ·Yy1(SB),$24-40
+
+// func Yy1f(tls *TLS, x float32) (r float32)
+TEXT ·Yy1f(SB),$24-32
+
+// func Yyn(tls *TLS, n int32, x float64) (r float64)
+TEXT ·Yyn(SB),$32-56
+
+// func Yynf(tls *TLS, n int32, x float32) (r float32)
+TEXT ·Yynf(SB),$24-36

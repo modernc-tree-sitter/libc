@@ -13,6 +13,7 @@ import (
 
 	_ "golang.org/x/tools/go/packages" // genasm.go
 	ccgo "modernc.org/ccgo/v4/lib"
+	_ "modernc.org/goabi0" // genasm.go
 )
 
 var (
