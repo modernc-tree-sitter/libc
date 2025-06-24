@@ -234,9 +234,11 @@ func main() {
 		generatedFilePrefix, goos, goarch, filepath.Base(os.Args[0]), args, generatedFileSuffix)
 	y.w("%s\npackage libc\n\n", header)
 	a.w("%s\n", header)
+	a.w("#include \"funcdata.h\"\n")
 	a.w("#include \"textflag.h\"\n")
 	for _, nm := range names {
 		fdn := nodes[nm]
+		y.w("//go:noescape\n")
 		y.w("func Y%s", nm[1:])
 		signature(y, fdn.Type)
 		y.w("\n")
@@ -245,6 +247,8 @@ func main() {
 		a.w("\n// func Y%s", nm[1:])
 		signature(a, fdn.Type)
 		a.w("\nTEXT ·Y%s(SB),$%v-%v\n", nm[1:], frame, args)
+		a.w("\tGO_ARGS\n")
+		a.w("\tNO_LOCAL_POINTERS\n")
 		for _, v := range stackIn {
 			moves, err := goabi0.Cp(wordSize, v)
 			if err != nil {
