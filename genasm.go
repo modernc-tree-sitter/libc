@@ -195,13 +195,19 @@ func main() {
 			switch y := x.(type) {
 			case *ast.FuncDecl:
 				nm := y.Name.Name
-				if !strings.HasPrefix(nm, "X") || strings.HasPrefix(nm, "X_") {
-					break
+				switch {
+				case strings.HasPrefix(nm, "X__builtin"):
+				case strings.HasPrefix(nm, "X_"):
+					continue
+				case strings.HasPrefix(nm, "X"):
+					// ok
+				default:
+					continue
 				}
 
 				l := y.Type.Params.List
 				if len(l) == 0 {
-					return
+					continue
 				}
 
 				switch z := l[0].Type.(type) {

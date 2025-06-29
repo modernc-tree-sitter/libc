@@ -3,6 +3,261 @@
 package libc
 
 //go:noescape
+func Y__builtin___memcpy_chk(t *TLS, dest, src uintptr, n, os Tsize_t) (r uintptr)
+
+//go:noescape
+func Y__builtin___memmove_chk(t *TLS, dest, src uintptr, n, os Tsize_t) uintptr
+
+//go:noescape
+func Y__builtin___memset_chk(t *TLS, s uintptr, c int32, n, os Tsize_t) uintptr
+
+//go:noescape
+func Y__builtin___snprintf_chk(t *TLS, str uintptr, maxlen Tsize_t, flag int32, os Tsize_t, format, args uintptr) (r int32)
+
+//go:noescape
+func Y__builtin___sprintf_chk(t *TLS, s uintptr, flag int32, os Tsize_t, format, args uintptr) (r int32)
+
+//go:noescape
+func Y__builtin___strcat_chk(t *TLS, dest, src uintptr, os Tsize_t) (r uintptr)
+
+//go:noescape
+func Y__builtin___strcpy_chk(t *TLS, dest, src uintptr, os Tsize_t) uintptr
+
+//go:noescape
+func Y__builtin___strncpy_chk(t *TLS, dest, src uintptr, n, os Tsize_t) (r uintptr)
+
+//go:noescape
+func Y__builtin___vsnprintf_chk(t *TLS, str uintptr, maxlen Tsize_t, flag int32, os Tsize_t, format, args uintptr) (r int32)
+
+//go:noescape
+func Y__builtin_abort(t *TLS)
+
+//go:noescape
+func Y__builtin_abs(t *TLS, j int32) int32
+
+//go:noescape
+func Y__builtin_add_overflowInt64(t *TLS, a, b int64, res uintptr) int32
+
+//go:noescape
+func Y__builtin_add_overflowUint32(t *TLS, a, b uint32, res uintptr) int32
+
+//go:noescape
+func Y__builtin_add_overflowUint64(t *TLS, a, b uint64, res uintptr) int32
+
+//go:noescape
+func Y__builtin_alloca(tls *TLS, size Tsize_t) uintptr
+
+//go:noescape
+func Y__builtin_bswap16(t *TLS, x uint16) uint16
+
+//go:noescape
+func Y__builtin_bswap32(t *TLS, x uint32) uint32
+
+//go:noescape
+func Y__builtin_bswap64(t *TLS, x uint64) uint64
+
+//go:noescape
+func Y__builtin_bzero(t *TLS, s uintptr, n Tsize_t)
+
+//go:noescape
+func Y__builtin_clz(t *TLS, n uint32) int32
+
+//go:noescape
+func Y__builtin_clzl(t *TLS, n ulong) int32
+
+//go:noescape
+func Y__builtin_clzll(t *TLS, n uint64) int32
+
+//go:noescape
+func Y__builtin_copysign(t *TLS, x, y float64) float64
+
+//go:noescape
+func Y__builtin_copysignf(t *TLS, x, y float32) float32
+
+//go:noescape
+func Y__builtin_copysignl(t *TLS, x, y float64) float64
+
+//go:noescape
+func Y__builtin_ctz(t *TLS, n uint32) int32
+
+//go:noescape
+func Y__builtin_ctzl(tls *TLS, x ulong) int32
+
+//go:noescape
+func Y__builtin_exit(t *TLS, status int32)
+
+//go:noescape
+func Y__builtin_expect(t *TLS, exp, c long) long
+
+//go:noescape
+func Y__builtin_fabs(t *TLS, x float64) float64
+
+//go:noescape
+func Y__builtin_fabsf(t *TLS, x float32) float32
+
+//go:noescape
+func Y__builtin_fabsl(t *TLS, x float64) float64
+
+//go:noescape
+func Y__builtin_ffs(tls *TLS, i int32) (r int32)
+
+//go:noescape
+func Y__builtin_fma(tls *TLS, x, y, z float64) (r float64)
+
+//go:noescape
+func Y__builtin_fmax(tls *TLS, x float64, y float64) (r float64)
+
+//go:noescape
+func Y__builtin_fmin(tls *TLS, x float64, y float64) (r float64)
+
+//go:noescape
+func Y__builtin_free(t *TLS, ptr uintptr)
+
+//go:noescape
+func Y__builtin_getentropy(t *TLS, buf uintptr, n Tsize_t) int32
+
+//go:noescape
+func Y__builtin_huge_val(t *TLS) float64
+
+//go:noescape
+func Y__builtin_huge_valf(t *TLS) float32
+
+//go:noescape
+func Y__builtin_hypot(tls *TLS, x float64, y float64) (r float64)
+
+//go:noescape
+func Y__builtin_inf(t *TLS) float64
+
+//go:noescape
+func Y__builtin_inff(tls *TLS) float32
+
+//go:noescape
+func Y__builtin_infl(t *TLS) float64
+
+//go:noescape
+func Y__builtin_isblank(tls *TLS, c int32) (r int32)
+
+//go:noescape
+func Y__builtin_isnan(t *TLS, x float64) int32
+
+//go:noescape
+func Y__builtin_isnanf(t *TLS, x float32) int32
+
+//go:noescape
+func Y__builtin_isnanl(t *TLS, x float64) int32
+
+//go:noescape
+func Y__builtin_isprint(tls *TLS, c int32) (r int32)
+
+//go:noescape
+func Y__builtin_isunordered(t *TLS, a, b float64) int32
+
+//go:noescape
+func Y__builtin_llabs(tls *TLS, a int64) int64
+
+//go:noescape
+func Y__builtin_log2(t *TLS, x float64) float64
+
+//go:noescape
+func Y__builtin_lrint(tls *TLS, x float64) (r long)
+
+//go:noescape
+func Y__builtin_lrintf(tls *TLS, x float32) (r long)
+
+//go:noescape
+func Y__builtin_lround(tls *TLS, x float64) (r long)
+
+//go:noescape
+func Y__builtin_malloc(t *TLS, size Tsize_t) uintptr
+
+//go:noescape
+func Y__builtin_memcmp(t *TLS, s1, s2 uintptr, n Tsize_t) int32
+
+//go:noescape
+func Y__builtin_memcpy(t *TLS, dest, src uintptr, n Tsize_t) (r uintptr)
+
+//go:noescape
+func Y__builtin_memset(t *TLS, s uintptr, c int32, n Tsize_t) uintptr
+
+//go:noescape
+func Y__builtin_mmap(t *TLS, addr uintptr, length Tsize_t, prot, flags, fd int32, offset Toff_t) uintptr
+
+//go:noescape
+func Y__builtin_mul_overflowInt64(t *TLS, a, b int64, res uintptr) int32
+
+//go:noescape
+func Y__builtin_mul_overflowUint128(t *TLS, a, b Uint128, res uintptr) int32
+
+//go:noescape
+func Y__builtin_mul_overflowUint64(t *TLS, a, b uint64, res uintptr) int32
+
+//go:noescape
+func Y__builtin_nan(t *TLS, s uintptr) float64
+
+//go:noescape
+func Y__builtin_nanf(tls *TLS, s uintptr) float32
+
+//go:noescape
+func Y__builtin_nanl(t *TLS, s uintptr) float64
+
+//go:noescape
+func Y__builtin_object_size(t *TLS, p uintptr, typ int32) Tsize_t
+
+//go:noescape
+func Y__builtin_popcount(t *TLS, x uint32) int32
+
+//go:noescape
+func Y__builtin_popcountl(t *TLS, x ulong) int32
+
+//go:noescape
+func Y__builtin_prefetch(t *TLS, addr, args uintptr)
+
+//go:noescape
+func Y__builtin_printf(tls *TLS, fmt uintptr, va uintptr) (r int32)
+
+//go:noescape
+func Y__builtin_rintf(tls *TLS, x float32) (r float32)
+
+//go:noescape
+func Y__builtin_round(tls *TLS, x float64) (r float64)
+
+//go:noescape
+func Y__builtin_roundf(tls *TLS, x float32) (r float32)
+
+//go:noescape
+func Y__builtin_snprintf(t *TLS, str uintptr, size Tsize_t, format, args uintptr) int32
+
+//go:noescape
+func Y__builtin_sprintf(t *TLS, str, format, args uintptr) (r int32)
+
+//go:noescape
+func Y__builtin_strchr(t *TLS, s uintptr, c int32) uintptr
+
+//go:noescape
+func Y__builtin_strcmp(t *TLS, s1, s2 uintptr) int32
+
+//go:noescape
+func Y__builtin_strcpy(t *TLS, dest, src uintptr) uintptr
+
+//go:noescape
+func Y__builtin_strlen(t *TLS, s uintptr) Tsize_t
+
+//go:noescape
+func Y__builtin_sub_overflowInt64(t *TLS, a, b int64, res uintptr) int32
+
+//go:noescape
+func Y__builtin_trap(t *TLS)
+
+//go:noescape
+func Y__builtin_trunc(tls *TLS, x float64) (r float64)
+
+//go:noescape
+func Y__builtin_unreachable(t *TLS)
+
+//go:noescape
+func Y__builtin_vsnprintf(t *TLS, str uintptr, size Tsize_t, format, va uintptr) int32
+
+//go:noescape
 func Ya64l(tls *TLS, s uintptr) (r int64)
 
 //go:noescape
