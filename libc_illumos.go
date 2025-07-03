@@ -57,6 +57,8 @@ type (
 
 type file uintptr
 
+type Tsize_t = types.Size_t
+
 func (f file) fd() int32 {
 	panic(todo(""))
 	// return (*stdio.FILE)(unsafe.Pointer(f)).F_fileno
