@@ -204,7 +204,11 @@ func main() {
 			case *ast.FuncDecl:
 				nm := y.Name.Name
 				switch {
-				case strings.HasPrefix(nm, "X__builtin"):
+				case
+					strings.HasPrefix(nm, "X__assert"),
+					strings.HasPrefix(nm, "X__builtin"):
+
+					// ok
 				case strings.HasPrefix(nm, "X_"):
 					continue
 				case strings.HasPrefix(nm, "X"):
