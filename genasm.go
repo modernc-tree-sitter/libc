@@ -52,6 +52,10 @@ func (p *param) Name() string {
 	return p.name
 }
 
+func (p *param) GetType() goabi0.Type {
+	return p.typ
+}
+
 type slot struct {
 	*param
 	offset int64
@@ -71,6 +75,10 @@ type typ struct {
 
 func (t *typ) Alignof() int64 {
 	return t.alignof
+}
+
+func (t *typ) Kind() goabi0.Kind {
+	return goabi0.Kindof(t)
 }
 
 func (t *typ) Elem() goabi0.Type {
