@@ -205,12 +205,10 @@ func main() {
 				nm := y.Name.Name
 				switch {
 				case
-					strings.HasPrefix(nm, "X__assert"),
-					strings.HasPrefix(nm, "X__builtin"):
+					strings.HasPrefix(nm, "X__sync_add_and_fetch"),
+					strings.HasPrefix(nm, "X__sync_sub_and_fetch"):
 
-					// ok
-				case strings.HasPrefix(nm, "X_"):
-					continue
+					continue // generics
 				case strings.HasPrefix(nm, "X"):
 					// ok
 				default:
@@ -261,6 +259,10 @@ func main() {
 		signature(y, fdn.Type)
 		y.w("\n")
 		in, out := inout(fdn.Type)
+		if in == nil {
+			continue
+		}
+
 		frame, args, stackIn, stackOut := goabi0.StackLayout(wordSize, in, out)
 		a.w("\n// func Y%s", nm[1:])
 		signature(a, fdn.Type)
@@ -319,6 +321,10 @@ func params(n *ast.FieldList, defaultNm string) (r []goabi0.Param) {
 
 	for _, v := range n.List {
 		t := typeof(v.Type)
+		if t == nil {
+			return nil
+		}
+
 		switch tn := fmt.Sprint(v.Type); tn {
 		case "complex64":
 			ft := &typ{alignof: 4, sizeof: 4, len: -1}
@@ -370,7 +376,7 @@ func typeof(t any) (r *typ) {
 			}
 			return r
 		default:
-			panic(todo("%T", x))
+			return nil
 		}
 	case *types.Basic:
 		return &typ{alignof: pkg.TypesSizes.Alignof(x), sizeof: pkg.TypesSizes.Sizeof(x), len: -1}
@@ -379,7 +385,7 @@ func typeof(t any) (r *typ) {
 	case *types.Array:
 		return &typ{alignof: pkg.TypesSizes.Alignof(x), sizeof: pkg.TypesSizes.Sizeof(x), len: x.Len(), elem: typeof(x.Elem())}
 	default:
-		panic(todo("%T", x))
+		return nil
 	}
 }
 
