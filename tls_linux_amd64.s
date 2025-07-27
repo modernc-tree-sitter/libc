@@ -22,3 +22,17 @@ TEXT ·TLSFree(SB),$16-16
 	MOVQ AX, 8(SP)
 	CALL ·tlsFree(SB)
 	RET
+
+TEXT ·TLSAllocaEntry(SB),$8-8
+	GO_ARGS
+	NO_LOCAL_POINTERS
+	MOVQ p0+0(FP), AX
+	CALL ·tlsAllocaEntry(SB)
+	RET
+
+TEXT ·TLSAllocaExit(SB),$8-8
+	GO_ARGS
+	NO_LOCAL_POINTERS
+	MOVQ p0+0(FP), AX
+	CALL ·tlsAllocaExit(SB)
+	RET
