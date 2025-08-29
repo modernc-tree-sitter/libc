@@ -341,10 +341,11 @@ func main() {
 			}
 		}
 	}
-	switch target {
-	case "linux/amd64":
-		util.MustShell(true, nil, "go", "run", "genasm.go")
-	}
+	//TODO use qbecc/lib
+	// switch target {
+	// case "linux/amd64":
+	// 	util.MustShell(true, nil, "go", "run", "genasm.go")
+	// }
 	if format {
 		util.MustShell(true, nil, "sh", "-c", "gofmt -w *.go")
 	}
