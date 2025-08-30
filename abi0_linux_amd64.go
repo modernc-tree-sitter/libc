@@ -4307,9 +4307,11 @@ func __ccgo_abiI_cmpFun(tls *TLS, dest, abi0CodePtr uintptr) {
 		return __ccgo_abi0_cmpFun(tls, a, b, abi0CodePtr)
 	}
 
-	type funcval struct{ code, cls uintptr }
-	funcvalP := __ccgo_fp(f)
-	*(*funcval)(unsafe.Pointer(dest)) = *(*funcval)(unsafe.Pointer(funcvalP))
+	type funcval struct{ abiInternalCode, abi0Code uintptr }
+	*(*funcval)(unsafe.Pointer(dest)) = *(*funcval)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(&f))))
+
+	// This is here now only to prove the initial funcval at *f is never actually used.
+	*(*funcval)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(&f)))) = funcval{}
 	f = nil
 }
 
