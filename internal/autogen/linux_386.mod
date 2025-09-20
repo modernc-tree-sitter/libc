@@ -14,7 +14,7 @@ require (
 	golang.org/x/tools v0.36.0
 	modernc.org/cc/v4 v4.26.5
 	modernc.org/ccgo/v4 v4.28.1
-	modernc.org/fileutil v1.3.35
+	modernc.org/fileutil v1.3.37
 	modernc.org/goabi0 v0.2.0
 	modernc.org/mathutil v1.7.1
 	modernc.org/memory v1.11.0
