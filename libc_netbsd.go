@@ -1990,3 +1990,10 @@ func Xpwrite(t *TLS, fd int32, buf uintptr, count types.Size_t, offset types.Off
 	// 	}
 	return types.Ssize_t(n)
 }
+
+func Xrewinddir(tls *TLS, f uintptr) {
+	if __ccgo_strace {
+		trc("tls=%v f=%v, (%v:)", tls, f, origin(2))
+	}
+	Xfseek(tls, f, 0, stdio.SEEK_SET)
+}
