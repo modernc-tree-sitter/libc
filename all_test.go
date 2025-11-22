@@ -53,3 +53,15 @@ func TestIssue42(t *testing.T) {
 
 	t.Logf("%s", b)
 }
+
+func TestPutchar(t *testing.T) {
+	tls := NewTLS()
+
+	defer tls.Close()
+
+	for c := '!'; c < 127; c++ {
+		Xputchar(tls, int32(c))
+	}
+	Xputchar(tls, '\r')
+	Xputchar(tls, '\n')
+}
