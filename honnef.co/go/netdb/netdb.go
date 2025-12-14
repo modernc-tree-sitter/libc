@@ -696,6 +696,11 @@ func init() {
 	// Load protocols
 	data, err := ioutil.ReadFile("/etc/protocols")
 	if err != nil {
+		// https://gitlab.com/cznic/libc/-/issues/48
+		if strings.Contains(err.Error(), "operation not permitted") {
+			return
+		}
+
 		if !os.IsNotExist(err) {
 			panic(err)
 		}
