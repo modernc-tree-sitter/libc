@@ -1431,6 +1431,7 @@ var blacklists = map[string]map[string]struct{}{
 		"src/math/tanl.exe.go":                                          {},
 		"src/regression/daemon-failure-static.exe.go":                   {},
 		"src/regression/daemon-failure.exe.go":                          {},
+		"src/regression/malloc-oom.exe.go":                              {},
 		"src/regression/pthread-robust-detach-static.exe.go":            {},
 		"src/regression/pthread-robust-detach.exe.go":                   {},
 		"src/regression/pthread_cancel-sem_wait-static.exe.go":          {},
