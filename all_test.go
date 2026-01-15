@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"testing"
+	"unsafe"
 
 	_ "golang.org/x/tools/go/packages" // genasm.go
 	ccgo "modernc.org/ccgo/v4/lib"
@@ -64,4 +65,23 @@ func TestPutchar(t *testing.T) {
 	}
 	Xputchar(tls, '\r')
 	Xputchar(tls, '\n')
+}
+
+var (
+	strlen0 = [...]byte{0}
+	strlen1 = [...]byte{1, 0}
+)
+
+func TestStrlen(t *testing.T) {
+	if g, e := strlen(0), 0; g != e {
+		t.Fatal(g, e)
+	}
+
+	if g, e := strlen(uintptr(unsafe.Pointer(&strlen0[0]))), 0; g != e {
+		t.Fatal(g, e)
+	}
+
+	if g, e := strlen(uintptr(unsafe.Pointer(&strlen1[0]))), 1; g != e {
+		t.Fatal(g, e)
+	}
 }

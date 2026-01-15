@@ -261,6 +261,7 @@ func main() {
 			"-ignore-asm-errors",
 			"-ignore-unsupported-alignment",
 			"-isystem", "",
+			"-hide", "strlen", // https://gitlab.com/cznic/sqlite/-/merge_requests/88
 		}
 		switch target {
 		case "linux/s390x":

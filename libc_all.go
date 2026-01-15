@@ -6,6 +6,7 @@
 package libc // import "modernc.org/libc"
 
 import (
+	"bytes"
 	"math"
 	"sync/atomic"
 	"unsafe"
@@ -41,11 +42,11 @@ func GoString(s uintptr) string {
 		return ""
 	}
 
-	p := s
-	for *(*byte)(unsafe.Pointer(p)) != 0 {
-		p++
+	if n := strlen(s); n != 0 {
+		return string(unsafe.Slice((*byte)(unsafe.Pointer(s)), n))
 	}
-	return string(unsafe.Slice((*byte)(unsafe.Pointer(s)), p-s))
+
+	return ""
 }
 
 // GoBytes returns a byte slice from a C char* having length len bytes.
@@ -76,4 +77,26 @@ func X__isfinitel(tls *TLS, d float64) int32 {
 	}
 
 	return 0
+}
+
+func strlen(s uintptr) int {
+	if s == 0 {
+		return 0
+	}
+
+	return bytes.IndexByte((*RawMem)(unsafe.Pointer(s))[:], 0)
+}
+
+// size_t strlen(const char *s)
+func Xstrlen(t *TLS, s uintptr) (r Tsize_t) {
+	if __ccgo_strace {
+		trc("t=%v s=%v, (%v:)", t, s, origin(2))
+		defer func() { trc("-> %v", r) }()
+	}
+	return Tsize_t(strlen(s))
+
+}
+
+func _strlen(t *TLS, s uintptr) (r Tsize_t) {
+	return Tsize_t(strlen(s))
 }
