@@ -73,15 +73,15 @@ var (
 )
 
 func TestStrlen(t *testing.T) {
-	if g, e := strlen(0), 0; g != e {
+	if g, e := strlen(0), Tsize_t(0); g != e {
 		t.Fatal(g, e)
 	}
 
-	if g, e := strlen(uintptr(unsafe.Pointer(&strlen0[0]))), 0; g != e {
+	if g, e := strlen(uintptr(unsafe.Pointer(&strlen0[0]))), Tsize_t(0); g != e {
 		t.Fatal(g, e)
 	}
 
-	if g, e := strlen(uintptr(unsafe.Pointer(&strlen1[0]))), 1; g != e {
+	if g, e := strlen(uintptr(unsafe.Pointer(&strlen1[0]))), Tsize_t(1); g != e {
 		t.Fatal(g, e)
 	}
 }
