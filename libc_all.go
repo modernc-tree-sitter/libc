@@ -6,7 +6,6 @@
 package libc // import "modernc.org/libc"
 
 import (
-	"bytes"
 	"math"
 	"sync/atomic"
 	"unsafe"
@@ -79,12 +78,16 @@ func X__isfinitel(tls *TLS, d float64) int32 {
 	return 0
 }
 
-func strlen(s uintptr) int {
+func strlen(s uintptr) (r Tsize_t) {
 	if s == 0 {
 		return 0
 	}
 
-	return bytes.IndexByte((*RawMem)(unsafe.Pointer(s))[:], 0)
+	for ; *(*int8)(unsafe.Pointer(s)) != 0; s++ {
+		r++
+	}
+
+	return r
 }
 
 // size_t strlen(const char *s)
@@ -93,10 +96,10 @@ func Xstrlen(t *TLS, s uintptr) (r Tsize_t) {
 		trc("t=%v s=%v, (%v:)", t, s, origin(2))
 		defer func() { trc("-> %v", r) }()
 	}
-	return Tsize_t(strlen(s))
+	return strlen(s)
 
 }
 
 func _strlen(t *TLS, s uintptr) (r Tsize_t) {
-	return Tsize_t(strlen(s))
+	return strlen(s)
 }
