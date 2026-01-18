@@ -3,6 +3,7 @@ module modernc.org/libc
 go 1.24.0
 
 retract v1.43.0
+
 retract v1.67.5
 
 require (
