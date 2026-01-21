@@ -4,6 +4,8 @@ go 1.24.0
 
 retract v1.43.0
 
+retract v1.67.5
+
 require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/google/uuid v1.6.0
