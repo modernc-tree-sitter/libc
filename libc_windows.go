@@ -7,7 +7,6 @@ package libc // import "modernc.org/libc"
 import (
 	"errors"
 	"fmt"
-	"golang.org/x/sys/windows"
 	"math"
 	mbits "math/bits"
 	"os"
@@ -24,6 +23,7 @@ import (
 	"unsafe"
 
 	"github.com/ncruces/go-strftime"
+	"golang.org/x/sys/windows"
 	"modernc.org/libc/errno"
 	"modernc.org/libc/fcntl"
 	"modernc.org/libc/limits"
@@ -7706,11 +7706,11 @@ func Xstrtod(t *TLS, s uintptr, p uintptr) float64 {
 	if __ccgo_strace {
 		trc("tls=%v s=%v p=%v, (%v:)", t, s, p, origin(2))
 	}
-	r0, _, err := procStrtod.Call(uintptr(s), uintptr(p))
+	_, r2, err := procStrtod.Call(uintptr(s), uintptr(p))
 	if err != windows.NOERROR {
 		t.setErrno(err)
 	}
-	return math.Float64frombits(uint64(r0))
+	return math.Float64frombits(uint64(r2))
 }
 
 // int vsnprintf(char *str, size_t size, const char *format, va_list ap);
