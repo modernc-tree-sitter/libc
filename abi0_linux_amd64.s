@@ -2427,19 +2427,6 @@ TEXT ·Y__builtin_popcountl(SB),$24-20
 	MOVL AX, _2+16(FP)
 	RET
 
-// func Y__builtin_popcountll(t *TLS, x ulong) (_2 int32)
-TEXT ·Y__builtin_popcountl(SB),$24-20
-	GO_ARGS
-	NO_LOCAL_POINTERS
-	MOVQ t+0(FP), AX
-	MOVQ AX, 0(SP)
-	MOVQ x+8(FP), AX
-	MOVQ AX, 8(SP)
-	CALL ·X__builtin_popcountll(SB)
-	MOVL 16(SP), AX
-	MOVL AX, _2+16(FP)
-	RET
-
 // func Y__builtin_prefetch(t *TLS, addr, args uintptr)
 TEXT ·Y__builtin_prefetch(SB),$24-24
 	GO_ARGS
