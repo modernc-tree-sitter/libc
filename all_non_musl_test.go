@@ -89,10 +89,6 @@ func TestPrintf(t *testing.T) {
 }
 
 func TestStrtod(t *testing.T) {
-	if runtime.GOOS == "windows" {
-		t.Skip("TODO")
-	}
-
 	tls := NewTLS()
 	defer tls.Close()
 
