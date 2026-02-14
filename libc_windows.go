@@ -7702,17 +7702,6 @@ func X__mingw_strtod(t *TLS, s uintptr, p uintptr) float64 {
 	return Xstrtod(t, s, p)
 }
 
-func Xstrtod(t *TLS, s uintptr, p uintptr) float64 {
-	if __ccgo_strace {
-		trc("tls=%v s=%v p=%v, (%v:)", t, s, p, origin(2))
-	}
-	_, r2, err := procStrtod.Call(uintptr(s), uintptr(p))
-	if err != windows.NOERROR {
-		t.setErrno(err)
-	}
-	return math.Float64frombits(uint64(r2))
-}
-
 // int vsnprintf(char *str, size_t size, const char *format, va_list ap);
 func X_vsnprintf(t *TLS, str uintptr, size types.Size_t, format, ap uintptr) int32 {
 	if __ccgo_strace {
