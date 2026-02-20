@@ -9,11 +9,13 @@ import (
 	"math"
 	"sync/atomic"
 	"unsafe"
-
-	"golang.org/x/exp/constraints"
 )
 
-func X__sync_add_and_fetch[T constraints.Integer](t *TLS, p uintptr, v T) T {
+type integer interface {
+	~int | ~int32 | ~int64 | ~uint | ~uint32 | ~uint64 | ~uintptr
+}
+
+func X__sync_add_and_fetch[T integer](t *TLS, p uintptr, v T) T {
 	switch unsafe.Sizeof(v) {
 	case 4:
 		return T(atomic.AddInt32((*int32)(unsafe.Pointer(p)), int32(v)))
@@ -24,7 +26,7 @@ func X__sync_add_and_fetch[T constraints.Integer](t *TLS, p uintptr, v T) T {
 	}
 }
 
-func X__sync_sub_and_fetch[T constraints.Integer](t *TLS, p uintptr, v T) T {
+func X__sync_sub_and_fetch[T integer](t *TLS, p uintptr, v T) T {
 	switch unsafe.Sizeof(v) {
 	case 4:
 		return T(atomic.AddInt32((*int32)(unsafe.Pointer(p)), -int32(v)))
