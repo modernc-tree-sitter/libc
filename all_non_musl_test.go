@@ -355,3 +355,53 @@ func TestGmtime(t *testing.T) {
 	t.Logf("%v %+v", _time, (*ctime.Tm)(unsafe.Pointer(p)))
 	tls.Close()
 }
+
+func TestBsearch(t *testing.T) {
+	tls := NewTLS()
+	defer tls.Close()
+
+	data := []int32{10, 20, 30, 40, 50}
+	base := uintptr(unsafe.Pointer(&data[0]))
+	width := Tsize_t(4)
+	nel := Tsize_t(len(data))
+
+	cmp := func(tls *TLS, p1, p2 uintptr) int32 {
+		v1 := *(*int32)(unsafe.Pointer(p1))
+		v2 := *(*int32)(unsafe.Pointer(p2))
+		if v1 < v2 {
+			return -1
+		}
+		if v1 > v2 {
+			return 1
+		}
+		return 0
+	}
+
+	cmpPtr := *(*uintptr)(unsafe.Pointer(&struct{ f func(*TLS, uintptr, uintptr) int32 }{cmp}))
+
+	// Test finding existing elements
+	for _, v := range data {
+		key := v
+		keyPtr := uintptr(unsafe.Pointer(&key))
+		res := Xbsearch(tls, keyPtr, base, nel, width, cmpPtr)
+		if res == 0 {
+			t.Errorf("bsearch failed to find %d", v)
+			continue
+		}
+		found := *(*int32)(unsafe.Pointer(res))
+		if found != v {
+			t.Errorf("bsearch found %d, expected %d", found, v)
+		}
+	}
+
+	// Test non-existing elements
+	keys := []int32{5, 25, 55}
+	for _, v := range keys {
+		key := v
+		keyPtr := uintptr(unsafe.Pointer(&key))
+		res := Xbsearch(tls, keyPtr, base, nel, width, cmpPtr)
+		if res != 0 {
+			t.Errorf("bsearch found %d, expected 0", *(*int32)(unsafe.Pointer(res)))
+		}
+	}
+}
