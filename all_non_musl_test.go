@@ -377,7 +377,9 @@ func TestBsearch(t *testing.T) {
 		return 0
 	}
 
-	cmpPtr := *(*uintptr)(unsafe.Pointer(&struct{ f func(*TLS, uintptr, uintptr) int32 }{cmp}))
+	cmpPtr := *(*uintptr)(unsafe.Pointer(&struct {
+		f func(*TLS, uintptr, uintptr) int32
+	}{cmp}))
 
 	// Test finding existing elements
 	for _, v := range data {
