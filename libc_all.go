@@ -105,3 +105,18 @@ func Xstrlen(t *TLS, s uintptr) (r Tsize_t) {
 func _strlen(t *TLS, s uintptr) (r Tsize_t) {
 	return strlen(s)
 }
+
+func X__builtin_ilogb(tls *TLS, x float64) int32 {
+	return int32(math.Ilogb(x))
+}
+
+func X__builtin_ilogbl(tls *TLS, x float64) int32 {
+	return int32(math.Ilogb(x))
+}
+
+func X__builtin_ilogbf(tls *TLS, x float32) int32 {
+	// Casting to float64 is safe and mathematically correct here.
+	// Subnormal float32 values become normal float64 values, 
+	// which allows math.Ilogb to correctly return their negative exponent.
+	return int32(math.Ilogb(float64(x)))
+}
