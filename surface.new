@@ -8860,6 +8860,9 @@ Xpthread_self
 Xpthread_setcancelstate
 Xpthread_setspecific
 Xpthread_sigmask
+Xpthread_barrier_destroy
+Xpthread_barrier_init
+Xpthread_barrier_wait
 Xptrace
 Xptsname
 Xptsname_r
