@@ -8938,6 +8938,7 @@ Xsrandom
 Xsscanf
 Xstat
 Xstat64
+Xstatfs
 Xstatvfs
 Xstatx
 Xstderr
