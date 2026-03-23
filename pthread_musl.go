@@ -484,10 +484,11 @@ func _pthread_sigmask(tls *TLS, now int32, set, old uintptr) int32 {
 }
 
 type barrierState struct {
-	mu        sync.Mutex
-	cond      *sync.Cond
-	count     uint32
-	tripCount uint32
+	mu         sync.Mutex
+	cond       *sync.Cond
+	count      uint32
+	tripCount  uint32
+	generation uint32
 }
 
 var (
@@ -525,14 +526,18 @@ func Xpthread_barrier_wait(tls *TLS, barrier uintptr) int32 {
 		return EINVAL
 	}
 	state.mu.Lock()
+	gen := state.generation
 	state.count++
 	if state.count >= state.tripCount {
 		state.count = 0
+		state.generation++
 		state.cond.Broadcast()
 		state.mu.Unlock()
 		return -1 // PTHREAD_BARRIER_SERIAL_THREAD
 	}
-	state.cond.Wait()
+	for gen == state.generation {
+		state.cond.Wait()
+	}
 	state.mu.Unlock()
 	return 0
 }
