@@ -2537,6 +2537,9 @@ var blacklists = map[string]map[string]struct{}{
 		"src/regression/sigreturn-static.exe.go":          {},
 		"src/regression/sigreturn.exe.go":                 {},
 	},
+	"": { // all
+		"src/functional/vfork.c": {},
+	},
 }
 
 func TestLibc(t *testing.T) {
@@ -2583,6 +2586,7 @@ func TestLibc(t *testing.T) {
 		t.Fatal(err)
 	}
 	p := newParallel(t, cpus, blacklists[target])
+	blacklistAll := blacklists[""]
 	mustInDir(t, libcTest, func() (err error) {
 		err = filepath.WalkDir(".", func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
@@ -2593,8 +2597,14 @@ func TestLibc(t *testing.T) {
 				return nil
 			}
 
-			if re != nil && !re.MatchString(path) {
+			switch {
+			case re != nil && !re.MatchString(path):
 				return nil
+			default:
+				if _, ok := blacklistAll[path]; ok {
+					p.skip.Add(1)
+					return nil
+				}
 			}
 
 			p.start(path)
