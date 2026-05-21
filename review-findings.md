@@ -125,19 +125,19 @@ No nil check (`mem.go`'s `Xmalloc_usable_size` has one). Reachable via `Xrealloc
 ~~```~~
 ~~Same in `Xpthread_detach` line 654. Should validate the lookup.~~
 
-**13. `stdatomic.go` — int32/int64 atomic CAS/exchange use a global mutex instead of CPU atomics**
+~~**13. `stdatomic.go` — int32/int64 atomic CAS/exchange use a global mutex instead of CPU atomics**~~
 
-For 8/16-bit there's no choice in Go, but `X__atomic_compare_exchangeInt32`, `X__atomic_fetch_addInt32`, `X__atomic_fetch_addInt64` etc. all do:
+~~For 8/16-bit there's no choice in Go, but `X__atomic_compare_exchangeInt32`, `X__atomic_fetch_addInt32`, `X__atomic_fetch_addInt64` etc. all do:~~
 
-```go
-int32Mu.Lock()
-defer int32Mu.Unlock()
-*p = ...
-```
+~~```go~~
+~~int32Mu.Lock()~~
+~~defer int32Mu.Unlock()~~
+~~*p = ...~~
+~~```~~
 
-Go has `atomic.CompareAndSwapInt32` and friends for these. The current code:
-- Serializes every atomic-32 op in the *whole program* through one mutex (perf cliff under contention).
-- Doesn't synchronize with the lock-free `X__c11_atomic_exchangeInt32` (line 673) which *does* use `atomic.SwapInt32` on the same memory — so they don't interlock correctly.
+~~Go has `atomic.CompareAndSwapInt32` and friends for these. The current code:~~
+~~- Serializes every atomic-32 op in the *whole program* through one mutex (perf cliff under contention).~~
+~~- Doesn't synchronize with the lock-free `X__c11_atomic_exchangeInt32` (line 673) which *does* use `atomic.SwapInt32` on the same memory — so they don't interlock correctly.~~
 
 ## Low severity — narrow / debug-only / minor
 
