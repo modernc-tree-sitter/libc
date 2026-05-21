@@ -42,7 +42,7 @@ If `malloc0` returns 0, `unsafe.Slice(nil, usable>0)` panics. Even if it didn't,
 
 `libc_windows.go:Xfread` additionally lacks the `size==0` early-return that `Xfwrite` has on line 1896 — inconsistent.
 
-**5. `libc.go:2440` — `Xfgets` buffer overflow**
+~~**5. `libc.go:2440` — `Xfgets` buffer overflow**~~
 
 ```go
 for ; size > 0; size-- {
