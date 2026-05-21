@@ -1884,7 +1884,7 @@ func Xfread(t *TLS, ptr uintptr, size, nmemb types.Size_t, stream uintptr) types
 
 	if dmesgs {
 		// dmesg("%v: %d %#x x %#x: %#x\n%s", origin(1), file(stream).fd(), size, nmemb, types.Size_t(m)/size, hex.Dump(GoBytes(ptr, int(m))))
-		dmesg("%v: %d %#x x %#x: %#x\n%s", origin(1), f._fd, size, nmemb, types.Size_t(n)/size)
+		dmesg("%v: %d %#x x %#x: %#x", origin(1), f._fd, size, nmemb, types.Size_t(n)/size)
 	}
 
 	return types.Size_t(n) / size
@@ -1916,7 +1916,7 @@ func Xfwrite(t *TLS, ptr uintptr, size, nmemb types.Size_t, stream uintptr) type
 
 	if dmesgs {
 		// 		// dmesg("%v: %d %#x x %#x: %#x\n%s", origin(1), file(stream).fd(), size, nmemb, types.Size_t(m)/size, hex.Dump(GoBytes(ptr, int(m))))
-		dmesg("%v: %d %#x x %#x: %#x\n%s", origin(1), f._fd, size, nmemb, types.Size_t(n)/size)
+		dmesg("%v: %d %#x x %#x: %#x", origin(1), f._fd, size, nmemb, types.Size_t(n)/size)
 	}
 	return types.Size_t(n) / size
 }

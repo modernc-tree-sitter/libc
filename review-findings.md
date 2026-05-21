@@ -149,7 +149,7 @@ No nil check (`mem.go`'s `Xmalloc_usable_size` has one). Reachable via `Xrealloc
 
 ~~**17. `pthread.go:351-401` (non-musl) — `Xpthread_cond_timedwait` has a benign race where a signal sent just before timeout fires can leave a token in `t.wait`'s buffered channel that spuriously wakes the *next* `cond_wait` on that TLS.~~
 
-**18. `libc_windows.go:1884,1916` — `dmesg` format string has 6 verbs (`%v %d %#x %#x %#x %s`) but 5 args. `%s` prints `!s(MISSING)`. Only triggered with `libc.dmesg`.
+~~**18. `libc_windows.go:1884,1916` — `dmesg` format string has 6 verbs (`%v %d %#x %#x %#x %s`) but 5 args. `%s` prints `!s(MISSING)`. Only triggered with `libc.dmesg`.~~
 
 **19. `libc_openbsd.go:1418` — Xfread strace dump reads `nmemb` bytes of the *output* buffer (uninitialized at that point) and treats `stream` as `*int32`. Garbage logged. Should be `nmemb*size`, and `stream` is an opaque `FILE*`.
 
