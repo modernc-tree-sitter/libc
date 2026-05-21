@@ -87,7 +87,7 @@ Load-modify-store with no CAS — concurrent callers lose updates. Should be a C
 
 On 32-bit, `calloc(0x10000, 0x10000)` wraps to 0, then bumps to 1; on 64-bit large counts wrap similarly. Should match the `bits.Mul` pattern in `mem_musl.go`.
 
-**9. `memgrind.go:182-184` / `memgrind_musl.go:182-184` — `Xrealloc` un-tracks the pointer *before* the allocator runs**
+~~**9. `memgrind.go:182-184` / `memgrind_musl.go:182-184` — `Xrealloc` un-tracks the pointer *before* the allocator runs**~~
 
 ```go
 delete(allocs, ptr)

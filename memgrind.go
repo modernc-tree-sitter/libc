@@ -186,9 +186,7 @@ func Xrealloc(t *TLS, ptr uintptr, size types.Size_t) uintptr {
 				panic(fmt.Errorf("%v: realloc, free of unallocated memory: %#x", pc2origin(pc), ptr))
 			}
 
-			delete(allocs, ptr)
-			delete(allocsMore, ptr)
-			frees[ptr] = pc
+
 		}
 	}
 
@@ -201,14 +199,21 @@ func Xrealloc(t *TLS, ptr uintptr, size types.Size_t) uintptr {
 		return 0
 	}
 
-	if memAuditEnabled && p != 0 {
-		delete(frees, p)
-		if pc0, ok := allocs[p]; ok {
-			dmesg("%v: realloc returns same address twice, previous call at %v:", pc2origin(pc), pc2origin(pc0))
-			panic(fmt.Errorf("%v: realloc returns same address twice, previous call at %v:", pc2origin(pc), pc2origin(pc0)))
+	if memAuditEnabled {
+		if ptr != 0 {
+			delete(allocs, ptr)
+			delete(allocsMore, ptr)
+			frees[ptr] = pc
 		}
+		if p != 0 {
+			delete(frees, p)
+			if pc0, ok := allocs[p]; ok {
+				dmesg("%v: realloc returns same address twice, previous call at %v:", pc2origin(pc), pc2origin(pc0))
+				panic(fmt.Errorf("%v: realloc returns same address twice, previous call at %v:", pc2origin(pc), pc2origin(pc0)))
+			}
 
-		allocs[p] = pc
+			allocs[p] = pc
+		}
 	}
 	return p
 }
