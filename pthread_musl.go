@@ -283,20 +283,20 @@ func Xpthread_mutex_lock(tls *TLS, m uintptr) int32 {
 		return 0
 	case PTHREAD_MUTEX_RECURSIVE:
 		if atomic.CompareAndSwapInt32(&((*pthreadMutex)(unsafe.Pointer(m)).owner), 0, tls.ID) {
-			(*pthreadMutex)(unsafe.Pointer(m)).count = 1
+			atomic.StoreInt32(&((*pthreadMutex)(unsafe.Pointer(m)).count), 1)
 			(*pthreadMutex)(unsafe.Pointer(m)).Lock()
 			return 0
 		}
 
 		if atomic.LoadInt32(&((*pthreadMutex)(unsafe.Pointer(m)).owner)) == tls.ID {
-			(*pthreadMutex)(unsafe.Pointer(m)).count++
+			atomic.AddInt32(&((*pthreadMutex)(unsafe.Pointer(m)).count), 1)
 			return 0
 		}
 
 		for {
 			(*pthreadMutex)(unsafe.Pointer(m)).Lock()
 			if atomic.CompareAndSwapInt32(&((*pthreadMutex)(unsafe.Pointer(m)).owner), 0, tls.ID) {
-				(*pthreadMutex)(unsafe.Pointer(m)).count = 1
+				atomic.StoreInt32(&((*pthreadMutex)(unsafe.Pointer(m)).count), 1)
 				return 0
 			}
 

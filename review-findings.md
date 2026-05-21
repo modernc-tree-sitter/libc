@@ -141,7 +141,7 @@ No nil check (`mem.go`'s `Xmalloc_usable_size` has one). Reachable via `Xrealloc
 
 ## Low severity — narrow / debug-only / minor
 
-**14. `pthread_musl.go:285` — recursive mutex `count++` is a plain (non-atomic) increment**, even though other writes to `count` use `atomic.AddInt32`. Only the owning thread mutates it so it's race-free in practice, but `-race` may flag it.
+~~**14. `pthread_musl.go:285` — recursive mutex `count++` is a plain (non-atomic) increment**, even though other writes to `count` use `atomic.AddInt32`. Only the owning thread mutates it so it's race-free in practice, but `-race` may flag it.~~
 
 **15. `pthread_musl.go:144-181` — `Xpthread_exit` for a joinable thread that was *later* detached leaves `__ccgo_join_mutex` locked forever** (the unlock is gated on `state == _DT_JOINABLE`, but a detach via `pthread_detach` swaps it to `_DT_DETACHED`).
 
