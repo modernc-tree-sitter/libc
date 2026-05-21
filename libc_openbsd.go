@@ -1417,6 +1417,9 @@ func Xfread(t *TLS, ptr uintptr, size, nmemb types.Size_t, stream uintptr) types
 	if __ccgo_strace {
 		trc("t=%v ptr=%+v nmemb=%d stream=%v, (%v:)", t, unsafe.Slice((*byte)(unsafe.Pointer(ptr)), nmemb), nmemb, *(*int32)(unsafe.Pointer(stream)), origin(2))
 	}
+	if size == 0 || nmemb == 0 {
+		return 0
+	}
 	buf := unsafe.Slice((*byte)(unsafe.Pointer(ptr)), nmemb*size)
 	m, err := unix.Read(int(file(stream).fd()), buf)
 	if err != nil {
@@ -1435,6 +1438,9 @@ func Xfread(t *TLS, ptr uintptr, size, nmemb types.Size_t, stream uintptr) types
 func Xfwrite(t *TLS, ptr uintptr, size, nmemb types.Size_t, stream uintptr) types.Size_t {
 	if __ccgo_strace {
 		trc("t=%v ptr=%v nmemb=%v stream=%v, (%v:)", t, ptr, nmemb, stream, origin(2))
+	}
+	if size == 0 || nmemb == 0 {
+		return 0
 	}
 	buf := unsafe.Slice((*byte)(unsafe.Pointer(ptr)), nmemb*size)
 	m, err := unix.Write(int(file(stream).fd()), buf)
