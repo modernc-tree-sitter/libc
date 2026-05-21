@@ -63,7 +63,7 @@ for _, v := range atExitHandlers {
 ```
 POSIX requires reverse order. Anything that relies on cleanup ordering (logging, file flushing) is wrong here.
 
-**7. `atomic.go:46-64` — `AtomicAddFloat32` and `AtomicAddFloat64` are not atomic**
+~~**7. `atomic.go:46-64` — `AtomicAddFloat32` and `AtomicAddFloat64` are not atomic**~~
 
 ```go
 func AtomicAddFloat32(addr *float32, delta float32) (new float32) {
