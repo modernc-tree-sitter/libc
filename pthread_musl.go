@@ -172,9 +172,9 @@ func Xpthread_exit(tls *TLS, result uintptr) {
 			break
 		}
 	}
-	if state == _DT_JOINABLE {
-		(*sync.Mutex)(unsafe.Pointer(tls.pthread + unsafe.Offsetof(t__pthread{}.F__ccgo_join_mutex))).Unlock()
-	}
+	mu := (*sync.Mutex)(unsafe.Pointer(tls.pthread + unsafe.Offsetof(t__pthread{}.F__ccgo_join_mutex)))
+	mu.TryLock()
+	mu.Unlock()
 	atomic.StoreInt32((*int32)(unsafe.Pointer(tls.pthread+unsafe.Offsetof(t__pthread{}.Fdetach_state))), _DT_EXITED)
 	tls.Close()
 	runtime.Goexit()
