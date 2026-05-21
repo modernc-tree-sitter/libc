@@ -111,9 +111,9 @@ func UsableSize(p uintptr) types.Size_t {
 ```
 No nil check (`mem.go`'s `Xmalloc_usable_size` has one). Reachable via `Xrealloc` which calls `UsableSize(ptr)` without checking `ptr`.
 
-**11. `libc_unix.go:46-90` — `Xsignal` leaks goroutines and resets errno**
+~~**11. `libc_unix.go:46-90` — `Xsignal` leaks goroutines and resets errno**~~
 
-Each call with a non-default handler spawns `go func() { for { <-c; ... } }()` with no cancellation channel. Setting a new handler does not stop the previous goroutine, so both fire on the next signal. Additionally, the handler is called with a fresh `NewTLS()` per signal — errno/sigprocmask state visible to C code is wrong.
+~~Each call with a non-default handler spawns `go func() { for { <-c; ... } }()` with no cancellation channel. Setting a new handler does not stop the previous goroutine, so both fire on the next signal. Additionally, the handler is called with a fresh `NewTLS()` per signal — errno/sigprocmask state visible to C code is wrong.~~
 
 **12. `pthread.go:707-720` — `Xpthread_join` / `Xpthread_detach` nil-deref on unknown thread id**
 
