@@ -99,6 +99,9 @@ func Xfree(t *TLS, p uintptr) {
 }
 
 func UsableSize(p uintptr) types.Size_t {
+	if p == 0 {
+		return 0
+	}
 	return types.Size_t(*(*uintptr)(unsafe.Pointer(p - uintptrSize)))
 }
 

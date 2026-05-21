@@ -102,7 +102,7 @@ if err != nil {
 ```
 On OOM the original `ptr` is still valid per POSIX, but it's been removed from the audit's allocs map. Any subsequent `free(ptr)` then panics with "free of unallocated memory" — but it's a real allocation. Move the bookkeeping into the success branch.
 
-**10. `mem_brk.go:95` — `UsableSize(0)` dereferences invalid memory**
+~~**10. `mem_brk.go:95` — `UsableSize(0)` dereferences invalid memory**~~
 
 ```go
 func UsableSize(p uintptr) types.Size_t {
