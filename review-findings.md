@@ -54,7 +54,7 @@ copy((*RawMem)(unsafe.Pointer(s))[:len(b):len(b)], b)
 ```
 C `fgets(buf, size, …)` must write at most `size-1` chars + a null, total `size` bytes. This writes up to `size` chars + a null = `size+1` bytes. Loop condition should be `size > 1`. Affects all non-musl platforms.
 
-**6. `libc_musl.go:489` — atexit handlers called in registration order**
+~~**6. `libc_musl.go:489` — atexit handlers called in registration order**~~
 
 ```go
 for _, v := range atExitHandlers {

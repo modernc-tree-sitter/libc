@@ -155,8 +155,8 @@ func exit(t *TLS, status int32, audit bool) {
 		CoverCReport(buf)
 		buf.Flush()
 	}
-	for _, v := range atExit {
-		v()
+	for i := len(atExit) - 1; i >= 0; i-- {
+		atExit[i]()
 	}
 	if audit {
 		t.Close()
