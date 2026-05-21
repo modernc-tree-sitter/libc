@@ -395,6 +395,10 @@ func Xpthread_cond_timedwait(t *TLS, pCond, pMutex, pAbsTime uintptr) int32 {
 			defer cond.Unlock()
 
 			delete(cond.waiters, t)
+			select {
+			case <-t.wait:
+			default:
+			}
 			return errno.ETIMEDOUT
 		}
 	}
