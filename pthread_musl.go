@@ -187,7 +187,7 @@ func Xpthread_join(tls *TLS, t Tpthread_t, res uintptr) (r int32) {
 
 	(*sync.Mutex)(unsafe.Pointer(t + unsafe.Offsetof(t__pthread{}.F__ccgo_join_mutex))).Lock()
 	if res != 0 {
-		*(*uintptr)(unsafe.Pointer(res)) = (*t__pthread)(unsafe.Pointer(tls.pthread)).Fresult
+		*(*uintptr)(unsafe.Pointer(res)) = (*t__pthread)(unsafe.Pointer(t)).Fresult
 	}
 	return 0
 }

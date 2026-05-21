@@ -4,7 +4,7 @@ The following are bugs/issues found in the hand-written (non-generated) code. Th
 
 ## High severity — wrong behavior on common paths
 
-**1. `pthread_musl.go:190` — `Xpthread_join` reads the *caller's* result, not the joined thread's**
+~~**1. `pthread_musl.go:190` — `Xpthread_join` reads the *caller's* result, not the joined thread's**~~
 
 ```go
 *(*uintptr)(unsafe.Pointer(res)) = (*t__pthread)(unsafe.Pointer(tls.pthread)).Fresult
@@ -36,7 +36,7 @@ return r
 ```
 If `malloc0` returns 0, `unsafe.Slice(nil, usable>0)` panics. Even if it didn't, the old `p` would be freed, violating POSIX's "on failure, the original pointer is still valid".
 
-**4. Five platforms — `Xfread`/`Xfwrite` divide by zero on `size==0`**
+~~**4. Five platforms — `Xfread`/`Xfwrite` divide by zero on `size==0`**~~
 
 `libc_darwin.go:1597,1629`, `libc_freebsd.go:1379,1397`, `libc_netbsd.go:1375,1393`, `libc_openbsd.go:1431,1450`, `libc_windows.go:1887,1918` all end with `return types.Size_t(m) / size` without checking `size`. C allows `fread(buf, 0, n, f)` (returns 0). Here it panics.
 
