@@ -180,7 +180,7 @@ func X__atomic_fetch_andInt32(t *TLS, ptr uintptr, val int32, _ int32) (r int32)
 	p := (*int32)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadInt32(p)
-		if atomic.CompareAndSwapInt32(p, r, r & val) {
+		if atomic.CompareAndSwapInt32(p, r, r&val) {
 			return r
 		}
 	}
@@ -194,7 +194,7 @@ func X__atomic_fetch_andUint32(t *TLS, ptr uintptr, val uint32, _ int32) (r uint
 	p := (*uint32)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadUint32(p)
-		if atomic.CompareAndSwapUint32(p, r, r & val) {
+		if atomic.CompareAndSwapUint32(p, r, r&val) {
 			return r
 		}
 	}
@@ -208,7 +208,7 @@ func X__atomic_fetch_andInt64(t *TLS, ptr uintptr, val int64, _ int32) (r int64)
 	p := (*int64)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadInt64(p)
-		if atomic.CompareAndSwapInt64(p, r, r & val) {
+		if atomic.CompareAndSwapInt64(p, r, r&val) {
 			return r
 		}
 	}
@@ -222,7 +222,7 @@ func X__atomic_fetch_andUint64(t *TLS, ptr uintptr, val uint64, _ int32) (r uint
 	p := (*uint64)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadUint64(p)
-		if atomic.CompareAndSwapUint64(p, r, r & val) {
+		if atomic.CompareAndSwapUint64(p, r, r&val) {
 			return r
 		}
 	}
@@ -294,7 +294,7 @@ func X__atomic_fetch_orInt32(t *TLS, ptr uintptr, val int32, _ int32) (r int32) 
 	p := (*int32)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadInt32(p)
-		if atomic.CompareAndSwapInt32(p, r, r | val) {
+		if atomic.CompareAndSwapInt32(p, r, r|val) {
 			return r
 		}
 	}
@@ -308,7 +308,7 @@ func X__atomic_fetch_orUint32(t *TLS, ptr uintptr, val uint32, _ int32) (r uint3
 	p := (*uint32)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadUint32(p)
-		if atomic.CompareAndSwapUint32(p, r, r | val) {
+		if atomic.CompareAndSwapUint32(p, r, r|val) {
 			return r
 		}
 	}
@@ -322,7 +322,7 @@ func X__atomic_fetch_orInt64(t *TLS, ptr uintptr, val int64, _ int32) (r int64) 
 	p := (*int64)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadInt64(p)
-		if atomic.CompareAndSwapInt64(p, r, r | val) {
+		if atomic.CompareAndSwapInt64(p, r, r|val) {
 			return r
 		}
 	}
@@ -336,7 +336,7 @@ func X__atomic_fetch_orUint64(t *TLS, ptr uintptr, val uint64, _ int32) (r uint6
 	p := (*uint64)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadUint64(p)
-		if atomic.CompareAndSwapUint64(p, r, r | val) {
+		if atomic.CompareAndSwapUint64(p, r, r|val) {
 			return r
 		}
 	}
@@ -415,7 +415,7 @@ func X__c11_atomic_fetch_subUint32(t *TLS, ptr uintptr, val uint32, _ int32) (r 
 
 func X__atomic_fetch_subUint32(t *TLS, ptr uintptr, val uint32, _ int32) (r uint32) {
 	p := (*uint32)(unsafe.Pointer(ptr))
-	return atomic.AddUint32(p, ^(val - 1)) + val
+	return atomic.AddUint32(p, ^(val-1)) + val
 }
 
 func X__c11_atomic_fetch_subInt64(t *TLS, ptr uintptr, val int64, _ int32) (r int64) {
@@ -433,7 +433,7 @@ func X__c11_atomic_fetch_subUint64(t *TLS, ptr uintptr, val uint64, _ int32) (r 
 
 func X__atomic_fetch_subUint64(t *TLS, ptr uintptr, val uint64, _ int32) (r uint64) {
 	p := (*uint64)(unsafe.Pointer(ptr))
-	return atomic.AddUint64(p, ^(val - 1)) + val
+	return atomic.AddUint64(p, ^(val-1)) + val
 }
 
 // ----
@@ -502,7 +502,7 @@ func X__atomic_fetch_xorInt32(t *TLS, ptr uintptr, val int32, _ int32) (r int32)
 	p := (*int32)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadInt32(p)
-		if atomic.CompareAndSwapInt32(p, r, r ^ val) {
+		if atomic.CompareAndSwapInt32(p, r, r^val) {
 			return r
 		}
 	}
@@ -516,7 +516,7 @@ func X__atomic_fetch_xorUint32(t *TLS, ptr uintptr, val uint32, _ int32) (r uint
 	p := (*uint32)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadUint32(p)
-		if atomic.CompareAndSwapUint32(p, r, r ^ val) {
+		if atomic.CompareAndSwapUint32(p, r, r^val) {
 			return r
 		}
 	}
@@ -530,7 +530,7 @@ func X__atomic_fetch_xorInt64(t *TLS, ptr uintptr, val int64, _ int32) (r int64)
 	p := (*int64)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadInt64(p)
-		if atomic.CompareAndSwapInt64(p, r, r ^ val) {
+		if atomic.CompareAndSwapInt64(p, r, r^val) {
 			return r
 		}
 	}
@@ -544,7 +544,7 @@ func X__atomic_fetch_xorUint64(t *TLS, ptr uintptr, val uint64, _ int32) (r uint
 	p := (*uint64)(unsafe.Pointer(ptr))
 	for {
 		r = atomic.LoadUint64(p)
-		if atomic.CompareAndSwapUint64(p, r, r ^ val) {
+		if atomic.CompareAndSwapUint64(p, r, r^val) {
 			return r
 		}
 	}

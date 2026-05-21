@@ -186,7 +186,6 @@ func Xrealloc(t *TLS, ptr uintptr, size types.Size_t) uintptr {
 				panic(fmt.Errorf("%v: realloc, free of unallocated memory: %#x", pc2origin(pc), ptr))
 			}
 
-
 		}
 	}
 
