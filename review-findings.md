@@ -145,7 +145,7 @@ No nil check (`mem.go`'s `Xmalloc_usable_size` has one). Reachable via `Xrealloc
 
 ~~**15. `pthread_musl.go:144-181` — `Xpthread_exit` for a joinable thread that was *later* detached leaves `__ccgo_join_mutex` locked forever** (the unlock is gated on `state == _DT_JOINABLE`, but a detach via `pthread_detach` swaps it to `_DT_DETACHED`).~~
 
-**16. `etc.go:154,164` (non-musl) — `getObject` / `removeObject` panic while holding `objectMu`**. `todo()` ends in `os.Exit(1)` so this only matters if anything ever recovers.
+~~**16. `etc.go:154,164` (non-musl) — `getObject` / `removeObject` panic while holding `objectMu`**. `todo()` ends in `os.Exit(1)` so this only matters if anything ever recovers.~~
 
 **17. `pthread.go:351-401` (non-musl) — `Xpthread_cond_timedwait` has a benign race where a signal sent just before timeout fires can leave a token in `t.wait`'s buffered channel that spuriously wakes the *next* `cond_wait` on that TLS.
 
