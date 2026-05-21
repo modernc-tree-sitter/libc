@@ -26,7 +26,7 @@ func Xpthread_detach(tls *TLS, t uintptr) int32 {
 ```
 Two bugs: (a) swaps `tls.pthread` (caller) instead of `t`; (b) `_DT_JOINABLE` is the *normal* old state when detaching a fresh thread, so this panics on the common path. The switch is missing `_DT_JOINABLE`.
 
-**3. `mem_brk_musl.go:187` — `Xrealloc` panics on OOM and silently frees caller's data**
+~~**3. `mem_brk_musl.go:187` — `Xrealloc` panics on OOM and silently frees caller's data**~~
 
 ```go
 r = malloc0(tls, pc, n, false)
