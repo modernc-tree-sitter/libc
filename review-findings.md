@@ -76,7 +76,7 @@ Load-modify-store with no CAS — concurrent callers lose updates. Should be a C
 
 ## Medium severity — overflow / consistency
 
-**8. Calloc multiplication overflow inconsistent across paths**
+~~**8. Calloc multiplication overflow inconsistent across paths**~~
 
 `mem_musl.go:52` (default linux/musl) and `mem_brk_musl.go:139` use `bits.Mul` and check overflow correctly. The other four allocators don't:
 

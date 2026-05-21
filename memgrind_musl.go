@@ -12,6 +12,8 @@ package libc // import "modernc.org/libc"
 
 import (
 	"fmt"
+	"math"
+	"math/bits"
 	"runtime"
 	"sort"
 	"strings"
@@ -117,7 +119,12 @@ func Xcalloc(t *TLS, n, size Tsize_t) uintptr {
 	if __ccgo_strace {
 		trc("t=%v n=%v size=%v, (%v:)", t, n, size, origin(2))
 	}
-	rq := int(n * size)
+	hi, rq0 := bits.Mul(uint(n), uint(size))
+	if hi != 0 || rq0 > math.MaxInt {
+		t.setErrno(ENOMEM)
+		return 0
+	}
+	rq := int(rq0)
 	if rq == 0 {
 		rq = 1
 	}
