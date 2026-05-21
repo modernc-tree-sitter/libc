@@ -1070,7 +1070,6 @@ func Xsysctlbyname(t *TLS, name, oldp, oldlenp, newp uintptr, newlen Tsize_t) in
 		*(*int32)(unsafe.Pointer(oldp)) = int32(runtime.GOMAXPROCS(-1))
 		return 0
 	default:
-		panic(todo(""))
 		t.setErrno(ENOENT)
 		return -1
 	}

@@ -153,14 +153,14 @@ No nil check (`mem.go`'s `Xmalloc_usable_size` has one). Reachable via `Xrealloc
 
 ~~**19. `libc_openbsd.go:1418` — Xfread strace dump reads `nmemb` bytes of the *output* buffer (uninitialized at that point) and treats `stream` as `*int32`. Garbage logged. Should be `nmemb*size`, and `stream` is an opaque `FILE*`.~~
 
-**20. `libc_musl.go:1073` — unreachable code after `panic`**:
-```go
-default:
-    panic(todo(""))
-    t.setErrno(ENOENT)
-    return -1
-```
-Defensive code that can never run; either remove the panic or remove the unreachable lines.
+~~**20. `libc_musl.go:1073` — unreachable code after `panic`**:~~
+~~```go~~
+~~default:~~
+~~    panic(todo(""))~~
+~~    t.setErrno(ENOENT)~~
+~~    return -1~~
+~~```~~
+~~Defensive code that can never run; either remove the panic or remove the unreachable lines.~~
 
 ## Observations, not bugs
 
