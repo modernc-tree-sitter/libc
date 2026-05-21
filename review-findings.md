@@ -151,7 +151,7 @@ No nil check (`mem.go`'s `Xmalloc_usable_size` has one). Reachable via `Xrealloc
 
 ~~**18. `libc_windows.go:1884,1916` — `dmesg` format string has 6 verbs (`%v %d %#x %#x %#x %s`) but 5 args. `%s` prints `!s(MISSING)`. Only triggered with `libc.dmesg`.~~
 
-**19. `libc_openbsd.go:1418` — Xfread strace dump reads `nmemb` bytes of the *output* buffer (uninitialized at that point) and treats `stream` as `*int32`. Garbage logged. Should be `nmemb*size`, and `stream` is an opaque `FILE*`.
+~~**19. `libc_openbsd.go:1418` — Xfread strace dump reads `nmemb` bytes of the *output* buffer (uninitialized at that point) and treats `stream` as `*int32`. Garbage logged. Should be `nmemb*size`, and `stream` is an opaque `FILE*`.~~
 
 **20. `libc_musl.go:1073` — unreachable code after `panic`**:
 ```go

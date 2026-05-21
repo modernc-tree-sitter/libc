@@ -1415,7 +1415,7 @@ func Xfflush(t *TLS, stream uintptr) int32 {
 // size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
 func Xfread(t *TLS, ptr uintptr, size, nmemb types.Size_t, stream uintptr) types.Size_t {
 	if __ccgo_strace {
-		trc("t=%v ptr=%+v nmemb=%d stream=%v, (%v:)", t, unsafe.Slice((*byte)(unsafe.Pointer(ptr)), nmemb), nmemb, *(*int32)(unsafe.Pointer(stream)), origin(2))
+		trc("t=%v ptr=%v size=%v nmemb=%v stream=%v, (%v:)", t, ptr, size, nmemb, stream, origin(2))
 	}
 	if size == 0 || nmemb == 0 {
 		return 0
