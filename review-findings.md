@@ -11,7 +11,7 @@ The following are bugs/issues found in the hand-written (non-generated) code. Th
 ```
 Should be `unsafe.Pointer(t)` (the `t` parameter is the joinee). As written, `pthread_join` always returns the *current* thread's result via `res`. The bug only stays hidden because the test suite/sqlite barely use pthread_join.
 
-**2. `pthread_musl.go:466` — `Xpthread_detach` detaches the *caller*, not the target thread, and panics on the common case**
+~~**2. `pthread_musl.go:466` — `Xpthread_detach` detaches the *caller*, not the target thread, and panics on the common case**~~
 
 ```go
 func Xpthread_detach(tls *TLS, t uintptr) int32 {

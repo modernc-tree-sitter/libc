@@ -463,9 +463,9 @@ func Xpthread_mutexattr_settype(tls *TLS, a uintptr, typ int32) int32 {
 }
 
 func Xpthread_detach(tls *TLS, t uintptr) int32 {
-	state := atomic.SwapInt32((*int32)(unsafe.Pointer(tls.pthread+unsafe.Offsetof(t__pthread{}.Fdetach_state))), _DT_DETACHED)
+	state := atomic.SwapInt32((*int32)(unsafe.Pointer(t+unsafe.Offsetof(t__pthread{}.Fdetach_state))), _DT_DETACHED)
 	switch state {
-	case _DT_EXITED, _DT_DETACHED:
+	case _DT_JOINABLE, _DT_EXITED, _DT_DETACHED:
 		return 0
 	default:
 		panic(todo("", tls.ID, state))
