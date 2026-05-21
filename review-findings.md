@@ -115,15 +115,15 @@ No nil check (`mem.go`'s `Xmalloc_usable_size` has one). Reachable via `Xrealloc
 
 ~~Each call with a non-default handler spawns `go func() { for { <-c; ... } }()` with no cancellation channel. Setting a new handler does not stop the previous goroutine, so both fire on the next signal. Additionally, the handler is called with a fresh `NewTLS()` per signal — errno/sigprocmask state visible to C code is wrong.~~
 
-**12. `pthread.go:707-720` — `Xpthread_join` / `Xpthread_detach` nil-deref on unknown thread id**
+~~**12. `pthread.go:707-720` — `Xpthread_join` / `Xpthread_detach` nil-deref on unknown thread id**~~
 
-```go
-tls := threads[int32(thread)]
-delete(threads, int32(thread))
-threadsMu.Unlock()
-<-tls.done   // nil deref if not in map
-```
-Same in `Xpthread_detach` line 654. Should validate the lookup.
+~~```go~~
+~~tls := threads[int32(thread)]~~
+~~delete(threads, int32(thread))~~
+~~threadsMu.Unlock()~~
+~~<-tls.done   // nil deref if not in map~~
+~~```~~
+~~Same in `Xpthread_detach` line 654. Should validate the lookup.~~
 
 **13. `stdatomic.go` — int32/int64 atomic CAS/exchange use a global mutex instead of CPU atomics**
 
