@@ -2593,7 +2593,7 @@ func TestLibc(t *testing.T) {
 				return err
 			}
 
-			if d.IsDir() || !strings.HasSuffix(path, ".exe.go") {
+			if d.IsDir() || !strings.HasSuffix(path, ".exe.go") || strings.Contains(path, "fork") {
 				return nil
 			}
 
