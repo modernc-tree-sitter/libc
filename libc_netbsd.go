@@ -1333,20 +1333,21 @@ func Xabort(t *TLS) {
 	if __ccgo_strace {
 		trc("t=%v, (%v:)", t, origin(2))
 	}
-	panic(todo("")) //TODO
-	// if dmesgs {
-	// 	dmesg("%v:", origin(1))
-	// }
-	// p := Xcalloc(t, 1, types.Size_t(unsafe.Sizeof(signal.Sigaction{})))
-	// if p == 0 {
-	// 	panic("OOM")
-	// }
-
-	// (*signal.Sigaction)(unsafe.Pointer(p)).F__sigaction_u.F__sa_handler = signal.SIG_DFL
-	// Xsigaction(t, signal.SIGABRT, p, 0)
-	// Xfree(t, p)
-	// unix.Kill(unix.Getpid(), unix.Signal(signal.SIGABRT))
-	// panic(todo("unrechable"))
+	if dmesgs {
+		dmesg("%v:", origin(1))
+	}
+	// NetBSD has no usable Xsigaction here and golang.org/x/sys/unix exposes no
+	// high-level Sigaction. Meanwhile the Go runtime intercepts a delivered SIGABRT
+	// and exits with status 2 instead of terminating *by* signal, which violates C
+	// abort(3) semantics — callers such as SQLite's crash tests expect a SIGABRT
+	// signal death (writecrash.test). Reset SIGABRT's disposition to SIG_DFL with the
+	// raw __sigaction_sigtramp(2) syscall (an all-zero struct sigaction = SIG_DFL,
+	// empty mask, no flags; the trampoline/version args are unused for SIG_DFL), then
+	// raise SIGABRT so the kernel terminates the process by signal.
+	var sa [5]uint64 // >= sizeof(struct sigaction); zero value == SIG_DFL
+	unix.Syscall6(unix.SYS___SIGACTION_SIGTRAMP, uintptr(unix.SIGABRT), uintptr(unsafe.Pointer(&sa)), 0, 0, 0, 0)
+	unix.Kill(unix.Getpid(), unix.SIGABRT)
+	panic(todo("unreachable"))
 }
 
 // int fflush(FILE *stream);
