@@ -1336,16 +1336,30 @@ func Xabort(t *TLS) {
 	if dmesgs {
 		dmesg("%v:", origin(1))
 	}
-	// NetBSD has no usable Xsigaction here and golang.org/x/sys/unix exposes no
-	// high-level Sigaction. Meanwhile the Go runtime intercepts a delivered SIGABRT
-	// and exits with status 2 instead of terminating *by* signal, which violates C
-	// abort(3) semantics — callers such as SQLite's crash tests expect a SIGABRT
-	// signal death (writecrash.test). Reset SIGABRT's disposition to SIG_DFL with the
-	// raw __sigaction_sigtramp(2) syscall (an all-zero struct sigaction = SIG_DFL,
-	// empty mask, no flags; the trampoline/version args are unused for SIG_DFL), then
-	// raise SIGABRT so the kernel terminates the process by signal.
+	// NetBSD's Xabort was a stub, so C abort(3) didn't terminate by signal — callers
+	// such as SQLite's crash tests (writecrash.test) require the process to be killed
+	// BY SIGABRT. Three things are needed on netbsd:
+	//  1. Reset SIGABRT to SIG_DFL — the Go runtime otherwise intercepts a delivered
+	//     SIGABRT and exit(2)s instead of dying by signal. Done via the raw
+	//     __sigaction_sigtramp(2) syscall (an all-zero struct sigaction = SIG_DFL; the
+	//     trampoline/version args are unused for SIG_DFL). x/sys/unix has no high-level
+	//     Sigaction on netbsd and Xsigaction is unimplemented here.
+	//  2. Unblock SIGABRT on the calling thread so a blocked mask can't defeat abort().
+	//     __sigprocmask14(SIG_UNBLOCK, {SIGABRT}, NULL) — syscall 293, not exported by
+	//     x/sys/unix for netbsd.
+	//  3. Deliver SIGABRT SYNCHRONOUSLY and thread-directed via _lwp_kill(_lwp_self())
+	//     (the primitive the Go runtime's raise() uses). A process-directed kill(2) is
+	//     async — the calling thread can race ahead and exit the wrong way before the
+	//     signal lands (observed as a rare writecrash failure). With SIG_DFL the kernel
+	//     terminates the process here; the kill(2) and panic below are unreachable
+	//     fallbacks.
 	var sa [5]uint64 // >= sizeof(struct sigaction); zero value == SIG_DFL
 	unix.Syscall6(unix.SYS___SIGACTION_SIGTRAMP, uintptr(unix.SIGABRT), uintptr(unsafe.Pointer(&sa)), 0, 0, 0, 0)
+	var set [4]uint32
+	set[0] = uint32(1) << (uint(unix.SIGABRT) - 1) // SIGABRT==6 -> bit 5
+	unix.Syscall(293 /* SYS___sigprocmask14 */, 2 /* SIG_UNBLOCK */, uintptr(unsafe.Pointer(&set)), 0)
+	lwp, _, _ := unix.Syscall(unix.SYS__LWP_SELF, 0, 0, 0)
+	unix.Syscall(unix.SYS__LWP_KILL, lwp, uintptr(unix.SIGABRT), 0)
 	unix.Kill(unix.Getpid(), unix.SIGABRT)
 	panic(todo("unreachable"))
 }
