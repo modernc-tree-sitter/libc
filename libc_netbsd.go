@@ -1867,9 +1867,11 @@ func Xmmap(t *TLS, addr uintptr, length types.Size_t, prot, flags, fd int32, off
 	// (Syscall6): with Syscall6 the offset lands in the PAD slot and `pos` is
 	// left as stack garbage, so the kernel maps at a garbage file offset and
 	// returns an unaligned/unbacked pointer that faults on first access (e.g.
-	// the SQLite WAL-index shm). Matches golang.org/x/sys/unix's own netbsd
-	// mmap (zsyscall_netbsd_amd64.go).
-	data, _, err := unix.Syscall9(unix.SYS_MMAP, addr, uintptr(length), uintptr(prot), uintptr(flags), uintptr(fd), 0, uintptr(offset), 0, 0)
+	// the SQLite WAL-index shm). On 32-bit (netbsd/arm) off_t additionally spans
+	// two argument words, so pass offset>>32 as the high word; it is read on
+	// 32-bit and ignored on 64-bit. Matches golang.org/x/sys/unix's own per-arch
+	// netbsd mmap.
+	data, _, err := unix.Syscall9(unix.SYS_MMAP, addr, uintptr(length), uintptr(prot), uintptr(flags), uintptr(fd), 0, uintptr(offset), uintptr(offset>>32), 0)
 	if err != 0 {
 		if dmesgs {
 			dmesg("%v: %v FAIL", origin(1), err)
