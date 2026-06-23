@@ -974,8 +974,14 @@ func Xinitstate(t *TLS, seed uint32, statebuf uintptr, statelen types.Size_t) ui
 	if __ccgo_strace {
 		trc("t=%v seed=%v statebuf=%v statelen=%v, (%v:)", t, seed, statebuf, statelen, origin(2))
 	}
-	// staticRandomData = rand.New(rand.NewSource(int64(seed)))
-	_ = rand.New(rand.NewSource(int64(seed)))
+	// random(3) is modeled here by a single global math/rand generator (see
+	// randomGen / Xrandom), so the caller-supplied state buffer cannot be
+	// honored. Mirror musl's primary effect by (re)seeding that generator,
+	// matching Xsrandomdev. NULL is returned as there is no previous state
+	// buffer to hand back.
+	randomMu.Lock()
+	randomGen.Seed(int64(seed))
+	randomMu.Unlock()
 	return 0
 }
 
