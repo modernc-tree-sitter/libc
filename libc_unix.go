@@ -966,9 +966,6 @@ func Xuuid_unparse(t *TLS, uu, out uintptr) {
 	*(*byte)(unsafe.Pointer(out + uintptr(len(s)))) = 0
 }
 
-// no longer used?
-// var staticRandomData = &rand.Rand{}
-
 // char *initstate(unsigned seed, char *state, size_t size);
 func Xinitstate(t *TLS, seed uint32, statebuf uintptr, statelen types.Size_t) uintptr {
 	if __ccgo_strace {
@@ -990,8 +987,11 @@ func Xsetstate(t *TLS, state uintptr) uintptr {
 	if __ccgo_strace {
 		trc("t=%v state=%v, (%v:)", t, state, origin(2))
 	}
-	t.setErrno(errno.EINVAL) //TODO
-	return 0
+	// random(3) is modeled by a single global generator (see randomGen /
+	// Xrandom), so there is no independent saved stream to switch to. Treat
+	// setstate as a no-op rather than failing the caller; return the passed
+	// pointer (non-NULL) to signal success.
+	return state
 }
 
 // The initstate_r() function is like initstate(3) except that it initializes
