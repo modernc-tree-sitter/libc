@@ -12,7 +12,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20
 	github.com/ncruces/go-strftime v1.0.0
 	golang.org/x/sys v0.46.0
-	golang.org/x/tools v0.46.0
+	golang.org/x/tools v0.47.0
 	modernc.org/cc/v4 v4.29.0
 	modernc.org/ccgo/v4 v4.34.5
 	modernc.org/fileutil v1.4.0
