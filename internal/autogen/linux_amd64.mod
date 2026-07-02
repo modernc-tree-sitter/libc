@@ -14,7 +14,7 @@ require (
 	golang.org/x/sys v0.46.0
 	golang.org/x/tools v0.47.0
 	modernc.org/cc/v4 v4.29.0
-	modernc.org/ccgo/v4 v4.34.5
+	modernc.org/ccgo/v4 v4.34.6
 	modernc.org/fileutil v1.4.0
 	modernc.org/goabi0 v0.2.0
 	modernc.org/mathutil v1.7.1
