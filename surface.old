@@ -570,9 +570,11 @@ AtomicStoreNUint8
 AtomicStoreNUintptr
 AtomicStorePFloat32
 AtomicStorePFloat64
+AtomicStorePInt16
 AtomicStorePInt32
 AtomicStorePInt64
 AtomicStorePInt8
+AtomicStorePUint16
 AtomicStorePUint32
 AtomicStorePUint64
 AtomicStorePUint8
